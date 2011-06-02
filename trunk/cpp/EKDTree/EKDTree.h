@@ -162,7 +162,7 @@
 //         */
 //         void recursivelyPartition(int in_Low, int in_High, int in_Dim, T* out_Bounds);
 //
-//	      /*!
+//          /*!
 //         * Does the meat of partitioning the array into [ {<= median} median {>= median} ]
 //         *
 //         * @param in_Low First index in the array to check
@@ -329,7 +329,7 @@
 //      this->m_Indexes[i] = i;
 //   }
 //
-//	recursivelyPartition(0, m_NPoints-1, 0, m_Bounds);
+//    recursivelyPartition(0, m_NPoints-1, 0, m_Bounds);
 //}
 //
 //template <class T, unsigned char K>
@@ -337,8 +337,8 @@
 //{
 //   //std::cerr << low << "\t" << high << std::endl;
 //
-//	if (high - low < m_MinSize)
-//	{
+//    if (high - low < m_MinSize)
+//    {
 //      int d, i;
 //      
 //      for (d = 0; d < K; d++)
@@ -358,8 +358,8 @@
 //         }
 //      }
 //
-//		return;
-//	}
+//        return;
+//    }
 //
 //   // Do the partitioning of the current array
 //   partitionArray(low, high, dim);
@@ -371,9 +371,9 @@
 //   T boundsR[6];
 //
 //   // And now make the recursive calls to do the leq and geq subtrees
-//	int dimm = (dim+1) % K;
-//	recursivelyPartition(lstart, lend, dimm, boundsL);
-//	recursivelyPartition(rstart, rend, dimm, boundsR);
+//    int dimm = (dim+1) % K;
+//    recursivelyPartition(lstart, lend, dimm, boundsL);
+//    recursivelyPartition(rstart, rend, dimm, boundsR);
 //
 //   m_OrthoPositions[0][imedian] = boundsL[2*dim + 1];
 //   m_OrthoPositions[1][imedian] = boundsR[2*dim + 0];
@@ -435,61 +435,61 @@
 //   register int tmp;
 //#define swapElements(a,b) { tmp = m_Indexes[a];m_Indexes[a] = m_Indexes[b]; m_Indexes[b] = tmp; }
 //
-//	int median;
-//	int middle, ll, hh;
+//    int median;
+//    int middle, ll, hh;
 //
-//	median = (in_Low + in_High) / 2;
+//    median = (in_Low + in_High) / 2;
 //
-//	while (true) {
-//		if (in_High <= in_Low) /* One element only */
-//			return;
+//    while (true) {
+//        if (in_High <= in_Low) /* One element only */
+//            return;
 //
-//		if (in_High == in_Low + 1) { /* Two elements only */
-//			if (m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) > m_Points[m_Indexes[in_High]]->GetValue(in_Dim))
-//				swapElements(in_Low, in_High);
+//        if (in_High == in_Low + 1) { /* Two elements only */
+//            if (m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) > m_Points[m_Indexes[in_High]]->GetValue(in_Dim))
+//                swapElements(in_Low, in_High);
 //
-//			break;
-//		}
+//            break;
+//        }
 //
-//		/*
-//		 * Find median of in_Low, middle and in_High items; swap into position in_Low
-//		 */
-//		middle = (in_Low + in_High) / 2;
-//		if (m_Points[m_Indexes[middle]]->GetValue(in_Dim) > m_Points[m_Indexes[in_High]]->GetValue(in_Dim))
-//			swapElements(middle, in_High);
-//		if (m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) > m_Points[m_Indexes[in_High]]->GetValue(in_Dim))
-//			swapElements(in_Low, in_High);
-//		if (m_Points[m_Indexes[middle]]->GetValue(in_Dim) > m_Points[m_Indexes[in_Low]]->GetValue(in_Dim))
-//			swapElements(middle, in_Low);
+//        /*
+//         * Find median of in_Low, middle and in_High items; swap into position in_Low
+//         */
+//        middle = (in_Low + in_High) / 2;
+//        if (m_Points[m_Indexes[middle]]->GetValue(in_Dim) > m_Points[m_Indexes[in_High]]->GetValue(in_Dim))
+//            swapElements(middle, in_High);
+//        if (m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) > m_Points[m_Indexes[in_High]]->GetValue(in_Dim))
+//            swapElements(in_Low, in_High);
+//        if (m_Points[m_Indexes[middle]]->GetValue(in_Dim) > m_Points[m_Indexes[in_Low]]->GetValue(in_Dim))
+//            swapElements(middle, in_Low);
 //
-//		/* Swap in_Low item (now in position middle) into position (in_Low+1) */
-//		swapElements(middle, in_Low + 1);
+//        /* Swap in_Low item (now in position middle) into position (in_Low+1) */
+//        swapElements(middle, in_Low + 1);
 //
-//		/*
-//		 * Nibble from each end towards middle, swapping items when stuck
-//		 */
-//		ll = in_Low + 1;
-//		hh = in_High;
-//		while (true) {
-//			while (m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) > m_Points[m_Indexes[  ++ll]]->GetValue(in_Dim));
-//			while (m_Points[m_Indexes[  --hh]]->GetValue(in_Dim) > m_Points[m_Indexes[in_Low]]->GetValue(in_Dim));
-//			
-//			if (hh < ll)
-//				break;
+//        /*
+//         * Nibble from each end towards middle, swapping items when stuck
+//         */
+//        ll = in_Low + 1;
+//        hh = in_High;
+//        while (true) {
+//            while (m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) > m_Points[m_Indexes[  ++ll]]->GetValue(in_Dim));
+//            while (m_Points[m_Indexes[  --hh]]->GetValue(in_Dim) > m_Points[m_Indexes[in_Low]]->GetValue(in_Dim));
+//            
+//            if (hh < ll)
+//                break;
 //
-//			swapElements(ll, hh);
-//		}
+//            swapElements(ll, hh);
+//        }
 //
-//		/* Swap middle item (in position in_Low) back into correct position */
-//		swapElements(in_Low, hh);
+//        /* Swap middle item (in position in_Low) back into correct position */
+//        swapElements(in_Low, hh);
 //
-//		/* Re-set active partition */
-//		if (hh <= median)
-//			in_Low = ll;
+//        /* Re-set active partition */
+//        if (hh <= median)
+//            in_Low = ll;
 //
-//		if (hh >= median)
-//			in_High = hh - 1;
-//	}
+//        if (hh >= median)
+//            in_High = hh - 1;
+//    }
 //#undef swapElements
 //}
 //

@@ -49,12 +49,12 @@ namespace AWT
                      T U0[3],T U1[3],T U2[3]);
 
       static void AWT::MollerTriangleIntersection<T>::isect2(T VTX0[3],T VTX1[3],T VTX2[3],T VV0,T VV1,T VV2,
-	    T D0,T D1,T D2,T *isect0,T *isect1,T isectpoint0[3],T isectpoint1[3]) ;
+        T D0,T D1,T D2,T *isect0,T *isect1,T isectpoint0[3],T isectpoint1[3]) ;
 
       static int compute_intervals_isectline(T VERT0[3],T VERT1[3],T VERT2[3],
-				       T VV0,T VV1,T VV2,T D0,T D1,T D2,
-				       T D0D1,T D0D2,T *isect0,T *isect1,
-				       T isectpoint0[3],T isectpoint1[3]);
+                       T VV0,T VV1,T VV2,T D0,T D1,T D2,
+                       T D0D1,T D0D2,T *isect0,T *isect1,
+                       T isectpoint0[3],T isectpoint1[3]);
    };
 }
 

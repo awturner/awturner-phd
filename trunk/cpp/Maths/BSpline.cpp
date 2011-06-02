@@ -38,18 +38,18 @@ T AWT::BSpline<T>::evaluate(T u)
    u -= segment - 2;
 
    switch (segment)
-	{
+    {
    case 3:
-		return (1 + (-3 + 3*u - u*u)*u) / 6;
-	case 2:
-		return ((3*u - 6)*u*u + 4) / 6;
-	case 1:
-		return (((-3*u + 3)*u + 3)*u + 1) / 6;
-	case 0:
-		return u*u*u / 6;
-	}
-	
-	return 0;
+        return (1 + (-3 + 3*u - u*u)*u) / 6;
+    case 2:
+        return ((3*u - 6)*u*u + 4) / 6;
+    case 1:
+        return (((-3*u + 3)*u + 3)*u + 1) / 6;
+    case 0:
+        return u*u*u / 6;
+    }
+    
+    return 0;
 }
 
 template <class T>

@@ -39,11 +39,11 @@
 AWT::VTKAppFramework::VTKAppFramework()
 {
    m_Renderer                 = vtkRenderer::New();
-	m_RenderWindow             = vtkRenderWindow::New();
-	m_RenderWindowInteractor   = vtkRenderWindowInteractor::New();
+    m_RenderWindow             = vtkRenderWindow::New();
+    m_RenderWindowInteractor   = vtkRenderWindowInteractor::New();
 
-	m_RenderWindow->AddRenderer(m_Renderer);
-	m_RenderWindowInteractor->SetRenderWindow(m_RenderWindow);
+    m_RenderWindow->AddRenderer(m_Renderer);
+    m_RenderWindowInteractor->SetRenderWindow(m_RenderWindow);
 
    vtkInteractorStyleSwitch* iastyle = dynamic_cast<vtkInteractorStyleSwitch*>(m_RenderWindowInteractor->GetInteractorStyle());
    if (iastyle != 0)

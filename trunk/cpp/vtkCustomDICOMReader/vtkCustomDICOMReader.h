@@ -63,11 +63,11 @@ namespace vtkCustomDICOMReader
    template <typename ITK_Exporter, typename VTK_Importer>
    void ConnectPipelines(ITK_Exporter exporter, VTK_Importer* importer);
 
-   std::string selectSeriesUID( const SeriesIdContainer& seriesUID );
+   std::string selectSeriesUID(const SeriesIdContainer& seriesUID);
 
-   vtkImageAlgorithm* LoadDICOM( FileNamesContainer& fileNames );
-   vtkImageAlgorithm* LoadDICOM( const char* directoryName, std::string& seriesIdentifier );
-   vtkImageAlgorithm* LoadDICOM( const char* directoryName );
+   vtkImageAlgorithm* LoadDICOM(FileNamesContainer& fileNames);
+   vtkImageAlgorithm* LoadDICOM(const char* directoryName, std::string& seriesIdentifier);
+   vtkImageAlgorithm* LoadDICOM(const char* directoryName);
 }
 
 #endif // __vtkCustomDICOMReader_H__

@@ -41,14 +41,14 @@ struct AWT::ControlPoint<T>::D
 };
 
 template <class T>
-const AWT::BSpline<T>* AWT::ControlPoint<T>::D::ms_Bspline = new AWT::BSpline<T>( 256 );
+const AWT::BSpline<T>* AWT::ControlPoint<T>::D::ms_Bspline = new AWT::BSpline<T>(256);
 
 template <class T>
-AWT::ControlPoint<T>::ControlPoint( const T* position, const T scale )
+AWT::ControlPoint<T>::ControlPoint(const T* position, const T scale)
 {
    m_D = new D;
 
-   for ( int i = 0; i < 3; ++i )
+   for (int i = 0; i < 3; ++i)
    {
       m_D->m_Position[i] = position[i];
       m_D->m_Value[i] = 0;
@@ -60,43 +60,43 @@ AWT::ControlPoint<T>::ControlPoint( const T* position, const T scale )
 
 
 template <class T>
-AWT::ControlPoint<T>::ControlPoint( const typename ControlPoint<T>::P _other )
+AWT::ControlPoint<T>::ControlPoint(const typename ControlPoint<T>::P _other)
 {
    m_D = new D;
 
-   _other->getPosition( m_D->m_Position );
-   m_D->m_Scale = _other->getScale( );
+   _other->getPosition(m_D->m_Position);
+   m_D->m_Scale = _other->getScale();
 }
 
 
 
 template <class T>
-AWT::ControlPoint<T>::~ControlPoint( )
+AWT::ControlPoint<T>::~ControlPoint()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::ControlPoint<T>::P AWT::ControlPoint<T>::getInstance( const T* pos, const T scale )
+typename AWT::ControlPoint<T>::P AWT::ControlPoint<T>::getInstance(const T* pos, const T scale)
 {
-   AWT::ControlPoint<T>* inst = new AWT::ControlPoint<T>( pos, scale );
-   inst->countMe( );
+   AWT::ControlPoint<T>* inst = new AWT::ControlPoint<T>(pos, scale);
+   inst->countMe();
 
-   AWT::ControlPoint<T>::P ret( inst );
-   inst->release( );
+   AWT::ControlPoint<T>::P ret(inst);
+   inst->release();
 
    return ret;
 }
 
 
 template <class T>
-typename AWT::ControlPoint<T>::P AWT::ControlPoint<T>::getInstance( const typename ControlPoint<T>::P _other )
+typename AWT::ControlPoint<T>::P AWT::ControlPoint<T>::getInstance(const typename ControlPoint<T>::P _other)
 {
-   AWT::ControlPoint<T>* inst = new AWT::ControlPoint<T>( _other );
-   inst->countMe( );
+   AWT::ControlPoint<T>* inst = new AWT::ControlPoint<T>(_other);
+   inst->countMe();
 
-   AWT::ControlPoint<T>::P ret( inst );
-   inst->release( );
+   AWT::ControlPoint<T>::P ret(inst);
+   inst->release();
 
    return ret;
 }
@@ -108,72 +108,72 @@ std::string AWT::ControlPoint<T>::getClassName() const
 }
 
 template <class T>
-void AWT::ControlPoint<T>::getPosition( T* out_Position ) const
+void AWT::ControlPoint<T>::getPosition(T* out_Position) const
 {
-   for ( int i = 0; i < 3; ++i )
+   for (int i = 0; i < 3; ++i)
       out_Position[i] = m_D->m_Position[i];
 }
 
 template <class T>
-T AWT::ControlPoint<T>::getPosition( unsigned char axis ) const
+T AWT::ControlPoint<T>::getPosition(unsigned char axis) const
 {
    return m_D->m_Position[axis];
 }
 
 template <class T>
-void AWT::ControlPoint<T>::getValue( T* out_Position ) const
+void AWT::ControlPoint<T>::getValue(T* out_Position) const
 {
-   for ( int i = 0; i < 3; ++i )
+   for (int i = 0; i < 3; ++i)
       out_Position[i] = m_D->m_Value[i];
 }
 
 template <class T>
-T AWT::ControlPoint<T>::getValue( unsigned char axis ) const
+T AWT::ControlPoint<T>::getValue(unsigned char axis) const
 {
    return m_D->m_Value[axis];
 }
 
 template <class T>
-void AWT::ControlPoint<T>::setValue( const T* in_Value )
+void AWT::ControlPoint<T>::setValue(const T* in_Value)
 {
-   for ( int i = 0; i < 3; ++i )
+   for (int i = 0; i < 3; ++i)
       m_D->m_Value[i] = in_Value[i];
 
-   modified( );
+   modified();
 }
 
 template <class T>
-void AWT::ControlPoint<T>::setValue( const unsigned char axis, const T v )
+void AWT::ControlPoint<T>::setValue(const unsigned char axis, const T v)
 {
-   if ( m_D->m_Value[axis] != v )
+   if (m_D->m_Value[axis] != v)
    {
       m_D->m_Value[axis] = v;
-      modified( );
+      modified();
    }
 }
 
 template <class T>
-T AWT::ControlPoint<T>::getScale( ) const
+T AWT::ControlPoint<T>::getScale() const
 {
    return m_D->m_Scale;
 }
 
 template <class T>
-T AWT::ControlPoint<T>::getInfluence( const T* point, bool debug = false ) const
+T AWT::ControlPoint<T>::getInfluence(const T* point, bool debug = false) const
 {
    T ret = 1;
 
-   for ( int i = 0; i < 3; ++i )
+   for (int i = 0; i < 3; ++i)
    {
-      T tmp = ( point[i] - m_D->m_Position[i] ) / m_D->m_Scale;
+      T tmp = (point[i] - m_D->m_Position[i]) / m_D->m_Scale;
 
-      ret *= m_D->ms_Bspline->getValue( tmp );
+      ret *= m_D->ms_Bspline->getValue(tmp);
 
-      if ( debug )
+      if (debug)
       {
-         PRINTVBL( tmp );
-         PRINTVBL( m_D->ms_Bspline->getValue( tmp ) );
-         PRINTVBL( ret );
+         PRINTVBL(tmp);
+         PRINTVBL(m_D->ms_Bspline->getValue(tmp));
+         PRINTVBL(ret);
       }
    }
 
@@ -181,13 +181,13 @@ T AWT::ControlPoint<T>::getInfluence( const T* point, bool debug = false ) const
 }
 
 template <class T>
-bool AWT::ControlPoint<T>::isUsed( ) const
+bool AWT::ControlPoint<T>::isUsed() const
 {
    return m_D->m_Used;
 }
 
 template <class T>
-void AWT::ControlPoint<T>::setUsed( const bool u )
+void AWT::ControlPoint<T>::setUsed(const bool u)
 {
    m_D->m_Used = u;
 }

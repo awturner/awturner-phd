@@ -36,8 +36,8 @@ namespace AWT
       typedef ManagedAutoPointer<ColourSequence> P;
 
    public:
-      virtual void nextColour( double* colour ) = 0;
-      virtual void nextColour( float* colour ) = 0;
+      virtual void nextColour(double* colour) = 0;
+      virtual void nextColour(float* colour) = 0;
    };
 }
 

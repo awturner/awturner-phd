@@ -37,19 +37,19 @@ namespace AWT
    class MeshSlicedPair : public ManagedObject
    {
    public:
-      typedef ManagedAutoPointer<MeshSlicedPair<T>> P;
+      typedef ManagedAutoPointer<MeshSlicedPair<T> > P;
 
    protected:
-      MeshSlicedPair( typename Mesh<T>::P included, typename Mesh<T>::P excluded );
-      virtual ~MeshSlicedPair( );
+      MeshSlicedPair(typename Mesh<T>::P included, typename Mesh<T>::P excluded);
+      virtual ~MeshSlicedPair();
 
    public:
-      static P getInstance( typename Mesh<T>::P included, typename Mesh<T>::P excluded );
-      virtual std::string getClassName( ) const;
+      static P getInstance(typename Mesh<T>::P included, typename Mesh<T>::P excluded);
+      virtual std::string getClassName() const;
 
-      typename Mesh<T>::P getIncluded( );
+      typename Mesh<T>::P getIncluded();
 
-      typename Mesh<T>::P getExcluded( );
+      typename Mesh<T>::P getExcluded();
 
    protected:
       struct D;

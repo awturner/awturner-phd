@@ -48,27 +48,27 @@ namespace AWT
          typedef ManagedAutoPointer<FacesIntersectPlane> P;
 
       protected:
-         FacesIntersectPlane( );
-         virtual ~FacesIntersectPlane( );
+         FacesIntersectPlane();
+         virtual ~FacesIntersectPlane();
 
       public:
-         static P getInstance( );
-         virtual std::string getClassName( ) const;
+         static P getInstance();
+         virtual std::string getClassName() const;
 
-         virtual void calculateBoxDistanceBounds2( OEKDTreeBranch<double,3>* in_Branch, SqDistBounds<double>& bounds ) const;
+         virtual void calculateBoxDistanceBounds2(OEKDTreeBranch<double,3>* in_Branch, SqDistBounds<double>& bounds) const;
 
-         virtual bool shouldCheck( OEKDTreeBranch<double,3>* in_Branch, const SqDistBounds<double>& bounds ) const;
+         virtual bool shouldCheck(OEKDTreeBranch<double,3>* in_Branch, const SqDistBounds<double>& bounds) const;
 
-         virtual void checkObject( const int in_Index );
+         virtual void checkObject(const int in_Index);
 
-         virtual void setTestPlane( const Point in_Plane );
-         virtual Point getTestPlane( ) const;
+         virtual void setTestPlane(const Point in_Plane);
+         virtual Point getTestPlane() const;
 
-         virtual std::vector<IndexLine>& getFaces( );
+         virtual std::vector<IndexLine>& getFaces();
 
-         virtual void reset( );
+         virtual void reset();
 
-         virtual void setData( AWT::OEKDTree::OEKDTreeData<double,3>::P data );
+         virtual void setData(AWT::OEKDTree::OEKDTreeData<double,3>::P data);
 
       protected:
          struct D;

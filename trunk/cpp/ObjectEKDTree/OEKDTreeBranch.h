@@ -68,7 +68,7 @@ namespace AWT
          /*! Private constructor.
          * Not sure why this one exists...
          */
-         OEKDTreeBranch( ) { ++InstanceCount; }
+         OEKDTreeBranch() { ++InstanceCount; }
 
          /*! Private constructor
          * @todo Work out if parameter ''end'' is inclusive or exclusive
@@ -77,12 +77,12 @@ namespace AWT
          * @param end    Ending index within the tree's internal data store
          * @param bounds Array of bounds in order [ min_dim_0 max_dim_0 min_dim_1 max_dim_1...min_dim_(K-1) max_dim_(K-1) ]
          */
-         OEKDTreeBranch( OEKDTree<T,K>* tree, const int start, const int end, const Axis axis, const T* bounds );
+         OEKDTreeBranch(OEKDTree<T,K>* tree, const int start, const int end, const Axis axis, const T* bounds);
 
       public:
-         ~OEKDTreeBranch( );
+         ~OEKDTreeBranch();
 
-         std::string getClassName( ) const;
+         std::string getClassName() const;
 
          /*! Initialize this branch
          * @param tree   KDTree of which this is a branching
@@ -91,21 +91,21 @@ namespace AWT
          * @param axis   Axis along which to discriminate
          * @param bounds Array of bounds in order [ min_dim_0 max_dim_0 min_dim_1 max_dim_1...min_dim_(K-1) max_dim_(K-1) ]
          */
-         void init( OEKDTree<T,K>* tree, const int start, const int end, const Axis axis, const T* bounds );
+         void init(OEKDTree<T,K>* tree, const int start, const int end, const Axis axis, const T* bounds);
 
-         void init( OEKDTreeBranch<T,K>* other );
+         void init(OEKDTreeBranch<T,K>* other);
 
          /*! Get the minimum extent along the specified axis
          * @param in_Axis The desired axis
          * @return Upper bound on x : p[in_Axis] >= x
          */
-         T getMinimumBound( const Axis in_Axis ) const;
+         T getMinimumBound(const Axis in_Axis) const;
          
          /*! Get the maximum extent along the specified axis
          * @param in_Axis The desired axis
          * @return Lower bound on x : p[in_Axis] <= x
          */
-         T getMaximumBound( const Axis in_Axis ) const;
+         T getMaximumBound(const Axis in_Axis) const;
 
          /*! Get the child branching of this branch
          * The parameter in_ChildIndex should be 0 (zero) or 1 (one):
@@ -116,27 +116,27 @@ namespace AWT
          * @param in_ChildIndex Child index
          * @return Desired child branch
          */
-         OEKDTreeBranch<T,K>* getChild( const ChildIndex in_ChildIndex );
+         OEKDTreeBranch<T,K>* getChild(const ChildIndex in_ChildIndex);
 
          /*! Get the tree that this branch is part of
          * @return Tree
          */
-         OEKDTree<T,K>* getTree( );
+         OEKDTree<T,K>* getTree();
 
          /*! The total number of elements in this branch
          * @return The total number of elements in this branch
          */
-         int  getSize( ) const;
+         int  getSize() const;
 
          /*! Convert an index relative to this branching to the index in the parent tree
          * @return Index within the parent tree
          */
-         int getOriginalIndex( const int in_Index ) const;
+         int getOriginalIndex(const int in_Index) const;
 
          /*
          * @return Difference between parent indices and this tree's indices
          */
-         int  getOffset( ) const;
+         int  getOffset() const;
 
       public:
          /*! The total number of instances in existence
@@ -145,22 +145,22 @@ namespace AWT
 
          /*! Get an instance of the tree branch
          */
-         static OEKDTreeBranch<T,K>* checkOut( );
+         static OEKDTreeBranch<T,K>* checkOut();
 
          /*! Return this branch, you've finished using it
          * <b>Do not use the branch after you have called this method!</b>
          * It might have been handed out to somebody else, or destroyed.
          */
-         static void checkIn( OEKDTreeBranch<T,K>* in_Branch );
+         static void checkIn(OEKDTreeBranch<T,K>* in_Branch);
 
          /*! Destroy the store of previously used branches
          */
-         static void destroyStore( );
+         static void destroyStore();
 
       protected:
          /*! Copy one bounds array to another
          */
-         static void copyBounds( const T* in_Source, T* out_Dest );
+         static void copyBounds(const T* in_Source, T* out_Dest);
 
          /*! Internal store of branch instances
          */
@@ -190,7 +190,7 @@ namespace AWT
 #include <iostream>
 
 template <class T, unsigned char K>
-std::string AWT::OEKDTree::OEKDTreeBranch<T,K>::getClassName( ) const
+std::string AWT::OEKDTree::OEKDTreeBranch<T,K>::getClassName() const
 {
    return "AWT::OEKDTree::OEKDTreeBranch<T,K>";
 }
@@ -201,52 +201,52 @@ template <class T, unsigned char K>
 std::vector<OEKDTreeBranch<T,K>*> OEKDTreeBranch<T,K>::m_BranchStack;
 
 template <class T, unsigned char K>
-OEKDTreeBranch<T,K>* OEKDTreeBranch<T,K>::checkOut( )
+OEKDTreeBranch<T,K>* OEKDTreeBranch<T,K>::checkOut()
 {
-   if ( m_BranchStack.empty( ) )
+   if (m_BranchStack.empty())
    {
-      OEKDTreeBranch<T,K>* ret = new OEKDTreeBranch<T,K>( );
-      ret->countMe( );
+      OEKDTreeBranch<T,K>* ret = new OEKDTreeBranch<T,K>();
+      ret->countMe();
       return ret;
    }
    else
    {
-      OEKDTreeBranch<T,K>* ret = m_BranchStack.back( );
-      m_BranchStack.pop_back( );
+      OEKDTreeBranch<T,K>* ret = m_BranchStack.back();
+      m_BranchStack.pop_back();
       return ret;
    }
 }
 
 template <class T, unsigned char K>
-void OEKDTreeBranch<T,K>::checkIn( OEKDTreeBranch<T,K>* in_Branch )
+void OEKDTreeBranch<T,K>::checkIn(OEKDTreeBranch<T,K>* in_Branch)
 {
-   m_BranchStack.push_back( in_Branch );
+   m_BranchStack.push_back(in_Branch);
 }  
 
 template <class T, unsigned char K>
-void OEKDTreeBranch<T,K>::destroyStore( )
+void OEKDTreeBranch<T,K>::destroyStore()
 {
-   m_BranchStack.clear( );
+   m_BranchStack.clear();
 }
 
 template <class T, unsigned char K>
 int OEKDTreeBranch<T,K>::InstanceCount = 0;
 
 template <class T, unsigned char K>
-OEKDTreeBranch<T,K>::OEKDTreeBranch( OEKDTree<T,K>* tree, const int start, const int end, const Axis axis, const T* bounds )
+OEKDTreeBranch<T,K>::OEKDTreeBranch(OEKDTree<T,K>* tree, const int start, const int end, const Axis axis, const T* bounds)
 {
    ++InstanceCount;
-   init( tree, start, end, axis, bounds );
+   init(tree, start, end, axis, bounds);
 }
 
 template <class T, unsigned char K>
-void OEKDTreeBranch<T,K>::init( OEKDTreeBranch<T,K>* other )
+void OEKDTreeBranch<T,K>::init(OEKDTreeBranch<T,K>* other)
 {
-   init( other->m_Tree, other->m_Start, other->m_End, other->m_Axis, other->m_Bounds );
+   init(other->m_Tree, other->m_Start, other->m_End, other->m_Axis, other->m_Bounds);
 }
 
 template <class T, unsigned char K>
-void OEKDTreeBranch<T,K>::init( OEKDTree<T,K>* tree, const int start, const int end, const Axis axis, const T* bounds )
+void OEKDTreeBranch<T,K>::init(OEKDTree<T,K>* tree, const int start, const int end, const Axis axis, const T* bounds)
 {
    m_Tree  = tree;
    m_Start = start;
@@ -254,41 +254,41 @@ void OEKDTreeBranch<T,K>::init( OEKDTree<T,K>* tree, const int start, const int 
    m_Axis  = axis;
 
    // Copy the passed bounds
-   copyBounds( bounds, m_Bounds );
+   copyBounds(bounds, m_Bounds);
 }
 
 template <class T, unsigned char K>
-OEKDTreeBranch<T,K>::~OEKDTreeBranch( )
+OEKDTreeBranch<T,K>::~OEKDTreeBranch()
 {
 }
 
 template <class T, unsigned char K>
 void OEKDTreeBranch<T,K>::copyBounds(const T *in_Source, T *out_Dest)
 {
-   for ( int i = 0; i < 2*K; i++ )
+   for (int i = 0; i < 2*K; i++)
       out_Dest[i] = in_Source[i];
 }
 
 template <class T, unsigned char K>
-int OEKDTreeBranch<T,K>::getOffset( ) const
+int OEKDTreeBranch<T,K>::getOffset() const
 {
    return m_Start;
 }
 
 template <class T, unsigned char K>
-OEKDTreeBranch<T,K>* OEKDTreeBranch<T,K>::getChild( const ChildIndex in_ChildIndex )
+OEKDTreeBranch<T,K>* OEKDTreeBranch<T,K>::getChild(const ChildIndex in_ChildIndex)
 {
-   if ( getSize( ) <= m_Tree->getMinimumSize( ) )
+   if (getSize() <= m_Tree->getMinimumSize())
       return 0;
 
-   OEKDTreeBranch<T,K>* ret = checkOut( );
+   OEKDTreeBranch<T,K>* ret = checkOut();
 
    int cstart, cend;
    unsigned char cdim;
    T tightenedBound;
-   m_Tree->branchCalculateChildBounds( in_ChildIndex, m_Start, m_End, cstart, cend, cdim, tightenedBound );
+   m_Tree->branchCalculateChildBounds(in_ChildIndex, m_Start, m_End, cstart, cend, cdim, tightenedBound);
 
-   ret->init( m_Tree, cstart, cend, cdim/*(m_Axis+1)%K*/, m_Bounds );
+   ret->init(m_Tree, cstart, cend, cdim/*(m_Axis+1)%K*/, m_Bounds);
 
    ret->m_Bounds[2*m_Axis + (1-in_ChildIndex)] = tightenedBound;
    
@@ -296,9 +296,9 @@ OEKDTreeBranch<T,K>* OEKDTreeBranch<T,K>::getChild( const ChildIndex in_ChildInd
 }
 
 template <class T, unsigned char K>
-int OEKDTreeBranch<T,K>::getOriginalIndex( const int in_Index ) const
+int OEKDTreeBranch<T,K>::getOriginalIndex(const int in_Index) const
 {
-   return m_Tree->getOriginalIndex( m_Start + in_Index );
+   return m_Tree->getOriginalIndex(m_Start + in_Index);
 }
 
 template <class T, unsigned char K>
@@ -314,15 +314,15 @@ T OEKDTreeBranch<T,K>::getMaximumBound(const Axis in_Axis) const
 }
 
 template <class T, unsigned char K>
-int OEKDTreeBranch<T,K>::getSize( ) const
+int OEKDTreeBranch<T,K>::getSize() const
 {
    int ret = m_End - m_Start + 1;
-   if ( ret < 0 ) ret = 0;
+   if (ret < 0) ret = 0;
    return ret;
 }
 
 template <class T, unsigned char K>
-OEKDTree<T,K>* OEKDTreeBranch<T,K>::getTree( )
+OEKDTree<T,K>* OEKDTreeBranch<T,K>::getTree()
 {
    return m_Tree;
 }

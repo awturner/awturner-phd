@@ -27,40 +27,40 @@
 
 using namespace AWT::SimpleMesh;
 
-AWT::SimpleMesh::AlignObject::AlignObject( const Index samples )
-: nsamples( samples )
+AWT::SimpleMesh::AlignObject::AlignObject(const Index samples)
+: nsamples(samples)
 {
 }
 
-Vector AWT::SimpleMesh::AlignObject::getParameters( ) const
+Vector AWT::SimpleMesh::AlignObject::getParameters() const
 {
    return params;
 }
 
-void AWT::SimpleMesh::AlignObject::incrementParameters( const Vector& inc )
+void AWT::SimpleMesh::AlignObject::incrementParameters(const Vector& inc)
 {
-   setParameters( params + inc );
+   setParameters(params + inc);
 }
 
-void AWT::SimpleMesh::AlignObject::setParameters( const Vector& params )
+void AWT::SimpleMesh::AlignObject::setParameters(const Vector& params)
 {
-   this->params.update( params );
+   this->params.update(params);
 }
 
-Mesh::P AWT::SimpleMesh::AlignObject::getMesh( )
+Mesh::P AWT::SimpleMesh::AlignObject::getMesh()
 {
    return mesh;
 }
 
-void AWT::SimpleMesh::AlignObject::resample( )
+void AWT::SimpleMesh::AlignObject::resample()
 {
-   samples.clear( );
+   samples.clear();
 
-   for ( Index i = 0; i < nsamples; ++i )
-      samples.push_back( sampler->sample( ) );
+   for (Index i = 0; i < nsamples; ++i)
+      samples.push_back(sampler->sample());
 }
 
-PIWs& AWT::SimpleMesh::AlignObject::getSamples( )
+PIWs& AWT::SimpleMesh::AlignObject::getSamples()
 {
    return samples;
 }

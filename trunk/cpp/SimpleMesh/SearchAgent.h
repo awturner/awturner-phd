@@ -41,8 +41,8 @@ namespace AWT
          typedef ManagedAutoPointer<SearchAgent> P;
 
       public:
-         Mesh::P getMesh( );
-         void setMesh( Mesh::P mesh );
+         Mesh::P getMesh();
+         void setMesh(Mesh::P mesh);
 
       protected:
          Mesh::P mesh;

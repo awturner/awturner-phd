@@ -39,15 +39,15 @@ namespace AWT
       typedef ManagedAutoPointer<ShapeImage> P;
 
    protected:
-      ShapeImage( typename FlattenMeshPair<T>::P flat, unsigned int ngrid );
-      virtual ~ShapeImage( );
+      ShapeImage(typename FlattenMeshPair<T>::P flat, unsigned int ngrid);
+      virtual ~ShapeImage();
 
    public:
-      static P getInstance( typename FlattenMeshPair<T>::P flat, unsigned int ngrid );
-      virtual std::string getClassName( ) const;
+      static P getInstance(typename FlattenMeshPair<T>::P flat, unsigned int ngrid);
+      virtual std::string getClassName() const;
 
-      virtual MeshIndex mapMeshToFlattened( const T* meshCoords, T* flatCoords );
-      virtual MeshIndex mapFlattenedToMesh( const T* flatCoords, T* meshCoords );
+      virtual MeshIndex mapMeshToFlattened(const T* meshCoords, T* flatCoords);
+      virtual MeshIndex mapFlattenedToMesh(const T* flatCoords, T* meshCoords);
 
    protected:
       struct D;

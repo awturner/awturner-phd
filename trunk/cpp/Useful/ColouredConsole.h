@@ -46,11 +46,11 @@ namespace AWT
          COL_BRIGHT = 8,
       };
 
-      ColouredConsole( const int fg, const int bg = COL_BLACK );
-      ~ColouredConsole( );
+      ColouredConsole(const int fg, const int bg = COL_BLACK);
+      ~ColouredConsole();
 
       template <typename T>
-      AWT::ColouredConsole& operator<<( T val )
+      AWT::ColouredConsole& operator<<(T val)
       {
          std::cerr << val;
          return *this;

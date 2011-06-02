@@ -28,7 +28,7 @@
 
 namespace AWT
 {
-   void walkInASpiral( int& i, int& j );
+   void walkInASpiral(int& i, int& j);
 }
 
 #endif // __WALKINASPIRAL_H__

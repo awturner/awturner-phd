@@ -34,17 +34,17 @@ namespace AWT
    class AreaAveragedNormalCalculator : public NormalCalculator<T>
    {
    public:
-      typedef ManagedAutoPointer<AreaAveragedNormalCalculator<T>> P;
+      typedef ManagedAutoPointer<AreaAveragedNormalCalculator<T> > P;
 
    protected:
-      AreaAveragedNormalCalculator( );
-      virtual ~AreaAveragedNormalCalculator( );
+      AreaAveragedNormalCalculator();
+      virtual ~AreaAveragedNormalCalculator();
    public:
-      static P getInstance( );
+      static P getInstance();
 
-      virtual void calculateNormals( typename Mesh<T>::P mesh, typename Tuples<T>::P vtxNormals, typename Tuples<T>::P meshNormals );
+      virtual void calculateNormals(typename Mesh<T>::P mesh, typename Tuples<T>::P vtxNormals, typename Tuples<T>::P meshNormals);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
    protected:
       struct D;

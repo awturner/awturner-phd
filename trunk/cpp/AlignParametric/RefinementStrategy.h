@@ -38,7 +38,7 @@ namespace AWT
       {
       public:
          typedef ManagedAutoPointer<RefinementStrategy> P;
-         virtual bool refine( AWT::Container::Iterator<Idx>::P iter ) = 0;
+         virtual bool refine(AWT::Container::Iterator<Idx>::P iter) = 0;
       };
    }
 }

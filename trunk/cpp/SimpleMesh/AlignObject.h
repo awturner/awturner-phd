@@ -49,28 +49,28 @@ namespace AWT
 
          const Index nsamples;
 
-         AlignObject( const Index nsamples );
+         AlignObject(const Index nsamples);
 
       public:
          typedef ManagedAutoPointer<AlignObject> P;
 
-         Vector getParameters( ) const;
+         Vector getParameters() const;
 
-         void incrementParameters( const Vector& inc );
+         void incrementParameters(const Vector& inc);
 
-         virtual void setParameters( const Vector& params );
+         virtual void setParameters(const Vector& params);
 
-         virtual Mesh::P getMesh( );
+         virtual Mesh::P getMesh();
 
-         void resample( );
+         void resample();
 
-         Index getMaxNumberOfSamples( );
+         Index getMaxNumberOfSamples();
 
-         PIWs& getSamples( );
+         PIWs& getSamples();
 
-         virtual PointIndexWeights search( const Point& pnt, const Point& nml, SearchFilter::P filter ) = 0;
+         virtual PointIndexWeights search(const Point& pnt, const Point& nml, SearchFilter::P filter) = 0;
 
-         virtual void calculateJacobian( const PointIndexWeights& p, Matrix& jac ) = 0;
+         virtual void calculateJacobian(const PointIndexWeights& p, Matrix& jac) = 0;
       };
    }
 }

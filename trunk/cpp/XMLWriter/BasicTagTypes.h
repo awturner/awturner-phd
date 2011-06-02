@@ -35,8 +35,8 @@ namespace AWT
       class TextSnippet
       {
       public:
-         TextSnippet( const char* str );
-         TextSnippet( const std::string& str );
+         TextSnippet(const char* str);
+         TextSnippet(const std::string& str);
 
          const std::string m_Text;
       };
@@ -44,8 +44,8 @@ namespace AWT
       class TextPair
       {
       public:
-         TextPair( const char* v1, const char* v2 );
-         TextPair( const std::string& v1, const std::string& v2 );
+         TextPair(const char* v1, const char* v2);
+         TextPair(const std::string& v1, const std::string& v2);
 
          const std::string m_V1;
          const std::string m_V2;

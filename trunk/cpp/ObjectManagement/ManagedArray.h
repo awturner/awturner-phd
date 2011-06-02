@@ -36,33 +36,33 @@ namespace AWT
    class ManagedArray : public ManagedObject
    {
    public:
-      typename ManagedAutoPointer<ManagedArray<T>> P;
+      typename ManagedAutoPointer<ManagedArray<T> > P;
 
    protected:
-      ManagedArray( const ManagedArrayIndex len )
+      ManagedArray(const ManagedArrayIndex len)
       {
          m_Data = new T[ m_Length = len ];
       }
 
-      ~ManagedArray( )
+      ~ManagedArray()
       {
          delete [] m_Data;
       }
 
    public:
-      static P getInstance( const ManagedArrayIndex len )
+      static P getInstance(const ManagedArrayIndex len)
       {
-         AUTOGETINSTANCE( AWT::ManagedArray<T>, ( len ) );
+         AUTOGETINSTANCE(AWT::ManagedArray<T>, (len));
       }
 
-      std::string getClassName( ) const
+      std::string getClassName() const
       {
          return "AWT::ManagedArray<T>";
       }
 
-      void reallocate( const ManagedArrayIndex len )
+      void reallocate(const ManagedArrayIndex len)
       {
-         if ( len != m_Length )
+         if (len != m_Length)
          {
             delete[] m_Data;
 
@@ -70,17 +70,17 @@ namespace AWT
          }
       }
 
-      T* operator*( )
+      T* operator*()
       {
          return m_Data;
       }
 
-      T& operator[]( const ManagedArrayIndex i )
+      T& operator[](const ManagedArrayIndex i)
       {
          return m_Data[i];
       }
 
-      ManagedArrayIndex getLength( ) const
+      ManagedArrayIndex getLength() const
       {
          return m_Length;
       }

@@ -38,19 +38,19 @@ namespace AWT
       typedef ManagedAutoPointer<MatlabEngine> P;
 
    protected:
-      MatlabEngine( );
-      virtual ~MatlabEngine( );
+      MatlabEngine();
+      virtual ~MatlabEngine();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
-      Engine* getEngine( );
+      Engine* getEngine();
 
-      int      eval( const char* cmd );
+      int      eval(const char* cmd);
 
-      MatlabArray::P getVariable( const char* name );
-      int            putVariable( const char* name, MatlabArray::P );
+      MatlabArray::P getVariable(const char* name);
+      int            putVariable(const char* name, MatlabArray::P);
 
    protected:
       struct D;

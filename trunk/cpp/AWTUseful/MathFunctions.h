@@ -36,25 +36,25 @@ namespace AWT
    public:
       static const T pi;
 
-      static T smearedHeaviside( T a, T b, T x);
+      static T smearedHeaviside(T a, T b, T x);
    };
 }
 
 template <class T>
-const T AWT::MathFunctions<T>::pi = static_cast<T>( atan(1.0) * 4.0 );
+const T AWT::MathFunctions<T>::pi = static_cast<T>(atan(1.0) * 4.0);
 
 template <class T>
-T AWT::MathFunctions<T>::smearedHeaviside( T a, T b, T x )
+T AWT::MathFunctions<T>::smearedHeaviside(T a, T b, T x)
 {
-   if ( x < a )
+   if (x < a)
       return 0;
 
-   if ( x > b )
+   if (x > b)
       return 1;
 
-   T middle = ( a + b ) / 2.0;
-   T s = ( x - middle ) / ( b - middle );
+   T middle = (a + b) / 2.0;
+   T s = (x - middle) / (b - middle);
 
-   return ( 1 + s + sin( s * pi ) / pi ) / 2;
+   return (1 + s + sin(s * pi) / pi) / 2;
 }
 #endif // __MathFunctions_H__

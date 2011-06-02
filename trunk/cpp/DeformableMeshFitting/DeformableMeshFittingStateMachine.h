@@ -45,47 +45,47 @@ namespace AWT
       typedef ManagedAutoPointer< DeformableMeshFittingStateMachine<T> > P;
 
    protected:
-      DeformableMeshFittingStateMachine( StateMachineStack::P stack );
-      virtual ~DeformableMeshFittingStateMachine( );
+      DeformableMeshFittingStateMachine(StateMachineStack::P stack);
+      virtual ~DeformableMeshFittingStateMachine();
 
    public:
-      static P getInstance( StateMachineStack::P stack );
+      static P getInstance(StateMachineStack::P stack);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual StateMachineStack* getStack( );
+      virtual StateMachineStack* getStack();
 
-      virtual bool step( );
+      virtual bool step();
 
-      virtual std::string getStateName( ) const;
+      virtual std::string getStateName() const;
 
-      virtual bool isRunning( ) const;
+      virtual bool isRunning() const;
 
-      virtual bool isError( ) const;
+      virtual bool isError() const;
 
-      virtual std::string getLastError( ) const;
+      virtual std::string getLastError() const;
 
-      virtual void setMoghariFilename( const T radius, const std::string& filename );
+      virtual void setMoghariFilename(const T radius, const std::string& filename);
 
-      virtual typename DeformableMeshFitting<T>::P getDeformableMeshFitting( );
+      virtual typename DeformableMeshFitting<T>::P getDeformableMeshFitting();
 
-      virtual void setDeformableFilename( std::string& filename );
+      virtual void setDeformableFilename(std::string& filename);
 
-      virtual TargetIndex getNumberOfTargetFilenames( ) const;
+      virtual TargetIndex getNumberOfTargetFilenames() const;
 
-      virtual void addTargetFilename( std::string& filename );
+      virtual void addTargetFilename(std::string& filename);
 
-      virtual void setInitialPose( const TargetIndex i, typename Pose<T>::P pose );
+      virtual void setInitialPose(const TargetIndex i, typename Pose<T>::P pose);
 
-      virtual void setInitialParameters( const T* params );
+      virtual void setInitialParameters(const T* params);
 
-      virtual bool load( const std::string& filename );
+      virtual bool load(const std::string& filename);
 
-      virtual void save( const std::string& filename );
+      virtual void save(const std::string& filename);
 
-      virtual std::string getMagic( ) const;
+      virtual std::string getMagic() const;
 
-      virtual void evalOnly( );
+      virtual void evalOnly();
 
    protected:
       struct D;

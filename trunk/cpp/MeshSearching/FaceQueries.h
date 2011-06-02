@@ -36,11 +36,11 @@ namespace AWT
    class FaceQueries
    {
    public:
-      static void getNormal                ( const typename OEKDTree::OEKDTreeData<T,3>::P in_Data, const int in_Index, T* out_Normal );
-      static void getNearestPointOnTriangle( const T* in_TestPoint, const typename OEKDTree::OEKDTreeData<T,3>::P in_Data, const int in_Index, T* out_Nearest );
-      static void getNearestPointOnTriangle( const T* in_TestPoint, const T* pnt0, const T* pnt1, const T* pnt2, T* out_Nearest );
-      static void getCentroid              ( const typename OEKDTree::OEKDTreeData<T,3>::P in_Data, const int in_Index, T* out_Centroid );
-      static bool rayIntersectsTriangle    ( const typename OEKDTree::OEKDTreeData<T,3>::P in_Data, const int in_Index, const T* origin, const T* direction, T* intersectionPoint, T* distance );
+      static void getNormal                (const typename OEKDTree::OEKDTreeData<T,3>::P in_Data, const int in_Index, T* out_Normal);
+      static void getNearestPointOnTriangle(const T* in_TestPoint, const typename OEKDTree::OEKDTreeData<T,3>::P in_Data, const int in_Index, T* out_Nearest);
+      static void getNearestPointOnTriangle(const T* in_TestPoint, const T* pnt0, const T* pnt1, const T* pnt2, T* out_Nearest);
+      static void getCentroid              (const typename OEKDTree::OEKDTreeData<T,3>::P in_Data, const int in_Index, T* out_Centroid);
+      static bool rayIntersectsTriangle    (const typename OEKDTree::OEKDTreeData<T,3>::P in_Data, const int in_Index, const T* origin, const T* direction, T* intersectionPoint, T* distance);
    };
 }
 

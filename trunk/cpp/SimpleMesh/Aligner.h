@@ -48,51 +48,51 @@ namespace AWT
          enum CostFunctionType { CF_POINTTOPOINT, CF_POINTTOPLANE };
 
       protected:
-         Aligner( CostFunctionType cft );
-         virtual ~Aligner( );
+         Aligner(CostFunctionType cft);
+         virtual ~Aligner();
 
       public:
-         static P getInstance( CostFunctionType cft );
-         virtual std::string getClassName( ) const;
+         static P getInstance(CostFunctionType cft);
+         virtual std::string getClassName() const;
 
-         CostFunctionType getCostFunctionType( ) const;
-         void setCostFunctionType( const CostFunctionType& v );
+         CostFunctionType getCostFunctionType() const;
+         void setCostFunctionType(const CostFunctionType& v);
 
-         void setModel( ShapeModel::P model, SamplerFactory::P fact, const Index nsamples, Vector params );
-         void addFragment( Mesh::P frag, Sampler::P samp, const Index nsamples, Vector params );
+         void setModel(ShapeModel::P model, SamplerFactory::P fact, const Index nsamples, Vector params);
+         void addFragment(Mesh::P frag, Sampler::P samp, const Index nsamples, Vector params);
 
-         void setFragmentNoise( const double v );
-         double getFragmentNoise( ) const;
+         void setFragmentNoise(const double v);
+         double getFragmentNoise() const;
 
-         const Vector getModelParameters( ) const;
-         void setModelParameters( const Vector& vec );
+         const Vector getModelParameters() const;
+         void setModelParameters(const Vector& vec);
 
-         Index getNumberOfFragments( ) const;
+         Index getNumberOfFragments() const;
 
-         const Vector getFragmentPose( const Index i ) const;
-         void setFragmentPose( const Index i, const Vector& vec );
+         const Vector getFragmentPose(const Index i) const;
+         void setFragmentPose(const Index i, const Vector& vec);
 
-         const Transformation getFragmentTransformation( const Index i ) const;
+         const Transformation getFragmentTransformation(const Index i) const;
 
-         const Vector getTargetRegistrationError( const Index i, const Index j ) const;
+         const Vector getTargetRegistrationError(const Index i, const Index j) const;
 
-         LameckerMeasures getLameckerMeasures( );
+         LameckerMeasures getLameckerMeasures();
 
-         void resample( );
+         void resample();
 
-         void writeModels( const std::string& saveFormat );
+         void writeModels(const std::string& saveFormat);
 
-         Index findCorrespondences( );
+         Index findCorrespondences();
 
-         double stepUpdate( );
+         double stepUpdate();
 
-         void setNumberOfModes( const Index i );
-         void activateAllModes( );
+         void setNumberOfModes(const Index i);
+         void activateAllModes();
 
-         Index getNumberOfModes( ) const;
+         Index getNumberOfModes() const;
 
          double getTrimFactor() const;
-         void setTrimFactor( const double v );
+         void setTrimFactor(const double v);
 
       protected:
          struct D;

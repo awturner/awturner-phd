@@ -30,12 +30,12 @@
 
 #include "Useful/PrintMacros.h"
 
-#define AUTOGETINSTANCE( Class, Args ) \
+#define AUTOGETINSTANCE(Class, Args) \
    { \
       Class* inst = new Class##Args; \
-      inst->countMe( ); \
-      Class::P ret( inst ); \
-      inst->release( ); \
+      inst->countMe(); \
+      Class::P ret(inst); \
+      inst->release(); \
       return ret; \
    }
 
@@ -45,109 +45,109 @@ namespace AWT
    class ManagedAutoPointer
    {
    public:
-      ManagedAutoPointer( )
+      ManagedAutoPointer()
       {
          m_Data = 0;
       }
 
-      ManagedAutoPointer( T* val )
+      ManagedAutoPointer(T* val)
       {
          m_Data = 0;
-         set( val );
+         set(val);
       }
 
-      virtual ~ManagedAutoPointer( )
+      virtual ~ManagedAutoPointer()
       {
-         if ( m_Data != 0 )
+         if (m_Data != 0)
          {
-            if ( m_Data->getReferenceCount( ) == 0 )
+            if (m_Data->getReferenceCount() == 0)
             {
-               DEBUGMACRO( "Destructor" );
+               DEBUGMACRO("Destructor");
                
-               PRINTVBL( m_Data->getReferenceCount( ) );
-               PRINTVBL( m_Data );
+               PRINTVBL(m_Data->getReferenceCount());
+               PRINTVBL(m_Data);
             }
             else
             {
-               m_Data->release( );
+               m_Data->release();
             }
          }
       }
 
-      ManagedAutoPointer( const ManagedAutoPointer<T>& ptr )
+      ManagedAutoPointer(const ManagedAutoPointer<T>& ptr)
       {
          m_Data = 0;
-         set( ptr.getDataConst( ) );
+         set(ptr.getDataConst());
       }
 
       template <class Other>
-      ManagedAutoPointer( const ManagedAutoPointer<Other>& ptr )
+      ManagedAutoPointer(const ManagedAutoPointer<Other>& ptr)
       {
          m_Data = 0;
-         set( ptr.getDataConst( ) );
+         set(ptr.getDataConst());
       }
       
    public:
-      T* getData( )
+      T* getData()
       {
          return m_Data;
       }
 
-      T* getDataConst( ) const
+      T* getDataConst() const
       {
          return m_Data;
       }
 
-      T*& operator*( )
+      T*& operator*()
       {
          return m_Data;
       }
 
-      T* operator->( )
+      T* operator->()
       {
          return m_Data;
       }
 
-      const T* operator->( ) const
+      const T* operator->() const
       {
          return m_Data;
       }
 
-      void nullify( )
+      void nullify()
       {
-         if ( m_Data != 0 )
+         if (m_Data != 0)
          {
-            m_Data->release( );
+            m_Data->release();
             m_Data = 0;
          }
       }
 
-      void set( T* val )
+      void set(T* val)
       {
-         AWT::ReferenceCountedObject::swapRefCountedObjects( this, m_Data, val );
+         AWT::ReferenceCountedObject::swapRefCountedObjects(this, m_Data, val);
       }
 
-      void operator=( const ManagedAutoPointer& oth )
+      void operator=(const ManagedAutoPointer& oth)
       {
-         set( oth.m_Data );
-      }
-
-      template <class OtherType>
-      const bool operator==( const ManagedAutoPointer<OtherType>& oth ) const
-      {
-         return (void*)m_Data == (void*)oth.getDataConst( );
+         set(oth.m_Data);
       }
 
       template <class OtherType>
-      const bool operator!=( const ManagedAutoPointer<OtherType>& oth ) const
+      const bool operator==(const ManagedAutoPointer<OtherType>& oth) const
       {
-         return (void*)m_Data != (void*)oth.getDataConst( );
+         return (void*)m_Data == (void*)oth.getDataConst();
       }
 
       template <class OtherType>
-      const bool operator<( const ManagedAutoPointer<OtherType>& oth ) const
+      const bool operator!=(const ManagedAutoPointer<OtherType>& oth) const
       {
-         return (void*)m_Data < (void*)oth.getDataConst( );
+         return (void*)m_Data != (void*)oth.getDataConst();
+      }
+
+      template <class OtherType>
+      const bool operator<(const ManagedAutoPointer<OtherType>& oth) const
+      {
+         return (void*)m_Data < (void*)oth.getDataConst();
       }
 
    protected:

@@ -41,77 +41,77 @@ namespace AWT
       typedef ManagedAutoPointer<OpenGLDrawableLight> P;
 
    protected:
-      OpenGLDrawableLight( Light::P light )
+      OpenGLDrawableLight(Light::P light)
       {
          m_Light = light;
          m_Visible = true;
          m_Parent = 0;
       }
 
-      ~OpenGLDrawableLight( )
+      ~OpenGLDrawableLight()
       {
       }
 
    public:
-      static P getInstance( Light::P light )
+      static P getInstance(Light::P light)
       {
-         AUTOGETINSTANCE( OpenGLDrawableLight, ( light ) );
+         AUTOGETINSTANCE(OpenGLDrawableLight, (light));
       }
 
-      virtual void setParent( DrawableAssembly* p )
+      virtual void setParent(DrawableAssembly* p)
       {
          m_Parent = p;
-         modified( );
+         modified();
       }
 
-      virtual DrawableAssembly* getParent( )
+      virtual DrawableAssembly* getParent()
       {
          return m_Parent;
       }
 
-      virtual void setLight( Light::P light )
+      virtual void setLight(Light::P light)
       {
          m_Light = light;
-         modified( );
+         modified();
       }
 
-      virtual Light::P getLight( )
+      virtual Light::P getLight()
       {
          return m_Light;
       }
 
-      virtual std::string getClassName( ) const
+      virtual std::string getClassName() const
       {
          return "AWT::OpenGLDrawableLight";
       }
 
-      virtual void draw( DrawContext::P context, const bool transparentPass )
+      virtual void draw(DrawContext::P context, const bool transparentPass)
       {
-         if ( transparentPass )
+         if (transparentPass)
             return;
 
-         glDisable( GL_LIGHTING );
-         glColor3f( 1.f, 1.f, 0.f );
+         glDisable(GL_LIGHTING);
+         glColor3f(1.f, 1.f, 0.f);
          
-         glPointSize( 10.f );
+         glPointSize(10.f);
          
-         glBegin( GL_POINTS );
+         glBegin(GL_POINTS);
 
          float pos[4];
-         m_Light->getPosition( pos );
+         m_Light->getPosition(pos);
 
-         if ( pos[3] != 0 )
-            glVertex3fv( pos );
+         if (pos[3] != 0)
+            glVertex3fv(pos);
 
-         glEnd( );
+         glEnd();
       }
 
-      virtual void getBounds( double* out_Bounds )
+      virtual void getBounds(double* out_Bounds)
       {
          float pos[4];
-         m_Light->getPosition( pos );
+         m_Light->getPosition(pos);
 
-         if ( pos[3] != 0 )
+         if (pos[3] != 0)
          {
             out_Bounds[0] = pos[0];
             out_Bounds[1] = pos[1];
@@ -119,17 +119,17 @@ namespace AWT
          }
          else
          {
-            out_Bounds[0] = out_Bounds[1] = out_Bounds[2] = std::numeric_limits<double>::quiet_NaN( );
+            out_Bounds[0] = out_Bounds[1] = out_Bounds[2] = std::numeric_limits<double>::quiet_NaN();
          }
       }
 
-      void setVisible( const bool v )
+      void setVisible(const bool v)
       {
          this->m_Visible = v;
-         modified( );
+         modified();
       }
 
-      bool isVisible( ) const
+      bool isVisible() const
       {
          return this->m_Visible;
       }

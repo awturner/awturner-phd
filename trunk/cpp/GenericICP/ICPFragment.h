@@ -33,24 +33,24 @@
 //
 //   struct Fragment
 //   {
-//      Fragment( typename Mesh<T>::P mesh )
+//      Fragment(typename Mesh<T>::P mesh)
 //      {
 //         this->mesh = mesh;
 //
 //         // Identity Matrix
-//         transformation.set_identity( );
+//         transformation.set_identity();
 //      }
 //
-//      void resetCorrespondences( )
+//      void resetCorrespondences()
 //      {
-//         deformablePoints  = AddTuples<T>::getInstance( 3 );
-//         deformableNormals = TuplesImpl<T>::getInstance( 3, selectedVertices->getNumberOfPoints( ) );
+//         deformablePoints  = AddTuples<T>::getInstance(3);
+//         deformableNormals = TuplesImpl<T>::getInstance(3, selectedVertices->getNumberOfPoints());
 //      }
 //
-//      void transform( vnl_matrix_fixed<T,4,4> t )
+//      void transform(vnl_matrix_fixed<T,4,4> t)
 //      {
-//         TuplesFunctions<T>::transformPoints( points, t );
-//         TuplesFunctions<T>::transformPoints( normals, t, true );
+//         TuplesFunctions<T>::transformPoints(points, t);
+//         TuplesFunctions<T>::transformPoints(normals, t, true);
 //         
 //         transformation = t * transformation;
 //      }
@@ -76,15 +76,15 @@
 //      typedef ManagedAutoPointer<ICPFragment> P;
 //
 //   protected:
-//      ICPFragment( );
-//      virtual ~ICPFragment( );
+//      ICPFragment();
+//      virtual ~ICPFragment();
 //
 //   public:
-//      static P getInstance( );
-//      virtual std::string getClassName( ) const;
+//      static P getInstance();
+//      virtual std::string getClassName() const;
 //
-//      void resetCorrespondences( );
-//      void transform( vnl_matrix_fixed<T,4,4> t );
+//      void resetCorrespondences();
+//      void transform(vnl_matrix_fixed<T,4,4> t);
 //
 //   protected:
 //      struct D;

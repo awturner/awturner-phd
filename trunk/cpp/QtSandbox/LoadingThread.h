@@ -36,31 +36,31 @@ namespace AWT
    class LoadingThread : public BasicStateMachine
    {
    protected:
-      LoadingThread( );
-      virtual ~LoadingThread( );
+      LoadingThread();
+      virtual ~LoadingThread();
 
    public:
-      static LoadingThread* getInstance( );
+      static LoadingThread* getInstance();
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual void setLoadFilename( const std::string& str );
+      virtual void setLoadFilename(const std::string& str);
 
-      virtual std::string getLoadFilename( ) const;
+      virtual std::string getLoadFilename() const;
 
-      virtual bool step( );
+      virtual bool step();
 
-      virtual bool isRunning( ) const;
+      virtual bool isRunning() const;
 
-      virtual bool isError( ) const;
+      virtual bool isError() const;
 
-      virtual std::string getLastError( ) const;
+      virtual std::string getLastError() const;
 
-      virtual std::string getStateName( ) const;
+      virtual std::string getStateName() const;
 
-      virtual void setStateMachine( SaveableStateMachine* sm );
+      virtual void setStateMachine(SaveableStateMachine* sm);
 
-      virtual SaveableStateMachine* getStateMachine( );
+      virtual SaveableStateMachine* getStateMachine();
    protected:
       struct D;
       D* m_D;

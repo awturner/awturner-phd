@@ -37,20 +37,20 @@ namespace AWT
    class RandomMeshSampler : public MeshSampler<T>
    {
    public:
-      typedef ManagedAutoPointer<RandomMeshSampler<T>> P;
+      typedef ManagedAutoPointer<RandomMeshSampler<T> > P;
 
    protected:
-      RandomMeshSampler( );
-      virtual ~RandomMeshSampler( );
+      RandomMeshSampler();
+      virtual ~RandomMeshSampler();
 
    public:
-      static P getInstance( );
-      virtual SamplePoints::P sampleMesh( typename Mesh<T>::P mesh );
+      static P getInstance();
+      virtual SamplePoints::P sampleMesh(typename Mesh<T>::P mesh);
 
-      virtual unsigned int getMaximumNumberOfSamples( ) const;
-      virtual void setMaximumNumberOfSamples( const unsigned int s );
+      virtual unsigned int getMaximumNumberOfSamples() const;
+      virtual void setMaximumNumberOfSamples(const unsigned int s);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
    protected:
       struct D;

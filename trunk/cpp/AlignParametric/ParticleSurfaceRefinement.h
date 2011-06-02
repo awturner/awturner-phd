@@ -39,28 +39,28 @@ namespace AWT
          typedef ManagedAutoPointer<ParticleSurfaceRefinement> P;
 
       protected:
-         ParticleSurfaceRefinement( );
-         virtual ~ParticleSurfaceRefinement( );
+         ParticleSurfaceRefinement();
+         virtual ~ParticleSurfaceRefinement();
 
       public:
-         static P getInstance( );
-         virtual std::string getClassName( ) const;
+         static P getInstance();
+         virtual std::string getClassName() const;
 
-         const Idx getMaxParticles( ) const;
-         void setMaxParticles( const Idx v );
+         const Idx getMaxParticles() const;
+         void setMaxParticles(const Idx v);
 
-         const Idx getSpreadBlockTime( ) const;
-         void setSpreadBlockTime( const Idx v );
+         const Idx getSpreadBlockTime() const;
+         void setSpreadBlockTime(const Idx v);
 
-         const Idx getParticleMaturityAge( ) const;
-         void setParticleMaturityAge( const Idx v );
+         const Idx getParticleMaturityAge() const;
+         void setParticleMaturityAge(const Idx v);
 
-         const T getMinSplitSeparation( ) const;
-         void setMinSplitSeparation( const T v );
+         const T getMinSplitSeparation() const;
+         void setMinSplitSeparation(const T v);
 
-         virtual void addParticleSurface( ParticleSurface::P surf );
+         virtual void addParticleSurface(ParticleSurface::P surf);
 
-         virtual bool refine( AWT::Container::Iterator<Idx>::P iter );
+         virtual bool refine(AWT::Container::Iterator<Idx>::P iter);
 
       protected:
          struct D;

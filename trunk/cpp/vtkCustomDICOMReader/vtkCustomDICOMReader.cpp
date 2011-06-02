@@ -63,44 +63,44 @@ void vtkCustomDICOMReader::ConnectPipelines(ITK_Exporter exporter, VTK_Importer*
   importer->SetCallbackUserData(exporter->GetCallbackUserData());
 }
 
-std::string vtkCustomDICOMReader::selectSeriesUID( const SeriesIdContainer& seriesUID )
+std::string vtkCustomDICOMReader::selectSeriesUID(const SeriesIdContainer& seriesUID)
 {
    for (;;) {
-      SeriesIdContainer::const_iterator seriesItr = seriesUID.begin( );
-      SeriesIdContainer::const_iterator seriesEnd = seriesUID.end( );
+      SeriesIdContainer::const_iterator seriesItr = seriesUID.begin();
+      SeriesIdContainer::const_iterator seriesEnd = seriesUID.end();
       
       std::cout << "Please select a series:" << std::endl;
       int i = 0;
-      while ( seriesItr != seriesEnd )
+      while (seriesItr != seriesEnd)
       {
-         std::cout << i++ << "\t" << seriesItr->c_str( ) << std::endl;
+         std::cout << i++ << "\t" << seriesItr->c_str() << std::endl;
          seriesItr++;
       }
 
       std::cin >> i;
       //i = 0;
 
-      if ( i >= 0 && i < seriesUID.size( ) )
+      if (i >= 0 && i < seriesUID.size())
       {
          return seriesUID[i];
       }
    }
 }
 
-vtkImageAlgorithm* vtkCustomDICOMReader::LoadDICOM( const char* directoryName )
+vtkImageAlgorithm* vtkCustomDICOMReader::LoadDICOM(const char* directoryName)
 {
-   NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New( );
-   nameGenerator->SetUseSeriesDetails( true );
-   nameGenerator->SetDirectory( directoryName );
+   NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New();
+   nameGenerator->SetUseSeriesDetails(true);
+   nameGenerator->SetDirectory(directoryName);
 
-   const SeriesIdContainer& seriesUID = nameGenerator->GetSeriesUIDs( );
+   const SeriesIdContainer& seriesUID = nameGenerator->GetSeriesUIDs();
    
-   SeriesIdContainer::const_iterator seriesItr = seriesUID.begin( );
-   SeriesIdContainer::const_iterator seriesEnd = seriesUID.end( );
+   SeriesIdContainer::const_iterator seriesItr = seriesUID.begin();
+   SeriesIdContainer::const_iterator seriesEnd = seriesUID.end();
 
    std::string seriesIdentifier;
 
-   switch ( seriesUID.size( ) )
+   switch (seriesUID.size())
    {
    case 0:
       std::cout << "No series were found!" << std::endl;
@@ -110,61 +110,61 @@ vtkImageAlgorithm* vtkCustomDICOMReader::LoadDICOM( const char* directoryName )
       seriesIdentifier = seriesUID[0];
       break;
    default:
-      seriesIdentifier = selectSeriesUID( seriesUID );
+      seriesIdentifier = selectSeriesUID(seriesUID);
    }
 
    std::cerr << "Loading series: " << seriesIdentifier << std::endl;
 
-   return LoadDICOM( directoryName, seriesIdentifier );
+   return LoadDICOM(directoryName, seriesIdentifier);
 }
 
-vtkImageAlgorithm* vtkCustomDICOMReader::LoadDICOM( const char* directoryName, std::string& seriesIdentifier )
+vtkImageAlgorithm* vtkCustomDICOMReader::LoadDICOM(const char* directoryName, std::string& seriesIdentifier)
 {
-   NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New( );
-   nameGenerator->SetUseSeriesDetails( true );
-   nameGenerator->SetDirectory( directoryName );
+   NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New();
+   nameGenerator->SetUseSeriesDetails(true);
+   nameGenerator->SetDirectory(directoryName);
 
    FileNamesContainer fileNames;
-   fileNames = nameGenerator->GetFileNames( seriesIdentifier );
+   fileNames = nameGenerator->GetFileNames(seriesIdentifier);
 
-   return LoadDICOM( fileNames );
+   return LoadDICOM(fileNames);
 }
 
-vtkImageAlgorithm* vtkCustomDICOMReader::LoadDICOM( FileNamesContainer& fileNames )
+vtkImageAlgorithm* vtkCustomDICOMReader::LoadDICOM(FileNamesContainer& fileNames)
 {
-   ReaderType::Pointer reader = ReaderType::New( );
-   ImageIOType::Pointer dicomIO = ImageIOType::New( );
+   ReaderType::Pointer reader = ReaderType::New();
+   ImageIOType::Pointer dicomIO = ImageIOType::New();
 
-   reader->SetImageIO( dicomIO );
+   reader->SetImageIO(dicomIO);
    
-   reader->SetFileNames( fileNames );
+   reader->SetFileNames(fileNames);
 
    try 
    {
-      reader->Update( );
+      reader->Update();
    }
-   catch ( itk::ExceptionObject &ex )
+   catch (itk::ExceptionObject &ex)
    {
       std::cerr << ex << std::endl;
       return 0;
    }
 
-   //dicomIO->Print( std::cerr );
+   //dicomIO->Print(std::cerr);
 
-   ExportType::Pointer exporter = ExportType::New( );
-   exporter->SetInput( reader->GetOutput( ) );
+   ExportType::Pointer exporter = ExportType::New();
+   exporter->SetInput(reader->GetOutput());
 
-   vtkImageImport* importer = vtkImageImport::New( );
+   vtkImageImport* importer = vtkImageImport::New();
    
-   ConnectPipelines<ExportType::Pointer,vtkImageImport>( exporter, importer );
-   importer->Update( );
+   ConnectPipelines<ExportType::Pointer,vtkImageImport>(exporter, importer);
+   importer->Update();
    
-   vtkImageCast* cast = vtkImageCast::New( );
-   cast->SetInputConnection( importer->GetOutputPort( ) );
-   cast->SetOutputScalarType( importer->GetDataScalarType( ) );
-   cast->Update( );
+   vtkImageCast* cast = vtkImageCast::New();
+   cast->SetInputConnection(importer->GetOutputPort());
+   cast->SetOutputScalarType(importer->GetDataScalarType());
+   cast->Update();
 
-   importer->Delete( );
+   importer->Delete();
 
    return cast;
 } // LoadDICOM()

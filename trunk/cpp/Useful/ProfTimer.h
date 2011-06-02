@@ -31,13 +31,13 @@ namespace AWT
    class ProfilingTimer
    {
    public:
-      ProfilingTimer( );
-      virtual ~ProfilingTimer( );
+      ProfilingTimer();
+      virtual ~ProfilingTimer();
 
-      void start( );
-      void stop( );
+      void start();
+      void stop();
 
-      double getDurationInSecs( );
+      double getDurationInSecs();
 
    protected:
       struct D;
@@ -49,10 +49,10 @@ namespace AWT
    class TimedBlock
    {
    public:
-      TimedBlock( const char* msg );
-      virtual ~TimedBlock( );
+      TimedBlock(const char* msg);
+      virtual ~TimedBlock();
 
-      double getDurationInSecs( );
+      double getDurationInSecs();
 
    protected:
       struct D;

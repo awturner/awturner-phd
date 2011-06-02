@@ -41,42 +41,42 @@ namespace AWT
          typedef ManagedAutoPointer<SimpleSampledSurface> P;
 
       protected:
-         SimpleSampledSurface( TuplesType::P points );
-         virtual ~SimpleSampledSurface( );
+         SimpleSampledSurface(TuplesType::P points);
+         virtual ~SimpleSampledSurface();
 
       public:
-         static P getInstance( TuplesType::P points );
-         virtual std::string getClassName( ) const;
+         static P getInstance(TuplesType::P points);
+         virtual std::string getClassName() const;
 
          // Get the number of parameter components describing each sample
-         virtual Idx getParameterDimensionality( ) const;
+         virtual Idx getParameterDimensionality() const;
 
          // Get the number of samples on the surface
-         virtual Idx getNumberOfSamples( ) const;
+         virtual Idx getNumberOfSamples() const;
 
          // Get the current sample locations
-         virtual void getSamples( vnl_matrix<T>& samples ) const;
+         virtual void getSamples(vnl_matrix<T>& samples) const;
 
          // Get the number of parameters which control this sampling
-         virtual Idx getNumberOfParameters( ) const;
+         virtual Idx getNumberOfParameters() const;
 
          // Get the current set of control values
-         virtual void getParameters( vnl_matrix<T>& controls ) const;
+         virtual void getParameters(vnl_matrix<T>& controls) const;
 
          // Update the current set of control values
-         virtual void setParameters( vnl_matrix<T>& controls );
+         virtual void setParameters(vnl_matrix<T>& controls);
 
          // Calculates the jacobian matrix of the l-th sample location w.r.t. the p-th parameters
-         virtual void jacobian( const Idx l, const Idx p, vnl_matrix<T>& matrix ) const;
+         virtual void jacobian(const Idx l, const Idx p, vnl_matrix<T>& matrix) const;
 
-         virtual void refine( ) {}
+         virtual void refine() {}
 
          // Iterator functions - allows you to skip all the zero jacobians
          // Takes the internal iterator back to the start
-         virtual void resetIterator( );
+         virtual void resetIterator();
 
          // Advances to the next non-zero jacobian pair
-         virtual bool next( Idx& l, Idx& p );
+         virtual bool next(Idx& l, Idx& p);
 
       protected:
          struct D;

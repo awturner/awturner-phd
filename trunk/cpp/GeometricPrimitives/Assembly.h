@@ -42,22 +42,22 @@ namespace AWT
       class Assembly : public GeometricPrimitive<T>
       {
       protected:
-         Assembly( );
-         virtual ~Assembly( );
+         Assembly();
+         virtual ~Assembly();
 
       public:
-         Assembly<T,PartType>* getInstance( );
-         void addPart( PartType* primitive );
-         void removePart( PartType* primitive );
+         Assembly<T,PartType>* getInstance();
+         void addPart(PartType* primitive);
+         void removePart(PartType* primitive);
 
-         PartType*    getPart( unsigned int idx ) const;
+         PartType*    getPart(unsigned int idx) const;
          unsigned int getNumberOfParts() const;
 
-         Iterator<PartType*>* iterator( ) const;
+         Iterator<PartType*>* iterator() const;
 
-         ModifiedTime getModifiedTime( ) const;
+         ModifiedTime getModifiedTime() const;
 
-         virtual void refresh( );
+         virtual void refresh();
 
       protected:
          std::vector<PartType*> parts;
@@ -76,21 +76,21 @@ namespace AWT
       }
 
       template <class T, class PartType>
-      Assembly<T,PartType>::Assembly( )
+      Assembly<T,PartType>::Assembly()
       {
       }
 
       template <class T, class PartType>
-      Assembly<T,PartType>::~Assembly( )
+      Assembly<T,PartType>::~Assembly()
       {
-         for ( unsigned int i = 0; i < parts.size(); ++i )
+         for (unsigned int i = 0; i < parts.size(); ++i)
             parts[i]->unregisterUse();
       }
 
       template <class T, class PartType>
-      void Assembly<T,PartType>::refresh( )
+      void Assembly<T,PartType>::refresh()
       {
-         for ( unsigned int i = 0; i < parts.size(); ++i )
+         for (unsigned int i = 0; i < parts.size(); ++i)
             parts[i]->refresh();
       }
 
@@ -99,14 +99,14 @@ namespace AWT
       {
          ModifiedTime ret = this->mtime;
 
-         for ( unsigned int i = 0; i < parts.size(); ++i )
-            ret = std::max<ModifiedTime>( ret, parts[i]->getModifiedTime() );
+         for (unsigned int i = 0; i < parts.size(); ++i)
+            ret = std::max<ModifiedTime>(ret, parts[i]->getModifiedTime());
 
          return ret;
       }
 
       template <class T, class PartType>
-      PartType* Assembly<T,PartType>::getPart( unsigned int idx ) const
+      PartType* Assembly<T,PartType>::getPart(unsigned int idx) const
       {
          return parts[idx];
       }
@@ -114,26 +114,26 @@ namespace AWT
       template <class T, class PartType>
       unsigned int Assembly<T,PartType>::getNumberOfParts() const
       {
-         return static_cast<unsigned int>( parts.size() );
+         return static_cast<unsigned int>(parts.size());
       }
 
       template <class T, class PartType>
-      void Assembly<T,PartType>::addPart( PartType* primitive )
+      void Assembly<T,PartType>::addPart(PartType* primitive)
       {
          primitive->registerUse();
-         parts.push_back( primitive );
+         parts.push_back(primitive);
          modified();
       }
 
       template <class T, class PartType>
-      void Assembly<T,PartType>::removePart( PartType* primitive )
+      void Assembly<T,PartType>::removePart(PartType* primitive)
       {
          size_t i;
-         for ( i = 0; i < parts.size(); ++i )
+         for (i = 0; i < parts.size(); ++i)
          {
-            if ( parts[i] == primitive )
+            if (parts[i] == primitive)
             {
-               parts.erase( parts.begin()+i, parts.begin()+i+1 );
+               parts.erase(parts.begin()+i, parts.begin()+i+1);
                primitive->unregisterUse();
                break;
             }
@@ -142,9 +142,9 @@ namespace AWT
       }
 
       template <class T, class PartType>
-      Iterator<PartType*>* Assembly<T,PartType>::iterator( ) const
+      Iterator<PartType*>* Assembly<T,PartType>::iterator() const
       {
-         return VectorIterator<PartType*>::getInstance( parts );
+         return VectorIterator<PartType*>::getInstance(parts);
       }
    }
 }

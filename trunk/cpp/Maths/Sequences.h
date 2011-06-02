@@ -29,27 +29,27 @@
 namespace AWT
 {
    template <class T>
-   const T linspace( const T lower, const T upper, const T alpha )
+   const T linspace(const T lower, const T upper, const T alpha)
    {
       return (1-alpha)*lower + alpha*upper;
    }
 
    template <class T>
-   const T linspace( const T lower, const T upper, const unsigned int steps, const unsigned int i )
+   const T linspace(const T lower, const T upper, const unsigned int steps, const unsigned int i)
    {
-      return linspace( lower, upper, static_cast<T>(i)/steps );
+      return linspace(lower, upper, static_cast<T>(i)/steps);
    }
 
    template <class T>
-   const T logspace( const T lower, const T upper, const T alpha )
+   const T logspace(const T lower, const T upper, const T alpha)
    {
-      return exp( linspace( log(lower), log(upper), alpha ) );
+      return exp(linspace(log(lower), log(upper), alpha));
    }
 
    template <class T>
-   const T logspace( const T lower, const T upper, const unsigned int steps, const unsigned int i )
+   const T logspace(const T lower, const T upper, const unsigned int steps, const unsigned int i)
    {
-      return logspace( lower, upper, static_cast<T>(i)/steps );
+      return logspace(lower, upper, static_cast<T>(i)/steps);
    }
 }
 

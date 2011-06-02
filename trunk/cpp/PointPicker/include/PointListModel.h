@@ -32,7 +32,7 @@
 class PointListModel : public QAbstractItemModel
 {
 public:
-   PointListModel( PickedPoints& points );
+   PointListModel(PickedPoints& points);
 
    QVariant data(const QModelIndex &index, int role) const;
    Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -42,7 +42,7 @@ public:
    int rowCount(const QModelIndex &parent = QModelIndex()) const;
    int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
-   void notifyOfChange( );
+   void notifyOfChange();
 
 protected:
    PickedPoints& m_Points;

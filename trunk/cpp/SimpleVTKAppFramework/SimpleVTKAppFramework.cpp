@@ -32,53 +32,53 @@
 
 namespace AWT
 {
-   SimpleVTKAppFramework::SimpleVTKAppFramework( )
+   SimpleVTKAppFramework::SimpleVTKAppFramework()
    {
-      m_Renderer                 = vtkRenderer::New( );
-	   m_RenderWindow             = vtkRenderWindow::New( );
-	   m_RenderWindowInteractor   = vtkRenderWindowInteractor::New( );
+      m_Renderer                 = vtkRenderer::New();
+	   m_RenderWindow             = vtkRenderWindow::New();
+	   m_RenderWindowInteractor   = vtkRenderWindowInteractor::New();
 
 	   m_RenderWindow->AddRenderer(m_Renderer);
 	   m_RenderWindowInteractor->SetRenderWindow(m_RenderWindow);
 
-      vtkInteractorStyleSwitch* iastyle = dynamic_cast<vtkInteractorStyleSwitch*>( m_RenderWindowInteractor->GetInteractorStyle( ) );
-      if ( iastyle != 0 )
+      vtkInteractorStyleSwitch* iastyle = dynamic_cast<vtkInteractorStyleSwitch*>(m_RenderWindowInteractor->GetInteractorStyle());
+      if (iastyle != 0)
       {
-         iastyle->SetCurrentStyleToTrackballCamera( );
+         iastyle->SetCurrentStyleToTrackballCamera();
       }
    }
 
-   SimpleVTKAppFramework::~SimpleVTKAppFramework( )
+   SimpleVTKAppFramework::~SimpleVTKAppFramework()
    {
-      m_RenderWindowInteractor->Delete( );
-      m_RenderWindow->Delete( );
-      m_Renderer->Delete( );
+      m_RenderWindowInteractor->Delete();
+      m_RenderWindow->Delete();
+      m_Renderer->Delete();
    }
 
-   void SimpleVTKAppFramework::setWindowSize( int w, int h )
+   void SimpleVTKAppFramework::setWindowSize(int w, int h)
    {
-      m_RenderWindow->SetSize( w, h );
+      m_RenderWindow->SetSize(w, h);
    }
 
-   vtkRenderer* SimpleVTKAppFramework::getRenderer( )
+   vtkRenderer* SimpleVTKAppFramework::getRenderer()
    {
       return m_Renderer;
    }
 
-   vtkRenderWindow* SimpleVTKAppFramework::getRenderWindow( )
+   vtkRenderWindow* SimpleVTKAppFramework::getRenderWindow()
    {
       return m_RenderWindow;
    }
 
-   vtkRenderWindowInteractor* SimpleVTKAppFramework::getRenderWindowInteractor( )
+   vtkRenderWindowInteractor* SimpleVTKAppFramework::getRenderWindowInteractor()
    {
       return m_RenderWindowInteractor;
    }
 
-   void SimpleVTKAppFramework::start( )
+   void SimpleVTKAppFramework::start()
    {
-      m_RenderWindowInteractor->Initialize( );
+      m_RenderWindowInteractor->Initialize();
 
-      m_RenderWindowInteractor->Start( );
+      m_RenderWindowInteractor->Start();
    }
 }

@@ -40,45 +40,45 @@ namespace AWT
       extern ModelEigenvalueOptimizer::P eigOpt;
       extern std::vector<SampledSurface::P> sampledSurfaces;
 
-      void addMethodsToServer( XmlRpcServer& s, AWT::RemoteMethods& methods );
+      void addMethodsToServer(XmlRpcServer& s, AWT::RemoteMethods& methods);
 
       namespace CommonMethods
       {
-         void reset( );
+         void reset();
 
-         void remoteMethod( getScaleNormalization );
-         void remoteMethod( setScaleNormalization );
-         void remoteMethod( setCostFunction );
-         void remoteMethod( getMeanSamples );
-         void remoteMethod( getSamples );
-         void remoteMethod( getParameters );
-         void remoteMethod( getNumberOfSamplesPerSurface );
-         void remoteMethod( getNumberOfSampledSurfaces );
-         void remoteMethod( calculateNow );
-         void remoteMethod( calculateMeasures );
-         void remoteMethod( saveModel );
-         void remoteMethod( saveMatlab );
-         void remoteMethod( calculateGradients );
-         void remoteMethod( applyUpdates );
-         void remoteMethod( getEigenvalues );
-         void remoteMethod( getSampleConvergenceThreshold );
-         void remoteMethod( setSampleConvergenceThreshold );
-         void remoteMethod( getModelWeight );
-         void remoteMethod( setModelWeight );
-         void remoteMethod( getRegularizationWeight );
-         void remoteMethod( setRegularizationWeight );
-         void remoteMethod( setFirstShapeFixed );
-         void remoteMethod( isFirstShapeFixed );
-         void remoteMethod( setPermittedAlignments );
-         void remoteMethod( getPermittedAlignments );
-         void remoteMethod( refine );
-         void remoteMethod( pause );
+         void remoteMethod(getScaleNormalization);
+         void remoteMethod(setScaleNormalization);
+         void remoteMethod(setCostFunction);
+         void remoteMethod(getMeanSamples);
+         void remoteMethod(getSamples);
+         void remoteMethod(getParameters);
+         void remoteMethod(getNumberOfSamplesPerSurface);
+         void remoteMethod(getNumberOfSampledSurfaces);
+         void remoteMethod(calculateNow);
+         void remoteMethod(calculateMeasures);
+         void remoteMethod(saveModel);
+         void remoteMethod(saveMatlab);
+         void remoteMethod(calculateGradients);
+         void remoteMethod(applyUpdates);
+         void remoteMethod(getEigenvalues);
+         void remoteMethod(getSampleConvergenceThreshold);
+         void remoteMethod(setSampleConvergenceThreshold);
+         void remoteMethod(getModelWeight);
+         void remoteMethod(setModelWeight);
+         void remoteMethod(getRegularizationWeight);
+         void remoteMethod(setRegularizationWeight);
+         void remoteMethod(setFirstShapeFixed);
+         void remoteMethod(isFirstShapeFixed);
+         void remoteMethod(setPermittedAlignments);
+         void remoteMethod(getPermittedAlignments);
+         void remoteMethod(refine);
+         void remoteMethod(pause);
 
 #if WITH_MATLAB
-         void remoteMethod( showInMatlab );
+         void remoteMethod(showInMatlab);
 #endif
 
-         void addMethods( AWT::RemoteMethods& methods );
+         void addMethods(AWT::RemoteMethods& methods);
 	  }
    }
 }

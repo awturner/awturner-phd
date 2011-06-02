@@ -44,12 +44,12 @@ class DisplayPolyData : public AWT::SimpleVTKAppFramework
 {
 };
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
    DisplayPolyData displayPolyData;
-   displayPolyData.setWindowSize( 640, 480 );
+   displayPolyData.setWindowSize(640, 480);
 
-   vtkRenderer* ren = displayPolyData.getRenderer( );
+   vtkRenderer* ren = displayPolyData.getRenderer();
 
    vtkActor* lastActor = 0;
 
@@ -63,186 +63,186 @@ int main( int argc, char** argv )
 
 	for (i = 1; i < argc; i++)
 	{
-      if ( !strcmp( argv[i], "-nocull" ) )
+      if (!strcmp(argv[i], "-nocull"))
       {
-         if ( lastActor != 0 )
-            lastActor->GetProperty( )->BackfaceCullingOff( );
+         if (lastActor != 0)
+            lastActor->GetProperty()->BackfaceCullingOff();
       }
-      else if ( !strcmp( argv[i], "-fix" ) )
+      else if (!strcmp(argv[i], "-fix"))
       {
-         if ( lastActor != 0 )
-            lastActor->SetPickable( false );
+         if (lastActor != 0)
+            lastActor->SetPickable(false);
       }
-      else if ( !strcmp( argv[i], "-axis" ) )
+      else if (!strcmp(argv[i], "-axis"))
       {
          showAxis = true;
       }
-      else if ( !strcmp( argv[i], "-c" ) )
+      else if (!strcmp(argv[i], "-c"))
       {
-         if ( lastActor != 0 )
+         if (lastActor != 0)
          {
-            x = atof( argv[++i] );
-            y = atof( argv[++i] );
-            z = atof( argv[++i] );
-            w = atof( argv[++i] );
+            x = atof(argv[++i]);
+            y = atof(argv[++i]);
+            z = atof(argv[++i]);
+            w = atof(argv[++i]);
 
-            lastActor->GetProperty( )->SetColor( x, y, z );
-            lastActor->GetProperty( )->SetOpacity( w );
-            actorsOwnColour.back( ) = true;
+            lastActor->GetProperty()->SetColor(x, y, z);
+            lastActor->GetProperty()->SetOpacity(w);
+            actorsOwnColour.back() = true;
          }
       }
-      else if ( !strcmp( argv[i], "-t" ) )
+      else if (!strcmp(argv[i], "-t"))
       {
-         if ( lastActor != 0 )
+         if (lastActor != 0)
          {
-            x = atof( argv[++i] );
-            y = atof( argv[++i] );
-            z = atof( argv[++i] );
+            x = atof(argv[++i]);
+            y = atof(argv[++i]);
+            z = atof(argv[++i]);
 
-            lastActor->SetPosition( x, y, z );
+            lastActor->SetPosition(x, y, z);
          }
       }
-      else if ( !strcmp( argv[i], "-r" ) )
+      else if (!strcmp(argv[i], "-r"))
       {
-         if ( lastActor != 0 )
+         if (lastActor != 0)
          {
-            x = atof( argv[++i] );
-            y = atof( argv[++i] );
-            z = atof( argv[++i] );
+            x = atof(argv[++i]);
+            y = atof(argv[++i]);
+            z = atof(argv[++i]);
 
-            lastActor->SetOrientation( x, y, z );
+            lastActor->SetOrientation(x, y, z);
 
-            lastActor->GetMatrix( )->Print( std::cerr );
+            lastActor->GetMatrix()->Print(std::cerr);
          }
       }
-      else if ( !strcmp( argv[i], "-m" ) )
+      else if (!strcmp(argv[i], "-m"))
       {
-         if ( lastActor != 0 )
+         if (lastActor != 0)
          {
-            vtkMatrix4x4* mat = vtkMatrix4x4::New( );
+            vtkMatrix4x4* mat = vtkMatrix4x4::New();
 
-            for ( int e = 0; e < 12; ++e )
-               (*mat)[ e%4 ][ e/4 ] = atof( argv[++i] );
+            for (int e = 0; e < 12; ++e)
+               (*mat)[ e%4 ][ e/4 ] = atof(argv[++i]);
 
-            lastActor->SetUserMatrix( mat );
+            lastActor->SetUserMatrix(mat);
 
-            lastActor->GetUserMatrix( )->Print( std::cerr );
+            lastActor->GetUserMatrix()->Print(std::cerr);
          }
       }
       else
       {
-         std::string name( argv[i] );
+         std::string name(argv[i]);
          vtkAlgorithm* reader = 0;
 
-         if ( 0 == name.compare( name.length( )-4, 4, ".vtk" ) )
+         if (0 == name.compare(name.length()-4, 4, ".vtk"))
          {
-            vtkPolyDataReader* r = vtkPolyDataReader::New( );
-            r->SetFileName( argv[i] );
+            vtkPolyDataReader* r = vtkPolyDataReader::New();
+            r->SetFileName(argv[i]);
             reader = r;
          }
-         else if ( 0 == name.compare( name.length( )-4, 4, ".ply" ) )
+         else if (0 == name.compare(name.length()-4, 4, ".ply"))
          {
-            vtkPLYReader* r = vtkPLYReader::New( );
-            r->SetFileName( argv[i] );
+            vtkPLYReader* r = vtkPLYReader::New();
+            r->SetFileName(argv[i]);
             reader = r;
          }
-         else if ( 0 == name.compare( name.length( )-4, 4, ".obj" ) )
+         else if (0 == name.compare(name.length()-4, 4, ".obj"))
          {
-            vtkOBJReader* r = vtkOBJReader::New( );
-            r->SetFileName( argv[i] );
+            vtkOBJReader* r = vtkOBJReader::New();
+            r->SetFileName(argv[i]);
             reader = r;
          }
 
-         if ( reader == 0 )
+         if (reader == 0)
          {
-            DEBUGMACRO( "No reader known for " << name << "; skipping." );
+            DEBUGMACRO("No reader known for " << name << "; skipping.");
          }
          else
          {
-            vtkPolyDataMapper* mapper = vtkPolyDataMapper::New( );
-            vtkActor*          actor  = vtkActor::New( );
+            vtkPolyDataMapper* mapper = vtkPolyDataMapper::New();
+            vtkActor*          actor  = vtkActor::New();
 
-            actor->GetProperty( )->BackfaceCullingOn( );
+            actor->GetProperty()->BackfaceCullingOn();
 
-            mapper->SetInputConnection( reader->GetOutputPort( ) );
-            actor->SetMapper( mapper );
+            mapper->SetInputConnection(reader->GetOutputPort());
+            actor->SetMapper(mapper);
 
             actor->GetProperty()->BackfaceCullingOff();
 
             std::cout << "Loading model " << argv[i] << std::endl;
-            mapper->Update( );
+            mapper->Update();
             std::cout << "Done." << std::endl;
 
             double bounds[6];
-            actor->GetBounds( bounds );
+            actor->GetBounds(bounds);
 
-            if ( lastActor == 0 )
+            if (lastActor == 0)
             {
-               for ( int i = 0; i < 6; ++i )
+               for (int i = 0; i < 6; ++i)
                   overallBounds[i] = bounds[i];
             }
             else
             {
-               for ( int i = 0; i < 6; i+=2 )
+               for (int i = 0; i < 6; i+=2)
                {
-                  overallBounds[i+0] = std::min<double>( overallBounds[i+0], bounds[i+0] );
-                  overallBounds[i+1] = std::max<double>( overallBounds[i+1], bounds[i+1] );
+                  overallBounds[i+0] = std::min<double>(overallBounds[i+0], bounds[i+0]);
+                  overallBounds[i+1] = std::max<double>(overallBounds[i+1], bounds[i+1]);
                }
             }
 
-            ren->AddActor( actor );
+            ren->AddActor(actor);
             lastActor = actor;
 
-            actors.push_back( actor );
-            actorsOwnColour.push_back( false );
+            actors.push_back(actor);
+            actorsOwnColour.push_back(false);
 
-            actor->Delete( );
-            mapper->Delete( );
-            reader->Delete( );
+            actor->Delete();
+            mapper->Delete();
+            reader->Delete();
          }
       }
 	}
 
-   PRINTVBL( actors.size( ) );
-   AWT::ColourSequence::P cols = AWT::HueWheelSequence::getInstance( actors.size( ) );
+   PRINTVBL(actors.size());
+   AWT::ColourSequence::P cols = AWT::HueWheelSequence::getInstance(actors.size());
 
-   std::vector<vtkActor*>::iterator iter     = actors.begin( );
-   std::vector<vtkActor*>::iterator iterEnd  = actors.end( );
-   std::vector<bool>::iterator      iterBool = actorsOwnColour.begin( );
+   std::vector<vtkActor*>::iterator iter     = actors.begin();
+   std::vector<vtkActor*>::iterator iterEnd  = actors.end();
+   std::vector<bool>::iterator      iterBool = actorsOwnColour.begin();
    
-   for ( ; iter != iterEnd; ++iter, ++iterBool )
+   for (; iter != iterEnd; ++iter, ++iterBool)
    {      
-      if ( *iterBool )
+      if (*iterBool)
          continue;
 
       double rgb[4];
-      cols->nextColour( rgb );
-      //PRINTVEC( rgb, 4 );
-      (*iter)->GetProperty( )->SetColor( rgb );
+      cols->nextColour(rgb);
+      //PRINTVEC(rgb, 4);
+      (*iter)->GetProperty()->SetColor(rgb);
 
       // So I can work out the colours!
-      for ( unsigned int i = 0; i < 4; ++i )
-         rgb[i] = floor( rgb[i]*255 + 0.5 );
+      for (unsigned int i = 0; i < 4; ++i)
+         rgb[i] = floor(rgb[i]*255 + 0.5);
 
-      PRINTVEC( rgb, 4 );
+      PRINTVEC(rgb, 4);
    }
 
-   if ( showAxis )
+   if (showAxis)
    {
       double axisLength = 0;
 
-      for ( int i = 0; i < 6; i += 2 )
+      for (int i = 0; i < 6; i += 2)
       {
-         axisLength = std::max( axisLength, overallBounds[i+1]-overallBounds[i+0] );
+         axisLength = std::max(axisLength, overallBounds[i+1]-overallBounds[i+0]);
       }
 
-      vtkAxesActor* ax = vtkAxesActor::New( );
-      ax->SetTotalLength( axisLength, axisLength, axisLength );
+      vtkAxesActor* ax = vtkAxesActor::New();
+      ax->SetTotalLength(axisLength, axisLength, axisLength);
 
-      ren->AddActor( ax );
+      ren->AddActor(ax);
 
-      ax->Delete( );
+      ax->Delete();
    }
 
-   displayPolyData.start( );
+   displayPolyData.start();
 }

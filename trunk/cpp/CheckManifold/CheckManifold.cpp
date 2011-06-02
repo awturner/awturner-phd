@@ -49,13 +49,13 @@ using namespace AWT;
 
 typedef double T;
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
    std::cerr << "Loading model " << argv[1] << "..." << std::endl;
-   Mesh<T>::P mesh = VTKMeshLoader<T>::load( argv[1], false );
+   Mesh<T>::P mesh = VTKMeshLoader<T>::load(argv[1], false);
    std::cerr << "Done." << std::endl;
 
-   MeshConnectivity<T>::P conn = MeshConnectivity<T>::getInstance( mesh );
+   MeshConnectivity<T>::P conn = MeshConnectivity<T>::getInstance(mesh);
 
    MeshIndex vs[100];
    MeshIndex vi[3];
@@ -63,37 +63,37 @@ int main( int argc, char** argv )
 
    std::set< std::pair<MeshIndex,MeshIndex> > foundPairs;
 
-   //for ( MeshIndex f = 0; f < mesh->getNumberOfFaces( ); ++f )
-   MESH_EACHFACE( mesh, f )
+   //for (MeshIndex f = 0; f < mesh->getNumberOfFaces(); ++f)
+   MESH_EACHFACE(mesh, f)
    {
-      mesh->getFaceIndices( f, vi );
+      mesh->getFaceIndices(f, vi);
 
-      for ( int i = 0; i < 3; ++i )
-         for ( int j = i+1; j < 3; ++j )
+      for (int i = 0; i < 3; ++i)
+         for (int j = i+1; j < 3; ++j)
          {
-            if ( vi[i] < vi[j] )
+            if (vi[i] < vi[j])
             {
-               nadj = conn->getFacesUsingEdge( vi[i], vi[j], vs );
-               if ( nadj > 2 )
+               nadj = conn->getFacesUsingEdge(vi[i], vi[j], vs);
+               if (nadj > 2)
                {
-                  std::pair<MeshIndex,MeshIndex> pr( vi[i], vi[j] );
+                  std::pair<MeshIndex,MeshIndex> pr(vi[i], vi[j]);
 
-                  if ( foundPairs.find( pr ) == foundPairs.end() )
+                  if (foundPairs.find(pr) == foundPairs.end())
                   {
                      std::cout << vi[i] << "\t" << vi[j] << ": ";
-                     for ( unsigned int a = 0; a < nadj; ++a )
+                     for (unsigned int a = 0; a < nadj; ++a)
                      {
-                        if ( a > 0 )
+                        if (a > 0)
                            std::cout << ",";
                         std::cout << vs[a];
                      }
                      std::cout << std::endl;
 
-                     foundPairs.insert( pr );
+                     foundPairs.insert(pr);
                   }
                }
             }
          }
    }
-   //DEBUGMACRO( "Finished manifold check" );
+   //DEBUGMACRO("Finished manifold check");
 }

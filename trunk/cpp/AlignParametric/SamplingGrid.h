@@ -41,8 +41,8 @@ namespace AWT
       class SamplingGrid : public ManagedObject
       {
       protected:
-         SamplingGrid( const Idx _ns[2], const Idx _nk[2] );
-         virtual ~SamplingGrid( );
+         SamplingGrid(const Idx _ns[2], const Idx _nk[2]);
+         virtual ~SamplingGrid();
 
       protected:
          Idx ns[2];
@@ -52,24 +52,24 @@ namespace AWT
          ControlValues controlValues[2];
       public:
          typedef ManagedAutoPointer<SamplingGrid> P;
-         static P getInstance( const Idx _ns[2], const Idx _nk[2] );
+         static P getInstance(const Idx _ns[2], const Idx _nk[2]);
 
-         std::string getClassName( ) const;
+         std::string getClassName() const;
 
-         void getNSamples( Idx ns[2] ) const;
-         void getNKernels( Idx nk[2] ) const;
+         void getNSamples(Idx ns[2]) const;
+         void getNKernels(Idx nk[2]) const;
 
-         const KernelWeights&  getWeights( ) const;
-         ControlValues& getParameters( Idx axis );
+         const KernelWeights&  getWeights() const;
+         ControlValues& getParameters(Idx axis);
 
-         void getPositions( Displacements positions[2] ) const;
-         void getDisplacements( Displacements positions[2] ) const;
+         void getPositions(Displacements positions[2]) const;
+         void getDisplacements(Displacements positions[2]) const;
 
          // Work out the control values necessary to yield the same displacements
-         void calculateFromOther( const SamplingGrid& other );
+         void calculateFromOther(const SamplingGrid& other);
 
       protected:
-         static void getPointPosition( const Idx ns[2], const Idx i, double pos[2] );
+         static void getPointPosition(const Idx ns[2], const Idx i, double pos[2]);
       };
    }
 }

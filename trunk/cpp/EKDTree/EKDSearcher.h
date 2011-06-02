@@ -40,19 +40,19 @@
 //      class EKDSearcher
 //      {
 //      public:
-//         virtual T    calculateBoxDistanceBounds2( EKDTreeBranch<T,K>* in_Branch  ) = 0;
+//         virtual T    calculateBoxDistanceBounds2(EKDTreeBranch<T,K>* in_Branch ) = 0;
 //
-//         virtual bool checkPointOfInterest( const KDTreeDataElement<T,K>* in_Element, const int in_Index ) = 0;
+//         virtual bool checkPointOfInterest(const KDTreeDataElement<T,K>* in_Element, const int in_Index) = 0;
 //
-//         virtual bool shouldCheck( T in_LowerBound = 0 ) = 0;
+//         virtual bool shouldCheck(T in_LowerBound = 0) = 0;
 //
-//         virtual T    getMaxSearchDistanceSquared( ) const = 0;
+//         virtual T    getMaxSearchDistanceSquared() const = 0;
 //
-//         virtual int  getNumberOfChecks( ) const = 0;
+//         virtual int  getNumberOfChecks() const = 0;
 //
-//         virtual int  getNumberOfBoxChecks( ) const = 0;
+//         virtual int  getNumberOfBoxChecks() const = 0;
 //
-//         virtual void reset( ) = 0;
+//         virtual void reset() = 0;
 //      };
 //   }
 //}

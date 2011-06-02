@@ -38,36 +38,36 @@ namespace AWT
    class WaggleModeStateMachine : public SaveableStateMachine
    {
    public:
-      typedef ManagedAutoPointer<WaggleModeStateMachine<T>> P;
+      typedef ManagedAutoPointer<WaggleModeStateMachine<T> > P;
 
    protected:
-      WaggleModeStateMachine( StateMachineStack::P stack );
+      WaggleModeStateMachine(StateMachineStack::P stack);
        
 
    public:
-      static P getInstance( StateMachineStack::P stack );
+      static P getInstance(StateMachineStack::P stack);
 
-      void setMesh( typename DeformableMesh<T>::P mesh );
+      void setMesh(typename DeformableMesh<T>::P mesh);
 
-      StateMachineStack* getStack( );
+      StateMachineStack* getStack();
 
-      bool step( );
+      bool step();
 
-      bool isRunning( ) const;
+      bool isRunning() const;
 
-      bool isError( ) const;
+      bool isError() const;
 
-      std::string getLastError( ) const;
+      std::string getLastError() const;
 
-      std::string getStateName( ) const;
+      std::string getStateName() const;
 
-      std::string getMagic( ) const;
+      std::string getMagic() const;
 
-      bool load( const std::string& );
+      bool load(const std::string&);
 
-      void save( const std::string& );
+      void save(const std::string&);
 
-      std::string getClassName( ) const;
+      std::string getClassName() const;
 
    protected:
       bool m_Finished;

@@ -37,36 +37,36 @@ namespace AWT
    class FacesInRadiusSearch : public FacesSearch<T>
    {
    protected:
-      FacesInRadiusSearch( );
+      FacesInRadiusSearch();
 
-      virtual ~FacesInRadiusSearch( );
+      virtual ~FacesInRadiusSearch();
 
    public:
       typedef ManagedAutoPointer< FacesInRadiusSearch<T> > P;
 
    public:
-      static P getInstance( );
+      static P getInstance();
 
-      virtual void setCallback( typename FacesInRadiusCallback<T>::P callback );
+      virtual void setCallback(typename FacesInRadiusCallback<T>::P callback);
 
-      virtual void calculateBoxDistanceBounds2( typename OEKDTreeBranch<T,3>* in_Branch, SqDistBounds<T>& bounds  ) const;
+      virtual void calculateBoxDistanceBounds2(typename OEKDTreeBranch<T,3>* in_Branch, SqDistBounds<T>& bounds ) const;
 
-      virtual bool shouldCheck( typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const SqDistBounds<T>& bounds ) const;
+      virtual bool shouldCheck(typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const SqDistBounds<T>& bounds) const;
 
-      virtual void checkObject( const int in_Index );
+      virtual void checkObject(const int in_Index);
 
-      typename OEKDTreeData<T,3>::P getTreeData( );
-      void setTreeData( typename OEKDTreeData<T,3>::P data );
+      typename OEKDTreeData<T,3>::P getTreeData();
+      void setTreeData(typename OEKDTreeData<T,3>::P data);
 
-      virtual void setRadius( const T radius );
+      virtual void setRadius(const T radius);
 
-      virtual T    getRadius( ) const;
+      virtual T    getRadius() const;
 
-      virtual void setTestPoint( const T* in_TestPoint  );
+      virtual void setTestPoint(const T* in_TestPoint );
 
-      virtual void getTestPoint( T* out_TestPoint ) const;
+      virtual void getTestPoint(T* out_TestPoint) const;
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
    protected:
       struct D;

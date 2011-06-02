@@ -41,7 +41,7 @@ using namespace std;
 namespace AWT
 {
    // http://cpp.codenewbie.com/articles/cpp/1437/systemPAUSE-Page_1.html
-   void pause( )
+   void pause()
    {
      int c;
 
@@ -49,7 +49,7 @@ namespace AWT
      /* eat up characters until a newline or eof */
      do
      {
-       c = getchar( );
+       c = getchar();
        if(c == EOF) break;
      } while(c != '\n');
    }

@@ -35,10 +35,10 @@ namespace AWT
       class RigidTransformation : public AWT::ReferenceCountedObject
       {
       protected:
-         RigidTransformation( );
-         virtual ~RigidTransformation( );
+         RigidTransformation();
+         virtual ~RigidTransformation();
       public:
-         RigidTransformation* getInstance( );
+         RigidTransformation* getInstance();
       };
    }
 }

@@ -41,32 +41,32 @@
 //      class NearestPointSearch : public EKDSearcher<T,K>
 //      {
 //      public:
-//         NearestPointSearch( T* in_TestPoint = 0, T in_MaxDistance = std::numeric_limits<T>::max( ) );
+//         NearestPointSearch(T* in_TestPoint = 0, T in_MaxDistance = std::numeric_limits<T>::max());
 //
-//         virtual T calculateBoxDistanceBounds2( EKDTreeBranch<T,K>* in_Branch );
-//         virtual bool shouldCheck( T in_LowerBound );
+//         virtual T calculateBoxDistanceBounds2(EKDTreeBranch<T,K>* in_Branch);
+//         virtual bool shouldCheck(T in_LowerBound);
 //
-//         virtual bool checkPointOfInterest( const KDTreeDataElement<T,K>* in_Element, const int in_Index );
+//         virtual bool checkPointOfInterest(const KDTreeDataElement<T,K>* in_Element, const int in_Index);
 //
-//         virtual void setTestPoint( T* in_TestPoint  );
-//         virtual void getTestPoint( T* out_TestPoint ) const;
+//         virtual void setTestPoint(T* in_TestPoint );
+//         virtual void getTestPoint(T* out_TestPoint) const;
 //
-//         virtual int  getNearestPoint( T* out_NearestPoint = 0 ) const;
+//         virtual int  getNearestPoint(T* out_NearestPoint = 0) const;
 //
-//         virtual T    getMaxSearchDistanceSquared( ) const;
+//         virtual T    getMaxSearchDistanceSquared() const;
 //
-//         virtual void setMaximumDistance( T in_MaxDistance );
-//         virtual T    getMaximumDistance( );
+//         virtual void setMaximumDistance(T in_MaxDistance);
+//         virtual T    getMaximumDistance();
 //
-//         virtual int  getNumberOfChecks( ) const;
-//         virtual int  getNumberOfBoxChecks( ) const;
-//         virtual void reset( );
+//         virtual int  getNumberOfChecks() const;
+//         virtual int  getNumberOfBoxChecks() const;
+//         virtual void reset();
 //
 //      protected:
-//         virtual void handlePointOfInterest( const T* in_PointOfInterest, const int in_Index );
+//         virtual void handlePointOfInterest(const T* in_PointOfInterest, const int in_Index);
 //
-//         virtual bool checkPointOfInterest( const AWT::KDTree::PointDataElement<T,K>* in_Element, T* out_Poi );
-//         virtual bool checkPointOfInterest( const AWT::KDTree::TriangleDataElement<T>* in_Element, T* out_Poi );
+//         virtual bool checkPointOfInterest(const AWT::KDTree::PointDataElement<T,K>* in_Element, T* out_Poi);
+//         virtual bool checkPointOfInterest(const AWT::KDTree::TriangleDataElement<T>* in_Element, T* out_Poi);
 //
 //         int m_NearestIndex;
 //         T   m_NearestPoint[K];
@@ -85,39 +85,39 @@
 //namespace AWT { namespace KDTree {
 //
 //template <class T, unsigned char K>
-//NearestPointSearch<T,K>::NearestPointSearch( T* in_TestPoint, T in_MaxDist )
+//NearestPointSearch<T,K>::NearestPointSearch(T* in_TestPoint, T in_MaxDist)
 //{
 //   m_NumberOfChecks = 0;
 //   m_NearestIndex = -1;
-//   m_MaxDistance2 = std::numeric_limits<T>::max( );
+//   m_MaxDistance2 = std::numeric_limits<T>::max();
 //
-//   if ( in_TestPoint != 0 )
-//      setTestPoint( in_TestPoint );
+//   if (in_TestPoint != 0)
+//      setTestPoint(in_TestPoint);
 //
-//   setMaximumDistance( in_MaxDist );
+//   setMaximumDistance(in_MaxDist);
 //   m_InitMaxDistance2 = m_MaxDistance2;
 //}
 //
 //template <class T, unsigned char K>
-//void NearestPointSearch<T,K>::setTestPoint( T* in_TestPoint )
+//void NearestPointSearch<T,K>::setTestPoint(T* in_TestPoint)
 //{
-//   for ( int i = 0; i < K; i++ )
+//   for (int i = 0; i < K; i++)
 //      m_TestPoint[i] = in_TestPoint[i];
 //}
 //
 //template <class T, unsigned char K>
-//void NearestPointSearch<T,K>::getTestPoint( T* out_TestPoint ) const
+//void NearestPointSearch<T,K>::getTestPoint(T* out_TestPoint) const
 //{
-//   for ( int i = 0; i < K; i++ )
+//   for (int i = 0; i < K; i++)
 //      out_TestPoint[i] = m_TestPoint[i];
 //}
 //
 //template <class T, unsigned char K>
-//int NearestPointSearch<T,K>::getNearestPoint( T* out_Point ) const
+//int NearestPointSearch<T,K>::getNearestPoint(T* out_Point) const
 //{
-//   if ( m_NearestIndex != -1 && out_Point != 0 )
+//   if (m_NearestIndex != -1 && out_Point != 0)
 //   {
-//      for ( int i = 0; i < K; i++ )
+//      for (int i = 0; i < K; i++)
 //         out_Point[i] = m_NearestPoint[i];
 //   }
 //
@@ -125,40 +125,40 @@
 //}
 //
 //template <class T, unsigned char K>
-//void NearestPointSearch<T,K>::setMaximumDistance( T in_MaxDistance )
+//void NearestPointSearch<T,K>::setMaximumDistance(T in_MaxDistance)
 //{
-//   if ( in_MaxDistance > sqrt( std::numeric_limits<T>::max( ) ) )
-//      m_MaxDistance2 = std::numeric_limits<T>::max( );
+//   if (in_MaxDistance > sqrt(std::numeric_limits<T>::max()))
+//      m_MaxDistance2 = std::numeric_limits<T>::max();
 //   else
 //      m_MaxDistance2 = in_MaxDistance * in_MaxDistance;
 //}
 //
 //template <class T, unsigned char K>
-//T NearestPointSearch<T,K>::getMaximumDistance( )
+//T NearestPointSearch<T,K>::getMaximumDistance()
 //{
-//   return sqrt( m_MaxDistance2 );
+//   return sqrt(m_MaxDistance2);
 //}
 //
 //template <class T, unsigned char K>
-//T NearestPointSearch<T,K>::getMaxSearchDistanceSquared( ) const
+//T NearestPointSearch<T,K>::getMaxSearchDistanceSquared() const
 //{
 //   return m_MaxDistance2;
 //}
 //
 //template <class T, unsigned char K>
-//T NearestPointSearch<T,K>::calculateBoxDistanceBounds2( EKDTreeBranch<T,K>* in_Branch )
+//T NearestPointSearch<T,K>::calculateBoxDistanceBounds2(EKDTreeBranch<T,K>* in_Branch)
 //{
 //   ++m_NumberOfBoxChecks;
 //   T ret = 0;
 //   T tmp;
 //
-//   for ( int i = 0; i < K; i++ )
+//   for (int i = 0; i < K; i++)
 //   {
-//      //std::cerr << "Testing " << m_TestPoint[i] << " against [" << in_Branch->getMinimumBound( i ) << "..." << in_Branch->getMaximumBound( i ) << "]" << std::endl;
+//      //std::cerr << "Testing " << m_TestPoint[i] << " against [" << in_Branch->getMinimumBound(i) << "..." << in_Branch->getMaximumBound(i) << "]" << std::endl;
 //
-//      tmp = std::min( std::max( m_TestPoint[i], in_Branch->getMinimumBound( i ) ), in_Branch->getMaximumBound( i ) );
+//      tmp = std::min(std::max(m_TestPoint[i], in_Branch->getMinimumBound(i)), in_Branch->getMaximumBound(i));
 //
-//      //std::cerr << in_Branch->getMinimumBound( i ) << "->" << in_Branch->getMaximumBound( i ) << std::endl;
+//      //std::cerr << in_Branch->getMinimumBound(i) << "->" << in_Branch->getMaximumBound(i) << std::endl;
 //      //std::cerr << "Clamping " << m_TestPoint[i] << " to " << tmp << std::endl;
 //
 //      tmp -= m_TestPoint[i];
@@ -167,7 +167,7 @@
 //
 //      ret += tmp*tmp;
 //
-//      if ( ret > m_MaxDistance2 )
+//      if (ret > m_MaxDistance2)
 //         break;
 //   }
 //
@@ -175,23 +175,23 @@
 //}
 //
 //template <class T, unsigned char K>
-//bool NearestPointSearch<T,K>::shouldCheck( T in_LowerBound )
+//bool NearestPointSearch<T,K>::shouldCheck(T in_LowerBound)
 //{
 //   return in_LowerBound < m_MaxDistance2;
 //}
 //
 //template <class T, unsigned char K>
-//void NearestPointSearch<T,K>::handlePointOfInterest(const T *in_PointOfInterest, const int in_Index )
+//void NearestPointSearch<T,K>::handlePointOfInterest(const T *in_PointOfInterest, const int in_Index)
 //{
 //   T dist2 = 0;
 //   T tmp;
 //
-//   for ( int i = 0; i < K; i++ )
+//   for (int i = 0; i < K; i++)
 //   {
 //      tmp = in_PointOfInterest[i] - m_TestPoint[i];
 //      dist2 += tmp*tmp;
 //
-//      if ( dist2 >= m_MaxDistance2 )
+//      if (dist2 >= m_MaxDistance2)
 //      {
 //         return;
 //      }
@@ -204,7 +204,7 @@
 //
 //   m_NearestIndex = in_Index;
 //
-//   for ( int i = 0; i < K; i++ )
+//   for (int i = 0; i < K; i++)
 //      m_NearestPoint[i] = in_PointOfInterest[i];
 //
 //   m_MaxDistance2 = dist2;
@@ -213,30 +213,30 @@
 //#include "EKDTree/SimpleVectorOps.h"
 //
 //template <class T, unsigned char K>
-//bool NearestPointSearch<T,K>::checkPointOfInterest( const PointDataElement<T,K>* in_Element, T* out_Poi )
+//bool NearestPointSearch<T,K>::checkPointOfInterest(const PointDataElement<T,K>* in_Element, T* out_Poi)
 //{
-//   for ( int i = 0; i < K; i++ )
-//      out_Poi[i] = in_Element->GetValue( i );
+//   for (int i = 0; i < K; i++)
+//      out_Poi[i] = in_Element->GetValue(i);
 //
 //   return true;
 //}
 //
 //template <class T, unsigned char K>
-//bool NearestPointSearch<T,K>::checkPointOfInterest( const TriangleDataElement<T>* in_Element, T* out_NearestPoint )
+//bool NearestPointSearch<T,K>::checkPointOfInterest(const TriangleDataElement<T>* in_Element, T* out_NearestPoint)
 //{
-//   if ( K != 3 )
+//   if (K != 3)
 //      AWTEXCEPTIONTHROW("This is only defined for 3-dimensional triangles!");
 //
 //   T point0[3];
 //   T point1[3];
 //   T point2[3];
 //
-//   for ( int i = 0; i < 3; i++ )
+//   for (int i = 0; i < 3; i++)
 //   {
-//      point0[i] = in_Element->GetCoordinate( 0, i );
+//      point0[i] = in_Element->GetCoordinate(0, i);
 //
-//      point1[i] = in_Element->GetCoordinate( 1, i ) - point0[i];
-//      point2[i] = in_Element->GetCoordinate( 2, i ) - point0[i];
+//      point1[i] = in_Element->GetCoordinate(1, i) - point0[i];
+//      point2[i] = in_Element->GetCoordinate(2, i) - point0[i];
 //   }
 //
 //   T p[3] = {
@@ -246,18 +246,18 @@
 //   };
 //
 //   T nml[3];
-//   cross( &point1[0], &point2[0], &nml[0] );
-//   normalize<double,3>( nml );
+//   cross(&point1[0], &point2[0], &nml[0]);
+//   normalize<double,3>(nml);
 //
 //   // Check if this cell is degenerate!
-//   if ( nml[0] != nml[0]  ||  nml[1] != nml[1]  ||  nml[2] != nml[2] )
+//   if (nml[0] != nml[0]  ||  nml[1] != nml[1]  ||  nml[2] != nml[2])
 //   {
 //      // This is a bit of a cop-out - we can find the closest point on
 //      // the line/point
 //      return false;
 //   }
 //
-//   T nml_dot_p = dot<double,3>( &nml[0], &p[0] );
+//   T nml_dot_p = dot<double,3>(&nml[0], &p[0]);
 //   T np[3] = {
 //      p[0] - nml_dot_p * nml[0],
 //      p[1] - nml_dot_p * nml[1],
@@ -269,34 +269,34 @@
 //   T vec2[3] = { point2[0]-point1[0], point2[1]-point1[1], point2[2]-point1[2] };
 //
 //   T nsqvec[3] = {
-//      dot<double,3>( &vec0[0], &vec0[0] ),
-//      dot<double,3>( &vec1[0], &vec1[0] ),
-//      dot<double,3>( &vec2[0], &vec2[0] )
+//      dot<double,3>(&vec0[0], &vec0[0]),
+//      dot<double,3>(&vec1[0], &vec1[0]),
+//      dot<double,3>(&vec2[0], &vec2[0])
 //   };
 //
 //   T lams[3] = {
-//      dot<double,3>( &vec0[0], &np[0] ),
-//      dot<double,3>( &vec1[0], &np[0] ),
-//      dot<double,3>( &vec2[0], &np[0] ) - dot<double,3>( &vec2[0], &vec0[0] )
+//      dot<double,3>(&vec0[0], &np[0]),
+//      dot<double,3>(&vec1[0], &np[0]),
+//      dot<double,3>(&vec2[0], &np[0]) - dot<double,3>(&vec2[0], &vec0[0])
 //   };
 //
 //   //int resultCase;
 //
-//   if ( lams[0] < 0 && lams[1] < 0 )
+//   if (lams[0] < 0 && lams[1] < 0)
 //   {
 //      out_NearestPoint[0] = 0;
 //      out_NearestPoint[1] = 0;
 //      out_NearestPoint[2] = 0;
 //      //resultCase = 1;
 //   }
-//   else if ( lams[0] > nsqvec[0] && lams[2] < 0 )
+//   else if (lams[0] > nsqvec[0] && lams[2] < 0)
 //   {
 //      out_NearestPoint[0] = point1[0];
 //      out_NearestPoint[1] = point1[1];
 //      out_NearestPoint[2] = point1[2];
 //      //resultCase = 2;
 //   }
-//   else if ( lams[1] > nsqvec[1] && lams[2] > nsqvec[2] )
+//   else if (lams[1] > nsqvec[1] && lams[2] > nsqvec[2])
 //   {
 //      out_NearestPoint[0] = point2[0];
 //      out_NearestPoint[1] = point2[1];
@@ -306,9 +306,9 @@
 //   else
 //   {
 //      // This is the determinant of [ vec0 vec1 nml ]
-//      T det =   vec0[0] * ( vec1[1]*nml[2] - nml[1]*vec1[2] )
-//              - vec0[1] * ( vec1[0]*nml[2] - nml[0]*vec1[2] )
-//              + vec0[2] * ( vec1[0]*nml[1] - nml[0]*vec1[1] );
+//      T det =   vec0[0] * (vec1[1]*nml[2] - nml[1]*vec1[2])
+//              - vec0[1] * (vec1[0]*nml[2] - nml[0]*vec1[2])
+//              + vec0[2] * (vec1[0]*nml[1] - nml[0]*vec1[1]);
 //
 //      // This is the adjoint of [ vec0 vec1 nml ]
 //      T mat[3][3] = {
@@ -318,12 +318,12 @@
 //      };
 //
 //      T proj[3] = {
-//         ( mat[0][0]*np[0] + mat[0][1]*np[1] + mat[0][2]*np[2] ) / det,
-//         ( mat[1][0]*np[0] + mat[1][1]*np[1] + mat[1][2]*np[2] ) / det,
-//         ( mat[2][0]*np[0] + mat[2][1]*np[1] + mat[2][2]*np[2] ) / det,
+//         (mat[0][0]*np[0] + mat[0][1]*np[1] + mat[0][2]*np[2]) / det,
+//         (mat[1][0]*np[0] + mat[1][1]*np[1] + mat[1][2]*np[2]) / det,
+//         (mat[2][0]*np[0] + mat[2][1]*np[1] + mat[2][2]*np[2]) / det,
 //      };
 //
-//      if ( lams[0] >= 0 && lams[0] <= nsqvec[0] && proj[1] < 0 )
+//      if (lams[0] >= 0 && lams[0] <= nsqvec[0] && proj[1] < 0)
 //      {
 //         T mult = lams[0] / nsqvec[0];
 //
@@ -332,7 +332,7 @@
 //         out_NearestPoint[2] = 0 + mult * vec0[2];
 //         //resultCase = 4;
 //      }
-//      else if ( lams[1] >= 0 && lams[1] <= nsqvec[1] && proj[0] < 0 )
+//      else if (lams[1] >= 0 && lams[1] <= nsqvec[1] && proj[0] < 0)
 //      {
 //         T mult = lams[1] / nsqvec[1];
 //
@@ -341,7 +341,7 @@
 //         out_NearestPoint[2] = 0 + mult * vec1[2];
 //         //resultCase = 5;
 //      }
-//      else if ( proj[0]+proj[1] > 1 )
+//      else if (proj[0]+proj[1] > 1)
 //      {
 //         T mult = lams[2] / nsqvec[2];
 //
@@ -371,30 +371,30 @@
 //}
 //
 //template <class T, unsigned char K>
-//bool NearestPointSearch<T,K>::checkPointOfInterest( const KDTreeDataElement<T,K>* in_Element, const int in_Index )
+//bool NearestPointSearch<T,K>::checkPointOfInterest(const KDTreeDataElement<T,K>* in_Element, const int in_Index)
 //{
 //   ++m_NumberOfChecks;
 //
 //   bool ret;
 //   T    out_Poi[K];
 //
-//   const TriangleDataElement<T>* tri = dynamic_cast<const TriangleDataElement<T>*>( in_Element );
-//   if ( tri != 0 )
+//   const TriangleDataElement<T>* tri = dynamic_cast<const TriangleDataElement<T>*>(in_Element);
+//   if (tri != 0)
 //   {
-//      if ( ret = checkPointOfInterest( tri, out_Poi ) )
+//      if (ret = checkPointOfInterest(tri, out_Poi))
 //      {
-//         handlePointOfInterest( out_Poi, in_Index );
+//         handlePointOfInterest(out_Poi, in_Index);
 //      }
 //
 //      return ret;
 //   }
 //
-//   const PointDataElement<T,K>* pde = dynamic_cast<const PointDataElement<T,K>*>( in_Element );
-//   if ( pde != 0 )
+//   const PointDataElement<T,K>* pde = dynamic_cast<const PointDataElement<T,K>*>(in_Element);
+//   if (pde != 0)
 //   {
-//      if ( ret = checkPointOfInterest( pde, out_Poi ) )
+//      if (ret = checkPointOfInterest(pde, out_Poi))
 //      {
-//         handlePointOfInterest( out_Poi, in_Index );
+//         handlePointOfInterest(out_Poi, in_Index);
 //      }
 //
 //      return ret;
@@ -406,24 +406,24 @@
 //}
 //
 //template <class T, unsigned char K>
-//int NearestPointSearch<T,K>::getNumberOfBoxChecks( ) const
+//int NearestPointSearch<T,K>::getNumberOfBoxChecks() const
 //{
 //   return m_NumberOfBoxChecks;
 //}
 //
 //template <class T, unsigned char K>
-//int NearestPointSearch<T,K>::getNumberOfChecks( ) const
+//int NearestPointSearch<T,K>::getNumberOfChecks() const
 //{
 //   return m_NumberOfChecks;
 //}
 //
 //template <class T, unsigned char K>
-//void NearestPointSearch<T,K>::reset( )
+//void NearestPointSearch<T,K>::reset()
 //{
 //   m_NumberOfBoxChecks = 0;
 //   m_NumberOfChecks = 0;
 //
-//   setMaximumDistance( m_InitMaxDistance2 );
+//   setMaximumDistance(m_InitMaxDistance2);
 //}
 //
 //} }

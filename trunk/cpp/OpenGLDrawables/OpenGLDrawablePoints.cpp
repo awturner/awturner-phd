@@ -34,10 +34,10 @@
 template <class T>
 struct AWT::OpenGLDrawablePoints<T>::D
 {
-   bool isFinite( T vtx[3] )
+   bool isFinite(T vtx[3])
    {
-      for ( unsigned int i = 0; i < 3; ++i )
-         if ( abs(vtx[i]) == std::numeric_limits<T>::infinity( ) || vtx[i] != vtx[i] )
+      for (unsigned int i = 0; i < 3; ++i)
+         if (abs(vtx[i]) == std::numeric_limits<T>::infinity() || vtx[i] != vtx[i])
             return false;
 
       return true;
@@ -55,7 +55,7 @@ struct AWT::OpenGLDrawablePoints<T>::D
 };
 
 template <class T>
-AWT::OpenGLDrawablePoints<T>::OpenGLDrawablePoints( typename Tuples<T>::P points )
+AWT::OpenGLDrawablePoints<T>::OpenGLDrawablePoints(typename Tuples<T>::P points)
 {
    m_D = new D;
 
@@ -65,224 +65,224 @@ AWT::OpenGLDrawablePoints<T>::OpenGLDrawablePoints( typename Tuples<T>::P points
    m_D->m_Closed     = false;
    m_D->m_Contiguous = true;
 
-   setData( points );
+   setData(points);
 
-   updateBounds( );
+   updateBounds();
 
-   m_D->m_Material = OpenGLSimpleColour::getInstance( 1.f, 0.f, 0.f, 1.f, false );
+   m_D->m_Material = OpenGLSimpleColour::getInstance(1.f, 0.f, 0.f, 1.f, false);
 }
 
 template <class T>
-AWT::OpenGLDrawablePoints<T>::~OpenGLDrawablePoints( )
+AWT::OpenGLDrawablePoints<T>::~OpenGLDrawablePoints()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::OpenGLDrawablePoints<T>::P AWT::OpenGLDrawablePoints<T>::getInstance( typename Tuples<T>::P points )
+typename AWT::OpenGLDrawablePoints<T>::P AWT::OpenGLDrawablePoints<T>::getInstance(typename Tuples<T>::P points)
 {
-   AUTOGETINSTANCE( AWT::OpenGLDrawablePoints<T>, ( points ) );
+   AUTOGETINSTANCE(AWT::OpenGLDrawablePoints<T>, (points));
 }
 
 template <class T>
-GETNAMEMACRO( AWT::OpenGLDrawablePoints<T> );
+GETNAMEMACRO(AWT::OpenGLDrawablePoints<T>);
 
 template <class T>
-typename AWT::Tuples<T>::P AWT::OpenGLDrawablePoints<T>::getData( )
+typename AWT::Tuples<T>::P AWT::OpenGLDrawablePoints<T>::getData()
 {
    return m_D->m_Points;
 }
 
 template <class T>
-void AWT::OpenGLDrawablePoints<T>::setData( typename AWT::Tuples<T>::P points )
+void AWT::OpenGLDrawablePoints<T>::setData(typename AWT::Tuples<T>::P points)
 {
    m_D->m_Points = points;
-   setTimeObject( points );
-   modified( );
+   setTimeObject(points);
+   modified();
 }
 
 template <class T>
-typename AWT::Tuples<T>::P AWT::OpenGLDrawablePoints<T>::getNormals( )
+typename AWT::Tuples<T>::P AWT::OpenGLDrawablePoints<T>::getNormals()
 {
    return m_D->m_Normals;
 }
 
 template <class T>
-void AWT::OpenGLDrawablePoints<T>::setNormals( typename AWT::Tuples<T>::P points )
+void AWT::OpenGLDrawablePoints<T>::setNormals(typename AWT::Tuples<T>::P points)
 {
    m_D->m_Normals = points;
 }
 
 template <class T>
-float AWT::OpenGLDrawablePoints<T>::getPointSize( )
+float AWT::OpenGLDrawablePoints<T>::getPointSize()
 {
    return m_D->m_PointSize;
 }
 
 template <class T>
-void AWT::OpenGLDrawablePoints<T>::setPointSize( const float s )
+void AWT::OpenGLDrawablePoints<T>::setPointSize(const float s)
 {
-   m_D->m_PointSize = std::max( 0.f, s );
-   modified( );
+   m_D->m_PointSize = std::max(0.f, s);
+   modified();
 }
 
 template <class T>
-AWT::ModifiedTime AWT::OpenGLDrawablePoints<T>::getChildModifiedTime( )
+AWT::ModifiedTime AWT::OpenGLDrawablePoints<T>::getChildModifiedTime()
 {
-   return getTimeObjectModified( );
+   return getTimeObjectModified();
 }
 
 template <class T>
-void AWT::OpenGLDrawablePoints<T>::buildList( AWT::DrawContext::P context )
+void AWT::OpenGLDrawablePoints<T>::buildList(AWT::DrawContext::P context)
 {
    T vtx[3];
 
-   m_D->m_Material->prepare( );
+   m_D->m_Material->prepare();
 
    GLenum draws[2];
    unsigned int ndraws = 0;
 
-   if ( m_D->m_PointSize != 0.f || m_D->m_Points->getNumberOfPoints( ) < 2 )
+   if (m_D->m_PointSize != 0.f || m_D->m_Points->getNumberOfPoints() < 2)
    {
       draws[ndraws++] = GL_POINTS;
-      glPointSize( m_D->m_PointSize );
+      glPointSize(m_D->m_PointSize);
    }
 
-   if ( m_D->m_LineWidth != 0.f && m_D->m_Points->getNumberOfPoints( ) >= 2  ) 
+   if (m_D->m_LineWidth != 0.f && m_D->m_Points->getNumberOfPoints() >= 2 ) 
    {
-      if ( m_D->m_Contiguous )
-         draws[ndraws++] = ( m_D->m_Closed ) ? GL_LINE_LOOP : GL_LINE_STRIP;
+      if (m_D->m_Contiguous)
+         draws[ndraws++] = (m_D->m_Closed) ? GL_LINE_LOOP : GL_LINE_STRIP;
       else
          draws[ndraws++] = GL_LINES;
 
-      glLineWidth( m_D->m_LineWidth );
+      glLineWidth(m_D->m_LineWidth);
    }
 
-   if ( *m_D->m_Normals == 0 )
-      glDisable( GL_LIGHTING );
+   if (*m_D->m_Normals == 0)
+      glDisable(GL_LIGHTING);
 
    T nml[3];
-   for ( unsigned int d = 0; d < ndraws; ++d )
+   for (unsigned int d = 0; d < ndraws; ++d)
    {
       unsigned int cnt = 0;
 
-      glBegin( draws[d] );
+      glBegin(draws[d]);
 
-      for ( MeshIndex v = 0, vmax = m_D->m_Points->getNumberOfPoints( ); v < vmax; ++v )
+      for (MeshIndex v = 0, vmax = m_D->m_Points->getNumberOfPoints(); v < vmax; ++v)
       {
-         m_D->m_Points->getPoint( v, vtx );
+         m_D->m_Points->getPoint(v, vtx);
 
-         if ( m_D->isFinite( vtx ) )
+         if (m_D->isFinite(vtx))
          {
-            m_D->m_Material->tweak( DrawMaterial::TWEAK_VERTEX, v );
+            m_D->m_Material->tweak(DrawMaterial::TWEAK_VERTEX, v);
 
-            if ( *m_D->m_Normals != 0 )
+            if (*m_D->m_Normals != 0)
             {
-               m_D->m_Normals->getPoint( v, nml );
-               glNormal3Tv( nml );
+               m_D->m_Normals->getPoint(v, nml);
+               glNormal3Tv(nml);
             }
 
-            glVertex3Tv( vtx );
+            glVertex3Tv(vtx);
             ++cnt;
          }
       }
 
-      glEnd( );
+      glEnd();
    }
 
-   m_D->m_Material->unprepare( );
+   m_D->m_Material->unprepare();
 }
    
 template <class T>
-void AWT::OpenGLDrawablePoints<T>::updateBounds( )
+void AWT::OpenGLDrawablePoints<T>::updateBounds()
 {
-   for ( int ax = 0; ax < 3; ++ax )
+   for (int ax = 0; ax < 3; ++ax)
    {
-      m_D->m_Bounds[2*ax+0] =  std::numeric_limits<double>::infinity( );
-      m_D->m_Bounds[2*ax+1] = -std::numeric_limits<double>::infinity( );
+      m_D->m_Bounds[2*ax+0] =  std::numeric_limits<double>::infinity();
+      m_D->m_Bounds[2*ax+1] = -std::numeric_limits<double>::infinity();
    }
 
    T vtx[4];
-   m_D->m_Points->getPoint( 0, vtx );
+   m_D->m_Points->getPoint(0, vtx);
 
-   for ( MeshIndex v = 0, vmax = m_D->m_Points->getNumberOfPoints( ); v < vmax; ++v )
+   for (MeshIndex v = 0, vmax = m_D->m_Points->getNumberOfPoints(); v < vmax; ++v)
    {
-      m_D->m_Points->getPoint( v, vtx );
+      m_D->m_Points->getPoint(v, vtx);
 
-      if ( m_D->isFinite( vtx ) )
+      if (m_D->isFinite(vtx))
       {
-         for ( int ax = 0; ax < 3; ++ax )
+         for (int ax = 0; ax < 3; ++ax)
          {
-            m_D->m_Bounds[2*ax+0] = std::min<double>( m_D->m_Bounds[2*ax+0], vtx[ax] );
-            m_D->m_Bounds[2*ax+1] = std::max<double>( m_D->m_Bounds[2*ax+1], vtx[ax] );
+            m_D->m_Bounds[2*ax+0] = std::min<double>(m_D->m_Bounds[2*ax+0], vtx[ax]);
+            m_D->m_Bounds[2*ax+1] = std::max<double>(m_D->m_Bounds[2*ax+1], vtx[ax]);
          }   
       }
    }
 }
 
 template <class T>
-double AWT::OpenGLDrawablePoints<T>::getBoundImpl( unsigned int bound )
+double AWT::OpenGLDrawablePoints<T>::getBoundImpl(unsigned int bound)
 {
    return m_D->m_Bounds[bound];
 }
 
 template <class T>
-AWT::DrawMaterial::P AWT::OpenGLDrawablePoints<T>::getMaterial( )
+AWT::DrawMaterial::P AWT::OpenGLDrawablePoints<T>::getMaterial()
 {
    return m_D->m_Material;
 }
 
 template <class T>
-void AWT::OpenGLDrawablePoints<T>::setMaterial( DrawMaterial::P mat )
+void AWT::OpenGLDrawablePoints<T>::setMaterial(DrawMaterial::P mat)
 {
    m_D->m_Material = mat;
 }
 
 template <class T>
-float AWT::OpenGLDrawablePoints<T>::getLineWidth( )
+float AWT::OpenGLDrawablePoints<T>::getLineWidth()
 {
    return m_D->m_LineWidth;
 }
 
 template <class T>
-void AWT::OpenGLDrawablePoints<T>::setLineWidth( const float v )
+void AWT::OpenGLDrawablePoints<T>::setLineWidth(const float v)
 {
-   if ( v != m_D->m_LineWidth )
+   if (v != m_D->m_LineWidth)
    {
       m_D->m_LineWidth = v;
-      modified( );
+      modified();
    }
 }
 
 template <class T>
-bool AWT::OpenGLDrawablePoints<T>::isClosed( ) const
+bool AWT::OpenGLDrawablePoints<T>::isClosed() const
 {
    return m_D->m_Closed;
 }
 
 template <class T>
-void AWT::OpenGLDrawablePoints<T>::setClosed( const bool v )
+void AWT::OpenGLDrawablePoints<T>::setClosed(const bool v)
 {
-   if ( v != m_D->m_Closed )
+   if (v != m_D->m_Closed)
    {
       m_D->m_Closed = v;
-      modified( );
+      modified();
    }
 }
 
 template <class T>
-bool AWT::OpenGLDrawablePoints<T>::isContiguous( ) const
+bool AWT::OpenGLDrawablePoints<T>::isContiguous() const
 {
    return m_D->m_Contiguous;
 }
 
 template <class T>
-void AWT::OpenGLDrawablePoints<T>::setContiguous( const bool v )
+void AWT::OpenGLDrawablePoints<T>::setContiguous(const bool v)
 {
-   if ( v != m_D->m_Contiguous )
+   if (v != m_D->m_Contiguous)
    {
       m_D->m_Contiguous = v;
-      modified( );
+      modified();
    }
 }
 

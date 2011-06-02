@@ -35,16 +35,16 @@ namespace AWT
    class Transformation : public Drawable
    {
    public:
-      typedef ManagedAutoPointer<Transformation<T>> P;
+      typedef ManagedAutoPointer<Transformation<T> > P;
 
    public:
-      virtual void setDrawable( Drawable::P d ) = 0;
+      virtual void setDrawable(Drawable::P d) = 0;
 
-      virtual Drawable::P getDrawable( ) = 0;
+      virtual Drawable::P getDrawable() = 0;
 
-      virtual void setPose( typename Pose<T>::P pose ) = 0;
+      virtual void setPose(typename Pose<T>::P pose) = 0;
 
-      virtual typename Pose<T>::P getPose( ) = 0;
+      virtual typename Pose<T>::P getPose() = 0;
    };
 }
 

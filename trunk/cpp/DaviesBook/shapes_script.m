@@ -2050,6 +2050,6 @@ shapes{2} = [4.97592 0.490053 2.33236e-006
 4.9568 -0.488235 -0.195088
 ]';
 figure; hold on;
-scatter3x( shapes{1} ); axis equal tight
-scatter3x( shapes{2} ); axis equal tight
-disp(sqrt( sum( sum( (shapes{1}-shapes{2}).^2 ) ) / 1024 ));
+scatter3x(shapes{1}); axis equal tight
+scatter3x(shapes{2}); axis equal tight
+disp(sqrt(sum(sum((shapes{1}-shapes{2}).^2)) / 1024));

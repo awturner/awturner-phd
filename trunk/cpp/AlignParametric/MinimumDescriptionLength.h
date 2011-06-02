@@ -38,17 +38,17 @@ namespace AWT
          typedef ManagedAutoPointer<MinimumDescriptionLength> P;
 
       protected:
-         MinimumDescriptionLength( );
-         virtual ~MinimumDescriptionLength( );
+         MinimumDescriptionLength();
+         virtual ~MinimumDescriptionLength();
 
       public:
-         static P getInstance( );
-         virtual std::string getClassName( ) const;
+         static P getInstance();
+         virtual std::string getClassName() const;
 
-         virtual T getLambdaCut( ) const;
-         virtual void setLambdaCut( const T v );
+         virtual T getLambdaCut() const;
+         virtual void setLambdaCut(const T v);
 
-         virtual T calculate( const VectorType& eigenvalues, VectorType& E_gradients );
+         virtual T calculate(const VectorType& eigenvalues, VectorType& E_gradients);
 
       protected:
          struct D;

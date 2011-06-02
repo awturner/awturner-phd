@@ -37,50 +37,50 @@ struct QSplitterGrid::D
    QList<QSplitterEx*> m_List;
 };
 
-QSplitterGrid::QSplitterGrid( )
+QSplitterGrid::QSplitterGrid()
 {
    m_D = new D;
 
    m_D->m_Busy = false;
 }
 
-QSplitterGrid::~QSplitterGrid( )
+QSplitterGrid::~QSplitterGrid()
 {
    delete m_D;
 }
 
-void QSplitterGrid::addSplitterEx( QSplitterEx* splitter )
+void QSplitterGrid::addSplitterEx(QSplitterEx* splitter)
 {
-   m_D->m_List.append( splitter );
+   m_D->m_List.append(splitter);
 
-   connect( splitter, SIGNAL( widthsChanged( QSplitterEx* ) ), this, SLOT( splitterResize( QSplitterEx* ) ) );
+   connect(splitter, SIGNAL(widthsChanged(QSplitterEx*)), this, SLOT(splitterResize(QSplitterEx*)));
 }
 
-void QSplitterGrid::removeSplitterEx( QSplitterEx* splitter )
+void QSplitterGrid::removeSplitterEx(QSplitterEx* splitter)
 {
-   disconnect( splitter, SIGNAL( widthsChanged( QSplitterEx* ) ), this, SLOT( splitterResize( QSplitterEx* ) ) );
-   m_D->m_List.removeAll( splitter );
+   disconnect(splitter, SIGNAL(widthsChanged(QSplitterEx*)), this, SLOT(splitterResize(QSplitterEx*)));
+   m_D->m_List.removeAll(splitter);
 }
 
-void QSplitterGrid::splitterResize( QSplitterEx* splitter )
+void QSplitterGrid::splitterResize(QSplitterEx* splitter)
 {
-   if ( m_D->m_Busy )
+   if (m_D->m_Busy)
       return;
 
    m_D->m_Busy = true;
 
-   QList<QSplitterEx*>::iterator it = m_D->m_List.begin( );
-   QList<QSplitterEx*>::iterator en = m_D->m_List.end( );
+   QList<QSplitterEx*>::iterator it = m_D->m_List.begin();
+   QList<QSplitterEx*>::iterator en = m_D->m_List.end();
 
-   QList<int> sizes = splitter->sizes( );
-   for ( int i = 0; i < sizes.size(); ++i )
-      PRINTVBL( sizes[i] );
+   QList<int> sizes = splitter->sizes();
+   for (int i = 0; i < sizes.size(); ++i)
+      PRINTVBL(sizes[i]);
 
-   while ( it != en )
+   while (it != en)
    {
-      if ( *it != splitter )
+      if (*it != splitter)
       {
-         (*it)->setSizes( sizes );
+         (*it)->setSizes(sizes);
       }
       ++it;
    }

@@ -35,7 +35,7 @@ namespace AWT
       typedef ManagedAutoPointer<ImageVisitor> P;
 
    public:
-      virtual bool visit( const unsigned int x, const unsigned int y, const unsigned int z, const T value ) = 0;
+      virtual bool visit(const unsigned int x, const unsigned int y, const unsigned int z, const T value) = 0;
    };
 }
 

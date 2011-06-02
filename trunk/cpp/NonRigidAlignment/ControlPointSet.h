@@ -46,40 +46,40 @@ namespace AWT
    class ControlPointSet : public ManagedObject /* : public OEKDTree::OEKDTreeData<T,3>*/
    {
    public:
-      typedef ManagedAutoPointer<ControlPointSet<T>> P;
+      typedef ManagedAutoPointer<ControlPointSet<T> > P;
 
    protected:
-      ControlPointSet( );
+      ControlPointSet();
 
-      virtual ~ControlPointSet( );
+      virtual ~ControlPointSet();
 
    public:
-      static typename ControlPointSet<T>::P getInstance( );
-      static typename ControlPointSet<T>::P getInstance( T* bounds, T spacing );
+      static typename ControlPointSet<T>::P getInstance();
+      static typename ControlPointSet<T>::P getInstance(T* bounds, T spacing);
 
-      virtual void add( typename ControlPoint<T>::P cp );
+      virtual void add(typename ControlPoint<T>::P cp);
 
-      virtual void add( typename ControlPointSet<T>::P cps );
+      virtual void add(typename ControlPointSet<T>::P cps);
 
-      virtual void fit( typename ControlPointSet<T>::P cps );
+      virtual void fit(typename ControlPointSet<T>::P cps);
 
-      virtual OEKDTree::ObjectIndex getNumberOfObjects( ) const;
+      virtual OEKDTree::ObjectIndex getNumberOfObjects() const;
 
-      virtual const typename ControlPoint<T>::P getControlPointConst( OEKDTree::ObjectIndex oi ) const;
+      virtual const typename ControlPoint<T>::P getControlPointConst(OEKDTree::ObjectIndex oi) const;
          
-      virtual typename ControlPoint<T>::P getControlPoint( OEKDTree::ObjectIndex oi );
+      virtual typename ControlPoint<T>::P getControlPoint(OEKDTree::ObjectIndex oi);
 
-      virtual T getValue( OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis ) const;
+      virtual T getValue(OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis) const;
 
-      virtual T getMinimumBound( OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis ) const;
+      virtual T getMinimumBound(OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis) const;
 
-      virtual T getMaximumBound( OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis ) const;
+      virtual T getMaximumBound(OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis) const;
 
-      virtual void search( typename OEKDTree::OEKDSearcher<T,3>::P searcher );
+      virtual void search(typename OEKDTree::OEKDSearcher<T,3>::P searcher);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual typename ControlPointSetTreeData<T>::P getTreeData( );
+      virtual typename ControlPointSetTreeData<T>::P getTreeData();
 
    protected:
       struct D;

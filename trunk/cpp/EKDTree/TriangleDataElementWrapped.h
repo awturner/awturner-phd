@@ -38,8 +38,8 @@
 //      class TriangleDataElementWrapped : public TriangleDataElement<T>
 //      {
 //      public:
-//         TriangleDataElementWrapped( T* p0, T* p1, T* p2 );
-//         ~TriangleDataElementWrapped( );
+//         TriangleDataElementWrapped(T* p0, T* p1, T* p2);
+//         ~TriangleDataElementWrapped();
 //      };
 //   }
 //}
@@ -49,17 +49,17 @@
 //namespace AWT { namespace KDTree {
 //
 //template <class T>
-//TriangleDataElementWrapped<T>::TriangleDataElementWrapped( T* p0, T* p1, T* p2 )
+//TriangleDataElementWrapped<T>::TriangleDataElementWrapped(T* p0, T* p1, T* p2)
 //{
 //   this->p0 = p0;
 //   this->p1 = p1;
 //   this->p2 = p2;
 //
-//   update( );
+//   update();
 //}
 //
 //template <class T>
-//TriangleDataElementWrapped<T>::~TriangleDataElementWrapped( )
+//TriangleDataElementWrapped<T>::~TriangleDataElementWrapped()
 //{
 //}
 //

@@ -71,26 +71,26 @@ struct AWT::AlignParametric::CatesRegularizer::D
 
    struct Adjacency
    {
-      void prepare( const MeshIndex N )
+      void prepare(const MeshIndex N)
       {
-         ddwMatrix.clear( );
+         ddwMatrix.clear();
 
-         for ( MeshIndex r = 0; r < N; ++r )
+         for (MeshIndex r = 0; r < N; ++r)
          {
             ddwMatrix[r] = DDWRow();
             adjMatrix[r] = AdjRow();
          }
 
-         weightsRowSum.set_size( N );
-         weightsRowSum.fill( 0 );
+         weightsRowSum.set_size(N);
+         weightsRowSum.fill(0);
       }
 
-      void insert( const MeshIndex row, const MeshIndex col, const DistanceDirectionWeight& ddw )
+      void insert(const MeshIndex row, const MeshIndex col, const DistanceDirectionWeight& ddw)
       {
          ddwMatrix[row][col] = ddw;
-         adjMatrix[col].push_back( row );
+         adjMatrix[col].push_back(row);
 
-         weightsRowSum( row )    += ddw.weight;
+         weightsRowSum(row)    += ddw.weight;
       }
 
       DDWRows       ddwMatrix;
@@ -123,46 +123,46 @@ struct AWT::AlignParametric::CatesRegularizer::D
 
    DistanceType distanceType;
 
-   void setSigma( const MeshIndex i, const T v, const AWT::ValueRange<T>& sigmaRange )
+   void setSigma(const MeshIndex i, const T v, const AWT::ValueRange<T>& sigmaRange)
    {
-      sigma->setPointElement( i, 0, sigmaRange.clamp( v ) );
+      sigma->setPointElement(i, 0, sigmaRange.clamp(v));
    }
 
-   T getSigma( const MeshIndex i ) const
+   T getSigma(const MeshIndex i) const
    {
-      return sigma->getPointElement( i, 0 );
+      return sigma->getPointElement(i, 0);
    }
 
    VerticesNearestVerticesSearch<T>::P euclideanSearcher;
 
    // Using a Euclidean distance
-   void getNearbyParticleDistancesE( const MeshIndex particle, const T maxDistance, DistanceDirectionMap& ddm, bool calculateDirections = false )
+   void getNearbyParticleDistancesE(const MeshIndex particle, const T maxDistance, DistanceDirectionMap& ddm, bool calculateDirections = false)
    {
       T vtx[3];
       T vtxOther[3];
       Direction di = { 0, 0, 0 };
 
-      euclideanSearcher->reset( );
+      euclideanSearcher->reset();
 
-      particles->getPoint( particle, vtx );
-      euclideanSearcher->setTestPoint( vtx );
-      euclideanSearcher->setRadius( maxDistance );
+      particles->getPoint(particle, vtx);
+      euclideanSearcher->setTestPoint(vtx);
+      euclideanSearcher->setRadius(maxDistance);
 
-      particlesMesh->search( euclideanSearcher );
+      particlesMesh->search(euclideanSearcher);
 
-      ddm.clear( );
+      ddm.clear();
 
-      for ( MeshIndex i = 0, imax = euclideanSearcher->getNumberOfPointsFound( ); i < imax; ++i )
+      for (MeshIndex i = 0, imax = euclideanSearcher->getNumberOfPointsFound(); i < imax; ++i)
       {
-         MeshIndex v = euclideanSearcher->getPointFoundIndex( i );
+         MeshIndex v = euclideanSearcher->getPointFoundIndex(i);
 
-         particles->getPoint( v, vtxOther );
+         particles->getPoint(v, vtxOther);
 
-         FOREACHAXIS( ax )
+         FOREACHAXIS(ax)
             vtxOther[ax] -= vtx[ax];
 
-         const T len = normalize<T>( vtxOther, 3 );
-         if ( calculateDirections )
+         const T len = normalize<T>(vtxOther, 3);
+         if (calculateDirections)
          {
             di.x = vtxOther[0];
             di.y = vtxOther[1];
@@ -173,80 +173,80 @@ struct AWT::AlignParametric::CatesRegularizer::D
             di.x = di.y = di.z = 0;
          }
 
-         ddm[v] = DistanceDirection( len, di );
+         ddm[v] = DistanceDirection(len, di);
       }
    }
 
    // Using a geodesic distance
-   void getNearbyParticleDistancesG( const MeshIndex particle, const T maxDistance, DistanceDirectionMap& ddm, bool calculateDirections = false )
+   void getNearbyParticleDistancesG(const MeshIndex particle, const T maxDistance, DistanceDirectionMap& ddm, bool calculateDirections = false)
    {
       T vtx[3];
 
-      particles->getPoint( particle, vtx );
-      geo->setOrigin( vtx, particleFaceIndex[particle], maxDistance );
+      particles->getPoint(particle, vtx);
+      geo->setOrigin(vtx, particleFaceIndex[particle], maxDistance);
 
-      ddm.clear( );
+      ddm.clear();
 
       T dir[] = { 0, 0, 0 };
       Direction di = { 0, 0, 0 };
 
-      const MeshIndex nfaces = geo->getNumberOfFoundCells( );
+      const MeshIndex nfaces = geo->getNumberOfFoundCells();
 
       Idx cnt = 0;
 
-      for ( MeshIndex fi = 0; fi < nfaces; ++fi )
+      for (MeshIndex fi = 0; fi < nfaces; ++fi)
       {
          // This cell is inside the radius
-         const MeshIndex f = geo->getFoundCell( fi );
+         const MeshIndex f = geo->getFoundCell(fi);
 
          // Find all the points which were associated to it on the last reprojection
-         for ( std::vector<MeshIndex>::iterator it = particlesOnFace[f].begin(), en = particlesOnFace[f].end(); it != en; ++it )
+         for (std::vector<MeshIndex>::iterator it = particlesOnFace[f].begin(), en = particlesOnFace[f].end(); it != en; ++it)
          {
-            particles->getPoint( *it, vtx );
+            particles->getPoint(*it, vtx);
             //PRINTVEC2("other", vtx,3);
 
-            const T len = geo->distanceTo( vtx, f );
+            const T len = geo->distanceTo(vtx, f);
 
             // We may not actually need directions, e.g. for optimizing sigma
-            if ( calculateDirections )
+            if (calculateDirections)
             {
-               geo->directionTo( vtx, f, dir, false );
+               geo->directionTo(vtx, f, dir, false);
 
                di.x = dir[0];
                di.y = dir[1];
                di.z = dir[2];
             }
 
-            ddm[*it] = DistanceDirection( len, di );
+            ddm[*it] = DistanceDirection(len, di);
 
             ++cnt;
          }
       }
    }
 
-   void getNearbyParticleDistances( const MeshIndex i, const T maxDistance, DistanceDirectionMap& ddm, bool calculateDirections = false )
+   void getNearbyParticleDistances(const MeshIndex i, const T maxDistance, DistanceDirectionMap& ddm, bool calculateDirections = false)
    {
-      switch ( distanceType )
+      switch (distanceType)
       {
       case DT_APPROXGEODESIC:
-         getNearbyParticleDistancesG( i, maxDistance, ddm, calculateDirections );
+         getNearbyParticleDistancesG(i, maxDistance, ddm, calculateDirections);
          break;
       case DT_EUCLIDEAN:
-         getNearbyParticleDistancesE( i, maxDistance, ddm, calculateDirections );
+         getNearbyParticleDistancesE(i, maxDistance, ddm, calculateDirections);
          break;
       default:
          throw "Invalid distance type";
       }
    }
 
-   void buildAdjacency( Adjacency& adj )
+   void buildAdjacency(Adjacency& adj)
    {
-      //DEBUGMACRO( "Starting to build adjacency matrix..." );
-      const MeshIndex N = particles->getNumberOfPoints( );
+      //DEBUGMACRO("Starting to build adjacency matrix...");
+      const MeshIndex N = particles->getNumberOfPoints();
       
-      adj.prepare( N );
+      adj.prepare(N);
 
-      for ( MeshIndex k = 0; k < N; ++k )
+      for (MeshIndex k = 0; k < N; ++k)
       {
          Idx cnt = 0;
 
@@ -256,21 +256,21 @@ struct AWT::AlignParametric::CatesRegularizer::D
 
          // Rebuild the DistanceDirectionMap map with directions
          DistanceDirectionMap ddm;
-         getNearbyParticleDistances( k, cutoff, ddm, true );
+         getNearbyParticleDistances(k, cutoff, ddm, true);
 
          // Go through each of the nearby points found
-         for ( DistanceDirectionMap::iterator it = ddm.begin(), en = ddm.end(); it != en; ++it )
+         for (DistanceDirectionMap::iterator it = ddm.begin(), en = ddm.end(); it != en; ++it)
          {
             const MeshIndex         j  = it->first;
             const DistanceDirection dd = it->second;
 
-            if ( j != k || CATESREG_USESELF )
+            if (j != k || CATESREG_USESELF)
             {
-               const T wt = truncatedIsotropicGaussian<T>( dd.first*dd.first, sigmaK, cutoff, 3 );
+               const T wt = truncatedIsotropicGaussian<T>(dd.first*dd.first, sigmaK, cutoff, 3);
 
                DistanceDirectionWeight ddw = { dd.first, dd.second, wt };
 
-               adj.insert( k, j, ddw );
+               adj.insert(k, j, ddw);
                ++cnt;
             }
          }
@@ -283,22 +283,22 @@ struct AWT::AlignParametric::CatesRegularizer::D
       }
    }
 
-   void optimizeSigma( )
+   void optimizeSigma()
    {
       if (fixSigma)
       {
          //DEBUGMACRO("Sigma is fixed");
          return;
       }
-      const MeshIndex N = particles->getNumberOfPoints( );
+      const MeshIndex N = particles->getNumberOfPoints();
 
       DistanceDirectionMap ddm;
 
       ValueRange<T> tmpSigmaRange = { sigmaRange.upper, sigmaRange.lower };
 
-      for ( MeshIndex k = 0; k < N; ++k )
+      for (MeshIndex k = 0; k < N; ++k)
       {
-         T sigmaK = getSigma( k );
+         T sigmaK = getSigma(k);
          
          T old3Sigma = 0;
          T lastSigma = sigmaK;
@@ -306,28 +306,28 @@ struct AWT::AlignParametric::CatesRegularizer::D
          // Use Newton's method to iteratively update the value of sigma
          MeshIndex iters;
          ddm.clear();
-         for ( iters = 0; iters < maxSigmaIters; ++iters )
+         for (iters = 0; iters < maxSigmaIters; ++iters)
          {
             // Get the particle distances, truncated at 3*current sigma value
             // Only need to do this if sigmaK has increased
-            if ( 3*sigmaK > old3Sigma )
+            if (3*sigmaK > old3Sigma)
             {
                // Make the range a little bigger (1.5x) so that if sigma increases, we don't need to recalc each time
-               getNearbyParticleDistances( k, old3Sigma = 4.5*sigmaK, ddm, false );
+               getNearbyParticleDistances(k, old3Sigma = 4.5*sigmaK, ddm, false);
             }
 
             T num = 0;
             T den = 0;
 
             // Go through each of the nearby points found
-            for ( DistanceDirectionMap::iterator it = ddm.begin(), en = ddm.end(); it != en; ++it )
+            for (DistanceDirectionMap::iterator it = ddm.begin(), en = ddm.end(); it != en; ++it)
             {
                const MeshIndex         j  = it->first;
                const DistanceDirection dd = it->second;
 
-               if ( j != k || CATESREG_USESELF )
+               if (j != k || CATESREG_USESELF)
                {
-                  const T wt = truncatedIsotropicGaussian<T>( dd.first*dd.first, sigmaK, 3*sigmaK, 3 );
+                  const T wt = truncatedIsotropicGaussian<T>(dd.first*dd.first, sigmaK, 3*sigmaK, 3);
 
                   num += wt * dd.first*dd.first;
                   den += wt;
@@ -336,22 +336,22 @@ struct AWT::AlignParametric::CatesRegularizer::D
 
             lastSigma = sigmaK;
 
-            if ( den != 0 )
+            if (den != 0)
             {
                // Calculate the updated value
-               sigmaK = sqrt( num / ( 3 * den ) );
+               sigmaK = sqrt(num / (3 * den));
 
-               if ( debug ) PRINTVBL( sigmaK );
+               if (debug) PRINTVBL(sigmaK);
 
                // If sigma has gone out of the allowed range, then stop
                
-               if ( sigmaK < old3Sigma && sigmaK <= sigmaRange.lower )
+               if (sigmaK < old3Sigma && sigmaK <= sigmaRange.lower)
                   break;
 
-               if ( sigmaK > old3Sigma && sigmaK >= sigmaRange.upper )
+               if (sigmaK > old3Sigma && sigmaK >= sigmaRange.upper)
                   break;
 
-               if ( abs(sigmaK-lastSigma) < 1e-3 )
+               if (abs(sigmaK-lastSigma) < 1e-3)
                   break;
             }
             else
@@ -360,77 +360,77 @@ struct AWT::AlignParametric::CatesRegularizer::D
                // so increase sigma
                sigmaK = 2*sigmaK;
 
-               if ( sigmaK > sigmaRange.upper )
+               if (sigmaK > sigmaRange.upper)
                   break;
             }
          }
 
-         setSigma( k, sigmaK, sigmaRange );
+         setSigma(k, sigmaK, sigmaRange);
          
-         tmpSigmaRange.lower = std::min( tmpSigmaRange.lower, sigmaK );
-         tmpSigmaRange.upper = std::max( tmpSigmaRange.upper, sigmaK );
+         tmpSigmaRange.lower = std::min(tmpSigmaRange.lower, sigmaK);
+         tmpSigmaRange.upper = std::max(tmpSigmaRange.upper, sigmaK);
       }
 
-      actualSigmaRange.lower = std::max( sigmaRange.lower, tmpSigmaRange.lower );
-      actualSigmaRange.upper = std::min( sigmaRange.upper, tmpSigmaRange.upper );
+      actualSigmaRange.lower = std::max(sigmaRange.lower, tmpSigmaRange.lower);
+      actualSigmaRange.upper = std::min(sigmaRange.upper, tmpSigmaRange.upper);
 
       {
-         ColouredConsole cons( 12 );
-         DEBUGMACRO( "Set sigma range: " << sigmaRange.lower       << " -> " << sigmaRange.upper );
-         DEBUGMACRO( "Sigma range: "     << actualSigmaRange.lower << " -> " << actualSigmaRange.upper );
+         ColouredConsole cons(12);
+         DEBUGMACRO("Set sigma range: " << sigmaRange.lower       << " -> " << sigmaRange.upper);
+         DEBUGMACRO("Sigma range: "     << actualSigmaRange.lower << " -> " << actualSigmaRange.upper);
       }
 
       //PAUSE;
    }
 
-   void associateToFace( MeshIndex vertex, MeshIndex face )
+   void associateToFace(MeshIndex vertex, MeshIndex face)
    {
       const MeshIndex undefined = std::numeric_limits<MeshIndex>::max();
 
       // Is there currently a list of vertices on this face?
-      if ( particlesOnFace.find( face ) == particlesOnFace.end() )
+      if (particlesOnFace.find(face) == particlesOnFace.end())
          particlesOnFace[ face ] = std::vector<MeshIndex>();
 
       // Is the vertex currently associated to a face?
-      std::map<MeshIndex,MeshIndex>::iterator fn = particleFaceIndex.find( vertex );
-      if ( fn != particleFaceIndex.end() && fn->second != undefined )
+      std::map<MeshIndex,MeshIndex>::iterator fn = particleFaceIndex.find(vertex);
+      if (fn != particleFaceIndex.end() && fn->second != undefined)
       {
          // Don't actually need to do anything
-         if ( fn->second == face )
+         if (fn->second == face)
             return;
 
          // Need to get rid of this face from the list of vertices on this face
          std::vector<MeshIndex>::iterator it = particlesOnFace[face].begin();
-         while ( it != particlesOnFace[face].end() && *it != vertex )
+         while (it != particlesOnFace[face].end() && *it != vertex)
             ++it;
 
-         if ( it != particlesOnFace[face].end() )
+         if (it != particlesOnFace[face].end())
          {
-            particlesOnFace[face].erase( it, it+1 );
+            particlesOnFace[face].erase(it, it+1);
             particleFaceIndex[vertex] = undefined;
          }
       }
 
-      if ( particlesOnFace.find( face ) == particlesOnFace.end() )
+      if (particlesOnFace.find(face) == particlesOnFace.end())
          particlesOnFace[ face ] = std::vector<MeshIndex>();
 
       particleFaceIndex[vertex] = face;
-      particlesOnFace[face].push_back( vertex );
+      particlesOnFace[face].push_back(vertex);
    }
 
-   T calculateNegativeEntropy( Adjacency& adj )
+   T calculateNegativeEntropy(Adjacency& adj)
    {
-      const MeshIndex N = particles->getNumberOfPoints( );
+      const MeshIndex N = particles->getNumberOfPoints();
 
       T logSum = 0;
-      for ( MeshIndex i = 0; i < N; ++i )
+      for (MeshIndex i = 0; i < N; ++i)
       {
          if (adj.weightsRowSum(i) == 0)
          {
-            DEBUGMACRO(i << "\t" << adj.weightsRowSum( i ));
+            DEBUGMACRO(i << "\t" << adj.weightsRowSum(i));
          }
 
-         logSum += log( adj.weightsRowSum( i ) / N );
+         logSum += log(adj.weightsRowSum(i) / N);
       }
 
       const T ret = -logSum/* / N*/;
@@ -440,132 +440,132 @@ struct AWT::AlignParametric::CatesRegularizer::D
 
 };
 
-AWT::AlignParametric::CatesRegularizer::CatesRegularizer( CatesParticleSurface* surf, const ValueRange<T> sigmaRange )
+AWT::AlignParametric::CatesRegularizer::CatesRegularizer(CatesParticleSurface* surf, const ValueRange<T> sigmaRange)
 {
    m_D = new D;
 
-   m_D->euclideanSearcher = VerticesNearestVerticesSearch<T>::getInstance( );
+   m_D->euclideanSearcher = VerticesNearestVerticesSearch<T>::getInstance();
 
    m_D->maxSigmaIters = 20;
 
    m_D->surf            = surf;
-   m_D->meshSurfaceArea = MeshFunctions<T>::getSurfaceArea( surf->getMesh() );
+   m_D->meshSurfaceArea = MeshFunctions<T>::getSurfaceArea(surf->getMesh());
 
-   m_D->particles = surf->getSamples( );
+   m_D->particles = surf->getSamples();
 
    m_D->distanceType = DT_EUCLIDEAN;
    
    // Construct a mesh around the particles for easier searching
-   m_D->particlesMesh = MeshImpl<T>::getInstance( 0, 0 );
-   m_D->particlesMesh->setVertices( m_D->particles );
+   m_D->particlesMesh = MeshImpl<T>::getInstance(0, 0);
+   m_D->particlesMesh->setVertices(m_D->particles);
 
    // Construct the geodesic distance calculator
-   m_D->geo = MeshApproxGeodesic<T>::getInstance( surf->getMesh() );
+   m_D->geo = MeshApproxGeodesic<T>::getInstance(surf->getMesh());
 
-   m_D->sigma = TuplesImpl<T>::getInstance( 1, m_D->particles->getNumberOfPoints( ) );
+   m_D->sigma = TuplesImpl<T>::getInstance(1, m_D->particles->getNumberOfPoints());
    m_D->sigmaRange = sigmaRange;
 
    // Calculate a reasonable estimate for the initial sigma
    const T surfArea = MeshFunctions<T>::getSurfaceArea(surf->getMesh());
    const T areaPerSample = surfArea / m_D->particles->getNumberOfPoints();
-   const T initSigma = sqrt( areaPerSample / ( 4 * atan(1.0) ) );
+   const T initSigma = sqrt(areaPerSample / (4 * atan(1.0)));
 
-   PRINTVBL( initSigma );
+   PRINTVBL(initSigma);
 
    const T zero[] = { 0, 0, 0 };
-   for ( MeshIndex v = 0, vmax = m_D->particles->getNumberOfPoints( ); v < vmax; ++v )
+   for (MeshIndex v = 0, vmax = m_D->particles->getNumberOfPoints(); v < vmax; ++v)
    {
-      m_D->setSigma( v, initSigma /*sigmaRange.upper*/, sigmaRange );
+      m_D->setSigma(v, initSigma /*sigmaRange.upper*/, sigmaRange);
    }
 
    m_D->fixSigma = false;
 
-   DEBUGMACRO( "Optimizing sigma" );
-   m_D->optimizeSigma( );
-   DEBUGMACRO( "Done." );
+   DEBUGMACRO("Optimizing sigma");
+   m_D->optimizeSigma();
+   DEBUGMACRO("Done.");
    
 }
 
-AWT::AlignParametric::CatesRegularizer::~CatesRegularizer( )
+AWT::AlignParametric::CatesRegularizer::~CatesRegularizer()
 {
    delete m_D;
 }
 
-AWT::AlignParametric::CatesRegularizer::P AWT::AlignParametric::CatesRegularizer::getInstance( CatesParticleSurface* surf, const ValueRange<T> sigmaRange )
+AWT::AlignParametric::CatesRegularizer::P AWT::AlignParametric::CatesRegularizer::getInstance(CatesParticleSurface* surf, const ValueRange<T> sigmaRange)
 {
-   AUTOGETINSTANCE( AWT::AlignParametric::CatesRegularizer, ( surf, sigmaRange ) );
+   AUTOGETINSTANCE(AWT::AlignParametric::CatesRegularizer, (surf, sigmaRange));
 }
 
-GETNAMEMACRO( AWT::AlignParametric::CatesRegularizer );
+GETNAMEMACRO(AWT::AlignParametric::CatesRegularizer);
 
-T AWT::AlignParametric::CatesRegularizer::getSigma( const MeshIndex i ) const
+T AWT::AlignParametric::CatesRegularizer::getSigma(const MeshIndex i) const
 {
-   return m_D->getSigma( i );
+   return m_D->getSigma(i);
 }
 
-void AWT::AlignParametric::CatesRegularizer::setSigma( const MeshIndex i, const T v )
+void AWT::AlignParametric::CatesRegularizer::setSigma(const MeshIndex i, const T v)
 {
-   while ( m_D->sigma->getNumberOfPoints() <= i )
-      m_D->sigma->setPoint( m_D->sigma->getNumberOfPoints(), &m_D->sigmaRange.upper );
+   while (m_D->sigma->getNumberOfPoints() <= i)
+      m_D->sigma->setPoint(m_D->sigma->getNumberOfPoints(), &m_D->sigmaRange.upper);
 
-   m_D->setSigma( i, v, m_D->sigmaRange );
+   m_D->setSigma(i, v, m_D->sigmaRange);
 }
 
-TuplesType::P AWT::AlignParametric::CatesRegularizer::getSigma( )
+TuplesType::P AWT::AlignParametric::CatesRegularizer::getSigma()
 {
    return m_D->sigma;
 }
 
-T AWT::AlignParametric::CatesRegularizer::getMinSigma( ) const
+T AWT::AlignParametric::CatesRegularizer::getMinSigma() const
 {
    return m_D->actualSigmaRange.lower;
 }
 
-const AWT::ValueRange<T>& AWT::AlignParametric::CatesRegularizer::getSigmaRange( ) const
+const AWT::ValueRange<T>& AWT::AlignParametric::CatesRegularizer::getSigmaRange() const
 {
    return m_D->sigmaRange;
 }
 
-void AWT::AlignParametric::CatesRegularizer::setSigmaRange( const AWT::ValueRange<T>& sigmaRange )
+void AWT::AlignParametric::CatesRegularizer::setSigmaRange(const AWT::ValueRange<T>& sigmaRange)
 {
    m_D->sigmaRange.lower = sigmaRange.lower;
    m_D->sigmaRange.upper = sigmaRange.upper;
 }
 
-T AWT::AlignParametric::CatesRegularizer::calculateCost( const bool debug )
+T AWT::AlignParametric::CatesRegularizer::calculateCost(const bool debug)
 {
-   m_D->particlesMesh->prepareToSearchVertices( true );
+   m_D->particlesMesh->prepareToSearchVertices(true);
 
    // Update the optimal sigmas
-   m_D->optimizeSigma( );
+   m_D->optimizeSigma();
 
    m_D->adj = D::Adjacency();
-   m_D->buildAdjacency( m_D->adj );
+   m_D->buildAdjacency(m_D->adj);
 
-   const T ret = m_D->calculateNegativeEntropy( m_D->adj );
+   const T ret = m_D->calculateNegativeEntropy(m_D->adj);
 
    return ret;
 }
 
-T AWT::AlignParametric::CatesRegularizer::calculateNegativeEntropy( )
+T AWT::AlignParametric::CatesRegularizer::calculateNegativeEntropy()
 {
-   m_D->particlesMesh->prepareToSearchVertices( true );
+   m_D->particlesMesh->prepareToSearchVertices(true);
 
    m_D->adj = D::Adjacency();
-   m_D->buildAdjacency( m_D->adj );
+   m_D->buildAdjacency(m_D->adj);
 
-   const T ret = m_D->calculateNegativeEntropy( m_D->adj );
+   const T ret = m_D->calculateNegativeEntropy(m_D->adj);
 
    return ret;
 }
 
-void AWT::AlignParametric::CatesRegularizer::calculateUpdate( MatrixType& delta )
+void AWT::AlignParametric::CatesRegularizer::calculateUpdate(MatrixType& delta)
 {
    D::Adjacency& adj = m_D->adj;
-   const MeshIndex N = m_D->particles->getNumberOfPoints( );
+   const MeshIndex N = m_D->particles->getNumberOfPoints();
 
-   if ( delta.rows() != N || delta.cols() != 3 )
-      delta.set_size( N, 3 );
+   if (delta.rows() != N || delta.cols() != 3)
+      delta.set_size(N, 3);
 
    T vtxDelta[3];
    T vtxDelta2[3];
@@ -576,11 +576,11 @@ void AWT::AlignParametric::CatesRegularizer::calculateUpdate( MatrixType& delta 
    {
       Idx di = 0;
 
-      for ( MeshIndex k = 0; k < N; ++k )
+      for (MeshIndex k = 0; k < N; ++k)
       {
-         //PRINTVBL2( "kkk", k);
+         //PRINTVBL2("kkk", k);
 
-         const T sigmaK = m_D->getSigma( k );
+         const T sigmaK = m_D->getSigma(k);
          const D::DDWRow& thisDDWRow = adj.ddwMatrix[k];
          const D::AdjRow& thisAdjRow = adj.adjMatrix[k];
 
@@ -591,7 +591,7 @@ void AWT::AlignParametric::CatesRegularizer::calculateUpdate( MatrixType& delta 
          denom = 0;
 
          // This is the term given by Cates
-         for ( D::DDWRow::const_iterator it = thisDDWRow.begin(), en = thisDDWRow.end(); it != en; ++it )
+         for (D::DDWRow::const_iterator it = thisDDWRow.begin(), en = thisDDWRow.end(); it != en; ++it)
          {
             const MeshIndex j                     = it->first;
             const D::DistanceDirectionWeight& ddw = it->second;
@@ -599,7 +599,7 @@ void AWT::AlignParametric::CatesRegularizer::calculateUpdate( MatrixType& delta 
             const T wt = ddw.weight;
             denom += wt;
 
-            if ( j != k )
+            if (j != k)
             {
                // -ve, because particle needs to move away from other particles
                num[0] -= wt * ddw.distance * ddw.direction.x;
@@ -608,54 +608,54 @@ void AWT::AlignParametric::CatesRegularizer::calculateUpdate( MatrixType& delta 
             }
          }
 
-         if ( denom != 0 )
+         if (denom != 0)
          {
-            for ( MeshIndex ax = 0; ax < 3; ++ax )
+            for (MeshIndex ax = 0; ax < 3; ++ax)
                vtxDelta[ax] = num[ax] / denom / (sigmaK * sigmaK);
          }
 
          // This term isn't present in Cates' derivation
          vtxDelta2[0] = vtxDelta2[1] = vtxDelta2[2] = 0;
 
-         if ( true )
+         if (true)
          {
-            for ( D::AdjRow::const_iterator it = thisAdjRow.begin(), en = thisAdjRow.end(); it != en; ++it )
+            for (D::AdjRow::const_iterator it = thisAdjRow.begin(), en = thisAdjRow.end(); it != en; ++it)
             {
                const Idx i = *it;
                if (i==k) continue;
 
                const D::DistanceDirectionWeight& ddw = adj.ddwMatrix[i][k];
 
-               if ( adj.weightsRowSum( k ) != 0 )
+               if (adj.weightsRowSum(k) != 0)
                {
-                  const T sigmaI = m_D->getSigma( i );
+                  const T sigmaI = m_D->getSigma(i);
 
                   num[0] = ddw.weight * ddw.distance * ddw.direction.x;
                   num[1] = ddw.weight * ddw.distance * ddw.direction.y;
                   num[2] = ddw.weight * ddw.distance * ddw.direction.z;
 
-                  denom = adj.weightsRowSum( i );
+                  denom = adj.weightsRowSum(i);
 
-                  for ( MeshIndex ax = 0; ax < 3; ++ax )
+                  for (MeshIndex ax = 0; ax < 3; ++ax)
                      vtxDelta2[ax] += num[ax] / denom / (sigmaI * sigmaI);
                }
             }
          }
 
-         for ( MeshIndex ax = 0; ax < 3; ++ax )
+         for (MeshIndex ax = 0; ax < 3; ++ax)
          {
             vtxDelta_combined[ax] = vtxDelta[ax] + vtxDelta2[ax];
-            delta( k, ax ) = vtxDelta_combined[ax];
+            delta(k, ax) = vtxDelta_combined[ax];
          }
 
-         //delta( k, 3 ) = 0;
+         //delta(k, 3) = 0;
       }
    }
 }
 
 void AWT::AlignParametric::CatesRegularizer::associateSampleToFace(const AWT::MeshIndex i, const AWT::MeshIndex f)
 {
-   m_D->associateToFace( i, f );
+   m_D->associateToFace(i, f);
 }
 
 CatesRegularizer::DistanceType AWT::AlignParametric::CatesRegularizer::getDistanceType() const
@@ -663,9 +663,9 @@ CatesRegularizer::DistanceType AWT::AlignParametric::CatesRegularizer::getDistan
    return m_D->distanceType;
 }
 
-void AWT::AlignParametric::CatesRegularizer::setDistanceType( const CatesRegularizer::DistanceType v )
+void AWT::AlignParametric::CatesRegularizer::setDistanceType(const CatesRegularizer::DistanceType v)
 {
-   if ( v != m_D->distanceType )
+   if (v != m_D->distanceType)
    {
       m_D->distanceType = v;
       modified();

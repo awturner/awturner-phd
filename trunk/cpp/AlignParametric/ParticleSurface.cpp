@@ -40,53 +40,53 @@
 using namespace AWT;
 using namespace AWT::AlignParametric;
 
-AWT::AlignParametric::ParticleSurface::ParticleSurface( MeshType::P mesh, const TuplesType::P samples, const Idx _ntake )
+AWT::AlignParametric::ParticleSurface::ParticleSurface(MeshType::P mesh, const TuplesType::P samples, const Idx _ntake)
 {
    // Keep a hold of the mesh
    this->mesh = mesh;
 
-   calculateFaceNormals( );
+   calculateFaceNormals();
 
-   const Idx ntake = std::min<Idx>( _ntake, samples->getNumberOfPoints() );
-   DEBUGMACRO( "Only taking " << ntake );
+   const Idx ntake = std::min<Idx>(_ntake, samples->getNumberOfPoints());
+   DEBUGMACRO("Only taking " << ntake);
    // Take just the first 10 samples
-   this->samples = TuplesImpl<T>::getInstance( 3, ntake );
-   for ( Idx i = 0; i < ntake; ++i )
+   this->samples = TuplesImpl<T>::getInstance(3, ntake);
+   for (Idx i = 0; i < ntake; ++i)
    {
       T vtx[3];
-      samples->getPoint( i, vtx );
-      this->samples->setPoint( i, vtx );
+      samples->getPoint(i, vtx);
+      this->samples->setPoint(i, vtx);
    }
    
    // Calculate the 5th-%ile triangle area, use this to avoid truncation error
    std::vector<T> areas;
-   MESH_EACHFACE( mesh, f )
-      areas.push_back( MeshFunctions<T>::getFaceArea( mesh, f ) );
+   MESH_EACHFACE(mesh, f)
+      areas.push_back(MeshFunctions<T>::getFaceArea(mesh, f));
 
-   sort( areas.begin(), areas.end() );
+   sort(areas.begin(), areas.end());
 
-   maxMove = sqrt( areas[ areas.size() *  5 / 100 ] ) / 2;
-   PRINTVBL( maxMove );
+   maxMove = sqrt(areas[ areas.size() *  5 / 100 ]) / 2;
+   PRINTVBL(maxMove);
 }
 
-void AWT::AlignParametric::ParticleSurface::initialize( )
+void AWT::AlignParametric::ParticleSurface::initialize()
 {  
    DEBUGLINE;
-   setPointLocationsInitial( );
+   setPointLocationsInitial();
 }
 
-AWT::AlignParametric::ParticleSurface::~ParticleSurface( )
+AWT::AlignParametric::ParticleSurface::~ParticleSurface()
 {
 }
 
 // Get the number of parameter components describing each sample
-Idx AWT::AlignParametric::ParticleSurface::getParameterDimensionality( ) const
+Idx AWT::AlignParametric::ParticleSurface::getParameterDimensionality() const
 {
    return 3;
 }
 
 // Get the number of samples on the surface
-Idx AWT::AlignParametric::ParticleSurface::getNumberOfSamples( ) const
+Idx AWT::AlignParametric::ParticleSurface::getNumberOfSamples() const
 {
    return samples->getNumberOfPoints();
 }
@@ -94,117 +94,117 @@ Idx AWT::AlignParametric::ParticleSurface::getNumberOfSamples( ) const
 // Get the current sample locations
 // NOTE: This should be in HOMOGENEOUS form, i.e. samples.rows() = Dims + 1
 // The last row should be all ones, or weird things will happen...
-void AWT::AlignParametric::ParticleSurface::getSamples( MatrixType& samples ) const
+void AWT::AlignParametric::ParticleSurface::getSamples(MatrixType& samples) const
 {
-   if ( samples.rows() != 4 || samples.cols() != getNumberOfSamples() )
-      samples.set_size( 4, getNumberOfSamples() );
+   if (samples.rows() != 4 || samples.cols() != getNumberOfSamples())
+      samples.set_size(4, getNumberOfSamples());
 
    T vtx[4];
-   for ( Idx i = 0, imax = getNumberOfSamples(); i < imax; ++i )
+   for (Idx i = 0, imax = getNumberOfSamples(); i < imax; ++i)
    {
-      this->samples->getPoint( i, vtx );
+      this->samples->getPoint(i, vtx);
       vtx[3] = 1;
       
-      samples.set_column( i, vtx );
+      samples.set_column(i, vtx);
    }
 }
 
-T AWT::AlignParametric::ParticleSurface::getMaxMove( ) const
+T AWT::AlignParametric::ParticleSurface::getMaxMove() const
 {
    return maxMove;
 }
 
 // Get the number of parameters which control this sampling
-Idx AWT::AlignParametric::ParticleSurface::getNumberOfParameters( ) const
+Idx AWT::AlignParametric::ParticleSurface::getNumberOfParameters() const
 {
    return samples->getNumberOfPoints();
 }
 
 // Get the current set of control values
-void AWT::AlignParametric::ParticleSurface::getParameters( MatrixType& controls ) const
+void AWT::AlignParametric::ParticleSurface::getParameters(MatrixType& controls) const
 {
-   if ( controls.rows() != getNumberOfParameters() || controls.cols() != 3 )
-      controls.set_size( getNumberOfParameters(), 3 );
+   if (controls.rows() != getNumberOfParameters() || controls.cols() != 3)
+      controls.set_size(getNumberOfParameters(), 3);
 
    T vtx[3];
-   for ( Idx i = 0, imax = getNumberOfParameters(); i < imax; ++i )
+   for (Idx i = 0, imax = getNumberOfParameters(); i < imax; ++i)
    {
       samples->getPoint(i,vtx);
       
-      controls.set_row( i, vtx );
+      controls.set_row(i, vtx);
    }
 }
 
-void AWT::AlignParametric::ParticleSurface::jacobian( const Idx l, const Idx p, MatrixType& matrix ) const
+void AWT::AlignParametric::ParticleSurface::jacobian(const Idx l, const Idx p, MatrixType& matrix) const
 {
    // Nice and easy Jacobian...
-   if ( l == p )
+   if (l == p)
    {
-      matrix.set_identity( );
+      matrix.set_identity();
       return;
 
       T nml[3];
-      faceNormals->getPoint( particleFace[l], nml );
+      faceNormals->getPoint(particleFace[l], nml);
 
-      for ( Idx r = 0; r < 3; ++r )
-         for ( Idx c = 0; c < 3; ++c )
+      for (Idx r = 0; r < 3; ++r)
+         for (Idx c = 0; c < 3; ++c)
             matrix(r,c) -= nml[r]*nml[c];
    }
    else
    {
-      matrix.fill( 0 );
+      matrix.fill(0);
    }
 }
 
-void AWT::AlignParametric::ParticleSurface::splitParticle( const Idx p, const T* theShift )
+void AWT::AlignParametric::ParticleSurface::splitParticle(const Idx p, const T* theShift)
 {
-   ColouredConsole cons( ColouredConsole::COL_YELLOW );
+   ColouredConsole cons(ColouredConsole::COL_YELLOW);
 
-   FacesNearestPointSearch<T>::P searcher = FacesNearestPointSearch<T>::getInstance( );
+   FacesNearestPointSearch<T>::P searcher = FacesNearestPointSearch<T>::getInstance();
    T vtx[4];
 
    const T mults[] = { -0.5, 0.5 };
    const Idx idxs[] = { p, samples->getNumberOfPoints() };
 
    // Push back a face into the list (will be overwritten soon enough)
-   particleFace.push_back( INVALID_INDEX );
+   particleFace.push_back(INVALID_INDEX);
 
-   for ( Idx i = 0; i < 2; ++i )
+   for (Idx i = 0; i < 2; ++i)
    {
       // Get the sample location
-      samples->getPoint( p, vtx );
+      samples->getPoint(p, vtx);
 
-      FOREACHAXIS( ax )
+      FOREACHAXIS(ax)
          vtx[ax] += mults[i]*theShift[ax];
       vtx[3] = 1;
 
-      updatePointLocation( idxs[i], vtx, searcher );
+      updatePointLocation(idxs[i], vtx, searcher);
 
-      samples->getPoint( idxs[i], vtx );
-      //PRINTVBL( idxs[i] );
-      //PRINTVEC( vtx, 4 );
+      samples->getPoint(idxs[i], vtx);
+      //PRINTVBL(idxs[i]);
+      //PRINTVEC(vtx, 4);
    }
 
    modified();
 }
 
-void AWT::AlignParametric::ParticleSurface::refine( )
+void AWT::AlignParametric::ParticleSurface::refine()
 {
 }
 
 // Iterator functions - allows you to skip all the zero jacobians
 // Takes the internal iterPtr back to the start
-void AWT::AlignParametric::ParticleSurface::resetIterator( )
+void AWT::AlignParametric::ParticleSurface::resetIterator()
 {
    iterPtr = 0;
 }
 
 // Advances to the next non-zero jacobian pair
-bool AWT::AlignParametric::ParticleSurface::next( Idx& l, Idx& p )
+bool AWT::AlignParametric::ParticleSurface::next(Idx& l, Idx& p)
 {
    bool ret = iterPtr < samples->getNumberOfPoints();
 
-   if ( ret )
+   if (ret)
       l = p = iterPtr++;
    else
       l = p = INVALID_INDEX;
@@ -212,86 +212,86 @@ bool AWT::AlignParametric::ParticleSurface::next( Idx& l, Idx& p )
    return ret;
 }
 
-MeshType::P AWT::AlignParametric::ParticleSurface::getMesh( )
+MeshType::P AWT::AlignParametric::ParticleSurface::getMesh()
 {
    return mesh;
 }
 
-TuplesType::P AWT::AlignParametric::ParticleSurface::getSamples( )
+TuplesType::P AWT::AlignParametric::ParticleSurface::getSamples()
 {
    return samples;
 }
 
 // Projects the point to the closest point on the mesh surface
-int AWT::AlignParametric::ParticleSurface::updatePointLocation( const Idx i, const T* vtx, FacesNearestPointSearch<T>::P searcher )
+int AWT::AlignParametric::ParticleSurface::updatePointLocation(const Idx i, const T* vtx, FacesNearestPointSearch<T>::P searcher)
 {
-   searcher->reset( );
-   searcher->setTestPoint( vtx );
-   mesh->searchFaces( searcher );
+   searcher->reset();
+   searcher->setTestPoint(vtx);
+   mesh->searchFaces(searcher);
 
    T vtxNearest[3];
-   int np = searcher->getNearestPoint( vtxNearest );
+   int np = searcher->getNearestPoint(vtxNearest);
    particleFace[i] = np;
 
-   samples->setPoint( i, vtxNearest );
+   samples->setPoint(i, vtxNearest);
 
    return np;
 }
 
-void AWT::AlignParametric::ParticleSurface::calculateFaceNormals( )
+void AWT::AlignParametric::ParticleSurface::calculateFaceNormals()
 {
    T vtx[3][3];
 
-   faceNormals = TuplesImpl<T>::getInstance( 3, mesh->getNumberOfFaces() );
+   faceNormals = TuplesImpl<T>::getInstance(3, mesh->getNumberOfFaces());
 
-   MESH_EACHFACE( mesh, f )
+   MESH_EACHFACE(mesh, f)
    {
-      mesh->getFace( f, vtx[0], vtx[1], vtx[2] );
+      mesh->getFace(f, vtx[0], vtx[1], vtx[2]);
 
-      FOREACHAXIS( ax )
+      FOREACHAXIS(ax)
       {
          vtx[2][ax] -= vtx[0][ax];
          vtx[1][ax] -= vtx[0][ax];
       }
-      cross<T>( vtx[1], vtx[2], vtx[0] );
-      normalize<T>( vtx[0], 3 );
+      cross<T>(vtx[1], vtx[2], vtx[0]);
+      normalize<T>(vtx[0], 3);
 
-      faceNormals->setPoint( f, vtx[0] );
+      faceNormals->setPoint(f, vtx[0]);
    }
 }
 
-void AWT::AlignParametric::ParticleSurface::setPointLocationsInitial( )
+void AWT::AlignParametric::ParticleSurface::setPointLocationsInitial()
 {
-   FacesNearestPointSearch<T>::P searcher = FacesNearestPointSearch<T>::getInstance( );
+   FacesNearestPointSearch<T>::P searcher = FacesNearestPointSearch<T>::getInstance();
    T vtx[4];
 
    // Make sure that the list of particleFaces is allocated
    particleFace.clear();
 
-   for ( Idx i = 0, imax = samples->getNumberOfPoints(); i < imax; ++i )
+   for (Idx i = 0, imax = samples->getNumberOfPoints(); i < imax; ++i)
    {
       // Get the sample location
-      samples->getPoint( i, vtx );
+      samples->getPoint(i, vtx);
       vtx[3] = 1;
 
       // Push back a face into the list (will be overwritten soon enough)
-      particleFace.push_back( INVALID_INDEX );
+      particleFace.push_back(INVALID_INDEX);
 
-      updatePointLocation( i, vtx, searcher );
+      updatePointLocation(i, vtx, searcher);
    }
 }
 
-void AWT::AlignParametric::ParticleSurface::setParameters( MatrixType& controls )
+void AWT::AlignParametric::ParticleSurface::setParameters(MatrixType& controls)
 {
-   FacesNearestPointSearch<T>::P searcher = FacesNearestPointSearch<T>::getInstance( );
+   FacesNearestPointSearch<T>::P searcher = FacesNearestPointSearch<T>::getInstance();
    T vtx[3];
 
-   for ( Idx i = 0, imax = samples->getNumberOfPoints(); i < imax; ++i )
+   for (Idx i = 0, imax = samples->getNumberOfPoints(); i < imax; ++i)
    {
       vtx[0] = controls(i,0);
       vtx[1] = controls(i,1);
       vtx[2] = controls(i,2);
 
-      updatePointLocation( i, vtx, searcher );
+      updatePointLocation(i, vtx, searcher);
    }
 }

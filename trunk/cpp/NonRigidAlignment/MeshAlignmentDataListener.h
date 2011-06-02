@@ -37,11 +37,11 @@ namespace AWT
    class MeshAlignmentDataListener : public virtual ManagedObject
    {
    public:
-      typedef ManagedAutoPointer<MeshAlignmentDataListener<T>> P;
+      typedef ManagedAutoPointer<MeshAlignmentDataListener<T> > P;
 
    public:
-      virtual void fixedPointsSet( typename MeshAlignmentData<T>::P mad ) = 0;
-      virtual void movingPointsSet( typename MeshAlignmentData<T>::P mad ) = 0;
+      virtual void fixedPointsSet(typename MeshAlignmentData<T>::P mad) = 0;
+      virtual void movingPointsSet(typename MeshAlignmentData<T>::P mad) = 0;
    };
 }
 
@@ -49,9 +49,9 @@ namespace AWT
 //namespace AWT
 //{
 //   template <class T>
-//   class CompositeMeshAlignmentDataListener : public CompositeListener<typename MeshAlignmentDataListener<T>,MeshAlignmentData<T>>
+//   class CompositeMeshAlignmentDataListener : public CompositeListener<typename MeshAlignmentDataListener<T>,MeshAlignmentData<T> >
 //   {
-//      virtual std::string getClassName( ) const { return "AWT::CompositeMeshAlignmentDataListener<T>"; }
+//      virtual std::string getClassName() const { return "AWT::CompositeMeshAlignmentDataListener<T>"; }
 //   };
 //}
 

@@ -47,32 +47,32 @@ namespace AWT
       typedef ManagedAutoPointer< FacesNearestPointSearch<T> > P;
 
    public:
-      static P getInstance( );
+      static P getInstance();
 
    protected:
-      FacesNearestPointSearch( const T in_MaxDistance = std::numeric_limits<T>::infinity( ) );
-      virtual ~FacesNearestPointSearch( );
+      FacesNearestPointSearch(const T in_MaxDistance = std::numeric_limits<T>::infinity());
+      virtual ~FacesNearestPointSearch();
 
    public:
-      virtual void calculateBoxDistanceBounds2( typename OEKDTreeBranch<T,3>* in_Branch, SqDistBounds<T>& bounds  ) const;
-      virtual bool shouldCheck( typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const SqDistBounds<T>& bounds ) const;
+      virtual void calculateBoxDistanceBounds2(typename OEKDTreeBranch<T,3>* in_Branch, SqDistBounds<T>& bounds ) const;
+      virtual bool shouldCheck(typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const SqDistBounds<T>& bounds) const;
 
-      virtual void checkObject( const int in_Index );
+      virtual void checkObject(const int in_Index);
 
-      virtual void setTestPoint( const T* in_TestPoint  );
-      virtual void getTestPoint( T* out_TestPoint ) const;
+      virtual void setTestPoint(const T* in_TestPoint );
+      virtual void getTestPoint(T* out_TestPoint) const;
 
-      virtual void setTestNormal( const T* in_TestNormal );
-      virtual void getTestNormal( T* out_TestNormal ) const;
+      virtual void setTestNormal(const T* in_TestNormal);
+      virtual void getTestNormal(T* out_TestNormal) const;
 
-      virtual int  getNearestPoint( T* out_NearestPoint = 0 ) const;
+      virtual int  getNearestPoint(T* out_NearestPoint = 0) const;
 
-      virtual void reset( );
+      virtual void reset();
 
-      virtual T getCompatibilityCosine( ) const;
-      virtual void setCompatibilityCosine( const T v );
+      virtual T getCompatibilityCosine() const;
+      virtual void setCompatibilityCosine(const T v);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
    protected:
       int m_NearestIndex;
@@ -93,68 +93,68 @@ namespace AWT
 #include "PointQueries.h"
 
 template <class T>
-GETNAMEMACRO( AWT::FacesNearestPointSearch<T> );
+GETNAMEMACRO(AWT::FacesNearestPointSearch<T>);
 
 namespace AWT
 {
    template <class T>
-   typename typename FacesNearestPointSearch<T>::P FacesNearestPointSearch<T>::getInstance( )
+   typename typename FacesNearestPointSearch<T>::P FacesNearestPointSearch<T>::getInstance()
    {
-      AUTOGETINSTANCE( FacesNearestPointSearch<T>, ( ) );
+      AUTOGETINSTANCE(FacesNearestPointSearch<T>, ());
    }
 
    template <class T>
-   FacesNearestPointSearch<T>::FacesNearestPointSearch( const T in_MaxDistance )
+   FacesNearestPointSearch<T>::FacesNearestPointSearch(const T in_MaxDistance)
    {
       m_InitMaxDistance2 = in_MaxDistance*in_MaxDistance;
       m_CompatibilityCosine = -1;
 
-      reset( );
+      reset();
    }
 
    template <class T>
-   FacesNearestPointSearch<T>::~FacesNearestPointSearch( )
+   FacesNearestPointSearch<T>::~FacesNearestPointSearch()
    {
 
    }
 
    template <class T>
-   void FacesNearestPointSearch<T>::calculateBoxDistanceBounds2( typename OEKDTree::OEKDTreeBranch<T,3>* in_Branch, OEKDTree::SqDistBounds<T>& bounds ) const
+   void FacesNearestPointSearch<T>::calculateBoxDistanceBounds2(typename OEKDTree::OEKDTreeBranch<T,3>* in_Branch, OEKDTree::SqDistBounds<T>& bounds) const
    {
       boxChecked();
-      bounds.lower = BoxQueries<T>::getClosestDistance2( m_TestPoint, in_Branch, m_MaxDistance2 );
+      bounds.lower = BoxQueries<T>::getClosestDistance2(m_TestPoint, in_Branch, m_MaxDistance2);
       bounds.upper = std::numeric_limits<T>::max();
    }
 
    template <class T>
-   bool FacesNearestPointSearch<T>::shouldCheck( typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const OEKDTree::SqDistBounds<T>& bounds ) const
+   bool FacesNearestPointSearch<T>::shouldCheck(typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const OEKDTree::SqDistBounds<T>& bounds) const
    {
       return bounds.lower < m_MaxDistance2;
    }
 
    template <class T>
-   void FacesNearestPointSearch<T>::checkObject( const int in_Index )
+   void FacesNearestPointSearch<T>::checkObject(const int in_Index)
    {
       objectChecked();
       T nearestOnTriangle[3];
 
-      if ( m_CompatibilityCosine > -1 )
+      if (m_CompatibilityCosine > -1)
       {
          T faceNormal[3];
-         FaceQueries<T>::getNormal( m_Data, in_Index, faceNormal );
+         FaceQueries<T>::getNormal(m_Data, in_Index, faceNormal);
 
-         if ( dot( m_TestNormal, faceNormal, 3 ) < m_CompatibilityCosine )
+         if (dot(m_TestNormal, faceNormal, 3) < m_CompatibilityCosine)
          {
 
             return;
          }
       }
       
-      FaceQueries<T>::getNearestPointOnTriangle( m_TestPoint, m_Data, in_Index, nearestOnTriangle );
+      FaceQueries<T>::getNearestPointOnTriangle(m_TestPoint, m_Data, in_Index, nearestOnTriangle);
       
-      T dist2 = PointQueries<T>::getDistanceSquared( m_TestPoint, nearestOnTriangle, m_MaxDistance2 );
+      T dist2 = PointQueries<T>::getDistanceSquared(m_TestPoint, nearestOnTriangle, m_MaxDistance2);
 
-      if ( dist2 >= m_MaxDistance2 )
+      if (dist2 >= m_MaxDistance2)
       {
 
          return;
@@ -163,58 +163,58 @@ namespace AWT
       m_NearestIndex = in_Index;
       m_MaxDistance2 = dist2;
 
-      for ( int i = 0; i < 3; i++ )
+      for (int i = 0; i < 3; i++)
          m_NearestPoint[i] = nearestOnTriangle[i];
       
 
    }
 
    template <class T>
-   void FacesNearestPointSearch<T>::setTestNormal( const T* in_TestPoint  )
+   void FacesNearestPointSearch<T>::setTestNormal(const T* in_TestPoint )
    {
       T len = 0;
-      for ( int i = 0; i < 3; i++ )
+      for (int i = 0; i < 3; i++)
       {
          m_TestNormal[i] = in_TestPoint[i];
          len += m_TestNormal[i]*m_TestNormal[i];
       }
 
-      if ( len != 0 )
+      if (len != 0)
       {
          // Normalize if length isn't zero
-         len = sqrt( len );
-         for ( int i = 0; i < 3; ++i )
+         len = sqrt(len);
+         for (int i = 0; i < 3; ++i)
             m_TestNormal[i] /= len;
       }
    }
 
    template <class T>
-   void FacesNearestPointSearch<T>::getTestNormal( T* out_TestPoint ) const
+   void FacesNearestPointSearch<T>::getTestNormal(T* out_TestPoint) const
    {
-      for ( int i = 0; i < 3; i++ )
+      for (int i = 0; i < 3; i++)
          out_TestPoint[i] = m_TestNormal[i];
    }
 
    template <class T>
-   void FacesNearestPointSearch<T>::setTestPoint( const T* in_TestPoint  )
+   void FacesNearestPointSearch<T>::setTestPoint(const T* in_TestPoint )
    {
-      for ( int i = 0; i < 3; i++ )
+      for (int i = 0; i < 3; i++)
          m_TestPoint[i] = in_TestPoint[i];
    }
 
    template <class T>
-   void FacesNearestPointSearch<T>::getTestPoint( T* out_TestPoint ) const
+   void FacesNearestPointSearch<T>::getTestPoint(T* out_TestPoint) const
    {
-      for ( int i = 0; i < 3; i++ )
+      for (int i = 0; i < 3; i++)
          out_TestPoint[i] = m_TestPoint[i];
    }
 
    template <class T>
-   int  FacesNearestPointSearch<T>::getNearestPoint( T* out_NearestPoint = 0 ) const
+   int  FacesNearestPointSearch<T>::getNearestPoint(T* out_NearestPoint = 0) const
    {
-      if ( m_NearestIndex != -1 && out_NearestPoint != 0 )
+      if (m_NearestIndex != -1 && out_NearestPoint != 0)
       {
-         for ( int i = 0; i < 3; i++ )
+         for (int i = 0; i < 3; i++)
             out_NearestPoint[i] = m_NearestPoint[i];
       }
 
@@ -222,7 +222,7 @@ namespace AWT
    }
 
    template <class T>
-   void FacesNearestPointSearch<T>::reset( )
+   void FacesNearestPointSearch<T>::reset()
    {
       FacesSearch<T>::reset();
       m_NearestIndex = -1;
@@ -230,16 +230,16 @@ namespace AWT
    }
 
    template <class T>
-   T FacesNearestPointSearch<T>::getCompatibilityCosine( ) const
+   T FacesNearestPointSearch<T>::getCompatibilityCosine() const
    {
       return m_CompatibilityCosine;
    }
 
    template <class T>
-   void FacesNearestPointSearch<T>::setCompatibilityCosine( const T v )
+   void FacesNearestPointSearch<T>::setCompatibilityCosine(const T v)
    {
       m_CompatibilityCosine = v;
-      modified( );
+      modified();
    }
 }
 

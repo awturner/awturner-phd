@@ -35,7 +35,7 @@ struct AWT::RandomMeshSampler<T>::D
 };
 
 template <class T>
-AWT::RandomMeshSampler<T>::RandomMeshSampler( )
+AWT::RandomMeshSampler<T>::RandomMeshSampler()
 {
    m_D = new D;
 
@@ -43,49 +43,49 @@ AWT::RandomMeshSampler<T>::RandomMeshSampler( )
 }
 
 template <class T>
-AWT::RandomMeshSampler<T>::~RandomMeshSampler( )
+AWT::RandomMeshSampler<T>::~RandomMeshSampler()
 {
    delete m_D;
 }
 
 template <class T>
-GETNAMEMACRO( AWT::RandomMeshSampler<T> );
+GETNAMEMACRO(AWT::RandomMeshSampler<T>);
 
 template <class T>
-typename AWT::RandomMeshSampler<T>::P AWT::RandomMeshSampler<T>::getInstance( )
+typename AWT::RandomMeshSampler<T>::P AWT::RandomMeshSampler<T>::getInstance()
 {
-   AUTOGETINSTANCE( RandomMeshSampler<T>, ( ) );
+   AUTOGETINSTANCE(RandomMeshSampler<T>, ());
 }
 
 template <class T>
-AWT::SamplePoints::P AWT::RandomMeshSampler<T>::sampleMesh( typename Mesh<T>::P mesh )
+AWT::SamplePoints::P AWT::RandomMeshSampler<T>::sampleMesh(typename Mesh<T>::P mesh)
 {
    AWT::SamplePoints::P samplePoints;
 
-   if ( mesh->getNumberOfVertices( ) < m_D->m_NumberOfSamples )
+   if (mesh->getNumberOfVertices() < m_D->m_NumberOfSamples)
    {
-      samplePoints = AWT::SamplePoints::getInstance( mesh->getNumberOfVertices( ) );
-      //for ( MeshIndex i = 0; i < mesh->getNumberOfVertices( ); ++i )
-      MESH_EACHVERTEX( mesh, i )
-         samplePoints->add( i );
+      samplePoints = AWT::SamplePoints::getInstance(mesh->getNumberOfVertices());
+      //for (MeshIndex i = 0; i < mesh->getNumberOfVertices(); ++i)
+      MESH_EACHVERTEX(mesh, i)
+         samplePoints->add(i);
    }
    else
    {
-      samplePoints = AWT::SamplePoints::getInstance( m_D->m_NumberOfSamples );
-      bool* used = new bool[ mesh->getNumberOfVertices( ) ];
-      //for ( MeshIndex i = 0; i < mesh->getNumberOfVertices( ); ++i )
-      MESH_EACHVERTEX( mesh, i )
+      samplePoints = AWT::SamplePoints::getInstance(m_D->m_NumberOfSamples);
+      bool* used = new bool[ mesh->getNumberOfVertices() ];
+      //for (MeshIndex i = 0; i < mesh->getNumberOfVertices(); ++i)
+      MESH_EACHVERTEX(mesh, i)
          used[i] = false;
 
-      for ( MeshIndex i = 0; i < m_D->m_NumberOfSamples; ++i )
+      for (MeshIndex i = 0; i < m_D->m_NumberOfSamples; ++i)
       {
          MeshIndex ii;
          do
          {
-            ii = ( rand( ) | ( rand( ) << 16 ) ) % mesh->getNumberOfVertices( );
-         } while ( used[ii] );
+            ii = (rand() | (rand() << 16)) % mesh->getNumberOfVertices();
+         } while (used[ii]);
 
-         samplePoints->add( ii );
+         samplePoints->add(ii);
          used[ii] = true;
       }
 
@@ -96,13 +96,13 @@ AWT::SamplePoints::P AWT::RandomMeshSampler<T>::sampleMesh( typename Mesh<T>::P 
 }
 
 template <class T>
-void AWT::RandomMeshSampler<T>::setMaximumNumberOfSamples( const AWT::MeshIndex m )
+void AWT::RandomMeshSampler<T>::setMaximumNumberOfSamples(const AWT::MeshIndex m)
 {
    m_D->m_NumberOfSamples = m;
 }
 
 template <class T>
-AWT::MeshIndex AWT::RandomMeshSampler<T>::getMaximumNumberOfSamples( ) const
+AWT::MeshIndex AWT::RandomMeshSampler<T>::getMaximumNumberOfSamples() const
 {
    return m_D->m_NumberOfSamples;
 }

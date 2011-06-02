@@ -36,10 +36,10 @@ namespace AWT
    class DICOMTagIdentifier
    {
    public:
-      DICOMTagIdentifier( );
-      DICOMTagIdentifier( GroupType _group, ElementType _element );
+      DICOMTagIdentifier();
+      DICOMTagIdentifier(GroupType _group, ElementType _element);
 
-      bool compare( GroupType g, ElementType e ) const;
+      bool compare(GroupType g, ElementType e) const;
       
       GroupType group;
       ElementType element;
@@ -48,16 +48,16 @@ namespace AWT
    class DICOMTagIdentifierConsumer
    {
    public:
-      virtual bool wantTag( DICOMTagIdentifier ge ) = 0;
+      virtual bool wantTag(DICOMTagIdentifier ge) = 0;
 
-      virtual bool implicitDataCallback( DICOMTagIdentifier ge, char* buffer, int length ) { return true; }
-      virtual bool explicitDataCallback( DICOMTagIdentifier ge, char* vr, char* buffer, int length ) { return true; }
+      virtual bool implicitDataCallback(DICOMTagIdentifier ge, char* buffer, int length) { return true; }
+      virtual bool explicitDataCallback(DICOMTagIdentifier ge, char* vr, char* buffer, int length) { return true; }
    };
 
    class DICOMHeaderReader
    {
    public:
-      static bool readStream( std::istream& in, DICOMTagIdentifierConsumer* consumer );
+      static bool readStream(std::istream& in, DICOMTagIdentifierConsumer* consumer);
    };
 }
 

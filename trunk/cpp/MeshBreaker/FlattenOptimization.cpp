@@ -39,50 +39,50 @@ struct AWT::FlattenOptimization<T>::D
    typedef std::pair<MeshIndex,T>  InfluencePair;
    typedef std::set<InfluencePair> InfluencePairSet;
 
-   void AinvB( const T A[3][3], const T B[3][3], T M[3][3] )
+   void AinvB(const T A[3][3], const T B[3][3], T M[3][3])
    {
       // This assumes that the matrices are column-major
       // MATLAB generated code
       T det = B[0][0]*B[1][1]*B[2][2]-B[0][0]*B[1][2]*B[2][1]-B[1][0]*B[0][1]*B[2][2]+B[1][0]*B[0][2]*B[2][1]+B[2][0]*B[0][1]*B[1][2]-B[2][0]*B[0][2]*B[1][1];
 
-      M[0][0] = ( A[0][0]*B[1][1]*B[2][2]-A[0][0]*B[1][2]*B[2][1]-A[1][0]*B[0][1]*B[2][2]+A[1][0]*B[0][2]*B[2][1]+A[2][0]*B[0][1]*B[1][2]-A[2][0]*B[0][2]*B[1][1] ) / det; 
-      M[1][0] = (-A[0][0]*B[1][0]*B[2][2]+A[0][0]*B[1][2]*B[2][0]+A[1][0]*B[0][0]*B[2][2]-A[1][0]*B[0][2]*B[2][0]-A[2][0]*B[0][0]*B[1][2]+A[2][0]*B[0][2]*B[1][0] ) / det;
-      M[2][0] = ( A[0][0]*B[1][0]*B[2][1]-A[0][0]*B[1][1]*B[2][0]-A[1][0]*B[0][0]*B[2][1]+A[1][0]*B[0][1]*B[2][0]+A[2][0]*B[0][0]*B[1][1]-A[2][0]*B[0][1]*B[1][0] ) / det;
+      M[0][0] = (A[0][0]*B[1][1]*B[2][2]-A[0][0]*B[1][2]*B[2][1]-A[1][0]*B[0][1]*B[2][2]+A[1][0]*B[0][2]*B[2][1]+A[2][0]*B[0][1]*B[1][2]-A[2][0]*B[0][2]*B[1][1]) / det; 
+      M[1][0] = (-A[0][0]*B[1][0]*B[2][2]+A[0][0]*B[1][2]*B[2][0]+A[1][0]*B[0][0]*B[2][2]-A[1][0]*B[0][2]*B[2][0]-A[2][0]*B[0][0]*B[1][2]+A[2][0]*B[0][2]*B[1][0]) / det;
+      M[2][0] = (A[0][0]*B[1][0]*B[2][1]-A[0][0]*B[1][1]*B[2][0]-A[1][0]*B[0][0]*B[2][1]+A[1][0]*B[0][1]*B[2][0]+A[2][0]*B[0][0]*B[1][1]-A[2][0]*B[0][1]*B[1][0]) / det;
 
-      M[0][1] = ( A[0][1]*B[1][1]*B[2][2]-A[0][1]*B[1][2]*B[2][1]-A[1][1]*B[0][1]*B[2][2]+A[1][1]*B[0][2]*B[2][1]+A[2][1]*B[0][1]*B[1][2]-A[2][1]*B[0][2]*B[1][1] ) / det;
-      M[1][1] = (-A[0][1]*B[1][0]*B[2][2]+A[0][1]*B[1][2]*B[2][0]+A[1][1]*B[0][0]*B[2][2]-A[1][1]*B[0][2]*B[2][0]-A[2][1]*B[0][0]*B[1][2]+A[2][1]*B[0][2]*B[1][0] ) / det;
-      M[2][1] = ( A[0][1]*B[1][0]*B[2][1]-A[0][1]*B[1][1]*B[2][0]-A[1][1]*B[0][0]*B[2][1]+A[1][1]*B[0][1]*B[2][0]+A[2][1]*B[0][0]*B[1][1]-A[2][1]*B[0][1]*B[1][0] ) / det;
+      M[0][1] = (A[0][1]*B[1][1]*B[2][2]-A[0][1]*B[1][2]*B[2][1]-A[1][1]*B[0][1]*B[2][2]+A[1][1]*B[0][2]*B[2][1]+A[2][1]*B[0][1]*B[1][2]-A[2][1]*B[0][2]*B[1][1]) / det;
+      M[1][1] = (-A[0][1]*B[1][0]*B[2][2]+A[0][1]*B[1][2]*B[2][0]+A[1][1]*B[0][0]*B[2][2]-A[1][1]*B[0][2]*B[2][0]-A[2][1]*B[0][0]*B[1][2]+A[2][1]*B[0][2]*B[1][0]) / det;
+      M[2][1] = (A[0][1]*B[1][0]*B[2][1]-A[0][1]*B[1][1]*B[2][0]-A[1][1]*B[0][0]*B[2][1]+A[1][1]*B[0][1]*B[2][0]+A[2][1]*B[0][0]*B[1][1]-A[2][1]*B[0][1]*B[1][0]) / det;
 
-      M[0][2] = ( A[0][2]*B[1][1]*B[2][2]-A[0][2]*B[1][2]*B[2][1]-A[1][2]*B[0][1]*B[2][2]+A[1][2]*B[0][2]*B[2][1]+A[2][2]*B[0][1]*B[1][2]-A[2][2]*B[0][2]*B[1][1] ) / det;
-      M[1][2] = (-A[0][2]*B[1][0]*B[2][2]+A[0][2]*B[1][2]*B[2][0]+A[1][2]*B[0][0]*B[2][2]-A[1][2]*B[0][2]*B[2][0]-A[2][2]*B[0][0]*B[1][2]+A[2][2]*B[0][2]*B[1][0] ) / det;
-      M[2][2] = ( A[0][2]*B[1][0]*B[2][1]-A[0][2]*B[1][1]*B[2][0]-A[1][2]*B[0][0]*B[2][1]+A[1][2]*B[0][1]*B[2][0]+A[2][2]*B[0][0]*B[1][1]-A[2][2]*B[0][1]*B[1][0] ) / det;
+      M[0][2] = (A[0][2]*B[1][1]*B[2][2]-A[0][2]*B[1][2]*B[2][1]-A[1][2]*B[0][1]*B[2][2]+A[1][2]*B[0][2]*B[2][1]+A[2][2]*B[0][1]*B[1][2]-A[2][2]*B[0][2]*B[1][1]) / det;
+      M[1][2] = (-A[0][2]*B[1][0]*B[2][2]+A[0][2]*B[1][2]*B[2][0]+A[1][2]*B[0][0]*B[2][2]-A[1][2]*B[0][2]*B[2][0]-A[2][2]*B[0][0]*B[1][2]+A[2][2]*B[0][2]*B[1][0]) / det;
+      M[2][2] = (A[0][2]*B[1][0]*B[2][1]-A[0][2]*B[1][1]*B[2][0]-A[1][2]*B[0][0]*B[2][1]+A[1][2]*B[0][1]*B[2][0]+A[2][2]*B[0][0]*B[1][1]-A[2][2]*B[0][1]*B[1][0]) / det;
    }
 
-   void calculateFaceJacobians( )
+   void calculateFaceJacobians()
    {
       // Want to calculate the direction of the flattened x-y directions in the unflattened space of each triangle
 
       // What does this mean?  It means that if a point is over triangle f and a control parameter
-      // is waggled, then the change in unflattened space is w*( jac[0][f] jac[1][f] ), where w
+      // is waggled, then the change in unflattened space is w*(jac[0][f] jac[1][f]), where w
       // is the influence parameter
 
-      Mesh<T>::P flatMesh   = m_Flatten->getFlattenedMesh( );
-      Mesh<T>::P unflatMesh = m_Flatten->getMesh( );
+      Mesh<T>::P flatMesh   = m_Flatten->getFlattenedMesh();
+      Mesh<T>::P unflatMesh = m_Flatten->getMesh();
 
-      m_Jacobians[0] = TuplesImpl<T>::getInstance( 3, flatMesh->getNumberOfFaces( ) );
-      m_Jacobians[1] = TuplesImpl<T>::getInstance( 3, flatMesh->getNumberOfFaces( ) );
+      m_Jacobians[0] = TuplesImpl<T>::getInstance(3, flatMesh->getNumberOfFaces());
+      m_Jacobians[1] = TuplesImpl<T>::getInstance(3, flatMesh->getNumberOfFaces());
 
       T fOrigin[3], fBasis[3][3];
       T uOrigin[3], uBasis[3][3];
       T proj[3][3];
 
-      MESH_EACHFACE( flatMesh, f )
+      MESH_EACHFACE(flatMesh, f)
       {
          // Get the flattened face and translate it to the first vertex as origin
          // Get the unflattened face and translate...
-         flatMesh->getFace( f, fOrigin, fBasis[0], fBasis[1] );
-         unflatMesh->getFace( f, uOrigin, uBasis[0], uBasis[1] );
-         FOREACHAXIS( ax )
+         flatMesh->getFace(f, fOrigin, fBasis[0], fBasis[1]);
+         unflatMesh->getFace(f, uOrigin, uBasis[0], uBasis[1]);
+         FOREACHAXIS(ax)
          {
             fBasis[0][ax] -= fOrigin[ax];
             fBasis[1][ax] -= fOrigin[ax];
@@ -92,51 +92,51 @@ struct AWT::FlattenOptimization<T>::D
          }
 
          // Cross to get the z-component
-         cross<T>( fBasis[0], fBasis[1], fBasis[2] );
-         cross<T>( uBasis[0], uBasis[1], uBasis[2] );
+         cross<T>(fBasis[0], fBasis[1], fBasis[2]);
+         cross<T>(uBasis[0], uBasis[1], uBasis[2]);
 
          // So, given a point x in the flattened space, we can project it back into the
-         // triangle-orthogonal space (ignoring translation): inv( fBasis ) * x
+         // triangle-orthogonal space (ignoring translation): inv(fBasis) * x
 
          // But, we need to get it back into world space.  We can do this by pre-multiplying
          // by [ uvtxA uvtxB uvtxC ], i.e. the full transformation is 
-         // [ uBasis ] * inv( fBasis ) * x = proj * x
+         // [ uBasis ] * inv(fBasis) * x = proj * x
 
-         AinvB( uBasis, fBasis, proj );
+         AinvB(uBasis, fBasis, proj);
 
          // Now, store the jacobian for each triangle: we want to project the x- and y-axes of
          // flattened space through: the x-axis projects to the 1st column, the y-axis projects
          // to the 2nd column
-         m_Jacobians[0]->setPoint( f, proj[0] );
-         m_Jacobians[1]->setPoint( f, proj[1] );
+         m_Jacobians[0]->setPoint(f, proj[0]);
+         m_Jacobians[1]->setPoint(f, proj[1]);
       }
    }
 
-   void calculateWeights( )
+   void calculateWeights()
    {
       // I'm going to assume that we have a small enough number of control points/ref points to do this
       // in an N^2 way... I may be wrong
-      DEBUGMACRO( "Calculating weights N^2" );
+      DEBUGMACRO("Calculating weights N^2");
 
       T vtx[3], vtxTest[3];
 
       vtxTest[2] = 0;
 
       // Create holders to look up in both directions
-      for ( MeshIndex c = 0; c < m_ControlPoints.size( ); ++c )
-         m_RefPointsNearControlPoints.push_back( InfluencePairSet( ) );
+      for (MeshIndex c = 0; c < m_ControlPoints.size(); ++c)
+         m_RefPointsNearControlPoints.push_back(InfluencePairSet());
 
-      for ( MeshIndex c = 0, cmax = m_ReferencePoints->getNumberOfPoints( ); c < cmax; ++c )
-         m_ControlPointsNearRefPoints.push_back( InfluencePairSet( ) );
+      for (MeshIndex c = 0, cmax = m_ReferencePoints->getNumberOfPoints(); c < cmax; ++c)
+         m_ControlPointsNearRefPoints.push_back(InfluencePairSet());
 
-      for ( MeshIndex c = 0; c < m_ControlPoints.size( ); ++c )
+      for (MeshIndex c = 0; c < m_ControlPoints.size(); ++c)
       {
          ControlPoint<T>::P cp = m_ControlPoints[c];
 
-         for ( MeshIndex r = 0, rmax = m_ReferencePoints->getNumberOfPoints( ); r < rmax; ++r )
+         for (MeshIndex r = 0, rmax = m_ReferencePoints->getNumberOfPoints(); r < rmax; ++r)
          {
             // Get the point
-            m_ReferencePoints->getPoint( r, vtx );
+            m_ReferencePoints->getPoint(r, vtx);
 
             // Calculate the influence on this point, bearing in mind that the influence
             // wraps around the mesh... walk outwards look for influence
@@ -144,59 +144,59 @@ struct AWT::FlattenOptimization<T>::D
 
             T influence = 0;
 
-            while ( influence == 0 && ( abs(x) < 2 || abs(y) < 2 ) )
+            while (influence == 0 && (abs(x) < 2 || abs(y) < 2))
             {
                vtxTest[0] = vtx[0] + x;
                vtxTest[1] = vtx[1] + y;
 
-               influence = cp->getInfluence( vtxTest );
+               influence = cp->getInfluence(vtxTest);
 
-               walkInASpiral( x, y );
+               walkInASpiral(x, y);
             }
 
-            if ( influence != 0 )
+            if (influence != 0)
             {
                // Keep both so that we can look up in either direction
-               m_RefPointsNearControlPoints[c].insert( InfluencePair( r, influence ) );
-               m_ControlPointsNearRefPoints[r].insert( InfluencePair( c, influence ) );
+               m_RefPointsNearControlPoints[c].insert(InfluencePair(r, influence));
+               m_ControlPointsNearRefPoints[r].insert(InfluencePair(c, influence));
             }
          }
       }
 
-      DEBUGMACRO( "Finished calculating weights N^2." );
+      DEBUGMACRO("Finished calculating weights N^2.");
    }
 
-   void calculateJacobian( vnl_matrix<T>& jac )
+   void calculateJacobian(vnl_matrix<T>& jac)
    {
-      jac.fill( 0 );
+      jac.fill(0);
 
-      for ( MeshIndex r = 0, rmax = m_ReferencePoints->getNumberOfPoints( ); r < rmax; ++r )
-         calculateJacobianForReferencePoint( r, jac );
+      for (MeshIndex r = 0, rmax = m_ReferencePoints->getNumberOfPoints(); r < rmax; ++r)
+         calculateJacobianForReferencePoint(r, jac);
    }
 
-   void calculateJacobianForReferencePoint( const MeshIndex r, vnl_matrix<T>& jac )
+   void calculateJacobianForReferencePoint(const MeshIndex r, vnl_matrix<T>& jac)
    {
       T vtxFlat[3], vtxUnflat[3];
       T jacX[3], jacY[3];
 
-      const MeshIndex ncontrols = static_cast<MeshIndex>( m_ControlPoints.size( ) );
+      const MeshIndex ncontrols = static_cast<MeshIndex>(m_ControlPoints.size());
 
       // Get the reference point
-      m_ReferencePoints->getPoint( r, vtxFlat );
+      m_ReferencePoints->getPoint(r, vtxFlat);
 
       // Work out what face it is over in the flattened mesh...
-      MeshIndex flatFace = m_Flatten->mapFlattenedToMesh( vtxFlat, vtxUnflat );
+      MeshIndex flatFace = m_Flatten->mapFlattenedToMesh(vtxFlat, vtxUnflat);
 
       // ...and get the unflattened jacobian for it
-      m_Jacobians[0]->getPoint( flatFace, jacX );
-      m_Jacobians[1]->getPoint( flatFace, jacY );
+      m_Jacobians[0]->getPoint(flatFace, jacX);
+      m_Jacobians[1]->getPoint(flatFace, jacY);
 
       // Don't fill with zero initially - will assume this has been done already
 
-      InfluencePairSet::iterator it = m_ControlPointsNearRefPoints[r].begin( );
-      InfluencePairSet::iterator en = m_ControlPointsNearRefPoints[r].end( );
+      InfluencePairSet::iterator it = m_ControlPointsNearRefPoints[r].begin();
+      InfluencePairSet::iterator en = m_ControlPointsNearRefPoints[r].end();
 
-      for ( ; it != en; ++it )
+      for (; it != en; ++it)
       {
          const MeshIndex c      = it->first;
          const T         weight = it->second;
@@ -213,67 +213,67 @@ struct AWT::FlattenOptimization<T>::D
       }
    }
 
-   void getControlParameters( vnl_matrix<T>& v )
+   void getControlParameters(vnl_matrix<T>& v)
    {
       T val[3];
 
-      for ( MeshIndex c = 0; c < m_ControlPoints.size( ); ++c )
+      for (MeshIndex c = 0; c < m_ControlPoints.size(); ++c)
       {
          ControlPoint<T>::P cp = m_ControlPoints[c];
 
-         cp->getValue( val );
+         cp->getValue(val);
 
          v[0][2*c+0] = val[0];
          v[0][2*c+1] = val[1];
       }
    }
 
-   void incrementControlParameters( vnl_matrix<T>& v )
+   void incrementControlParameters(vnl_matrix<T>& v)
    {
       T val[3];
 
       // Increment the control parameters
-      for ( MeshIndex c = 0; c < m_ControlPoints.size( ); ++c )
+      for (MeshIndex c = 0; c < m_ControlPoints.size(); ++c)
       {
          ControlPoint<T>::P cp = m_ControlPoints[c];
 
-         cp->getValue( val );
+         cp->getValue(val);
 
          val[0] += v[0][2*c+0];
          val[1] += v[0][2*c+1];
 
-         cp->setValue( val );
+         cp->setValue(val);
       }
 
-      updateReferencePointLocations( );
+      updateReferencePointLocations();
    }
 
-   void updateReferencePointLocations( )
+   void updateReferencePointLocations()
    {
       T vtx[3], val[3];
 
       // Reset the reference points to their original locations
       // and then move to their new location
-      for ( MeshIndex r = 0, rmax = m_ReferencePoints->getNumberOfPoints( ); r < rmax; ++r )
+      for (MeshIndex r = 0, rmax = m_ReferencePoints->getNumberOfPoints(); r < rmax; ++r)
       {
-         m_ReferencePointsOrig->getPoint( r, vtx );
+         m_ReferencePointsOrig->getPoint(r, vtx);
 
-         InfluencePairSet::iterator it = m_ControlPointsNearRefPoints[r].begin( );
-         InfluencePairSet::iterator en = m_ControlPointsNearRefPoints[r].end( );
+         InfluencePairSet::iterator it = m_ControlPointsNearRefPoints[r].begin();
+         InfluencePairSet::iterator en = m_ControlPointsNearRefPoints[r].end();
 
-         for ( ; it != en; ++it )
+         for (; it != en; ++it)
          {
             ControlPoint<T>::P cp        = m_ControlPoints[it->first];
             T                  influence = it->second;
 
             // Get the control point's parameters
-            cp->getValue( val );
+            cp->getValue(val);
 
             vtx[0] += val[0]*influence;
             vtx[1] += val[1]*influence;
          }
 
-         m_ReferencePoints->setPoint( r, vtx );
+         m_ReferencePoints->setPoint(r, vtx);
       }
    }
 
@@ -289,49 +289,49 @@ struct AWT::FlattenOptimization<T>::D
 };
 
 template <class T>
-AWT::FlattenOptimization<T>::FlattenOptimization( typename AWT::FlattenMeshPair<T>::P flatten, 
+AWT::FlattenOptimization<T>::FlattenOptimization(typename AWT::FlattenMeshPair<T>::P flatten, 
                                                   typename AWT::Tuples<T>::P referencePoints,
-                                                  std::vector< typename ControlPoint<T>::P > controlPoints )
+                                                  std::vector< typename ControlPoint<T>::P > controlPoints)
 {
    m_D = new D;
 
    m_D->m_Flatten             = flatten;
-   m_D->m_ReferencePointsOrig = TuplesImpl<T>::getInstance( referencePoints );
+   m_D->m_ReferencePointsOrig = TuplesImpl<T>::getInstance(referencePoints);
    m_D->m_ReferencePoints     = referencePoints;
    m_D->m_ControlPoints       = controlPoints;
 
 
-   m_D->calculateFaceJacobians( );
-   m_D->calculateWeights( );
+   m_D->calculateFaceJacobians();
+   m_D->calculateWeights();
 }
 
 template <class T>
-AWT::FlattenOptimization<T>::~FlattenOptimization( )
+AWT::FlattenOptimization<T>::~FlattenOptimization()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::FlattenOptimization<T>::P AWT::FlattenOptimization<T>::getInstance( typename AWT::FlattenMeshPair<T>::P flatten, 
+typename AWT::FlattenOptimization<T>::P AWT::FlattenOptimization<T>::getInstance(typename AWT::FlattenMeshPair<T>::P flatten, 
                                                   typename AWT::Tuples<T>::P referencePoints,
-                                                  std::vector< typename ControlPoint<T>::P > controlPoints )
+                                                  std::vector< typename ControlPoint<T>::P > controlPoints)
 {
-   AUTOGETINSTANCE( AWT::FlattenOptimization<T>, ( flatten, referencePoints, controlPoints ) );
+   AUTOGETINSTANCE(AWT::FlattenOptimization<T>, (flatten, referencePoints, controlPoints));
 }
 
 template <class T>
-GETNAMEMACRO( AWT::FlattenOptimization<T> );
+GETNAMEMACRO(AWT::FlattenOptimization<T>);
 
 template <class T>
-void AWT::FlattenOptimization<T>::getControlParameters( vnl_matrix<T>& v )
+void AWT::FlattenOptimization<T>::getControlParameters(vnl_matrix<T>& v)
 {
-   m_D->getControlParameters( v );
+   m_D->getControlParameters(v);
 }
 
 template <class T>
-void AWT::FlattenOptimization<T>::incrementControlParameters( vnl_matrix<T>& v )
+void AWT::FlattenOptimization<T>::incrementControlParameters(vnl_matrix<T>& v)
 {
-   m_D->incrementControlParameters( v );
+   m_D->incrementControlParameters(v);
 }
 
 template class AWT::FlattenOptimization<double>;

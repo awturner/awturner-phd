@@ -47,33 +47,33 @@ namespace AWT
          enum DistanceType { DT_EUCLIDEAN, DT_APPROXGEODESIC };
 
       protected:
-         CatesRegularizer( CatesParticleSurface* surf, const ValueRange<T> sigmaRange );
-         virtual ~CatesRegularizer( );
+         CatesRegularizer(CatesParticleSurface* surf, const ValueRange<T> sigmaRange);
+         virtual ~CatesRegularizer();
 
       public:
-         static P getInstance( CatesParticleSurface* surf, const ValueRange<T> sigmaRange );
-         virtual std::string getClassName( ) const;
+         static P getInstance(CatesParticleSurface* surf, const ValueRange<T> sigmaRange);
+         virtual std::string getClassName() const;
 
-         TuplesType::P getSigma( );
+         TuplesType::P getSigma();
 
-         DistanceType getDistanceType( ) const;
-         void setDistanceType( const DistanceType dt );
+         DistanceType getDistanceType() const;
+         void setDistanceType(const DistanceType dt);
 
-         T getSigma( MeshIndex i ) const;
-         void setSigma( MeshIndex i, const T v );
+         T getSigma(MeshIndex i) const;
+         void setSigma(MeshIndex i, const T v);
 
          // Calculate the force which tries to push these particles apart
-         void calculateUpdate( MatrixType& reg );
+         void calculateUpdate(MatrixType& reg);
 
-         T calculateCost( const bool debug = true );
-         T calculateNegativeEntropy( );
+         T calculateCost(const bool debug = true);
+         T calculateNegativeEntropy();
 
-         T getMinSigma( ) const;
+         T getMinSigma() const;
 
-         const ValueRange<T>& getSigmaRange( ) const;
-         void setSigmaRange( const ValueRange<T>& sigmaRange );
+         const ValueRange<T>& getSigmaRange() const;
+         void setSigmaRange(const ValueRange<T>& sigmaRange);
 
-         void associateSampleToFace( const MeshIndex i, const MeshIndex f );
+         void associateSampleToFace(const MeshIndex i, const MeshIndex f);
 
          void fixSigma(const bool state);
 

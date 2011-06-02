@@ -40,22 +40,22 @@ namespace AWT
          friend class GeometryQueries<T>;
 
       public:
-         static Sphere* getInstance( Point<T>* in_p, const T in_radius );
+         static Sphere* getInstance(Point<T>* in_p, const T in_radius);
          
-         void getCenter( Point<T>* out_p ) const;
-         const Point<T>* getCenter( ) const;
+         void getCenter(Point<T>* out_p) const;
+         const Point<T>* getCenter() const;
 
-         T getRadius( ) const;
+         T getRadius() const;
 
-         void setCenter( Point<T>* in_p );
+         void setCenter(Point<T>* in_p);
 
-         void setRadius( const T in_radius );
+         void setRadius(const T in_radius);
 
          virtual ModifiedTime getModifiedTime() const;
 
       protected:
-         Sphere( Point<T>* in_p, const T in_radius );
-         virtual ~Sphere( );
+         Sphere(Point<T>* in_p, const T in_radius);
+         virtual ~Sphere();
 
          Point<T>* center;
          T radius;
@@ -68,9 +68,9 @@ namespace AWT
    namespace GeometricPrimitives
    {
       template <class T>
-      Sphere<T>* Sphere<T>::getInstance( Point<T>* in_p, const T in_radius )
+      Sphere<T>* Sphere<T>::getInstance(Point<T>* in_p, const T in_radius)
       {
-         return new Sphere<T>( in_p, in_radius );
+         return new Sphere<T>(in_p, in_radius);
       }
 
       template <class T>
@@ -80,28 +80,28 @@ namespace AWT
       }
 
       template <class T>
-      Sphere<T>::Sphere( Point<T>* in_p, const T in_radius )
+      Sphere<T>::Sphere(Point<T>* in_p, const T in_radius)
       {
          center = 0;
-         setCenter( in_p );
+         setCenter(in_p);
 
          radius = in_radius;
       }
       
       template <class T>
-      ModifiedTime Sphere<T>::getModifiedTime( ) const
+      ModifiedTime Sphere<T>::getModifiedTime() const
       {
-         return std::max<ModifiedTime>( this->mtime, center->getModifiedTime() );
+         return std::max<ModifiedTime>(this->mtime, center->getModifiedTime());
       }
 
       template <class T>
-      const Point<T>* Sphere<T>::getCenter( ) const
+      const Point<T>* Sphere<T>::getCenter() const
       {
          return center;
       }
 
       template <class T>
-      void Sphere<T>::getCenter( Point<T>* out_p ) const
+      void Sphere<T>::getCenter(Point<T>* out_p) const
       {
          *out_p = *center;
       }
@@ -113,9 +113,9 @@ namespace AWT
       }
 
       template <class T>
-      void Sphere<T>::setCenter( Point<T>* in_p )
+      void Sphere<T>::setCenter(Point<T>* in_p)
       {
-         if ( center != 0 )
+         if (center != 0)
             center->unregisterUse();
 
          center = in_p;
@@ -125,9 +125,9 @@ namespace AWT
       }
 
       template <class T>
-      void Sphere<T>::setRadius( const T in_radius )
+      void Sphere<T>::setRadius(const T in_radius)
       {
-         if ( radius != in_radius )
+         if (radius != in_radius)
          {
             radius = in_radius;
             modified();

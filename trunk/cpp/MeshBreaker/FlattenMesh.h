@@ -54,16 +54,16 @@ namespace AWT
          SPREAD_YOSHIZAWA,
       };
 
-      static WeightType getWeightType( const char* str );
-      static SpreadType getSpreadType( const char* str );
+      static WeightType getWeightType(const char* str);
+      static SpreadType getSpreadType(const char* str);
 
    protected:
-      FlattenMesh( );
-      virtual ~FlattenMesh( );
+      FlattenMesh();
+      virtual ~FlattenMesh();
 
    public:
-      static typename FlattenMeshPair<T>::P flattenToPair( typename GeneratorProvider<T>::P fg, const WeightType wt, const SpreadType st );
-      static typename Mesh<T>::P flatten( typename GeneratorProvider<T>::P fg, const WeightType wt, const SpreadType st );
+      static typename FlattenMeshPair<T>::P flattenToPair(typename GeneratorProvider<T>::P fg, const WeightType wt, const SpreadType st);
+      static typename Mesh<T>::P flatten(typename GeneratorProvider<T>::P fg, const WeightType wt, const SpreadType st);
 
    protected:
       struct D;

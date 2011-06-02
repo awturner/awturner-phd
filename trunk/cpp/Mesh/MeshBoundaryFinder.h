@@ -37,11 +37,11 @@ namespace AWT
    class MeshBoundaryFinder : public ManagedObject
    {
    public:
-      static typename Tuples<T>::P findBoundaryVertices( typename Mesh<T>::P mesh );
+      static typename Tuples<T>::P findBoundaryVertices(typename Mesh<T>::P mesh);
 
    protected:
-      MeshBoundaryFinder( ) {}
-      virtual ~MeshBoundaryFinder( ) {}
+      MeshBoundaryFinder() {}
+      virtual ~MeshBoundaryFinder() {}
    };
 }
 

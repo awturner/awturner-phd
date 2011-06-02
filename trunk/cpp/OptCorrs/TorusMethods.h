@@ -34,11 +34,11 @@ namespace AWT
    {
       namespace Torus
       {
-         void remoteMethod( initialize );
-         void remoteMethod( addMesh );
-         void remoteMethod( refine );
+         void remoteMethod(initialize);
+         void remoteMethod(addMesh);
+         void remoteMethod(refine);
 
-         void addMethods( RemoteMethods& methods );
+         void addMethods(RemoteMethods& methods);
       }
    }
 }

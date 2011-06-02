@@ -30,7 +30,7 @@ namespace AWT
 {
    class QtForm;
 
-   void collisionDemo( AWT::QtForm* form );
+   void collisionDemo(AWT::QtForm* form);
 }
 
 #endif // __COLLISIONDEMO_H__

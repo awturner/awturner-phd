@@ -27,13 +27,13 @@
 
 #include "Useful/PrintMacros.h"
 
-QSplitterEx::QSplitterEx( QWidget* parent )
-: QSplitter( parent )
+QSplitterEx::QSplitterEx(QWidget* parent)
+: QSplitter(parent)
 {
-   connect( this, SIGNAL( splitterMoved( int, int ) ), this, SLOT( handleSplitterMoved( ) ) );
+   connect(this, SIGNAL(splitterMoved(int, int)), this, SLOT(handleSplitterMoved()));
 }
 
-void QSplitterEx::handleSplitterMoved( )
+void QSplitterEx::handleSplitterMoved()
 {
-   emit widthsChanged( this );
+   emit widthsChanged(this);
 }

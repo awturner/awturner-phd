@@ -71,10 +71,10 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       MatrixType           parameterUpdates;
    };
 
-   void updateStoredSampleLocations( SampledSurfaceEx& ssx )
+   void updateStoredSampleLocations(SampledSurfaceEx& ssx)
    {
       MatrixType samples;
-      ssx.surface->getSamples( samples );
+      ssx.surface->getSamples(samples);
 
       // Transform the samples before pushing them in
       ssx.sampleLocations = ssx.transform * samples;
@@ -89,54 +89,54 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
 
       // Make sure that there are the correct number of samples
       const Idx N = self->getNumberOfSamplesPerSurface();
-      if ( samples.cols() != N )
+      if (samples.cols() != N)
          throw "Incorrect number of samples";
 
       // Do some checking to make sure that the coordinates are
       // homogeneous and correctly normalized
-      if ( samples.rows() != 4 )
+      if (samples.rows() != 4)
          throw "Samples locations must be homogeneous";
 
-      for ( Idx c = 0; c < N; ++c )
-         if ( samples(3,c) != 1 )
+      for (Idx c = 0; c < N; ++c)
+         if (samples(3,c) != 1)
             throw "Homogeneous sample must have 1 in final row!";
    }
 
-   void updateStoredSampleLocations( )
+   void updateStoredSampleLocations()
    {
-      const Idx M = getM( );
-      for ( Idx s = 0; s < M; ++s )
-         updateStoredSampleLocations( surfaceExes[s] );
+      const Idx M = getM();
+      for (Idx s = 0; s < M; ++s)
+         updateStoredSampleLocations(surfaceExes[s]);
    }
 
    // Arun's method
-   void pairwiseAlign( const MatrixType& x, const MatrixType& y, Transformation& R )
+   void pairwiseAlign(const MatrixType& x, const MatrixType& y, Transformation& R)
    {
       // Reset this
-      R.set_identity( );
+      R.set_identity();
 
       const Idx N = self->getNumberOfSamplesPerSurface();
 
       // Calculate the mean-centred covariance matrix
-      MatrixType sum_xy( 3, 3 ); sum_xy.fill( 0 );
-      VectorType sum_x( 3 );     sum_x.fill( 0 );
-      VectorType sum_y( 3 );     sum_y.fill( 0 );
+      MatrixType sum_xy(3, 3); sum_xy.fill(0);
+      VectorType sum_x(3);     sum_x.fill(0);
+      VectorType sum_y(3);     sum_y.fill(0);
       T var_x = 0;
       T var_y = 0;
       T var_xy = 0;
 
       T sum_w = 0;
 
-      for ( Idx i = 0; i < N; ++i )
+      for (Idx i = 0; i < N; ++i)
       {
          const T w = sampleWeights(i);
 
          VectorType xi = x.get_column(i);
          VectorType yi = y.get_column(i);
 
-         for ( Idx r = 0; r < 3; ++r )
+         for (Idx r = 0; r < 3; ++r)
          {
-            for ( Idx c = 0; c < 3; ++c )
+            for (Idx c = 0; c < 3; ++c)
             {
                sum_xy(r,c) += w*x(r,i)*y(c,i);
             }
@@ -156,46 +156,46 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       const MatrixType Cov = sum_xy - outer_product(sum_x, sum_y) / sum_w;
       
       // Calculate the relative scale of the two point clouds
-      var_x  -= inner_product( sum_x, sum_x ) / sum_w;
-      var_y  -= inner_product( sum_y, sum_y ) / sum_w;
-      var_xy -= inner_product( sum_x, sum_y ) / sum_w;
+      var_x  -= inner_product(sum_x, sum_x) / sum_w;
+      var_y  -= inner_product(sum_y, sum_y) / sum_w;
+      var_xy -= inner_product(sum_x, sum_y) / sum_w;
 
       // Convert these to means
       sum_x /= sum_w;
       sum_y /= sum_w;
 
       // Can only calculate a rotation if there are sufficient points
-      if ( rotationAllowed && N >= 3 )
+      if (rotationAllowed && N >= 3)
       {
          // Take SVD to get the rotations
-         vnl_svd<T> svd( Cov );
+         vnl_svd<T> svd(Cov);
 
          MatrixType rot = svd.U() * svd.V().transpose();
          T det = rot(0,0)*(rot(1,1)*rot(2,2)-rot(2,1)*rot(1,2))+rot(0,1)*(rot(1,2)*rot(2,0)-rot(2,2)*rot(1,0))+rot(0,2)*(rot(1,0)*rot(2,1)-rot(2,0)*rot(1,1));
          
          // Umeyana modification
-         if ( det < 0 )
+         if (det < 0)
          {
-            vnl_diag_matrix<T> diag( 3 );
-            diag.fill_diagonal( 1 );
+            vnl_diag_matrix<T> diag(3);
+            diag.fill_diagonal(1);
             diag(2) = -1;
             rot = svd.U() * diag * svd.V().transpose();
          }
 
-         for ( Idx r = 0; r < 3; ++r )
-            for ( Idx c = 0; c < 3; ++c )
+         for (Idx r = 0; r < 3; ++r)
+            for (Idx c = 0; c < 3; ++c)
                R(r,c) = rot(r,c);
       }
 
       // Can only calculate a scale if there are sufficient points
-      if ( N >= 2 && scaleNormalization != ModelEigenvalueOptimizer::NRML_NONE )
+      if (N >= 2 && scaleNormalization != ModelEigenvalueOptimizer::NRML_NONE)
       {
          T scale;
 
-         switch ( scaleNormalization )
+         switch (scaleNormalization)
          {
          case NRML_HYPERSPHERE:
-            scale = sqrt( var_x / var_y );
+            scale = sqrt(var_x / var_y);
             break;
          case NRML_HYPERPLANE:
             scale = (var_xy / var_y);
@@ -211,7 +211,7 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       }
 
       // Can only calculate a translation if there are sufficient points
-      if ( translationAllowed && N >= 1 )
+      if (translationAllowed && N >= 1)
       {
          const VectorType t = sum_x - R.extract(3,3)*sum_y;
 
@@ -221,20 +221,20 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       }
    }
 
-   T shapeRms( const MatrixType& shape )
+   T shapeRms(const MatrixType& shape)
    {
       const Idx N = self->getNumberOfSamplesPerSurface();
-      PRINTVBL( N );
+      PRINTVBL(N);
 
       T          sum_w_xt_x = 0;
-      VectorType sum_w_x(3); sum_w_x.fill( 0 );
+      VectorType sum_w_x(3); sum_w_x.fill(0);
       T          sum_w = 0;
 
-      for ( Idx i = 0; i < N; ++i )
+      for (Idx i = 0; i < N; ++i)
       {
          const T weight = sampleWeights(i);
 
-         for ( Idx ax = 0; ax < 3; ++ax )
+         for (Idx ax = 0; ax < 3; ++ax)
          {
             sum_w_xt_x  += weight * shape(ax,i) * shape(ax,i);
             sum_w_x(ax) += weight * shape(ax,i);
@@ -243,10 +243,10 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
          sum_w += weight;
       }
 
-      return sqrt( sum_w_xt_x - sum_w_x.squared_magnitude() / sum_w );
+      return sqrt(sum_w_xt_x - sum_w_x.squared_magnitude() / sum_w);
    }
 
-   Transformation scaleByMatrix( const T scaleBy )
+   Transformation scaleByMatrix(const T scaleBy)
    {
       Transformation ret;
       ret.set_identity();
@@ -254,13 +254,13 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       return ret;
    }
 
-   void alignSamples( )
+   void alignSamples()
    {
-      const Idx M = getM( );
+      const Idx M = getM();
 
       // If we've only got one surface, there's nothing to do
       // (Actually, then there's no correspondences to optimize... but hey)
-      if ( M <= 1 )
+      if (M <= 1)
          return;
 
       // Using Algorithm 2.1 of "Statistical Models of Shape", Davies et al., 2008.
@@ -268,16 +268,16 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       // Choose one shape as the reference frame, call it x_ref
       MatrixType x_ref = surfaceExes[0].sampleLocations;
 
-      if ( scaleNormalization != NRML_NONE )
+      if (scaleNormalization != NRML_NONE)
       {
          // Normalize the scale so that ||x_ref|| = 1
-         const T theRms = shapeRms( x_ref );
+         const T theRms = shapeRms(x_ref);
 
          const T normalizeScale = 1 / theRms;
          PRINTVBLNL(normalizeScale);
          PRINTVBLNL(theRms);
 
-         x_ref = scaleByMatrix( normalizeScale ) * x_ref;
+         x_ref = scaleByMatrix(normalizeScale) * x_ref;
       }
 
       // Set the initial estimate of the mean shape to be x_ref
@@ -286,20 +286,20 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       Transformation compareTo;
       compareTo.set_identity();
 
-      while ( true )
+      while (true)
       {
          // Perform pairwise alignment of all shapes to the current estimate of the mean shape
          T maxFroNorm = 0;
-         for ( Idx s = 0; s < M; ++s )
+         for (Idx s = 0; s < M; ++s)
          {
             SampledSurfaceEx& ssx = surfaceExes[s];
 
             Transformation R;
-            pairwiseAlign( meanShape, ssx.sampleLocations, R );
+            pairwiseAlign(meanShape, ssx.sampleLocations, R);
             
-            for ( Idx r = 0; r < 4; ++r )
-               for ( Idx c = 0; c < 4; ++c )
-                  if ( R(r,c) != R(r,c) )
+            for (Idx r = 0; r < 4; ++r)
+               for (Idx c = 0; c < 4; ++c)
+                  if (R(r,c) != R(r,c))
                   {
                      PRINTVBLNL(meanShape);
                      PRINTVBLNL(ssx.sampleLocations);
@@ -312,26 +312,26 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
             // Update the transformation estimate
             ssx.transform = R*ssx.transform;
 
-            maxFroNorm = std::max( maxFroNorm, (R-compareTo).fro_norm() );
+            maxFroNorm = std::max(maxFroNorm, (R-compareTo).fro_norm());
          }
          
-         //PRINTVBL( maxFroNorm );
+         //PRINTVBL(maxFroNorm);
 
          // Recompute the mean of the samples
-         calculateMeanShape( );
+         calculateMeanShape();
 
-         if ( maxFroNorm < 1e-9 )
+         if (maxFroNorm < 1e-9)
             break;
          
          // Align the mean shape to the reference frame
 
          Transformation Rmean;
-         pairwiseAlign( x_ref, meanShape, Rmean );
+         pairwiseAlign(x_ref, meanShape, Rmean);
          meanShape = Rmean * meanShape;
       }
 
       // Recompute the mean of the samples
-      calculateMeanShape( );
+      calculateMeanShape();
 
       // Construct a normalizing transformation
       Transformation Rnorm;
@@ -346,7 +346,7 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
          Transformation Rtrans;
          Rtrans.set_identity();
 
-         for ( Idx ax = 0; ax < 3; ++ax )
+         for (Idx ax = 0; ax < 3; ++ax)
             Rtrans(ax,3) = -centroid(ax);
 
          // Increment the transformation
@@ -356,9 +356,9 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       {
          // Scale to mean scale of the models
          double scMean = 0;
-         for ( Idx s = 0; s < M; ++s )
+         for (Idx s = 0; s < M; ++s)
          {
-            const double sc = calculateScale( surfaceExes[s].transform );
+            const double sc = calculateScale(surfaceExes[s].transform);
             scMean += sc;
          }
          scMean = M / scMean;
@@ -376,17 +376,17 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
          // Rotate so that principal axes are aligned with coordinate axes
          Transformation covar(0.0);
          const Idx N = meanShape.cols();
-         for ( Idx v = 0; v < N; ++v )
+         for (Idx v = 0; v < N; ++v)
          {
             const VectorType p = meanShape.get_column(v) - centroid;
-            covar += outer_product( sw(v) * p, p );
+            covar += outer_product(sw(v) * p, p);
          }
 
          vnl_svd<double> svd(covar);
          Transformation Rrot = svd.U().transpose();
 
          // Make sure that the transformation is just a rotation, not reflection
-         if ( vnl_det<double>(Rrot) < 0 )
+         if (vnl_det<double>(Rrot) < 0)
          {
             Transformation flip; flip.set_identity();
             flip(2,2) = -1;
@@ -420,7 +420,7 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
 
          for (Idx ax = 0; ax < 2; ++ax)
          {
-            if ( (mins[ax]*mins[ax]*sumsSampleWeights - 2*mins[ax]*sums[ax]) > (maxs[ax]*maxs[ax]*sumsSampleWeights - 2*maxs[ax]*sums[ax]) )
+            if ((mins[ax]*mins[ax]*sumsSampleWeights - 2*mins[ax]*sums[ax]) > (maxs[ax]*maxs[ax]*sumsSampleWeights - 2*maxs[ax]*sums[ax]))
             {
                momentFlip(ax,ax) = -1;
                flipFlag ^= true;
@@ -460,96 +460,96 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
 
       {
          //PRINTVBLNL(Rnorm);
-         //PRINTVBL( vnl_det<T>(Rnorm) );
-         for ( Idx s = 0; s < M; ++s )
+         //PRINTVBL(vnl_det<T>(Rnorm));
+         for (Idx s = 0; s < M; ++s)
          {
-            //PRINTVBL( vnl_det<T>(surfaceExes[s].transform) );
-            incrementSurfaceTransform( surfaceExes[s], Rnorm );
+            //PRINTVBL(vnl_det<T>(surfaceExes[s].transform));
+            incrementSurfaceTransform(surfaceExes[s], Rnorm);
          }
 
          // Recalculate the mean shape
-         calculateMeanShape( );
+         calculateMeanShape();
       }
    }
 
-   void incrementSurfaceTransform( SampledSurfaceEx& ssx, const Transformation& R )
+   void incrementSurfaceTransform(SampledSurfaceEx& ssx, const Transformation& R)
    {
       ssx.sampleLocations = R*ssx.sampleLocations;
       ssx.transform       = R*ssx.transform;
    }
 
-   T calculateScale( Transformation& trans )
+   T calculateScale(Transformation& trans)
    {
-      const T detMag = vnl_svd<T>( trans ).determinant_magnitude( );
-      return pow( detMag, 1.0/3.0 );
+      const T detMag = vnl_svd<T>(trans).determinant_magnitude();
+      return pow(detMag, 1.0/3.0);
    }
 
-   void calculateMeanShape( )
+   void calculateMeanShape()
    {
-      const Idx M = getM( );
+      const Idx M = getM();
 
-      if ( meanShape.rows() != surfaceExes[0].sampleLocations.rows() || meanShape.rows() != surfaceExes[0].sampleLocations.cols() )
-         meanShape.set_size( surfaceExes[0].sampleLocations.rows(), surfaceExes[0].sampleLocations.cols() );
+      if (meanShape.rows() != surfaceExes[0].sampleLocations.rows() || meanShape.rows() != surfaceExes[0].sampleLocations.cols())
+         meanShape.set_size(surfaceExes[0].sampleLocations.rows(), surfaceExes[0].sampleLocations.cols());
 
-      meanShape.fill( 0 );
-      for ( Idx s = 0; s < M; ++s )
+      meanShape.fill(0);
+      for (Idx s = 0; s < M; ++s)
          meanShape += surfaceExes[s].sampleLocations;
       meanShape /= M;
 
-      VectorType newSampleWeights( self->getNumberOfSamplesPerSurface() );
-      self->calculateSampleWeights( meanShape, newSampleWeights );
+      VectorType newSampleWeights(self->getNumberOfSamplesPerSurface());
+      self->calculateSampleWeights(meanShape, newSampleWeights);
       
       // Normalize so that the total is 1
       newSampleWeights /= newSampleWeights.sum();
 
-      sampleWeights.set( newSampleWeights );
+      sampleWeights.set(newSampleWeights);
    }
 
-   void buildShapeModes( )
+   void buildShapeModes()
    {
-      const Idx M = self->getNumberOfSampledSurfaces( );
+      const Idx M = self->getNumberOfSampledSurfaces();
 
-      while ( shapeModes.size() < M )
-         shapeModes.push_back( MatrixType( meanShape.rows(), meanShape.cols() ) );
+      while (shapeModes.size() < M)
+         shapeModes.push_back(MatrixType(meanShape.rows(), meanShape.cols()));
 
-      if ( eigenvectors.rows() == M && eigenvectors.cols() == M )
+      if (eigenvectors.rows() == M && eigenvectors.cols() == M)
       {
-         for ( Idx m = 0; m < M; ++m )
+         for (Idx m = 0; m < M; ++m)
          {
-            shapeModes[m].fill( 0 );
+            shapeModes[m].fill(0);
 
-            for ( Idx s = 0; s < M; ++s )
-               shapeModes[m] += ( surfaceExes[s].sampleLocations - meanShape ) * eigenvectors( s, m );
+            for (Idx s = 0; s < M; ++s)
+               shapeModes[m] += (surfaceExes[s].sampleLocations - meanShape) * eigenvectors(s, m);
             
             // Shrink by sqrt(M) so that weights have unit variance
-            shapeModes[m] /= sqrt( M + 0.0 );
+            shapeModes[m] /= sqrt(M + 0.0);
 
             //shapeModes[m] += meanShape;
          }
       }
    }
 
-   void saveMesh( const char* filename )
+   void saveMesh(const char* filename)
    {
-      std::ofstream os( filename );
+      std::ofstream os(filename);
 
-      const Idx M = self->getNumberOfSampledSurfaces( );
-      const Idx N = self->getNumberOfSamplesPerSurface( );
+      const Idx M = self->getNumberOfSampledSurfaces();
+      const Idx N = self->getNumberOfSamplesPerSurface();
 
       os << "v " << N << std::endl;
-      for ( MeshIndex v = 0; v < N; ++v )
+      for (MeshIndex v = 0; v < N; ++v)
       {
          os << meanShape(0,v) << " " << meanShape(1,v) << " " << meanShape(2,v) << std::endl;
       }
 
-      FaceType::P faces = self->getFaces( );
-      if ( *faces != 0 )
+      FaceType::P faces = self->getFaces();
+      if (*faces != 0)
       {
          const MeshIndex nf = faces->getNumberOfPoints();
          MeshIndex vs[3];
 
          os << "f " << nf << std::endl;
-         for ( MeshIndex f = 0; f < nf; ++f )
+         for (MeshIndex f = 0; f < nf; ++f)
          {
             faces->getPoint(f, vs);
             os << vs[0] << " " << vs[1] << " " << vs[2] << std::endl;
@@ -557,12 +557,12 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       }
 
       // Write the modes out
-      if ( eigenvectors.rows() == M && eigenvectors.cols() == M )
+      if (eigenvectors.rows() == M && eigenvectors.cols() == M)
       {
-         for ( Idx m = 0; m < M; ++m )
+         for (Idx m = 0; m < M; ++m)
          {
             os << "v " << N << std::endl;
-            for ( MeshIndex v = 0; v < N; ++v )
+            for (MeshIndex v = 0; v < N; ++v)
             {
                os << shapeModes[m](0,v) << " " << shapeModes[m](1,v) << " " << shapeModes[m](2,v) << std::endl;
             }
@@ -570,21 +570,21 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       }
    }
 
-   void saveMatlab( const char* filename )
+   void saveMatlab(const char* filename)
    {
-      vnl_matlab_filewrite fw( filename );
+      vnl_matlab_filewrite fw(filename);
 
-      fw.write( meanShape, "meanshape" );
+      fw.write(meanShape, "meanshape");
 
       // Write the mean shape's connectivity
-      FaceType::P faces = self->getFaces( );
-      if ( *faces != 0 )
+      FaceType::P faces = self->getFaces();
+      if (*faces != 0)
       {
          const MeshIndex nf = faces->getNumberOfPoints();
-         MatrixType faceMatrix( nf, 3 );
+         MatrixType faceMatrix(nf, 3);
 
          Idx vs[3];
-         for ( MeshIndex f = 0; f < nf; ++f )
+         for (MeshIndex f = 0; f < nf; ++f)
          {
             faces->getPoint(f,vs);
 
@@ -593,83 +593,83 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
             faceMatrix(f,2) = 1+vs[2];
          }
 
-         fw.write( faceMatrix, "faces" );
+         fw.write(faceMatrix, "faces");
       }
 
       // and the sample weights - but it's a diagonal matrix, so
       // don't need to write the whole thing
-      fw.write( sampleWeights.diagonal(), "sampleWeights" );
+      fw.write(sampleWeights.diagonal(), "sampleWeights");
    
-      const Idx M = self->getNumberOfSampledSurfaces( );
-      const Idx N = self->getNumberOfSamplesPerSurface( );
+      const Idx M = self->getNumberOfSampledSurfaces();
+      const Idx N = self->getNumberOfSamplesPerSurface();
 
       // Copy the correspondences into a shape matrix
-      MatrixType pp( 3*N, M );
-      for ( Idx s = 0; s < M; ++s )
+      MatrixType pp(3*N, M);
+      for (Idx s = 0; s < M; ++s)
       {
          MatrixType column = surfaceExes[s].sampleLocations.extract(3,N);
 
-         for ( Idx c = 0; c < N; ++c )
-            for ( Idx ax = 0; ax < 3; ++ax )
-               pp( 3*c + ax, s ) = column( ax, c );
+         for (Idx c = 0; c < N; ++c)
+            for (Idx ax = 0; ax < 3; ++ax)
+               pp(3*c + ax, s) = column(ax, c);
       }
-      fw.write( pp, "P" );
+      fw.write(pp, "P");
 
-      fw.write( eigenvalues,  "D" );
-      fw.write( eigenvectors, "V" );
+      fw.write(eigenvalues,  "D");
+      fw.write(eigenvectors, "V");
    
       // Write the modes out
-      if ( eigenvectors.rows() == M && eigenvectors.cols() == M )
+      if (eigenvectors.rows() == M && eigenvectors.cols() == M)
       {
          MatrixType modes(3*N, M);
 
          // Write the mean shape into the first column
          for (Idx n = 0; n < N; ++n)
          {
-            modes( 3*n+0, 0 ) = meanShape( 0, n );
-            modes( 3*n+1, 0 ) = meanShape( 1, n );
-            modes( 3*n+2, 0 ) = meanShape( 2, n );
+            modes(3*n+0, 0) = meanShape(0, n);
+            modes(3*n+1, 0) = meanShape(1, n);
+            modes(3*n+2, 0) = meanShape(2, n);
          }
 
          // Write the mode shapes into the subsequent columns
-         for ( Idx m = 0; m < M-1; ++m )
+         for (Idx m = 0; m < M-1; ++m)
          {
             for (Idx n = 0; n < N; ++n)
             {
-               modes( 3*n+0, m+1 ) = shapeModes[m]( 0, n );
-               modes( 3*n+1, m+1 ) = shapeModes[m]( 1, n );
-               modes( 3*n+2, m+1 ) = shapeModes[m]( 2, n );
+               modes(3*n+0, m+1) = shapeModes[m](0, n);
+               modes(3*n+1, m+1) = shapeModes[m](1, n);
+               modes(3*n+2, m+1) = shapeModes[m](2, n);
             }
          }
          fw.write(modes, "modes");
       }
    }
 
-   const Idx getM( ) const
+   const Idx getM() const
    {
-      return self->getNumberOfSampledSurfaces( );
+      return self->getNumberOfSampledSurfaces();
    }
 
-   void calculateCovarianceMatrix( )
+   void calculateCovarianceMatrix()
    {
-      const Idx M = getM( );
+      const Idx M = getM();
       const Idx N = self->getNumberOfSamplesPerSurface();
 
-      updateStoredSampleLocations( );
+      updateStoredSampleLocations();
 
-      alignSamples( );
+      alignSamples();
 
-      Covar.set_size( M, M );
-      Covar.fill( 0 );
+      Covar.set_size(M, M);
+      Covar.fill(0);
 
-      PRINTVBL( sampleWeights.diagonal().sum() );
+      PRINTVBL(sampleWeights.diagonal().sum());
 
-      for ( Idx k = 0; k < M; ++k )
+      for (Idx k = 0; k < M; ++k)
       {
          SampledSurfaceEx& ssxk          = surfaceExes[k];
-         const MatrixType  centredShapeK_times_w = ( ssxk.sampleLocations - meanShape ) * sampleWeights;
+         const MatrixType  centredShapeK_times_w = (ssxk.sampleLocations - meanShape) * sampleWeights;
 
-         for ( Idx j = k; j < M; ++j )
+         for (Idx j = k; j < M; ++j)
          {
             SampledSurfaceEx& ssxj          = surfaceExes[j];
             const MatrixType  centredShapeJ = ssxj.sampleLocations - meanShape;
@@ -677,71 +677,71 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
             // Take the sum of the element-wise product of the two matrices...
             // Note that the dot is only over (Dims*N) elements, since the last row
             // is necessarily zero
-            Covar(k,j) = Covar(j,k) = dot<T>( centredShapeK_times_w.data_block(), centredShapeJ.data_block(), 3*N );
+            Covar(k,j) = Covar(j,k) = dot<T>(centredShapeK_times_w.data_block(), centredShapeJ.data_block(), 3*N);
          }
       }
    }
 
-   T calculateE( bool rebuildCovariance = true )
+   T calculateE(bool rebuildCovariance = true)
    {
       ProfTimer timer;
 
-      const Idx M = getM( );
+      const Idx M = getM();
       
       T modelCost = 0;
-      if ( M > 1 && modelWeight != 0 )
+      if (M > 1 && modelWeight != 0)
       {
-         if ( rebuildCovariance )
-            calculateCovarianceMatrix( );
+         if (rebuildCovariance)
+            calculateCovarianceMatrix();
 
          {
-            vnl_symmetric_eigensystem<T> eig( Covar );
+            vnl_symmetric_eigensystem<T> eig(Covar);
 
-            eigenvalues.set_size( M );
-            eigenvalues.set( eig.D.diagonal( ).data_block() );
+            eigenvalues.set_size(M);
+            eigenvalues.set(eig.D.diagonal().data_block());
             eigenvectors = eig.V;
          }
          
-         if ( eigenvalues[0] < eigenvalues[eigenvalues.size()-1] )
+         if (eigenvalues[0] < eigenvalues[eigenvalues.size()-1])
          {
             // Flip so that eigenvalues are in ascending order
             eigenvalues.flip();
             eigenvectors.fliplr();
          }
 
-         VectorType E_grad( M );
-         E_grad.fill( 0 );
+         VectorType E_grad(M);
+         E_grad.fill(0);
 
-         modelCost = costFunction->calculate( eigenvalues, E_grad );
+         modelCost = costFunction->calculate(eigenvalues, E_grad);
          
          // While we are here, calculate the gradient of E
          // wrt all of the elements of the covariance matrix
-         dE_by_dAjk.set_size( M, M );
-         dE_by_dAjk.fill( 0 );
+         dE_by_dAjk.set_size(M, M);
+         dE_by_dAjk.fill(0);
 
-         dE_by_dAjk_sums.set_size( M );
+         dE_by_dAjk_sums.set_size(M);
          
-         for ( Idx j = 0; j < M; ++j )
-            for ( Idx k = 0; k < M; ++k )
-               for ( Idx i = 0; i < M; ++i )
+         for (Idx j = 0; j < M; ++j)
+            for (Idx k = 0; k < M; ++k)
+               for (Idx i = 0; i < M; ++i)
                   dE_by_dAjk(j,k) += E_grad(i) * eigenvectors(j,i) * eigenvectors(k,i);
 
-         dE_by_dAjk_sums.fill( 0 );
-         for ( Idx k = 0; k < M; ++k )
-            for ( Idx j = 0; j < M; ++j )
+         dE_by_dAjk_sums.fill(0);
+         for (Idx k = 0; k < M; ++k)
+            for (Idx j = 0; j < M; ++j)
                dE_by_dAjk_sums(k) += dE_by_dAjk(j,k);
       }
 
       T regCost = 0;
       //regularizationWeight = 0;
-      if ( regularizationWeight != 0 )
+      if (regularizationWeight != 0)
       {
-         for ( Idx s = 0; s < M; ++s )
+         for (Idx s = 0; s < M; ++s)
          {
-            PRINTVBL( s );
-            const T incr = surfaceExes[s].surface->regularizationCost( );
-            PRINTVBL( incr );
-            DEBUGMACRO( "reg cost (surface " << (*surfaceExes[s].surface) << ") = " << std::setprecision(16) << incr );
+            PRINTVBL(s);
+            const T incr = surfaceExes[s].surface->regularizationCost();
+            PRINTVBL(incr);
+            DEBUGMACRO("reg cost (surface " << (*surfaceExes[s].surface) << ") = " << std::setprecision(16) << incr);
             regCost += incr;
          }
       }
@@ -751,11 +751,11 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       return modelWeight*modelCost - regularizationWeight*regCost;
    }
 
-   void getTransformedJacobian( const Idx s, const Idx sampleIndex, const Idx parameterIndex, MatrixType& jac )
+   void getTransformedJacobian(const Idx s, const Idx sampleIndex, const Idx parameterIndex, MatrixType& jac)
    {
       SampledSurfaceEx& ssx = surfaceExes[s];
 
-      ssx.surface->jacobian( sampleIndex, parameterIndex, jac );
+      ssx.surface->jacobian(sampleIndex, parameterIndex, jac);
 
       // This Jacobian is how much the correspondence will move in the surface's 
       // coordinate space given a unit change to the parameters.
@@ -764,63 +764,63 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       jac = ssx.transform * jac;
    }
 
-   void calculateGradients( const Idx s, T& maxAllowedT )
+   void calculateGradients(const Idx s, T& maxAllowedT)
    {
       SampledSurfaceEx& ssx = surfaceExes[s];
 
-      const Idx M = getM( );
-      const Idx K = ssx.surface->getNumberOfParameters( );
-      const Idx P = ssx.surface->getParameterDimensionality( );
+      const Idx M = getM();
+      const Idx K = ssx.surface->getNumberOfParameters();
+      const Idx P = ssx.surface->getParameterDimensionality();
 
-      ssx.parameterUpdates.set_size( K, P );
-      ssx.parameterUpdates.fill( 0 );
+      ssx.parameterUpdates.set_size(K, P);
+      ssx.parameterUpdates.fill(0);
 
-      if ( s != 0 || !firstShapeFixed )
+      if (s != 0 || !firstShapeFixed)
       {
-         TimedBlock timer( "updatecalc" );
+         TimedBlock timer("updatecalc");
          Idx sampleIndex, parameterIndex;
 
-         MatrixType jac( 3+1, P );
-         VectorType incr( 3+1 );
+         MatrixType jac(3+1, P);
+         VectorType incr(3+1);
 
-         if ( M > 1 && modelWeight > 0 )
+         if (M > 1 && modelWeight > 0)
          {
-            ssx.surface->resetIterator( );
-            while ( ssx.surface->next( sampleIndex, parameterIndex ) )
+            ssx.surface->resetIterator();
+            while (ssx.surface->next(sampleIndex, parameterIndex))
             {
-               incr.fill( 0 );
-               for ( Idx j = 0; j < M; ++j )
+               incr.fill(0);
+               for (Idx j = 0; j < M; ++j)
                {
                   const T psi = dE_by_dAjk(j,s) - dE_by_dAjk_sums(j)/M;
-                  for ( Idx q = 0; q < 3+1; ++q )
-                     incr(q) += psi * ( surfaceExes[j].sampleLocations( q, sampleIndex ) - meanShape(q, sampleIndex ) );
+                  for (Idx q = 0; q < 3+1; ++q)
+                     incr(q) += psi * (surfaceExes[j].sampleLocations(q, sampleIndex) - meanShape(q, sampleIndex));
                }
 
                // Multiply this increment by twice the fractional area at the sample...
                // Saves repeatedly doing it
-               incr *= 2 * sampleWeights( sampleIndex );
+               incr *= 2 * sampleWeights(sampleIndex);
 
                // Get the transformed jacobian at this point - it should be non-zero
                // because otherwise there is no need for iterator to return it
-               getTransformedJacobian( s, sampleIndex, parameterIndex, jac );
+               getTransformedJacobian(s, sampleIndex, parameterIndex, jac);
 
-               for ( Idx p = 0; p < P; ++p )
-                  for ( Idx q = 0; q < 3; ++q )
-                     ssx.parameterUpdates( parameterIndex, p ) += incr( q ) * jac( q, p );
+               for (Idx p = 0; p < P; ++p)
+                  for (Idx q = 0; q < 3; ++q)
+                     ssx.parameterUpdates(parameterIndex, p) += incr(q) * jac(q, p);
             }
          }
 
          // Now calculate the regularization term
          MatrixType reg;
-         if ( regularizationWeight != 0 )
+         if (regularizationWeight != 0)
          {
             PRINTVBLNL(ssx.transform);
-            ssx.surface->regularizationGradient( reg, ssx.transform );
+            ssx.surface->regularizationGradient(reg, ssx.transform);
          }
          else
          {
-            reg.set_size( ssx.parameterUpdates.rows(), ssx.parameterUpdates.cols() );
-            reg.fill( 0 );
+            reg.set_size(ssx.parameterUpdates.rows(), ssx.parameterUpdates.cols());
+            reg.fill(0);
          }
 
          // Weight the two components
@@ -828,34 +828,34 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
 
          // The update is calculated, but it would be useful to know how far the particles 
          // will actually move under this update
-         MatrixType deltas( 3, ssx.surface->getNumberOfSamples() );
-         deltas.fill( 0 );
-         ssx.surface->resetIterator( );
-         while ( ssx.surface->next( sampleIndex, parameterIndex ) )
+         MatrixType deltas(3, ssx.surface->getNumberOfSamples());
+         deltas.fill(0);
+         ssx.surface->resetIterator();
+         while (ssx.surface->next(sampleIndex, parameterIndex))
          {
-            getTransformedJacobian( s, sampleIndex, parameterIndex, jac );
+            getTransformedJacobian(s, sampleIndex, parameterIndex, jac);
 
-            for ( Idx p = 0; p < P; ++p )
-               for ( Idx q = 0; q < 3; ++q )
+            for (Idx p = 0; p < P; ++p)
+               for (Idx q = 0; q < 3; ++q)
                   deltas(q,sampleIndex) += jac(q,p) * ssx.parameterUpdates(parameterIndex,p);
          }
 
          T maxNormSq = 0;
          Idx maxC = INVALID_INDEX;
-         for ( Idx c = 0; c < deltas.cols(); ++c )
+         for (Idx c = 0; c < deltas.cols(); ++c)
          {
             T normSq = 0;
             
-            FOREACHAXIS( ax ) normSq += deltas(ax,c)*deltas(ax,c);
+            FOREACHAXIS(ax) normSq += deltas(ax,c)*deltas(ax,c);
 
-            if ( normSq > maxNormSq )
+            if (normSq > maxNormSq)
             {
                maxNormSq = normSq;
                maxC = c;
             }
          }
-         const T scale = pow( vnl_det<T>( ssx.transform ), 1.0/3.0 );
-         maxAllowedT = ssx.surface->getMaxMove( ) * scale / sqrt( maxNormSq );
+         const T scale = pow(vnl_det<T>(ssx.transform), 1.0/3.0);
+         maxAllowedT = ssx.surface->getMaxMove() * scale / sqrt(maxNormSq);
       }
       else
       {
@@ -863,46 +863,46 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       }
    }
 
-   void addSampledSurface( SampledSurface::P samp )
+   void addSampledSurface(SampledSurface::P samp)
    {
-      //DEBUGMACRO( "Creating holder" );
-      surfaceExes.push_back( SampledSurfaceEx() );
+      //DEBUGMACRO("Creating holder");
+      surfaceExes.push_back(SampledSurfaceEx());
 
       SampledSurfaceEx& ssx = surfaceExes.back();
 
       ssx.surface = samp;
       ssx.transform.set_identity();
 
-      ssx.sampleLocations.set_size( 3, samp->getNumberOfSamples() );
-      ssx.parameterUpdates.set_size( samp->getNumberOfParameters(), samp->getParameterDimensionality() );
+      ssx.sampleLocations.set_size(3, samp->getNumberOfSamples());
+      ssx.parameterUpdates.set_size(samp->getNumberOfParameters(), samp->getParameterDimensionality());
 
-      updateStoredSampleLocations( surfaceExes.back() );
-      calculateMeanShape( );
-      //DEBUGMACRO( "Done." );
+      updateStoredSampleLocations(surfaceExes.back());
+      calculateMeanShape();
+      //DEBUGMACRO("Done.");
    }
 
-   void randomVector( VectorType& ws, const Idx toSet )
+   void randomVector(VectorType& ws, const Idx toSet)
    {
-      for ( Idx i = 0; i < toSet && i < ws.size(); ++i )
-         ws[i] = AWT::Noise<double>::randn( 0, 1 );
+      for (Idx i = 0; i < toSet && i < ws.size(); ++i)
+         ws[i] = AWT::Noise<double>::randn(0, 1);
 
-      for ( Idx i = toSet; i < ws.size(); ++i )
+      for (Idx i = toSet; i < ws.size(); ++i)
          ws[i] = 0;
    }
 
-   void specGen( const Idx R )
+   void specGen(const Idx R)
    {
-      const Idx M = getM( );
+      const Idx M = getM();
 
       MatrixType id(M,M); id.set_identity();
-      PRINTVBL( (eigenvectors * eigenvectors.transpose() - id).fro_norm() );
+      PRINTVBL((eigenvectors * eigenvectors.transpose() - id).fro_norm());
       PAUSE;
 
       // Construct the generator matrix from the eigenvectors
       MatrixType meanShift(M,M);
       for (Idx r = 0; r < M; ++r)
          for (Idx c = 0; c < M; ++c)
-            meanShift(r,c) = ( ((r==c)?1.0:0.0) - 1.0/M );
+            meanShift(r,c) = (((r==c)?1.0:0.0) - 1.0/M);
 
       const MatrixType generator = meanShift * eigenvectors / sqrt(M+0.0);
 
@@ -912,13 +912,13 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
       MatrixType closestRandomToTraining(M-1, M, std::numeric_limits<double>::infinity());
 
       double accum = 0;
-      for ( Idx i = 0; i < R; ++i )
+      for (Idx i = 0; i < R; ++i)
       {
          ProfilingTimer timer;
          timer.start();
          VectorType ws(M);
 
-         for ( Idx m = 1; m < M-1; ++m )
+         for (Idx m = 1; m < M-1; ++m)
          {
             randomVector(ws, m);
 
@@ -926,12 +926,12 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
             ws = generator*ws;
 
             // Now calculate the sample locations given by these weights
-            samples.update( meanShape );
+            samples.update(meanShape);
             for (Idx i = 0; i < ws.size(); ++i)
                samples += ws[i] * surfaceExes[i].sampleLocations;
             samples.set_row(3, 1.0);
 
-            for ( Idx s = 0; s < M; ++s )
+            for (Idx s = 0; s < M; ++s)
             {
                // Align these samples to each of the training shapes in turn
                //spairwiseAlign(surfaceExes[s].sampleLocations, samples, trans);
@@ -944,7 +944,7 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
          timer.stop();
          accum += timer.getDurationInSecs();
          
-         PRINTVBL2( "eta", (R-i) * accum / i);
+         PRINTVBL2("eta", (R-i) * accum / i);
       }
    }
 
@@ -1000,7 +1000,7 @@ struct AWT::AlignParametric::ModelEigenvalueOptimizer::D
 };
 
 
-AWT::AlignParametric::ModelEigenvalueOptimizer::ModelEigenvalueOptimizer( )
+AWT::AlignParametric::ModelEigenvalueOptimizer::ModelEigenvalueOptimizer()
 {
    m_D = new D;
    m_D->self = this;
@@ -1020,95 +1020,95 @@ AWT::AlignParametric::ModelEigenvalueOptimizer::ModelEigenvalueOptimizer( )
 }
 
 
-AWT::AlignParametric::ModelEigenvalueOptimizer::~ModelEigenvalueOptimizer( )
+AWT::AlignParametric::ModelEigenvalueOptimizer::~ModelEigenvalueOptimizer()
 {
    delete m_D;
 }
 
-GETNAMEMACRO( AWT::AlignParametric::ModelEigenvalueOptimizer );
+GETNAMEMACRO(AWT::AlignParametric::ModelEigenvalueOptimizer);
 
-EigenvalueCostFunction::P AWT::AlignParametric::ModelEigenvalueOptimizer::getCostFunction( )
+EigenvalueCostFunction::P AWT::AlignParametric::ModelEigenvalueOptimizer::getCostFunction()
 {
    return m_D->costFunction;
 }
 
 
-void AWT::AlignParametric::ModelEigenvalueOptimizer::setCostFunction( EigenvalueCostFunction::P func )
+void AWT::AlignParametric::ModelEigenvalueOptimizer::setCostFunction(EigenvalueCostFunction::P func)
 {
    m_D->costFunction = func;
 }
 
 
-Idx AWT::AlignParametric::ModelEigenvalueOptimizer::getNumberOfSampledSurfaces( ) const
+Idx AWT::AlignParametric::ModelEigenvalueOptimizer::getNumberOfSampledSurfaces() const
 {
-   return static_cast<Idx>( m_D->surfaceExes.size() );
+   return static_cast<Idx>(m_D->surfaceExes.size());
 }
 
 
-AWT::AlignParametric::SampledSurface::P AWT::AlignParametric::ModelEigenvalueOptimizer::getSampledSurface( const Idx i )
+AWT::AlignParametric::SampledSurface::P AWT::AlignParametric::ModelEigenvalueOptimizer::getSampledSurface(const Idx i)
 {
    return m_D->surfaceExes[i].surface;
 }
 
 void AWT::AlignParametric::ModelEigenvalueOptimizer::_add(AWT::AlignParametric::SampledSurface::P surf)
 {
-   m_D->addSampledSurface( surf );
+   m_D->addSampledSurface(surf);
    modified();
 }
 
-Idx AWT::AlignParametric::ModelEigenvalueOptimizer::getNumberOfSamplesPerSurface( ) const
+Idx AWT::AlignParametric::ModelEigenvalueOptimizer::getNumberOfSamplesPerSurface() const
 {
    return m_D->surfaceExes[0].surface->getNumberOfSamples();
 }
-T AWT::AlignParametric::ModelEigenvalueOptimizer::calculateNow( )
+T AWT::AlignParametric::ModelEigenvalueOptimizer::calculateNow()
 {
-   const T ret = m_D->calculateE( );
+   const T ret = m_D->calculateE();
    modified();
 
    return ret;
 }
 
-void AWT::AlignParametric::ModelEigenvalueOptimizer::saveModel( const std::string& filename )
+void AWT::AlignParametric::ModelEigenvalueOptimizer::saveModel(const std::string& filename)
 {
-   m_D->saveMesh( filename.c_str() );
-   DEBUGMACRO( "Mesh written to " << filename );
+   m_D->saveMesh(filename.c_str());
+   DEBUGMACRO("Mesh written to " << filename);
 }
 
-void AWT::AlignParametric::ModelEigenvalueOptimizer::saveMatlab( const std::string& filename )
+void AWT::AlignParametric::ModelEigenvalueOptimizer::saveMatlab(const std::string& filename)
 {
-   m_D->saveMatlab( filename.c_str() );
-   DEBUGMACRO( "MATLAB data written to " << filename );
+   m_D->saveMatlab(filename.c_str());
+   DEBUGMACRO("MATLAB data written to " << filename);
 }
 
-T AWT::AlignParametric::ModelEigenvalueOptimizer::calculateGradients( )
+T AWT::AlignParametric::ModelEigenvalueOptimizer::calculateGradients()
 {
    T maxAllowedT = std::numeric_limits<T>::infinity();
 
-   DEBUGMACRO( "Calculating updates..." );
-   for ( Idx i = 0; i < getNumberOfSampledSurfaces( ); ++i )
+   DEBUGMACRO("Calculating updates...");
+   for (Idx i = 0; i < getNumberOfSampledSurfaces(); ++i)
    {
       T allowedT;
 
-      PRINTVBL( i );
-      m_D->calculateGradients( i, allowedT );
+      PRINTVBL(i);
+      m_D->calculateGradients(i, allowedT);
       
-      maxAllowedT = std::min<T>( maxAllowedT, allowedT );
+      maxAllowedT = std::min<T>(maxAllowedT, allowedT);
    }
    modified();
 
    //maxAllowedT = 1e-1;
-   DEBUGMACRO( "The maximum recommended time step is " << maxAllowedT );
+   DEBUGMACRO("The maximum recommended time step is " << maxAllowedT);
 
    return maxAllowedT;
 }
 
-const MatrixType& AWT::AlignParametric::ModelEigenvalueOptimizer::getSampledSurfaceUpdate( const Idx i ) const
+const MatrixType& AWT::AlignParametric::ModelEigenvalueOptimizer::getSampledSurfaceUpdate(const Idx i) const
 {
    return m_D->surfaceExes[i].parameterUpdates;
 }
 
 
-void AWT::AlignParametric::ModelEigenvalueOptimizer::applyUpdates( const T deltaT )
+void AWT::AlignParametric::ModelEigenvalueOptimizer::applyUpdates(const T deltaT)
 {
    Idx minNParams = std::numeric_limits<Idx>::max();
    Idx maxNParams = std::numeric_limits<Idx>::min();
@@ -1116,7 +1116,7 @@ void AWT::AlignParametric::ModelEigenvalueOptimizer::applyUpdates( const T delta
    const Idx N = getNumberOfSamplesPerSurface();
 
    bool* converged = new bool[ N ];
-   for ( Idx i = 0; i < N; ++i )
+   for (Idx i = 0; i < N; ++i)
       converged[i] = true;
 
    const T threshSq = m_D->sampleConvergenceThreshold * m_D->sampleConvergenceThreshold;
@@ -1124,11 +1124,11 @@ void AWT::AlignParametric::ModelEigenvalueOptimizer::applyUpdates( const T delta
    T minVel = std::numeric_limits<T>::infinity();
    T maxVel = 0;
 
-   for ( Idx s = 0; s < getNumberOfSampledSurfaces( ); ++s )
+   for (Idx s = 0; s < getNumberOfSampledSurfaces(); ++s)
    {
-      if ( s == 0 && m_D->firstShapeFixed )
+      if (s == 0 && m_D->firstShapeFixed)
       {
-         DEBUGMACRO( "Holding first shape fixed" );
+         DEBUGMACRO("Holding first shape fixed");
          continue;
       }
 
@@ -1136,76 +1136,76 @@ void AWT::AlignParametric::ModelEigenvalueOptimizer::applyUpdates( const T delta
       MatrixType pointDelta = ssx.sampleLocations;
 
       MatrixType controlValuesNow;
-      ssx.surface->getParameters( controlValuesNow );
+      ssx.surface->getParameters(controlValuesNow);
 
-      minNParams = std::min<Idx>( minNParams, controlValuesNow.rows() );
-      maxNParams = std::max<Idx>( maxNParams, controlValuesNow.rows() );
+      minNParams = std::min<Idx>(minNParams, controlValuesNow.rows());
+      maxNParams = std::max<Idx>(maxNParams, controlValuesNow.rows());
 
       controlValuesNow -= deltaT*ssx.parameterUpdates;
       
       // Record the current positions of the points so that we can compare afterwards
    
       {
-         //m_D->writeSampleLocations( "Before set", __LINE__ );
-         //TimedBlock timer( "Set new control values" );
-         ssx.surface->setParameters( controlValuesNow );
+         //m_D->writeSampleLocations("Before set", __LINE__);
+         //TimedBlock timer("Set new control values");
+         ssx.surface->setParameters(controlValuesNow);
       }
       
-      //m_D->writeSampleLocations( "Before update", __LINE__ );
-      m_D->updateStoredSampleLocations( ssx );
-      //m_D->writeSampleLocations( "After update", __LINE__ );
+      //m_D->writeSampleLocations("Before update", __LINE__);
+      m_D->updateStoredSampleLocations(ssx);
+      //m_D->writeSampleLocations("After update", __LINE__);
 
       pointDelta -= ssx.sampleLocations;
       pointDelta /= deltaT;
 
-      for ( Idx i = 0; i < N; ++i )
+      for (Idx i = 0; i < N; ++i)
       {
-         if ( converged[i] )
+         if (converged[i])
          {
             T deltaSq = 0;
-            FOREACHAXIS( ax )
+            FOREACHAXIS(ax)
                deltaSq += pointDelta(ax,i) * pointDelta(ax,i);
 
-            if ( deltaSq > threshSq )
+            if (deltaSq > threshSq)
                converged[i] = false;
 
-            minVel = std::min<T>( minVel, deltaSq );
-            maxVel = std::max<T>( maxVel, deltaSq );
+            minVel = std::min<T>(minVel, deltaSq);
+            maxVel = std::max<T>(maxVel, deltaSq);
          }
       }
    }
 
-   minVel = sqrt( minVel );
-   maxVel = sqrt( maxVel );
+   minVel = sqrt(minVel);
+   maxVel = sqrt(maxVel);
 
-   DEBUGMACRO( minVel << "\t" << maxVel );
-   PRINTVBL( deltaT );
+   DEBUGMACRO(minVel << "\t" << maxVel);
+   PRINTVBL(deltaT);
 
 DEBUGLINE;
-   m_D->calculateMeanShape( );
+   m_D->calculateMeanShape();
 
    // Determine which particles have converged, and then pass these off to the refinement
    // managers
    std::vector<Idx> convergedParticles;
-   for ( Idx i = 0; i < N; ++i )
-      if ( converged[i] ) convergedParticles.push_back( i );
+   for (Idx i = 0; i < N; ++i)
+      if (converged[i]) convergedParticles.push_back(i);
    delete [] converged;
 
    BLANKLINE;
-   DEBUGMACRO( "CHECKING FOR REF STRAT" );
-   if ( *m_D->refinementStrategy )
+   DEBUGMACRO("CHECKING FOR REF STRAT");
+   if (*m_D->refinementStrategy)
    {
       {
          ColouredConsole cons(ColouredConsole::COL_MAGENTA|ColouredConsole::COL_BRIGHT);
-         PRINTVBL( convergedParticles.size() );
+         PRINTVBL(convergedParticles.size());
       }
 
-      AWT::Container::Iterator<Idx>::P iter = VectorIterator<Idx>::getInstance( convergedParticles );
-      if ( m_D->refinementStrategy->refine( iter ) )
+      AWT::Container::Iterator<Idx>::P iter = VectorIterator<Idx>::getInstance(convergedParticles);
+      if (m_D->refinementStrategy->refine(iter))
       {
          // In case something has changed
-         m_D->calculateMeanShape( );
-         m_D->updateStoredSampleLocations( );
+         m_D->calculateMeanShape();
+         m_D->updateStoredSampleLocations();
       }
    }
 
@@ -1213,135 +1213,135 @@ DEBUGLINE;
 }
 
 
-void AWT::AlignParametric::ModelEigenvalueOptimizer::debugGradients( ModelEigenvalueOptimizer::P so )
+void AWT::AlignParametric::ModelEigenvalueOptimizer::debugGradients(ModelEigenvalueOptimizer::P so)
 {
    BLANKLINE;
-   DEBUGMACRO( "Debugging the gradient..." );
+   DEBUGMACRO("Debugging the gradient...");
 
    const T delta = 1e-6;
-   for ( Idx s = 0; s < so->getNumberOfSampledSurfaces(); ++s )
+   for (Idx s = 0; s < so->getNumberOfSampledSurfaces(); ++s)
    {
-      SampledSurface::P surf = so->getSampledSurface( s );
+      SampledSurface::P surf = so->getSampledSurface(s);
 
-      if ( s == 0 && so->isFirstShapeFixed() )
+      if (s == 0 && so->isFirstShapeFixed())
       {
-         ColouredConsole cons( 12 );
-         DEBUGMACRO( "First shape is fixed; skipping" );
+         ColouredConsole cons(12);
+         DEBUGMACRO("First shape is fixed; skipping");
          continue;
       }
 
       MatrixType cv;
       const T val = so->calculateNow();
       so->calculateGradients();
-      surf->getParameters( cv );
+      surf->getParameters(cv);
 
-      PRINTVBL( val );
+      PRINTVBL(val);
 
       const Idx N = cv.rows();
       const Idx C = cv.columns();
 
-      MatrixType numGrad( N, C );
-      const MatrixType calcGrad = so->getSampledSurfaceUpdate( s );
-      PRINTVBL( calcGrad.rows() );
-      PRINTVBL( calcGrad.cols() );
+      MatrixType numGrad(N, C);
+      const MatrixType calcGrad = so->getSampledSurfaceUpdate(s);
+      PRINTVBL(calcGrad.rows());
+      PRINTVBL(calcGrad.cols());
 
-      for ( Idx i = 0; i < N; ++i )
+      for (Idx i = 0; i < N; ++i)
       {
-         for ( Idx j = 0; j < C; ++j )
+         for (Idx j = 0; j < C; ++j)
          {
             {
-               ColouredConsole cons( ColouredConsole::COL_CYAN | ColouredConsole::COL_BRIGHT );
-               //DEBUGMACRO( "Surface " << *surf << "\t" << i << "\t" << j );
+               ColouredConsole cons(ColouredConsole::COL_CYAN | ColouredConsole::COL_BRIGHT);
+               //DEBUGMACRO("Surface " << *surf << "\t" << i << "\t" << j);
 
-               surf->setParameters( cv );
-               const T v = so->m_D->calculateE( false );
-               //PRINTVBL( v );
+               surf->setParameters(cv);
+               const T v = so->m_D->calculateE(false);
+               //PRINTVBL(v);
             }
 
             // Reset
 
-            MatrixType cvp = cv; cvp( i, j ) += delta;
-            MatrixType cvm = cv; cvm( i, j ) -= delta;
+            MatrixType cvp = cv; cvp(i, j) += delta;
+            MatrixType cvm = cv; cvm(i, j) -= delta;
 
-            surf->setParameters( cvp );
-            //const T vp = so->calculateNow( );
-            const T vp = so->m_D->calculateE( false );
+            surf->setParameters(cvp);
+            //const T vp = so->calculateNow();
+            const T vp = so->m_D->calculateE(false);
 
-            surf->setParameters( cvm );
-            //const T vm = so->calculateNow( );
-            const T vm = so->m_D->calculateE( false );
+            surf->setParameters(cvm);
+            //const T vm = so->calculateNow();
+            const T vm = so->m_D->calculateE(false);
 
             // Reset
-            surf->setParameters( cv );
+            surf->setParameters(cv);
 
-            numGrad( i, j ) = ( vp - vm ) / ( 2*delta );
+            numGrad(i, j) = (vp - vm) / (2*delta);
          }
       }
 
       {
-         ColouredConsole cons( 12 );
-         PRINTVBLNL( numGrad );
-         PRINTVBLNL( calcGrad );
+         ColouredConsole cons(12);
+         PRINTVBLNL(numGrad);
+         PRINTVBLNL(calcGrad);
       }
    }
    PAUSE;
 }
 
 
-bool AWT::AlignParametric::ModelEigenvalueOptimizer::isFirstShapeFixed( ) const
+bool AWT::AlignParametric::ModelEigenvalueOptimizer::isFirstShapeFixed() const
 {
    return m_D->firstShapeFixed;
 }
 
 
-void AWT::AlignParametric::ModelEigenvalueOptimizer::setFirstShapeFixed( const bool v )
+void AWT::AlignParametric::ModelEigenvalueOptimizer::setFirstShapeFixed(const bool v)
 {
-   if ( m_D->firstShapeFixed != v )
+   if (m_D->firstShapeFixed != v)
    {
       m_D->firstShapeFixed = v;
-      modified( );
+      modified();
    }
 }
 
-const VectorType& AWT::AlignParametric::ModelEigenvalueOptimizer::getEigenvalues( ) const
+const VectorType& AWT::AlignParametric::ModelEigenvalueOptimizer::getEigenvalues() const
 {
    return m_D->eigenvalues;
 }
 
 
-TuplesType::P AWT::AlignParametric::ModelEigenvalueOptimizer::getMeanSamples( ) const
+TuplesType::P AWT::AlignParametric::ModelEigenvalueOptimizer::getMeanSamples() const
 {
-   return VNLTuplesType::getInstance( m_D->meanShape, true );
+   return VNLTuplesType::getInstance(m_D->meanShape, true);
 }
 
 
-TuplesType::P AWT::AlignParametric::ModelEigenvalueOptimizer::getMode( const Idx m ) const
+TuplesType::P AWT::AlignParametric::ModelEigenvalueOptimizer::getMode(const Idx m) const
 {
-   return VNLTuplesType::getInstance( m_D->shapeModes[m], true );
+   return VNLTuplesType::getInstance(m_D->shapeModes[m], true);
 }
 
 
-TuplesType::P AWT::AlignParametric::ModelEigenvalueOptimizer::getSamples( const Idx s ) const
+TuplesType::P AWT::AlignParametric::ModelEigenvalueOptimizer::getSamples(const Idx s) const
 {
-   return VNLTuplesType::getInstance( m_D->surfaceExes[s].sampleLocations, true );
+   return VNLTuplesType::getInstance(m_D->surfaceExes[s].sampleLocations, true);
 }
 
 
-Transformation AWT::AlignParametric::ModelEigenvalueOptimizer::getTransformation( const Idx s ) const
+Transformation AWT::AlignParametric::ModelEigenvalueOptimizer::getTransformation(const Idx s) const
 {
    return m_D->surfaceExes[s].transform;
 }
 
 
-AWT::AlignParametric::ModelEigenvalueOptimizer::ScaleNormalizationType AWT::AlignParametric::ModelEigenvalueOptimizer::getScaleNormalization( ) const
+AWT::AlignParametric::ModelEigenvalueOptimizer::ScaleNormalizationType AWT::AlignParametric::ModelEigenvalueOptimizer::getScaleNormalization() const
 {
    return m_D->scaleNormalization;
 }
 
 
-void ModelEigenvalueOptimizer::setScaleNormalization( const ModelEigenvalueOptimizer::ScaleNormalizationType v )
+void ModelEigenvalueOptimizer::setScaleNormalization(const ModelEigenvalueOptimizer::ScaleNormalizationType v)
 {
-   if ( v != m_D->scaleNormalization )
+   if (v != m_D->scaleNormalization)
    {
       m_D->scaleNormalization = v;
       modified();
@@ -1349,11 +1349,11 @@ void ModelEigenvalueOptimizer::setScaleNormalization( const ModelEigenvalueOptim
 }
 
 
-void AWT::AlignParametric::ModelEigenvalueOptimizer::setSampleConvergenceThreshold( const T thresh )
+void AWT::AlignParametric::ModelEigenvalueOptimizer::setSampleConvergenceThreshold(const T thresh)
 {
-   if ( thresh != m_D->sampleConvergenceThreshold )
+   if (thresh != m_D->sampleConvergenceThreshold)
    {
-      if ( thresh < 0 )
+      if (thresh < 0)
          throw "Sample convergence threshold cannot be negative";
 
       m_D->sampleConvergenceThreshold = thresh;
@@ -1362,20 +1362,20 @@ void AWT::AlignParametric::ModelEigenvalueOptimizer::setSampleConvergenceThresho
 }
 
 
-T AWT::AlignParametric::ModelEigenvalueOptimizer::getSampleConvergenceThreshold( ) const
+T AWT::AlignParametric::ModelEigenvalueOptimizer::getSampleConvergenceThreshold() const
 {
    return m_D->sampleConvergenceThreshold;
 }
 
-RefinementStrategy::P AWT::AlignParametric::ModelEigenvalueOptimizer::getRefinementStrategy( ) const
+RefinementStrategy::P AWT::AlignParametric::ModelEigenvalueOptimizer::getRefinementStrategy() const
 {
    return m_D->refinementStrategy;
 }
 
 
-void ModelEigenvalueOptimizer::setRefinementStrategy( RefinementStrategy::P v )
+void ModelEigenvalueOptimizer::setRefinementStrategy(RefinementStrategy::P v)
 {
-   if ( v != m_D->refinementStrategy )
+   if (v != m_D->refinementStrategy)
    {
       m_D->refinementStrategy = v;
       modified();
@@ -1383,15 +1383,15 @@ void ModelEigenvalueOptimizer::setRefinementStrategy( RefinementStrategy::P v )
 }
 
 
-T AWT::AlignParametric::ModelEigenvalueOptimizer::getModelWeight( ) const
+T AWT::AlignParametric::ModelEigenvalueOptimizer::getModelWeight() const
 {
    return m_D->modelWeight;
 }
 
 
-void AWT::AlignParametric::ModelEigenvalueOptimizer::setModelWeight( const T v )
+void AWT::AlignParametric::ModelEigenvalueOptimizer::setModelWeight(const T v)
 {
-   if ( v != m_D->modelWeight )
+   if (v != m_D->modelWeight)
    {
       m_D->modelWeight = v;
       modified();
@@ -1399,15 +1399,15 @@ void AWT::AlignParametric::ModelEigenvalueOptimizer::setModelWeight( const T v )
 }
 
 
-T AWT::AlignParametric::ModelEigenvalueOptimizer::getRegularizationWeight( ) const
+T AWT::AlignParametric::ModelEigenvalueOptimizer::getRegularizationWeight() const
 {
    return m_D->regularizationWeight;
 }
 
 
-void AWT::AlignParametric::ModelEigenvalueOptimizer::setRegularizationWeight( const T v )
+void AWT::AlignParametric::ModelEigenvalueOptimizer::setRegularizationWeight(const T v)
 {
-   if ( v != m_D->regularizationWeight )
+   if (v != m_D->regularizationWeight)
    {
       m_D->regularizationWeight = v;
       modified();
@@ -1415,38 +1415,38 @@ void AWT::AlignParametric::ModelEigenvalueOptimizer::setRegularizationWeight( co
 }
 
 
-bool AWT::AlignParametric::ModelEigenvalueOptimizer::isRotationAllowed( ) const
+bool AWT::AlignParametric::ModelEigenvalueOptimizer::isRotationAllowed() const
 {
    return m_D->rotationAllowed;
 }
 
 
-void AWT::AlignParametric::ModelEigenvalueOptimizer::setRotationAllowed( const bool v )
+void AWT::AlignParametric::ModelEigenvalueOptimizer::setRotationAllowed(const bool v)
 {
-   if ( v != m_D->rotationAllowed )
+   if (v != m_D->rotationAllowed)
    {
       m_D->rotationAllowed = v;
       modified();
    }
 }
 
-bool AWT::AlignParametric::ModelEigenvalueOptimizer::isTranslationAllowed( ) const
+bool AWT::AlignParametric::ModelEigenvalueOptimizer::isTranslationAllowed() const
 {
    return m_D->translationAllowed;
 }
 
 
-void AWT::AlignParametric::ModelEigenvalueOptimizer::setTranslationAllowed( const bool v )
+void AWT::AlignParametric::ModelEigenvalueOptimizer::setTranslationAllowed(const bool v)
 {
-   if ( v != m_D->translationAllowed )
+   if (v != m_D->translationAllowed)
    {
       m_D->translationAllowed = v;
       modified();
    }
 }
 
-void AWT::AlignParametric::ModelEigenvalueOptimizer::calculateMeasures( )
+void AWT::AlignParametric::ModelEigenvalueOptimizer::calculateMeasures()
 {
    TimedBlock("calculateMeasures");
-   m_D->specGen( 10000 );
+   m_D->specGen(10000);
 }

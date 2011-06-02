@@ -41,20 +41,20 @@ namespace AWT
          typedef ManagedAutoPointer<CatesOptimizer> P;
 
       protected:
-         CatesOptimizer( MeshIndex N, ValueRange<T> _sigmaRange );
-         virtual ~CatesOptimizer( );
+         CatesOptimizer(MeshIndex N, ValueRange<T> _sigmaRange);
+         virtual ~CatesOptimizer();
 
       public:
-         static P getInstance( MeshIndex N, ValueRange<T> _sigmaRange );
-         virtual std::string getClassName( ) const;
+         static P getInstance(MeshIndex N, ValueRange<T> _sigmaRange);
+         virtual std::string getClassName() const;
 
-         virtual void setSigmaRange( ValueRange<T> range );
-         virtual ValueRange<T> getSigmaRange( ) const;
+         virtual void setSigmaRange(ValueRange<T> range);
+         virtual ValueRange<T> getSigmaRange() const;
 
          virtual void setDistanceType(const CatesRegularizer::DistanceType dt);
          virtual CatesRegularizer::DistanceType getDistanceType() const;
 
-         virtual ParticleSurface::P addMesh( MeshType::P mesh, TuplesType::P particles );
+         virtual ParticleSurface::P addMesh(MeshType::P mesh, TuplesType::P particles);
 
       protected:
          ValueRange<T> sigmaRange;

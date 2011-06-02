@@ -34,41 +34,41 @@ namespace AWT
    class ControlPoint : public virtual ManagedObject
    {
    public:
-      typedef ManagedAutoPointer<ControlPoint<T>> P;
+      typedef ManagedAutoPointer<ControlPoint<T> > P;
 
    protected:
-      ControlPoint( const T* position, const T scale );
+      ControlPoint(const T* position, const T scale);
 
-      ControlPoint( const typename ControlPoint<T>::P _other );
+      ControlPoint(const typename ControlPoint<T>::P _other);
 
-      virtual ~ControlPoint( );
+      virtual ~ControlPoint();
 
    public:
-      static typename ControlPoint<T>::P getInstance( const T* pos, const T scale );
+      static typename ControlPoint<T>::P getInstance(const T* pos, const T scale);
 
-      static typename ControlPoint<T>::P getInstance( const typename ControlPoint<T>::P _other );
+      static typename ControlPoint<T>::P getInstance(const typename ControlPoint<T>::P _other);
 
-      virtual void getPosition( T* out_Position ) const;
+      virtual void getPosition(T* out_Position) const;
 
-      virtual T getPosition( unsigned char axis ) const;
+      virtual T getPosition(unsigned char axis) const;
 
-      virtual void getValue( T* out_Position ) const;
+      virtual void getValue(T* out_Position) const;
 
-      virtual T getValue( unsigned char axis ) const;
+      virtual T getValue(unsigned char axis) const;
 
-      virtual void setValue( const T* in_Value );
+      virtual void setValue(const T* in_Value);
 
-      virtual void setValue( const unsigned char axis, const T v );
+      virtual void setValue(const unsigned char axis, const T v);
 
-      virtual T getScale( ) const;
+      virtual T getScale() const;
 
-      virtual T getInfluence( const T* point, bool debug = false ) const;
+      virtual T getInfluence(const T* point, bool debug = false) const;
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual void setUsed( const bool used );
+      virtual void setUsed(const bool used);
 
-      virtual bool isUsed( ) const;
+      virtual bool isUsed() const;
 
    protected:
       struct D;

@@ -38,7 +38,7 @@ struct AWT::DrawableAssembly::D
    bool m_Visible;
 };
 
-AWT::DrawableAssembly::DrawableAssembly( )
+AWT::DrawableAssembly::DrawableAssembly()
 {
    m_D = new D;
 
@@ -46,53 +46,53 @@ AWT::DrawableAssembly::DrawableAssembly( )
    m_D->m_Parent = 0;
 }
 
-AWT::DrawableAssembly::~DrawableAssembly( )
+AWT::DrawableAssembly::~DrawableAssembly()
 {
    delete m_D;
 }
 
-AWT::DrawableAssembly::P AWT::DrawableAssembly::getInstance( )
+AWT::DrawableAssembly::P AWT::DrawableAssembly::getInstance()
 {
-   AUTOGETINSTANCE( AWT::DrawableAssembly, () );
+   AUTOGETINSTANCE(AWT::DrawableAssembly, ());
 }
 
-GETNAMEMACRO( AWT::DrawableAssembly );
+GETNAMEMACRO(AWT::DrawableAssembly);
 
-void AWT::DrawableAssembly::draw( AWT::DrawContext::P context, const bool transparentPass )
+void AWT::DrawableAssembly::draw(AWT::DrawContext::P context, const bool transparentPass)
 {
-   if ( !m_D->m_Visible )
+   if (!m_D->m_Visible)
       return;
 
-   const unsigned int nobjs = getNumberOfChildren( );
-   for ( unsigned int i = 0; i < nobjs; ++i )
+   const unsigned int nobjs = getNumberOfChildren();
+   for (unsigned int i = 0; i < nobjs; ++i)
    {
-      Drawable::P child = getChild( i );
+      Drawable::P child = getChild(i);
 
-      if ( child->isVisible( ) )
+      if (child->isVisible())
       {
-         child->draw( context, transparentPass );
+         child->draw(context, transparentPass);
       }
    }
 }
 
-void AWT::DrawableAssembly::add( const std::string& name, Drawable::P drawable )
+void AWT::DrawableAssembly::add(const std::string& name, Drawable::P drawable)
 {
-   m_D->m_Objects.push_back( std::pair< std::string, Drawable::P >( name, drawable ) );
+   m_D->m_Objects.push_back(std::pair< std::string, Drawable::P >(name, drawable));
 
-   drawable->setParent( this );
+   drawable->setParent(this);
 }
 
-void AWT::DrawableAssembly::remove( Drawable::P drawable )
+void AWT::DrawableAssembly::remove(Drawable::P drawable)
 {
-   std::vector<D::DrawPair>::iterator it = m_D->m_Objects.begin( );
-   std::vector<D::DrawPair>::iterator en = m_D->m_Objects.end( );
+   std::vector<D::DrawPair>::iterator it = m_D->m_Objects.begin();
+   std::vector<D::DrawPair>::iterator en = m_D->m_Objects.end();
 
-   while ( it != en )
+   while (it != en)
    {
-      if ( it->second == drawable )
+      if (it->second == drawable)
       {
-         m_D->m_Objects.erase( it, it+1 );
-         drawable->setParent( 0 );
+         m_D->m_Objects.erase(it, it+1);
+         drawable->setParent(0);
          break;
       }
 
@@ -100,100 +100,100 @@ void AWT::DrawableAssembly::remove( Drawable::P drawable )
    }
 }
 
-void AWT::DrawableAssembly::clear( )
+void AWT::DrawableAssembly::clear()
 {
-   while ( !m_D->m_Objects.empty( ) )
+   while (!m_D->m_Objects.empty())
    {
-      D::DrawPair back = m_D->m_Objects.back( );
-      m_D->m_Objects.pop_back( );
+      D::DrawPair back = m_D->m_Objects.back();
+      m_D->m_Objects.pop_back();
 
-      back.second->setParent( 0 );
+      back.second->setParent(0);
    }
 }
 
-unsigned int AWT::DrawableAssembly::getNumberOfChildren( ) const
+unsigned int AWT::DrawableAssembly::getNumberOfChildren() const
 {
-   return static_cast< unsigned int >( m_D->m_Objects.size( ) );
+   return static_cast< unsigned int >(m_D->m_Objects.size());
 }
 
-AWT::Drawable::P AWT::DrawableAssembly::getChild( const unsigned int i )
+AWT::Drawable::P AWT::DrawableAssembly::getChild(const unsigned int i)
 {
    return m_D->m_Objects[i].second;
 }
 
-std::string AWT::DrawableAssembly::getChildName( const unsigned int i )
+std::string AWT::DrawableAssembly::getChildName(const unsigned int i)
 {
    return m_D->m_Objects[i].first;
 }
 
-void AWT::DrawableAssembly::setParent( AWT::DrawableAssembly* p )
+void AWT::DrawableAssembly::setParent(AWT::DrawableAssembly* p)
 {
    m_D->m_Parent = p;
-   modified( );
+   modified();
 }
 
-AWT::DrawableAssembly* AWT::DrawableAssembly::getParent( )
+AWT::DrawableAssembly* AWT::DrawableAssembly::getParent()
 {
    return m_D->m_Parent;
 }
 
-void AWT::DrawableAssembly::setVisible( const bool v )
+void AWT::DrawableAssembly::setVisible(const bool v)
 {
-   if ( m_D->m_Visible = v )
+   if (m_D->m_Visible = v)
    {
       m_D->m_Visible = v;
-      modified( );
+      modified();
    }
 }
 
-bool AWT::DrawableAssembly::isVisible( ) const
+bool AWT::DrawableAssembly::isVisible() const
 {
    return m_D->m_Visible;
 }
 
-void AWT::DrawableAssembly::getBounds( double* out_Bounds )
+void AWT::DrawableAssembly::getBounds(double* out_Bounds)
 {
    double tmpBounds[6];
 
    bool firstDone = false;
 
-   const unsigned int nobjs = getNumberOfChildren( );
-   for ( unsigned int i = 0; i < nobjs; ++i )
+   const unsigned int nobjs = getNumberOfChildren();
+   for (unsigned int i = 0; i < nobjs; ++i)
    {
-      Drawable::P child = getChild( i );
+      Drawable::P child = getChild(i);
 
-      if ( child->isVisible( ) )
+      if (child->isVisible())
       {
-         child->getBounds( tmpBounds );
+         child->getBounds(tmpBounds);
 
-         if ( tmpBounds[0] != tmpBounds[0] ) continue;
-         if ( tmpBounds[1] != tmpBounds[1] ) continue;
-         if ( tmpBounds[2] != tmpBounds[2] ) continue;
-         if ( tmpBounds[3] != tmpBounds[3] ) continue;
-         if ( tmpBounds[4] != tmpBounds[4] ) continue;
-         if ( tmpBounds[5] != tmpBounds[5] ) continue;
+         if (tmpBounds[0] != tmpBounds[0]) continue;
+         if (tmpBounds[1] != tmpBounds[1]) continue;
+         if (tmpBounds[2] != tmpBounds[2]) continue;
+         if (tmpBounds[3] != tmpBounds[3]) continue;
+         if (tmpBounds[4] != tmpBounds[4]) continue;
+         if (tmpBounds[5] != tmpBounds[5]) continue;
 
-         if ( !firstDone )
+         if (!firstDone)
          {
-            for ( int i = 0; i < 6; ++i )
+            for (int i = 0; i < 6; ++i)
                out_Bounds[i] = tmpBounds[i];
 
             firstDone = true;
          }
          else
          {
-            for ( int i = 0; i < 3; ++i )
+            for (int i = 0; i < 3; ++i)
             {
-               out_Bounds[2*i+0] = std::min<double>( out_Bounds[2*i+0], tmpBounds[2*i+0] );
-               out_Bounds[2*i+1] = std::max<double>( out_Bounds[2*i+1], tmpBounds[2*i+1] );
+               out_Bounds[2*i+0] = std::min<double>(out_Bounds[2*i+0], tmpBounds[2*i+0]);
+               out_Bounds[2*i+1] = std::max<double>(out_Bounds[2*i+1], tmpBounds[2*i+1]);
             }
          }
       }
    }
 
-   if ( !firstDone )
+   if (!firstDone)
    {
-      for ( int i = 0; i < 6; ++i )
+      for (int i = 0; i < 6; ++i)
          out_Bounds[i] = std::numeric_limits<double>::quiet_NaN();
    }
 }

@@ -27,7 +27,7 @@
 
 struct AWT::Edge::D
 {
-   D( const MeshIndex v ) : m_Vertex( v ), m_Next( 0 ), m_Previous( 0 )
+   D(const MeshIndex v) : m_Vertex(v), m_Next(0), m_Previous(0)
    {
    }
 
@@ -37,59 +37,59 @@ struct AWT::Edge::D
    Edge* m_Previous;
 };
 
-AWT::Edge::Edge( EdgeBuilder::P eb, const MeshIndex vertex )
+AWT::Edge::Edge(EdgeBuilder::P eb, const MeshIndex vertex)
 {
-   m_D = new D( vertex );
+   m_D = new D(vertex);
 
    m_D->m_EdgeBuilder = *eb;
 }
 
-AWT::Edge::~Edge( )
+AWT::Edge::~Edge()
 {
    delete m_D;
 }
 
-void AWT::Edge::destroy( )
+void AWT::Edge::destroy()
 {
-   m_D->m_EdgeBuilder->destroy( this );
+   m_D->m_EdgeBuilder->destroy(this);
 }
 
-AWT::Edge::P AWT::Edge::getInstance( AWT::EdgeBuilder::P eb, const AWT::MeshIndex v )
+AWT::Edge::P AWT::Edge::getInstance(AWT::EdgeBuilder::P eb, const AWT::MeshIndex v)
 {
-   AUTOGETINSTANCE( AWT::Edge, ( eb, v ) );
+   AUTOGETINSTANCE(AWT::Edge, (eb, v));
 }
 
-GETNAMEMACRO( AWT::Edge );
+GETNAMEMACRO(AWT::Edge);
 
-const AWT::MeshIndex AWT::Edge::getVertex( ) const
+const AWT::MeshIndex AWT::Edge::getVertex() const
 {
    return m_D->m_Vertex;
 }
 
-AWT::Edge* AWT::Edge::getPrevious( )
+AWT::Edge* AWT::Edge::getPrevious()
 {
    return m_D->m_Previous;
 }
 
-void AWT::Edge::setPrevious( Edge* e )
+void AWT::Edge::setPrevious(Edge* e)
 {
-   if ( m_D->m_Previous != e )
+   if (m_D->m_Previous != e)
    {
       m_D->m_Previous = e;
-      modified( );
+      modified();
    }
 }
 
-AWT::Edge* AWT::Edge::getNext( )
+AWT::Edge* AWT::Edge::getNext()
 {
    return m_D->m_Next;
 }
 
-void AWT::Edge::setNext( Edge* e )
+void AWT::Edge::setNext(Edge* e)
 {
-   if ( m_D->m_Next != e )
+   if (m_D->m_Next != e)
    {
       m_D->m_Next = e;
-      modified( );
+      modified();
    }
 }

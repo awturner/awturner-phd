@@ -43,35 +43,35 @@ namespace AWT
          typedef ManagedAutoPointer<VerticesInCylinder> P;
 
       protected:
-         VerticesInCylinder( );
-         virtual ~VerticesInCylinder( );
+         VerticesInCylinder();
+         virtual ~VerticesInCylinder();
 
       public:
-         static P getInstance( );
-         virtual std::string getClassName( ) const;
+         static P getInstance();
+         virtual std::string getClassName() const;
 
-         virtual void calculateBoxDistanceBounds2( OEKDTreeBranch<double,3>* in_Branch, SqDistBounds<double>& bounds ) const;
-         virtual bool shouldCheck( AWT::OEKDTree::OEKDTreeBranch<double,3>* in_Branch, const SqDistBounds<double>& bounds ) const;
+         virtual void calculateBoxDistanceBounds2(OEKDTreeBranch<double,3>* in_Branch, SqDistBounds<double>& bounds) const;
+         virtual bool shouldCheck(AWT::OEKDTree::OEKDTreeBranch<double,3>* in_Branch, const SqDistBounds<double>& bounds) const;
 
-         virtual void checkObject( const int in_Index );
+         virtual void checkObject(const int in_Index);
 
-         virtual void setCentre( const Point in_TestPoint  );
-         virtual Point getCentre( ) const;
+         virtual void setCentre(const Point in_TestPoint );
+         virtual Point getCentre() const;
 
-         virtual void setAxis( const Point in_TestPoint  );
-         virtual Point getAxis( ) const;
+         virtual void setAxis(const Point in_TestPoint );
+         virtual Point getAxis() const;
 
-         virtual void setRadius( const double outer, const double inner );
-         virtual void getRadius( double& outer, double& inner ) const;
+         virtual void setRadius(const double outer, const double inner);
+         virtual void getRadius(double& outer, double& inner) const;
 
-         virtual void setEnds( const double upper, const double lower );
-         virtual void getEnds( double& upper, double& lower ) const;
+         virtual void setEnds(const double upper, const double lower);
+         virtual void getEnds(double& upper, double& lower) const;
 
-         virtual std::vector<Index>& getVertices( );
+         virtual std::vector<Index>& getVertices();
 
-         virtual void reset( );
+         virtual void reset();
 
-         virtual void setData( AWT::OEKDTree::OEKDTreeData<double,3>::P data );
+         virtual void setData(AWT::OEKDTree::OEKDTreeData<double,3>::P data);
 
       protected:
          struct D;

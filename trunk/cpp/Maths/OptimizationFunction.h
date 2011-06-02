@@ -36,11 +36,11 @@ namespace AWT
    class OptimizationFunction : public ManagedObject
    {
    public:
-      typedef ManagedAutoPointer<OptimizationFunction<T>> P;
+      typedef ManagedAutoPointer<OptimizationFunction<T> > P;
 
-      virtual unsigned int getNumberOfVariables( ) const = 0;
+      virtual unsigned int getNumberOfVariables() const = 0;
 
-      virtual T evaluate( const vnl_matrix<T>& vs ) const = 0;
+      virtual T evaluate(const vnl_matrix<T>& vs) const = 0;
    };
 }
 

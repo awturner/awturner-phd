@@ -47,28 +47,28 @@ namespace AWT
       typedef ManagedAutoPointer<StateMachineThread> P;
 
    signals:
-      void repaintWidget( );
-      void clientError( QString str );
-      void clientWarning( QString str );
+      void repaintWidget();
+      void clientError(QString str);
+      void clientWarning(QString str);
 
    protected:
-      StateMachineThread( QWidget* form, BasicStateMachine::P stateMachine, QMutex* mutex = 0 );
-      virtual ~StateMachineThread( );
+      StateMachineThread(QWidget* form, BasicStateMachine::P stateMachine, QMutex* mutex = 0);
+      virtual ~StateMachineThread();
 
    public:
-      static P getInstance( QWidget* form, BasicStateMachine::P stateMachine, QMutex* mutex = 0 );
+      static P getInstance(QWidget* form, BasicStateMachine::P stateMachine, QMutex* mutex = 0);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
    public slots:
-      void requestStop( );
+      void requestStop();
 
-      void run( );
-      void singleStep( );
+      void run();
+      void singleStep();
 
    protected slots:
 
-      void step( );
+      void step();
 
    protected:
       struct D;

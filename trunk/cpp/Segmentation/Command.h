@@ -31,13 +31,13 @@ namespace AWT
    class Command
    {
    public:
-      virtual bool execute( ) = 0;
+      virtual bool execute() = 0;
    };
 
    class UndoableCommand : public Command
    {
    public:
-      virtual bool undo( )    = 0;
+      virtual bool undo()    = 0;
    };
 }
 

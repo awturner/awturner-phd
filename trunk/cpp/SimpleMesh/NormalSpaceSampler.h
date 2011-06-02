@@ -40,14 +40,14 @@ namespace AWT
          typedef ManagedAutoPointer<NormalSpaceSampler> P;
 
       protected:
-         NormalSpaceSampler( Mesh::P mesh, const unsigned int latdivs );
-         virtual ~NormalSpaceSampler( );
+         NormalSpaceSampler(Mesh::P mesh, const unsigned int latdivs);
+         virtual ~NormalSpaceSampler();
 
-         virtual void calculateCumAreas( );
+         virtual void calculateCumAreas();
 
       public:
-         static P getInstance( Mesh::P mesh, const unsigned int latdivs );
-         virtual std::string getClassName( ) const;
+         static P getInstance(Mesh::P mesh, const unsigned int latdivs);
+         virtual std::string getClassName() const;
 
       protected:
          const unsigned int latdivs;
@@ -56,15 +56,15 @@ namespace AWT
       class NormalSpaceSamplerFactory : public SamplerFactory
       {
       protected:
-         NormalSpaceSamplerFactory( const unsigned int latdivs );
-         virtual ~NormalSpaceSamplerFactory( );
+         NormalSpaceSamplerFactory(const unsigned int latdivs);
+         virtual ~NormalSpaceSamplerFactory();
 
       public:
          typedef ManagedAutoPointer<NormalSpaceSamplerFactory> P;
-         static P getInstance( const unsigned int latdivs );
-         std::string getClassName( ) const;
+         static P getInstance(const unsigned int latdivs);
+         std::string getClassName() const;
 
-         virtual Sampler::P createInstance( Mesh::P mesh );
+         virtual Sampler::P createInstance(Mesh::P mesh);
 
       protected:
          const unsigned int latdivs;

@@ -39,36 +39,36 @@ namespace AWT
       typedef ManagedAutoPointer<OpenGLDrawableBackground> P;
 
    protected:
-      OpenGLDrawableBackground( );
-      virtual ~OpenGLDrawableBackground( );
+      OpenGLDrawableBackground();
+      virtual ~OpenGLDrawableBackground();
 
    public:
-      static P getInstance( );
+      static P getInstance();
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual void getTopColor( float* col ) const;
+      virtual void getTopColor(float* col) const;
 
-      virtual void setTopColor( const float* col );
+      virtual void setTopColor(const float* col);
 
-      virtual void getBottomColor( float* col ) const;
+      virtual void getBottomColor(float* col) const;
 
-      virtual void setBottomColor( const float* col );
+      virtual void setBottomColor(const float* col);
 
-      virtual DrawMaterial::P getMaterial( );
-      virtual void setMaterial( DrawMaterial::P mat );
+      virtual DrawMaterial::P getMaterial();
+      virtual void setMaterial(DrawMaterial::P mat);
 
    protected:
       struct D;
       D* m_D;
 
-      virtual ModifiedTime getChildModifiedTime( );
+      virtual ModifiedTime getChildModifiedTime();
 
-      virtual void buildList( AWT::DrawContext::P context );
+      virtual void buildList(AWT::DrawContext::P context);
 
-      virtual void updateBounds( );
+      virtual void updateBounds();
 
-      virtual double getBoundImpl( unsigned int bound );
+      virtual double getBoundImpl(unsigned int bound);
    };
 }
 

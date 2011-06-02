@@ -37,7 +37,7 @@ namespace AWT
       class Iterable
       {
       public:
-         virtual Iterator<T>* iterator( ) = 0;
+         virtual Iterator<T>* iterator() = 0;
       };
    }
 }

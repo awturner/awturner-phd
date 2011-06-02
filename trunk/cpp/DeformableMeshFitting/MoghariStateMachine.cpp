@@ -55,9 +55,9 @@ struct AWT::MoghariStateMachine<T>::D
       STATE_UNDEFINED,
    };
 
-   std::string getStateName( ) const
+   std::string getStateName() const
    {
-      switch ( m_CurrentState )
+      switch (m_CurrentState)
       {
       case STATE_INITIALIZE:
          return "Initializing";
@@ -79,33 +79,33 @@ struct AWT::MoghariStateMachine<T>::D
       }
    }
 
-   D( )
-      : m_Measures( 1, 1 )
+   D()
+      : m_Measures(1, 1)
    {
       m_NextState = m_CurrentState = STATE_INITIALIZE;
       m_LastError = "";
       m_SearchRadius = -1;
    }
 
-   bool step( )
+   bool step()
    {
       m_CurrentState = m_NextState;
       m_NextState = STATE_UNDEFINED;
 
-      switch ( m_CurrentState )
+      switch (m_CurrentState)
       {
       case STATE_INITIALIZE:
-         return stepInitialize( );
+         return stepInitialize();
       case STATE_NORMALIZE_MEASURES:
-         return stepNormalizeMeasures( );
+         return stepNormalizeMeasures();
       case STATE_CALCULATE_NCC:
-         return stepCalculateNCCs( );
+         return stepCalculateNCCs();
       case STATE_TRYPOSITION:
-         return stepTryPosition( );
+         return stepTryPosition();
       case STATE_PICKBEST:
-         return stepPickBest( );
+         return stepPickBest();
       case STATE_FINISHED:
-         return stepFinished( );
+         return stepFinished();
       case STATE_ERROR:
       case STATE_UNDEFINED:
       default:
@@ -113,30 +113,30 @@ struct AWT::MoghariStateMachine<T>::D
       }
    }
 
-   bool stepInitialize( )
+   bool stepInitialize()
    {
-      if ( *m_Fragment == 0 )
+      if (*m_Fragment == 0)
       {
          m_NextState = STATE_ERROR;
          m_LastError = "Source mesh not set!";
          return false;
       }
 
-      if ( *m_TargetMesh == 0 )
+      if (*m_TargetMesh == 0)
       {
          m_NextState = STATE_ERROR;
          m_LastError = "Target mesh not set!";
          return false;
       }
 
-      if ( m_Measures.cols() != 9 )
+      if (m_Measures.cols() != 9)
       {
          m_NextState = STATE_ERROR;
          m_LastError = "Measures not set!";
          return false;
       }
 
-      if ( m_SearchRadius <= 0 )
+      if (m_SearchRadius <= 0)
       {
          m_NextState = STATE_ERROR;
          m_LastError = "Search radius not set!";
@@ -147,19 +147,19 @@ struct AWT::MoghariStateMachine<T>::D
       return true;
    }
 
-   bool stepNormalizeMeasures( )
+   bool stepNormalizeMeasures()
    {
       T vec[9];
 
       // Normalize these because we are going to do NCC
-      for ( MeshIndex v = 0; v < m_Measures.rows( ); ++v )
+      for (MeshIndex v = 0; v < m_Measures.rows(); ++v)
       {
-         for ( int i = 0; i < 9; ++i )
+         for (int i = 0; i < 9; ++i)
             vec[i] = m_Measures[v][i];
 
-         normalize<T>( vec, 9 );
+         normalize<T>(vec, 9);
 
-         for ( int i = 0; i < 9; ++i )
+         for (int i = 0; i < 9; ++i)
             m_Measures[v][i] = vec[i];
       }
 
@@ -167,49 +167,49 @@ struct AWT::MoghariStateMachine<T>::D
       return true;
    }
 
-   bool stepCalculateNCCs( )
+   bool stepCalculateNCCs()
    {
       // Pick a random vertex out of the fragment mesh
-      m_SelectedVertex = ( ( rand( ) << 15 ) | rand( ) ) % m_Fragment->getMesh( )->getNumberOfVertices( );
+      m_SelectedVertex = ((rand() << 15) | rand()) % m_Fragment->getMesh()->getNumberOfVertices();
 
-      MoghariMeasure<T>::P mogMeas = MoghariMeasure<T>::getInstance( );
+      MoghariMeasure<T>::P mogMeas = MoghariMeasure<T>::getInstance();
 
-      vnl_vector<T> fragA( 9, 1 );
+      vnl_vector<T> fragA(9, 1);
       T defAarr[9];
 
       // Calculate its a-vector
-      mogMeas->calculateForVertex( Mesh<T>::P( m_Fragment->getMesh( ) ), m_SelectedVertex, m_SearchRadius, fragA );
+      mogMeas->calculateForVertex(Mesh<T>::P(m_Fragment->getMesh()), m_SelectedVertex, m_SearchRadius, fragA);
 
       // ... and normalize it
-      fragA.normalize( );
+      fragA.normalize();
 
       // Clear the priority queue
-      while ( !m_PriorityQueue.empty() )
+      while (!m_PriorityQueue.empty())
          m_PriorityQueue.pop();
 
       // Now calculate all of the NCCs and put them into a priority queue
-      for ( MeshIndex v = 0; v < m_Measures.rows( ); ++v )
+      for (MeshIndex v = 0; v < m_Measures.rows(); ++v)
       {
-         for ( int i = 0; i < 9; ++i )
+         for (int i = 0; i < 9; ++i)
             defAarr[i] = m_Measures[v][i];
 
-         T ncc = dot<T>( defAarr, fragA.data_block(), 9 );
+         T ncc = dot<T>(defAarr, fragA.data_block(), 9);
 
-         m_PriorityQueue.push( NCCPair( ncc, v ) );
+         m_PriorityQueue.push(NCCPair(ncc, v));
       }
 
       m_NumberOfTries = 0;
-      m_BestRms = std::numeric_limits<T>::infinity( );
+      m_BestRms = std::numeric_limits<T>::infinity();
 
       m_NextState = STATE_TRYPOSITION;
       return true;
    }
 
-   void set4x4( vnl_matrix_fixed<T,4,4> matrixA, vnl_matrix_fixed<T,3,3> rot, vnl_vector_fixed<T,3> trans )
+   void set4x4(vnl_matrix_fixed<T,4,4> matrixA, vnl_matrix_fixed<T,3,3> rot, vnl_vector_fixed<T,3> trans)
    {
-      for ( unsigned int r = 0; r < 3; ++r )
+      for (unsigned int r = 0; r < 3; ++r)
       {
-         for ( unsigned int c = 0; c < 3; ++c )
+         for (unsigned int c = 0; c < 3; ++c)
             matrixA(r,c) = rot(r,c);
 
          matrixA(r,3) = trans(r);
@@ -218,14 +218,14 @@ struct AWT::MoghariStateMachine<T>::D
       matrixA(3,3) = 0;
    }
 
-   bool stepTryPosition( )
+   bool stepTryPosition()
    {
       // Do the transformation here
 
-      Mesh<T>::P fragMesh  = m_Fragment->getMesh( );
+      Mesh<T>::P fragMesh  = m_Fragment->getMesh();
 
       // Reset it to identity pose
-      m_Fragment->setInitialPose( Pose<T>::getInstance( ) );
+      m_Fragment->setInitialPose(Pose<T>::getInstance());
 
       // Righty tighty.  In order to calculate the matching transform, we need
       // to get the statistics of the two point neighbourhoods
@@ -235,75 +235,75 @@ struct AWT::MoghariStateMachine<T>::D
       LocalStats* statsA = new LocalStats;
       LocalStats* statsB = new LocalStats;
 
-      Pose<T>::P poseB = Pose<T>::getInstance( );
+      Pose<T>::P poseB = Pose<T>::getInstance();
 
       vnl_matrix_fixed<T,4,4> matrixA;
       vnl_matrix_fixed<T,4,4> matrixB;
 
-      MoghariMeasure<T>::P mogMeas = MoghariMeasure<T>::getInstance( );
+      MoghariMeasure<T>::P mogMeas = MoghariMeasure<T>::getInstance();
 
       // Get the local statistics around our random test point
-      mogMeas->calculateLocalStatistics( fragMesh, m_SelectedVertex, m_SearchRadius, statsA );
+      mogMeas->calculateLocalStatistics(fragMesh, m_SelectedVertex, m_SearchRadius, statsA);
 
-      PRINTVBL( statsA );
+      PRINTVBL(statsA);
 
       // Get the pose described by these stats, relative to the common coordinate system
-      set4x4( matrixA, statsA->eigenvectors, statsA->mean );
+      set4x4(matrixA, statsA->eigenvectors, statsA->mean);
 
-      vnl_matrix<T> iA = vnl_svd<T>( matrixA ).inverse( );
+      vnl_matrix<T> iA = vnl_svd<T>(matrixA).inverse();
 
-      vnl_matrix<T> rotate( 3, 3 );
+      vnl_matrix<T> rotate(3, 3);
 
-      NormalCalculator<T>::P nc = AreaAveragedNormalCalculator<T>::getInstance( );
+      NormalCalculator<T>::P nc = AreaAveragedNormalCalculator<T>::getInstance();
 
-      D::NCCPair top = m_PriorityQueue.top( );
-      DEBUGMACRO( top.second << "\t" << top.first );
+      D::NCCPair top = m_PriorityQueue.top();
+      DEBUGMACRO(top.second << "\t" << top.first);
 
       // Get the local statistics around the "matching" point on the other mesh
-      mogMeas->calculateLocalStatistics( m_TargetMesh, top.second, m_SearchRadius, statsB );
+      mogMeas->calculateLocalStatistics(m_TargetMesh, top.second, m_SearchRadius, statsB);
 
       // Now I need to calculate the similarity transform.  Each of the point sets can be brought into the
       // neutral coordinate system by translating by -mean, then rotating by inv(eigenvalues).
 
       // Try the 3 RH and 3 LH coord system permutations
-      for ( int flip = 0; flip < 2; ++flip )
+      for (int flip = 0; flip < 2; ++flip)
       {
-         for ( int rot = 0; rot < 3; ++rot )
+         for (int rot = 0; rot < 3; ++rot)
          {
-            for ( int c = 0; c < 3; ++c )
+            for (int c = 0; c < 3; ++c)
             {
                rotate[0][c] = statsB->eigenvectors[0][(c+rot)%3];
                rotate[1][c] = statsB->eigenvectors[1][(c+rot)%3];
                rotate[2][c] = (1-(2*flip)) * statsB->eigenvectors[2][(c+rot)%3];
             }
 
-            set4x4( matrixB, rotate, statsB->mean );
+            set4x4(matrixB, rotate, statsB->mean);
 
-            poseB->setMatrix( matrixB * iA );
+            poseB->setMatrix(matrixB * iA);
 
-            m_Fragment->setInitialPose( poseB );
+            m_Fragment->setInitialPose(poseB);
 
-            nc->calculateNormalsAndSet( fragMesh );
+            nc->calculateNormalsAndSet(fragMesh);
 
-            m_Fragment->createCorrespondenceFinder( *m_TargetMesh );
+            m_Fragment->createCorrespondenceFinder(*m_TargetMesh);
 
-            PRINTVBL2( "rms", m_Fragment->getCorrespondenceFinder( )->getRmsError( ) );
+            PRINTVBL2("rms", m_Fragment->getCorrespondenceFinder()->getRmsError());
 
-            T rmsError = m_Fragment->getCorrespondenceFinder( )->getRmsError( );
+            T rmsError = m_Fragment->getCorrespondenceFinder()->getRmsError();
 
-            if ( rmsError < m_BestRms )
+            if (rmsError < m_BestRms)
             {
-               DEBUGMACRO( "*" );
-               m_BestRms = m_Fragment->getCorrespondenceFinder( )->getRmsError( );
+               DEBUGMACRO("*");
+               m_BestRms = m_Fragment->getCorrespondenceFinder()->getRmsError();
                m_BestPose = poseB;
             }
          }
       }
 
       // Pop so that we can look at the next one...
-      m_PriorityQueue.pop( );
+      m_PriorityQueue.pop();
       
-      if ( ++m_NumberOfTries >= 200 )
+      if (++m_NumberOfTries >= 200)
       {
          m_NextState = STATE_PICKBEST;
       }
@@ -315,16 +315,16 @@ struct AWT::MoghariStateMachine<T>::D
       return true;
    }
 
-   bool stepPickBest( )
+   bool stepPickBest()
    {
       DEBUGLINE;
 
-      PRINTVBL( m_BestRms );
-      PRINTVBL( m_BestPose->getMatrix() );
+      PRINTVBL(m_BestRms);
+      PRINTVBL(m_BestPose->getMatrix());
 
 DEBUGLINE;
 
-      m_Fragment->setInitialPose( m_BestPose );
+      m_Fragment->setInitialPose(m_BestPose);
 
 DEBUGLINE;
 
@@ -333,43 +333,43 @@ DEBUGLINE;
       return true;
    }
 
-   bool stepFinished( )
+   bool stepFinished()
    {
       m_NextState = STATE_FINISHED;
       return true;
    }
 
-   bool isRunning( ) const
+   bool isRunning() const
    {
-      return !isError( ) && m_CurrentState != STATE_FINISHED;
+      return !isError() && m_CurrentState != STATE_FINISHED;
    }
 
-   bool isError( ) const
+   bool isError() const
    {
       return m_CurrentState == STATE_ERROR || m_CurrentState == STATE_UNDEFINED;
    }
 
-   std::string getLastError( ) const
+   std::string getLastError() const
    {
       return m_LastError;
    }
 
-   void setFragment( typename Fragment<T>::P frag )
+   void setFragment(typename Fragment<T>::P frag)
    {
       m_Fragment = frag;
    }
 
-   void setTargetMesh( typename Mesh<T>::P mesh )
+   void setTargetMesh(typename Mesh<T>::P mesh)
    {
       m_TargetMesh = mesh;
    }
 
-   void setMeasures( vnl_matrix<T>& meas )
+   void setMeasures(vnl_matrix<T>& meas)
    {
       m_Measures = meas;
    }
 
-   void setSearchRadius( const T v )
+   void setSearchRadius(const T v)
    {
       m_SearchRadius = v;
    }
@@ -400,7 +400,7 @@ DEBUGLINE;
 };
 
 template <class T>
-AWT::MoghariStateMachine<T>::MoghariStateMachine( AWT::StateMachineStack::P stack )
+AWT::MoghariStateMachine<T>::MoghariStateMachine(AWT::StateMachineStack::P stack)
 {
    m_D = new D;
 
@@ -408,101 +408,101 @@ AWT::MoghariStateMachine<T>::MoghariStateMachine( AWT::StateMachineStack::P stac
 }
 
 template <class T>
-AWT::MoghariStateMachine<T>::~MoghariStateMachine( )
+AWT::MoghariStateMachine<T>::~MoghariStateMachine()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::MoghariStateMachine<T>::P AWT::MoghariStateMachine<T>::getInstance( AWT::StateMachineStack::P stack )
+typename AWT::MoghariStateMachine<T>::P AWT::MoghariStateMachine<T>::getInstance(AWT::StateMachineStack::P stack)
 {
-   AUTOGETINSTANCE( AWT::MoghariStateMachine<T>, ( stack ) );
+   AUTOGETINSTANCE(AWT::MoghariStateMachine<T>, (stack));
 }
 
 template <class T>
-GETNAMEMACRO( AWT::MoghariStateMachine<T> );
+GETNAMEMACRO(AWT::MoghariStateMachine<T>);
 
 template <class T>
-AWT::StateMachineStack* AWT::MoghariStateMachine<T>::getStack( )
+AWT::StateMachineStack* AWT::MoghariStateMachine<T>::getStack()
 {
    return *m_D->m_Stack;
 }
 
 template <class T>
-bool AWT::MoghariStateMachine<T>::step( )
+bool AWT::MoghariStateMachine<T>::step()
 {
-   return m_D->step( );
+   return m_D->step();
 }
 
 template <class T>
-bool AWT::MoghariStateMachine<T>::isRunning( ) const
+bool AWT::MoghariStateMachine<T>::isRunning() const
 {
-   return m_D->isRunning( );
+   return m_D->isRunning();
 }
 
 template <class T>
-bool AWT::MoghariStateMachine<T>::isError( ) const
+bool AWT::MoghariStateMachine<T>::isError() const
 {
-   return m_D->isError( );
+   return m_D->isError();
 }
 
 template <class T>
-std::string AWT::MoghariStateMachine<T>::getLastError( ) const
+std::string AWT::MoghariStateMachine<T>::getLastError() const
 {
-   return m_D->getLastError( );
+   return m_D->getLastError();
 }
 
 template <class T>
-std::string AWT::MoghariStateMachine<T>::getStateName( ) const
+std::string AWT::MoghariStateMachine<T>::getStateName() const
 {
-   return m_D->getStateName( );
+   return m_D->getStateName();
 }
 
 template <class T>
-void AWT::MoghariStateMachine<T>::setFragment( typename AWT::Fragment<T>::P frag )
+void AWT::MoghariStateMachine<T>::setFragment(typename AWT::Fragment<T>::P frag)
 {
-   m_D->setFragment( frag );
+   m_D->setFragment(frag);
 }
 
 template <class T>
-void AWT::MoghariStateMachine<T>::setTargetMesh( typename AWT::Mesh<T>::P mesh )
+void AWT::MoghariStateMachine<T>::setTargetMesh(typename AWT::Mesh<T>::P mesh)
 {
-   m_D->setTargetMesh( mesh );
+   m_D->setTargetMesh(mesh);
 }
 
 template <class T>
-void AWT::MoghariStateMachine<T>::setMeasureFilename( const T radius, const std::string& filename )
+void AWT::MoghariStateMachine<T>::setMeasureFilename(const T radius, const std::string& filename)
 {
-   m_D->setSearchRadius( radius );
+   m_D->setSearchRadius(radius);
 
-   std::ifstream is( filename.c_str( ) );
+   std::ifstream is(filename.c_str());
 
    std::vector<T> vect;
 
    T val;
 
-   while ( true )
+   while (true)
    {
       is >> val;
 
-      if ( !is.good( ) || is.bad( ) )
+      if (!is.good() || is.bad())
          break;
       
-      vect.push_back( val );
+      vect.push_back(val);
    }
 
-   if ( vect.size( ) / 9 == m_D->m_TargetMesh->getNumberOfVertices( ) )
+   if (vect.size() / 9 == m_D->m_TargetMesh->getNumberOfVertices())
    {
-      vnl_matrix<T> as( static_cast<unsigned int>( vect.size( ) ) / 9, 9 );
+      vnl_matrix<T> as(static_cast<unsigned int>(vect.size()) / 9, 9);
 
-      for ( unsigned int r = 0; r < as.rows( ); ++r )
-         for ( unsigned int c = 0; c < as.cols( ); ++c )
+      for (unsigned int r = 0; r < as.rows(); ++r)
+         for (unsigned int c = 0; c < as.cols(); ++c)
             as(r,c) = vect[ 9*r + c ];
 
       m_D->m_Measures = as;
    }
 
-   is.close( );
+   is.close();
 }
 
 template class AWT::MoghariStateMachine<double>;

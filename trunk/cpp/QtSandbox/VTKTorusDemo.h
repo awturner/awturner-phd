@@ -31,7 +31,7 @@
 namespace AWT
 {
    template <class T>
-   typename Mesh<T>::P vtkTorusDemo( );
+   typename Mesh<T>::P vtkTorusDemo();
 }
 
 #endif // __VTKTORUSDEMO_H__

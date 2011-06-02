@@ -35,11 +35,11 @@ namespace AWT
    public:
       typedef ManagedAutoPointer<SaveableStateMachine> P;
 
-      virtual std::string getMagic( ) const = 0;
+      virtual std::string getMagic() const = 0;
 
-      virtual bool load( const std::string& filename ) = 0;
+      virtual bool load(const std::string& filename) = 0;
 
-      virtual void save( const std::string& filename ) = 0;
+      virtual void save(const std::string& filename) = 0;
    };
 }
 

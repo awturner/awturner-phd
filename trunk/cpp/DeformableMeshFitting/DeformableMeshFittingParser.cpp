@@ -51,32 +51,32 @@ struct AWT::DeformableMeshFittingParser<T>::D
    class DeformableMeshFittingParseDataHolder
    {
    public:
-      DeformableMeshFittingParseDataHolder( DeformableMeshFittingStateMachine<T>* dmfsm )
-         : m_Dmfsm( dmfsm ), m_MoghariRadius( -1 ) /* This is a nonsensical value */
+      DeformableMeshFittingParseDataHolder(DeformableMeshFittingStateMachine<T>* dmfsm)
+         : m_Dmfsm(dmfsm), m_MoghariRadius(-1) /* This is a nonsensical value */
       {
       }
 
-      void loadDeformableMesh( )
+      void loadDeformableMesh()
       {
          //std::cerr << "I will load the deformable model from " << m_DeformableFilename << std::endl;
 
-         m_Dmfsm->setDeformableFilename( m_DeformableFilename );
+         m_Dmfsm->setDeformableFilename(m_DeformableFilename);
 
-         if ( m_MoghariFilename.length( ) > 0 )
+         if (m_MoghariFilename.length() > 0)
          {
-            m_Dmfsm->setMoghariFilename( static_cast<T>( m_MoghariRadius ), m_MoghariFilename );
+            m_Dmfsm->setMoghariFilename(static_cast<T>(m_MoghariRadius), m_MoghariFilename);
          }
 
-         if ( m_DeformableParameters.size( ) > 0 )
+         if (m_DeformableParameters.size() > 0)
          {
-            T* params = new T[ m_DeformableParameters.size( ) ];
+            T* params = new T[ m_DeformableParameters.size() ];
 
-            for ( unsigned int i = 0; i < m_DeformableParameters.size( ); ++i )
-               params[i] = static_cast<T>( m_DeformableParameters[i] );
+            for (unsigned int i = 0; i < m_DeformableParameters.size(); ++i)
+               params[i] = static_cast<T>(m_DeformableParameters[i]);
 
-            m_Dmfsm->setInitialParameters( params );
+            m_Dmfsm->setInitialParameters(params);
 
-            //PRINTVEC( params, m_DeformableParameters.size( ) );
+            //PRINTVEC(params, m_DeformableParameters.size());
 
             delete[] params;
          }
@@ -86,38 +86,38 @@ struct AWT::DeformableMeshFittingParser<T>::D
          }
       }
 
-      void startFragment( )
+      void startFragment()
       {
          m_FragmentFilename = "";
-         m_FragmentPose.clear( );
+         m_FragmentPose.clear();
       }
 
-      void createFragment( ) 
+      void createFragment() 
       {
          DEBUGLINE;
-         //Mesh<T>* mesh = VTKMeshLoader<T>::load( m_FragmentFilename.c_str( ) );
+         //Mesh<T>* mesh = VTKMeshLoader<T>::load(m_FragmentFilename.c_str());
 
          typename Pose<T>::PoseMatrix poseMatrix;
 
-         poseMatrix.set_identity( );
+         poseMatrix.set_identity();
 
          //std::cerr << "I will load a fragment from " << m_FragmentFilename;
 
-         if ( m_FragmentPose.size( ) == 12 )
+         if (m_FragmentPose.size() == 12)
          {
-            for ( unsigned int r = 0; r < 3; ++r )
+            for (unsigned int r = 0; r < 3; ++r)
             {
-               for ( unsigned int c = 0; c < 3; ++c )
-                  poseMatrix[r][c] = static_cast<T>( m_FragmentPose[ 4*r + c ] );
+               for (unsigned int c = 0; c < 3; ++c)
+                  poseMatrix[r][c] = static_cast<T>(m_FragmentPose[ 4*r + c ]);
 
-               poseMatrix[r][3] = static_cast<T>( m_FragmentPose[ 4*r + 3 ] );
+               poseMatrix[r][3] = static_cast<T>(m_FragmentPose[ 4*r + 3 ]);
             }
 
             //std::cerr << " and will set its pose to" << std::endl;
 
-            //for ( unsigned int r = 0; r < 3; ++r )
+            //for (unsigned int r = 0; r < 3; ++r)
             //{
-            //   for ( unsigned int c = 0; c < 4; ++c )
+            //   for (unsigned int c = 0; c < 4; ++c)
             //      std::cerr << m_FragmentPose[ 4*r + c ] << " ";
 
             //   std::cerr << std::endl;
@@ -128,20 +128,20 @@ struct AWT::DeformableMeshFittingParser<T>::D
             //std::cerr << " with identity pose" << std::endl;
          }
 
-         TargetIndex i = m_Dmfsm->getNumberOfTargetFilenames( );
+         TargetIndex i = m_Dmfsm->getNumberOfTargetFilenames();
 
-         typename Pose<T>::P pose = Pose<T>::getInstance( );
+         typename Pose<T>::P pose = Pose<T>::getInstance();
          
-         pose->setMatrix( poseMatrix );
+         pose->setMatrix(poseMatrix);
 
-         m_Dmfsm->addTargetFilename( m_FragmentFilename );
+         m_Dmfsm->addTargetFilename(m_FragmentFilename);
          
-         m_Dmfsm->setInitialPose( i, pose );
+         m_Dmfsm->setInitialPose(i, pose);
       }
 
-      void evalOnly( )
+      void evalOnly()
       {
-         m_Dmfsm->evalOnly( );
+         m_Dmfsm->evalOnly();
       }
 
       DeformableMeshFittingStateMachine<T>* m_Dmfsm;
@@ -158,17 +158,17 @@ struct AWT::DeformableMeshFittingParser<T>::D
 
    struct DeformableMeshFittingGrammar : public grammar< DeformableMeshFittingGrammar >
    {
-      DeformableMeshFittingGrammar( DeformableMeshFittingParseDataHolder* pdh )
-         : m_Pdh( pdh )
+      DeformableMeshFittingGrammar(DeformableMeshFittingParseDataHolder* pdh)
+         : m_Pdh(pdh)
       {};
 
       struct functorAssignString
       {
-         functorAssignString( std::string& str_ )
-            : str( str_ ) {};
+         functorAssignString(std::string& str_)
+            : str(str_) {};
 
          template<typename IteratorT >
-         void operator( )( IteratorT first, IteratorT last ) const
+         void operator()(IteratorT first, IteratorT last) const
          {
             str.assign(first, last);
          }
@@ -178,15 +178,15 @@ struct AWT::DeformableMeshFittingParser<T>::D
 
       struct functorEndDeformable
       {
-         functorEndDeformable( DeformableMeshFittingParseDataHolder* pdh )
+         functorEndDeformable(DeformableMeshFittingParseDataHolder* pdh)
          {
             this->pdh = pdh;
          }
 
          template <typename ScannerT>
-         void operator( )( ScannerT /*first*/, ScannerT /*last*/ ) const
+         void operator()(ScannerT /*first*/, ScannerT /*last*/) const
          {
-            pdh->loadDeformableMesh( );
+            pdh->loadDeformableMesh();
          }
 
          DeformableMeshFittingParseDataHolder* pdh;
@@ -194,15 +194,15 @@ struct AWT::DeformableMeshFittingParser<T>::D
 
       struct functorStartFragment
       {
-         functorStartFragment( DeformableMeshFittingParseDataHolder* pdh )
+         functorStartFragment(DeformableMeshFittingParseDataHolder* pdh)
          {
             this->pdh = pdh;
          }
 
          template <typename ScannerT>
-         void operator( )( ScannerT first, ScannerT last ) const
+         void operator()(ScannerT first, ScannerT last) const
          {
-            pdh->startFragment( );
+            pdh->startFragment();
          }
 
          DeformableMeshFittingParseDataHolder* pdh;
@@ -210,15 +210,15 @@ struct AWT::DeformableMeshFittingParser<T>::D
 
       struct functorEndFragment
       {
-         functorEndFragment( DeformableMeshFittingParseDataHolder* pdh )
+         functorEndFragment(DeformableMeshFittingParseDataHolder* pdh)
          {
             this->pdh = pdh;
          }
 
          template <typename ScannerT>
-         void operator( )( ScannerT first, ScannerT last ) const
+         void operator()(ScannerT first, ScannerT last) const
          {
-            pdh->createFragment( );
+            pdh->createFragment();
          }
 
          DeformableMeshFittingParseDataHolder* pdh;
@@ -226,16 +226,16 @@ struct AWT::DeformableMeshFittingParser<T>::D
 
       struct functorEvalOnly
       {
-         functorEvalOnly( DeformableMeshFittingParseDataHolder* pdh )
+         functorEvalOnly(DeformableMeshFittingParseDataHolder* pdh)
          {
             this->pdh = pdh;
          }
 
          template <typename ScannerT>
-         void operator( )( ScannerT first, ScannerT last ) const
+         void operator()(ScannerT first, ScannerT last) const
          {
             std::cerr << "Setting eval only" << std::endl;
-            pdh->evalOnly( );
+            pdh->evalOnly();
          }
 
          DeformableMeshFittingParseDataHolder* pdh;
@@ -244,63 +244,63 @@ struct AWT::DeformableMeshFittingParser<T>::D
       template <typename ScannerT>
       struct definition
       {
-         definition( DeformableMeshFittingGrammar const& self )
+         definition(DeformableMeshFittingGrammar const& self)
          { 
             pose = 
                str_p("pose") >>
                ch_p('=') >>
                str_p("[") >>
                (
-                  real_p[ push_back_a( self.m_Pdh->m_FragmentPose ) ] >>
-                  real_p[ push_back_a( self.m_Pdh->m_FragmentPose ) ] >>
-                  real_p[ push_back_a( self.m_Pdh->m_FragmentPose ) ] >>
-                  real_p[ push_back_a( self.m_Pdh->m_FragmentPose ) ] >>
+                  real_p[ push_back_a(self.m_Pdh->m_FragmentPose) ] >>
+                  real_p[ push_back_a(self.m_Pdh->m_FragmentPose) ] >>
+                  real_p[ push_back_a(self.m_Pdh->m_FragmentPose) ] >>
+                  real_p[ push_back_a(self.m_Pdh->m_FragmentPose) ] >>
                   !ch_p(";") >>
-                  real_p[ push_back_a( self.m_Pdh->m_FragmentPose ) ] >>
-                  real_p[ push_back_a( self.m_Pdh->m_FragmentPose ) ] >>
-                  real_p[ push_back_a( self.m_Pdh->m_FragmentPose ) ] >>
-                  real_p[ push_back_a( self.m_Pdh->m_FragmentPose ) ] >>
+                  real_p[ push_back_a(self.m_Pdh->m_FragmentPose) ] >>
+                  real_p[ push_back_a(self.m_Pdh->m_FragmentPose) ] >>
+                  real_p[ push_back_a(self.m_Pdh->m_FragmentPose) ] >>
+                  real_p[ push_back_a(self.m_Pdh->m_FragmentPose) ] >>
                   !ch_p(";") >>
-                  real_p[ push_back_a( self.m_Pdh->m_FragmentPose ) ] >>
-                  real_p[ push_back_a( self.m_Pdh->m_FragmentPose ) ] >>
-                  real_p[ push_back_a( self.m_Pdh->m_FragmentPose ) ] >>
-                  real_p[ push_back_a( self.m_Pdh->m_FragmentPose ) ]
-               ) >>
+                  real_p[ push_back_a(self.m_Pdh->m_FragmentPose) ] >>
+                  real_p[ push_back_a(self.m_Pdh->m_FragmentPose) ] >>
+                  real_p[ push_back_a(self.m_Pdh->m_FragmentPose) ] >>
+                  real_p[ push_back_a(self.m_Pdh->m_FragmentPose) ]
+              ) >>
                str_p("]");
 
             modelParams = 
                str_p("params") >>
                ch_p('=') >>
                str_p("[") >>
-               ( *real_p[ push_back_a( self.m_Pdh->m_DeformableParameters ) ] ) >>
+               (*real_p[ push_back_a(self.m_Pdh->m_DeformableParameters) ]) >>
                str_p("]");
 
             moghariFile = 
                str_p("moghari") >>
-               real_p[ assign_a( self.m_Pdh->m_MoghariRadius ) ] >>
-               ( confix_p( '"', (+c_escape_ch_p )[ functorAssignString( self.m_Pdh->m_MoghariFilename) ], '"' ) );
+               real_p[ assign_a(self.m_Pdh->m_MoghariRadius) ] >>
+               (confix_p('"', (+c_escape_ch_p)[ functorAssignString(self.m_Pdh->m_MoghariFilename) ], '"'));
 
             line = 
                as_lower_d[ str_p("deformable") ] >>
-                  ( confix_p( '"', (+c_escape_ch_p )[ functorAssignString( self.m_Pdh->m_DeformableFilename) ], '"' ) ) >>
-                  !( moghariFile ) >>
-                  !( modelParams ) >>
-               str_p("end")[ functorEndDeformable( self.m_Pdh ) ] >>
+                  (confix_p('"', (+c_escape_ch_p)[ functorAssignString(self.m_Pdh->m_DeformableFilename) ], '"')) >>
+                  !(moghariFile) >>
+                  !(modelParams) >>
+               str_p("end")[ functorEndDeformable(self.m_Pdh) ] >>
                *(
-                  as_lower_d[ str_p( "fragment" ) ][ functorStartFragment( self.m_Pdh ) ] >>
-                     ( confix_p( '"', (+c_escape_ch_p )[ functorAssignString( self.m_Pdh->m_FragmentFilename ) ], '"' ) ) >>
-                     !( pose ) >> 
-                  str_p( "end" )[ functorEndFragment( self.m_Pdh ) ]
-               ) >>
-               !str_p("evalonly")[ functorEvalOnly( self.m_Pdh ) ] >>
-               *( comment_p("//") | comment_p("/*", "*/") ) >>
+                  as_lower_d[ str_p("fragment") ][ functorStartFragment(self.m_Pdh) ] >>
+                     (confix_p('"', (+c_escape_ch_p)[ functorAssignString(self.m_Pdh->m_FragmentFilename) ], '"')) >>
+                     !(pose) >> 
+                  str_p("end")[ functorEndFragment(self.m_Pdh) ]
+              ) >>
+               !str_p("evalonly")[ functorEvalOnly(self.m_Pdh) ] >>
+               *(comment_p("//") | comment_p("/*", "*/")) >>
                lexeme_d[ *space_p ] /* Trim trailing whitespace */
                ;
          }			
 
          rule<ScannerT> line, pose, modelParams, moghariFile;
 
-         rule<ScannerT> const& start( ) const { return line; }
+         rule<ScannerT> const& start() const { return line; }
       };
 
       DeformableMeshFittingParseDataHolder* m_Pdh;
@@ -310,30 +310,30 @@ struct AWT::DeformableMeshFittingParser<T>::D
 };
 
 template <class T>
-AWT::DeformableMeshFittingParser<T>::DeformableMeshFittingParser( )
+AWT::DeformableMeshFittingParser<T>::DeformableMeshFittingParser()
 {
    m_D = new D;
 }
 
 template <class T>
-AWT::DeformableMeshFittingParser<T>::~DeformableMeshFittingParser( )
+AWT::DeformableMeshFittingParser<T>::~DeformableMeshFittingParser()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::DeformableMeshFittingParser<T>::P AWT::DeformableMeshFittingParser<T>::getInstance( )
+typename AWT::DeformableMeshFittingParser<T>::P AWT::DeformableMeshFittingParser<T>::getInstance()
 {
-   AUTOGETINSTANCE( AWT::DeformableMeshFittingParser<T>, ( ) );
+   AUTOGETINSTANCE(AWT::DeformableMeshFittingParser<T>, ());
 }
 
 template <class T>
-bool AWT::DeformableMeshFittingParser<T>::parse(const std::string& str, DeformableMeshFittingStateMachine<T>* dmfsm )
+bool AWT::DeformableMeshFittingParser<T>::parse(const std::string& str, DeformableMeshFittingStateMachine<T>* dmfsm)
 {
-   D::DeformableMeshFittingParseDataHolder* pdh = new D::DeformableMeshFittingParseDataHolder( dmfsm );
+   D::DeformableMeshFittingParseDataHolder* pdh = new D::DeformableMeshFittingParseDataHolder(dmfsm);
 
-   D::DeformableMeshFittingGrammar parser( pdh );
-   m_D->info = boost::spirit::parse( str.c_str( ), parser, boost::spirit::space_p );
+   D::DeformableMeshFittingGrammar parser(pdh);
+   m_D->info = boost::spirit::parse(str.c_str(), parser, boost::spirit::space_p);
 
    delete pdh;
 
@@ -341,7 +341,7 @@ bool AWT::DeformableMeshFittingParser<T>::parse(const std::string& str, Deformab
 };
 
 template <class T>
-GETNAMEMACRO( AWT::DeformableMeshFittingParser<T> );
+GETNAMEMACRO(AWT::DeformableMeshFittingParser<T>);
 
 template class AWT::DeformableMeshFittingParser<double>;
 template class AWT::DeformableMeshFittingParser<float>;

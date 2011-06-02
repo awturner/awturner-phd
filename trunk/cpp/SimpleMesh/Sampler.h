@@ -37,18 +37,18 @@ namespace AWT
       class Sampler : public ManagedObject
       {
       protected:
-         Sampler( Mesh::P mesh );
-         virtual ~Sampler( );
+         Sampler(Mesh::P mesh);
+         virtual ~Sampler();
 
       public:
          typedef ManagedAutoPointer<Sampler> P;
 
-         Mesh::P getMesh( );
+         Mesh::P getMesh();
 
-         virtual PointIndexWeights sample( );
+         virtual PointIndexWeights sample();
 
       protected:
-         virtual void calculateCumAreas( ) = 0;
+         virtual void calculateCumAreas() = 0;
 
          Mesh::P mesh;
          double * cumAreas;
@@ -58,7 +58,7 @@ namespace AWT
       {
       public:
          typedef ManagedAutoPointer<SamplerFactory> P;
-         virtual Sampler::P createInstance( Mesh::P mesh ) = 0;
+         virtual Sampler::P createInstance(Mesh::P mesh) = 0;
       };
    }
 }

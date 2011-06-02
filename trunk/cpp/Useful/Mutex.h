@@ -31,16 +31,16 @@ namespace AWT
    class Mutex
    {
    public:
-      Mutex( );
-      virtual ~Mutex( );
+      Mutex();
+      virtual ~Mutex();
 
-      void acquire( void* obj );
+      void acquire(void* obj);
 
-      bool tryAcquire( void* obj );
+      bool tryAcquire(void* obj);
 
-      void release( void* obj );
+      void release(void* obj);
 
-      bool locked( ) const;
+      bool locked() const;
 
    protected:
       struct D;

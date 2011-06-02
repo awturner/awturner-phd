@@ -41,59 +41,59 @@
 using namespace AWT;
 using namespace AWT::AlignParametric;
 
-AWT::AlignParametric::CoulombicParticleSurface::CoulombicParticleSurface( MeshType::P mesh, const TuplesType::P samples, const Idx ntake )
-: ParticleSurface( mesh, samples, ntake )
+AWT::AlignParametric::CoulombicParticleSurface::CoulombicParticleSurface(MeshType::P mesh, const TuplesType::P samples, const Idx ntake)
+: ParticleSurface(mesh, samples, ntake)
 {
    // Construct the Cates regularizer
-   regularizer = CoulombicRegularizer::getInstance( this );
-   regularizer->setCutoffDistance( 0.005 );
-   regularizer->setThreshold( 0.005 );
+   regularizer = CoulombicRegularizer::getInstance(this);
+   regularizer->setCutoffDistance(0.005);
+   regularizer->setThreshold(0.005);
 }
 
-AWT::AlignParametric::CoulombicParticleSurface::~CoulombicParticleSurface( )
+AWT::AlignParametric::CoulombicParticleSurface::~CoulombicParticleSurface()
 {
 }
 
-AWT::AlignParametric::CoulombicParticleSurface::P AWT::AlignParametric::CoulombicParticleSurface::getInstance( MeshType::P mesh, const TuplesType::P samples, const Idx ntake )
+AWT::AlignParametric::CoulombicParticleSurface::P AWT::AlignParametric::CoulombicParticleSurface::getInstance(MeshType::P mesh, const TuplesType::P samples, const Idx ntake)
 {
-   AUTOGETINSTANCE( AWT::AlignParametric::CoulombicParticleSurface, ( mesh, samples, ntake ) );
+   AUTOGETINSTANCE(AWT::AlignParametric::CoulombicParticleSurface, (mesh, samples, ntake));
 }
 
-GETNAMEMACRO( AWT::AlignParametric::CoulombicParticleSurface );
+GETNAMEMACRO(AWT::AlignParametric::CoulombicParticleSurface);
 
 // Calculate a regularization term
-T AWT::AlignParametric::CoulombicParticleSurface::regularizationCost( )
+T AWT::AlignParametric::CoulombicParticleSurface::regularizationCost()
 {
-   const T ret = regularizer->calculateCost( );
+   const T ret = regularizer->calculateCost();
    return ret;
 }
 
 // Calculate a regularization term
-void AWT::AlignParametric::CoulombicParticleSurface::regularizationGradient( MatrixType& reg, const Transformation& trans )
+void AWT::AlignParametric::CoulombicParticleSurface::regularizationGradient(MatrixType& reg, const Transformation& trans)
 {
    const Idx N = samples->getNumberOfPoints();
 
    // I need to implement the entropy surface sampling here!
-   if ( reg.rows() != N || reg.cols() != 3 )
-      reg.set_size( N, 3 );
-   reg.fill( 0 );
+   if (reg.rows() != N || reg.cols() != 3)
+      reg.set_size(N, 3);
+   reg.fill(0);
    
-   regularizer->calculateUpdate( reg );
+   regularizer->calculateUpdate(reg);
 }
 
 T AWT::AlignParametric::CoulombicParticleSurface::getMinDistance(const AWT::AlignParametric::Idx p)
 {
-   return regularizer->getMinDistance( p );
+   return regularizer->getMinDistance(p);
 }
 
-CoulombicRegularizer::P AWT::AlignParametric::CoulombicParticleSurface::getRegularizer( )
+CoulombicRegularizer::P AWT::AlignParametric::CoulombicParticleSurface::getRegularizer()
 {
    return regularizer;
 }
 
-int AWT::AlignParametric::CoulombicParticleSurface::updatePointLocation( const Idx i, const T* vtx, FacesNearestPointSearch<T>::P searcher )
+int AWT::AlignParametric::CoulombicParticleSurface::updatePointLocation(const Idx i, const T* vtx, FacesNearestPointSearch<T>::P searcher)
 {
    const int np = ParticleSurface::updatePointLocation(i,vtx, searcher);
-   regularizer->associateSampleToFace( i, np );
+   regularizer->associateSampleToFace(i, np);
    return np;
 }

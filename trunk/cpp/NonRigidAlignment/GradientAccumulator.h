@@ -40,33 +40,33 @@ namespace AWT
    class GradientAccumulator : public ControlPointSearcherCallback<T>
    {
    public:
-      typedef ManagedAutoPointer<GradientAccumulator<T>> P;
+      typedef ManagedAutoPointer<GradientAccumulator<T> > P;
 
    protected:
-      GradientAccumulator( typename NonRigidAlignment<T>::P data );
+      GradientAccumulator(typename NonRigidAlignment<T>::P data);
 
-      virtual ~GradientAccumulator( );
+      virtual ~GradientAccumulator();
 
    public:
-      static P getInstance( typename NonRigidAlignment<T>::P nra );
+      static P getInstance(typename NonRigidAlignment<T>::P nra);
 
-      virtual void controlPointFound( const MeshIndex controlIndex );
+      virtual void controlPointFound(const MeshIndex controlIndex);
 
-      Tuples<T>* getGradient( ) const;
+      Tuples<T>* getGradient() const;
 
-      void getMovingPoint( T* out_Point ) const;
+      void getMovingPoint(T* out_Point) const;
 
-      void getFixedPoint( T* out_Point ) const;
+      void getFixedPoint(T* out_Point) const;
 
-      void setMovingPoint( const T* in_Point );
+      void setMovingPoint(const T* in_Point);
 
-      void setFixedPoint( const T* in_Point );
+      void setFixedPoint(const T* in_Point);
 
-      MeshIndex getFaceIndex( ) const;
+      MeshIndex getFaceIndex() const;
 
-      void setFaceIndex( const MeshIndex idx );
+      void setFaceIndex(const MeshIndex idx);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
    protected:
       struct D;

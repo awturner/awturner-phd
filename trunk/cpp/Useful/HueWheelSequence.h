@@ -37,18 +37,18 @@ namespace AWT
       typedef ManagedAutoPointer<HueWheelSequence> P;
 
    protected:
-      HueWheelSequence( const unsigned int ncolours, const double saturation = 1, const double value = 1, const double alpha = 1 );
+      HueWheelSequence(const unsigned int ncolours, const double saturation = 1, const double value = 1, const double alpha = 1);
 
-      virtual ~HueWheelSequence( );
+      virtual ~HueWheelSequence();
 
    public:
-      static HueWheelSequence::P getInstance(const unsigned int ncolours, const double saturation = 1, const double value = 1, const double alpha = 1 );
+      static HueWheelSequence::P getInstance(const unsigned int ncolours, const double saturation = 1, const double value = 1, const double alpha = 1);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual void nextColour( float* colour );
+      virtual void nextColour(float* colour);
 
-      virtual void nextColour( double* colour );
+      virtual void nextColour(double* colour);
 
    protected:
       struct D;

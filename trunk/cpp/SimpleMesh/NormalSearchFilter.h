@@ -35,26 +35,26 @@ namespace AWT
       class NormalSearchFilter : public SearchFilter
       {
       protected:
-         NormalSearchFilter( );
-         virtual ~NormalSearchFilter( );
+         NormalSearchFilter();
+         virtual ~NormalSearchFilter();
 
       public:
          typedef ManagedAutoPointer<NormalSearchFilter> P;
 
-         static P getInstance( );
-         std::string getClassName( ) const;
+         static P getInstance();
+         std::string getClassName() const;
 
-         void setTestPoint( const Point p );
-         Point getTestPoint( ) const;
+         void setTestPoint(const Point p);
+         Point getTestPoint() const;
 
-         void setTestNormal( const Point p );
-         Point getTestNormal( ) const;
+         void setTestNormal(const Point p);
+         Point getTestNormal() const;
 
-         void setCosineThreshold( const double v );
-         double getCosineThreshold( ) const;
+         void setCosineThreshold(const double v);
+         double getCosineThreshold() const;
 
       public:
-         virtual bool check( const Point p, const Index i ) const;
+         virtual bool check(const Point p, const Index i) const;
 
       protected:
          struct D;

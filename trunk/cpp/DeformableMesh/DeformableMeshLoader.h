@@ -34,7 +34,7 @@ namespace AWT
    class DeformableMeshLoader
    {
    public:
-      static typename DeformableMesh<T>::P load( const char* filename );
+      static typename DeformableMesh<T>::P load(const char* filename);
    };
 }
 

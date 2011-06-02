@@ -26,10 +26,10 @@
 #include "AWTUseful/Complex.h"
 
 template <class T>
-const T AWT::Complex<T>::PI = static_cast<T>( atan( 1.0 ) * 4 );
+const T AWT::Complex<T>::PI = static_cast<T>(atan(1.0) * 4);
 
 template <class T>
-AWT::Complex<T>::Complex( AWT::Complex<T> &other )
+AWT::Complex<T>::Complex(AWT::Complex<T> &other)
 {
    x = other.x;
    y = other.y;
@@ -37,7 +37,7 @@ AWT::Complex<T>::Complex( AWT::Complex<T> &other )
 }
 
 template <class T>
-AWT::Complex<T>::Complex(  )
+AWT::Complex<T>::Complex()
 {
    x = 0;
    y = 0;
@@ -45,7 +45,7 @@ AWT::Complex<T>::Complex(  )
 }
 
 template <class T>
-AWT::Complex<T>::Complex( T _x )
+AWT::Complex<T>::Complex(T _x)
 {
    x = _x;
    y = 0;
@@ -53,7 +53,7 @@ AWT::Complex<T>::Complex( T _x )
 }
 
 template <class T>
-AWT::Complex<T>::Complex( T _x, T _y )
+AWT::Complex<T>::Complex(T _x, T _y)
 {
    x = _x;
    y = _y;
@@ -61,7 +61,7 @@ AWT::Complex<T>::Complex( T _x, T _y )
 }
 
 template <class T>
-AWT::Complex<T>::Complex( T _x, T _y, Representation _rep )
+AWT::Complex<T>::Complex(T _x, T _y, Representation _rep)
 {
    x = _x;
    y = _y;
@@ -69,7 +69,7 @@ AWT::Complex<T>::Complex( T _x, T _y, Representation _rep )
 }
 
 template <class T>
-T AWT::Complex<T>::real( )
+T AWT::Complex<T>::real()
 {
    switch (rep)
    {
@@ -83,7 +83,7 @@ T AWT::Complex<T>::real( )
 }
 
 template <class T>
-T AWT::Complex<T>::imag( )
+T AWT::Complex<T>::imag()
 {
    switch (rep)
    {
@@ -97,12 +97,12 @@ T AWT::Complex<T>::imag( )
 }
 
 template <class T>
-T AWT::Complex<T>::abs( )
+T AWT::Complex<T>::abs()
 {
    switch (rep)
    {
    case CARTESIAN:
-      return sqrt( x*x + y*y );
+      return sqrt(x*x + y*y);
    case POLAR:
       return x;
    default:
@@ -111,12 +111,12 @@ T AWT::Complex<T>::abs( )
 }
 
 template <class T>
-T AWT::Complex<T>::arg( )
+T AWT::Complex<T>::arg()
 {
    switch (rep)
    {
    case CARTESIAN:
-      return atan2( y, x );
+      return atan2(y, x);
    case POLAR:
       return y;
    default:
@@ -125,106 +125,106 @@ T AWT::Complex<T>::arg( )
 }
 
 template <class T>
-AWT::Complex<T> AWT::Complex<T>::conj( )
+AWT::Complex<T> AWT::Complex<T>::conj()
 {
-   return Complex<T>( x, -y, rep );
+   return Complex<T>(x, -y, rep);
 }
 
 template <class T>
-T AWT::Complex<T>::clampArgument( T newArg )
+T AWT::Complex<T>::clampArgument(T newArg)
 {
-   while ( newArg > PI )
+   while (newArg > PI)
       newArg -= 2*PI;
 
-   while ( newArg < -PI )
+   while (newArg < -PI)
       newArg += 2*PI;
 
    return newArg;
 }
 
 template <class T>
-AWT::Complex<T> AWT::Complex<T>::power( T in_pow )
+AWT::Complex<T> AWT::Complex<T>::power(T in_pow)
 {
-   T newArg = clampArgument( in_pow * arg( ) );   
-   return Complex<T>( pow( abs( ), in_pow ), newArg, POLAR );
+   T newArg = clampArgument(in_pow * arg());   
+   return Complex<T>(pow(abs(), in_pow), newArg, POLAR);
 }
 
 template <class T>
-AWT::Complex<T> AWT::Complex<T>::power( T in_pow, int in_n )
+AWT::Complex<T> AWT::Complex<T>::power(T in_pow, int in_n)
 {
-   T newArg = clampArgument( static_cast<T>( in_pow * arg( ) + in_n * 8 * atan(1.0)*in_pow ) );
-   return Complex<T>( pow( abs( ), in_pow ), newArg, POLAR );
+   T newArg = clampArgument(static_cast<T>(in_pow * arg() + in_n * 8 * atan(1.0)*in_pow));
+   return Complex<T>(pow(abs(), in_pow), newArg, POLAR);
 }
 
 template <class T>
-AWT::Complex<T> AWT::Complex<T>::operator+( AWT::Complex<T>& other )
+AWT::Complex<T> AWT::Complex<T>::operator+(AWT::Complex<T>& other)
 {
-   return Complex<T>( this->real( ) + other.real( ), this->imag( ) + other.imag( ), CARTESIAN );
+   return Complex<T>(this->real() + other.real(), this->imag() + other.imag(), CARTESIAN);
 }
 
 template <class T>
-AWT::Complex<T> AWT::Complex<T>::operator+( T other )
+AWT::Complex<T> AWT::Complex<T>::operator+(T other)
 {
-   return Complex<T>( this->real( ) + other, this->imag( ), CARTESIAN );
+   return Complex<T>(this->real() + other, this->imag(), CARTESIAN);
 }
 
 template <class T>
-AWT::Complex<T> AWT::Complex<T>::operator-( AWT::Complex<T>& other )
+AWT::Complex<T> AWT::Complex<T>::operator-(AWT::Complex<T>& other)
 {
-   return Complex<T>( this->real( ) - other.real( ), this->imag( ) - other.imag( ), CARTESIAN );
+   return Complex<T>(this->real() - other.real(), this->imag() - other.imag(), CARTESIAN);
 }
 
 template <class T>
-AWT::Complex<T> AWT::Complex<T>::operator-( T other )
+AWT::Complex<T> AWT::Complex<T>::operator-(T other)
 {
-   return Complex<T>( this->real( ) - other, this->imag( ), CARTESIAN );
+   return Complex<T>(this->real() - other, this->imag(), CARTESIAN);
 }
 
 template <class T>
-AWT::Complex<T> AWT::Complex<T>::operator*( AWT::Complex<T>& other )
+AWT::Complex<T> AWT::Complex<T>::operator*(AWT::Complex<T>& other)
 {
-   return Complex<T>( this->abs( ) * other.abs( ), clampArgument( this->arg( ) + other.arg( ) ), POLAR );
+   return Complex<T>(this->abs() * other.abs(), clampArgument(this->arg() + other.arg()), POLAR);
 }
 
 template <class T>
-AWT::Complex<T> AWT::Complex<T>::operator*( T other )
+AWT::Complex<T> AWT::Complex<T>::operator*(T other)
 {
-   return Complex<T>( this->abs( ) * other, this->arg( ), POLAR );
+   return Complex<T>(this->abs() * other, this->arg(), POLAR);
 }
 
 template <class T>
-AWT::Complex<T> AWT::Complex<T>::operator/( AWT::Complex<T>& other )
+AWT::Complex<T> AWT::Complex<T>::operator/(AWT::Complex<T>& other)
 {
-   return Complex<T>( this->abs( ) / other.abs( ), clampArgument( this->arg( ) - other.arg( ) ), POLAR );
+   return Complex<T>(this->abs() / other.abs(), clampArgument(this->arg() - other.arg()), POLAR);
 }
 
 template <class T>
-AWT::Complex<T> AWT::Complex<T>::operator/( T other )
+AWT::Complex<T> AWT::Complex<T>::operator/(T other)
 {
-   return Complex<T>( this->abs( ) / other, this->arg( ), POLAR );
+   return Complex<T>(this->abs() / other, this->arg(), POLAR);
 }
 
 template <class T>
-bool AWT::Complex<T>::operator==( AWT::Complex<T>& other )
+bool AWT::Complex<T>::operator==(AWT::Complex<T>& other)
 {
-   if ( rep == other.rep )
-      return ( x == other.x ) && ( y == other.y );
+   if (rep == other.rep)
+      return (x == other.x) && (y == other.y);
    else
-      return ( real( ) == other.real( ) ) && ( imag( ) == other.imag( ) )
-         || ( abs( ) == other.abs( ) ) && ( arg( ) == other.arg( ) );
+      return (real() == other.real()) && (imag() == other.imag())
+         || (abs() == other.abs()) && (arg() == other.arg());
 
 }
 
 template <class T>
-bool AWT::Complex<T>::operator==( T other )
+bool AWT::Complex<T>::operator==(T other)
 {
-   return other == real( ) && imag( ) == 0;
+   return other == real() && imag() == 0;
 }
 
 template <class T>
-AWT::Complex<T> AWT::Complex<T>::operator-(  )
+AWT::Complex<T> AWT::Complex<T>::operator-()
 {
-   return Complex<T>( -this->real( ), -this->imag( ), CARTESIAN );
+   return Complex<T>(-this->real(), -this->imag(), CARTESIAN);
 }
 
 template AWT::Complex<double>;

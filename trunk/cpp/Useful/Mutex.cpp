@@ -42,26 +42,26 @@ struct AWT::Mutex::D
    unsigned int m_RecurseDepth;
 };
 
-AWT::Mutex::Mutex( )
+AWT::Mutex::Mutex()
 {
    m_D = new D;
 
    m_D->m_Obj = 0;
    m_D->m_RecurseDepth = 0;
 
-   m_D->m_Mutex = CreateMutex( NULL, FALSE, NULL );
+   m_D->m_Mutex = CreateMutex(NULL, FALSE, NULL);
 }
 
-AWT::Mutex::~Mutex( )
+AWT::Mutex::~Mutex()
 {
    delete m_D;
 }
 
-bool AWT::Mutex::tryAcquire( void* obj )
+bool AWT::Mutex::tryAcquire(void* obj)
 {
-   DWORD dwWaitResult = WaitForSingleObject( m_D->m_Mutex, 0x00 );
+   DWORD dwWaitResult = WaitForSingleObject(m_D->m_Mutex, 0x00);
 
-   switch ( dwWaitResult )
+   switch (dwWaitResult)
    {
    case WAIT_OBJECT_0:
       // Then lock it
@@ -78,14 +78,14 @@ bool AWT::Mutex::tryAcquire( void* obj )
    }
 }
 
-void AWT::Mutex::acquire( void* obj )
+void AWT::Mutex::acquire(void* obj)
 {
-   //while ( m_D->m_Obj != 0 );
+   //while (m_D->m_Obj != 0);
 
    // Make the windows-specific call
-   DWORD dwWaitResult = WaitForSingleObject( m_D->m_Mutex, INFINITE );
+   DWORD dwWaitResult = WaitForSingleObject(m_D->m_Mutex, INFINITE);
 
-   switch ( dwWaitResult )
+   switch (dwWaitResult)
    {
    case WAIT_OBJECT_0:
       // Then lock it
@@ -98,14 +98,14 @@ void AWT::Mutex::acquire( void* obj )
    
 }
 
-void AWT::Mutex::release( void* obj )
+void AWT::Mutex::release(void* obj)
 {
    // Release the mutex if this is the locking object
-   if ( m_D->m_Obj == obj )
+   if (m_D->m_Obj == obj)
    {
-      if ( ReleaseMutex( m_D->m_Mutex ) )
+      if (ReleaseMutex(m_D->m_Mutex))
       {
-         if ( --m_D->m_RecurseDepth == 0 )
+         if (--m_D->m_RecurseDepth == 0)
             m_D->m_Obj = 0;
       }
       else
@@ -120,7 +120,7 @@ void AWT::Mutex::release( void* obj )
    }
 }
 
-bool AWT::Mutex::locked( ) const
+bool AWT::Mutex::locked() const
 {
    return m_D->m_Obj != 0 ;
 }

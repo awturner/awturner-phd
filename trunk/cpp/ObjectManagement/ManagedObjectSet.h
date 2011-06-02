@@ -35,50 +35,50 @@ namespace AWT
    class ManagedObjectSet : public virtual ManagedObject
    {
    protected:
-      ManagedObjectSet( )
+      ManagedObjectSet()
       {
       }
 
-      virtual ~ManagedObjectSet( )
+      virtual ~ManagedObjectSet()
       {
-         removeAll( );
+         removeAll();
       }
 
    public:
-      static ManagedObjectSet<Ty>* getInstance( )
+      static ManagedObjectSet<Ty>* getInstance()
       {
-         STANDARDGETINSTANCE( ManagedObjectSet, ( ) );
+         STANDARDGETINSTANCE(ManagedObjectSet, ());
       }
 
-      void add( ManagedAutoPointer<Ty> obj )
+      void add(ManagedAutoPointer<Ty> obj)
       {
-         m_Listeners.push_back( obj );
+         m_Listeners.push_back(obj);
 
-         modified( );
+         modified();
       }
 
-      void remove( ManagedAutoPointer<Ty> obj )
+      void remove(ManagedAutoPointer<Ty> obj)
       {
-         std::vector<Ty*>::iterator it = m_Listeners.begin( );
-         for ( ; it != m_Listeners.end( ); ++it )
+         std::vector<Ty*>::iterator it = m_Listeners.begin();
+         for (; it != m_Listeners.end(); ++it)
          {
-            if ( *it == *obj )
+            if (*it == *obj)
             {
-               m_Listeners.erase( it );
+               m_Listeners.erase(it);
                return;
             }
          }
 
-         modified( );
+         modified();
       }
 
-      void removeAll( )
+      void removeAll()
       {
-         DEBUGMACRO( "removeAll - this isn't deleting anything. fix?" );
+         DEBUGMACRO("removeAll - this isn't deleting anything. fix?");
          
-         m_Listeners.clear( );
+         m_Listeners.clear();
 
-         modified( );
+         modified();
       }
 
    protected:
@@ -89,12 +89,12 @@ namespace AWT
    class CompositeListener : public ManagedObjectSet<ListenerType>
    {
    public:
-      void execute( typename Actor::P actor, void (ListenerType::*funcPtr)( typename Actor::P ) )
+      void execute(typename Actor::P actor, void (ListenerType::*funcPtr)(typename Actor::P))
       {
-         std::vector<ListenerType>::iterator it = m_Listeners.begin( );
-         for ( ; it != m_Listeners.end( ); ++it )
+         std::vector<ListenerType>::iterator it = m_Listeners.begin();
+         for (; it != m_Listeners.end(); ++it)
          {
-            ((*it).*funcPtr)( actor );
+            ((*it).*funcPtr)(actor);
          }
       }
    };

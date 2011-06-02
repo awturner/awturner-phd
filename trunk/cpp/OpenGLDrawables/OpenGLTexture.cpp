@@ -33,14 +33,14 @@ struct AWT::OpenGLTexture::D
    GLuint texid;
 };
 
-#define CHECKGL( GLcall ) { GLcall; if ( 1 ) CheckGLError( #GLcall, __FILE__, __LINE__ ); }
-#define CHECKGL_MSG( msg ) { if ( 1 ) CheckGLError( #msg, __FILE__, __LINE__ ); }
+#define CHECKGL(GLcall) { GLcall; if (1) CheckGLError(#GLcall, __FILE__, __LINE__); }
+#define CHECKGL_MSG(msg) { if (1) CheckGLError(#msg, __FILE__, __LINE__); }
 
 int CheckGLError(const char *GLcall, const char *file, int line)
 {
    GLenum glErr;
    int retCode = 0;
-   while ( (glErr=glGetError()) != GL_NO_ERROR)
+   while ((glErr=glGetError()) != GL_NO_ERROR)
    {
       switch(glErr)
       {
@@ -70,100 +70,100 @@ int CheckGLError(const char *GLcall, const char *file, int line)
    return retCode;
 }
 
-AWT::OpenGLTexture::OpenGLTexture( const unsigned char* data, unsigned int w, unsigned int h, bool lighting )
+AWT::OpenGLTexture::OpenGLTexture(const unsigned char* data, unsigned int w, unsigned int h, bool lighting)
 {
    m_D = new D;
    m_D->lighting = lighting;
 
-   CHECKGL( glGenTextures( 1, &m_D->texid ) );
+   CHECKGL(glGenTextures(1, &m_D->texid));
 
-   glBindTexture( GL_TEXTURE_2D, m_D->texid );
-   CheckGLError( "glBindTexture", __FILE__, __LINE__ );
+   glBindTexture(GL_TEXTURE_2D, m_D->texid);
+   CheckGLError("glBindTexture", __FILE__, __LINE__);
 
    // select modulate to mix texture with color for shading
-   glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-   CheckGLError( "glTexEnvf", __FILE__, __LINE__ );
+   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+   CheckGLError("glTexEnvf", __FILE__, __LINE__);
 
    // when texture area is small, bilinear filter the closest mipmap
-   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-      GL_LINEAR_MIPMAP_LINEAR );
+   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+      GL_LINEAR_MIPMAP_LINEAR);
    // when texture area is large, bilinear filter the first mipmap
-   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
    // if wrap is true, the texture wraps over at the edges (repeat)
    //       ... false, the texture ends at the edges (clamp)
-   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
    // build our texture mipmaps
-   gluBuild2DMipmaps( GL_TEXTURE_2D, 3, w, h,
-      GL_RGB, GL_UNSIGNED_BYTE, data );
+   gluBuild2DMipmaps(GL_TEXTURE_2D, 3, w, h,
+      GL_RGB, GL_UNSIGNED_BYTE, data);
 
 }
 
-AWT::OpenGLTexture::~OpenGLTexture( )
+AWT::OpenGLTexture::~OpenGLTexture()
 {
    delete m_D;
 }
 
-AWT::OpenGLTexture::P AWT::OpenGLTexture::getInstance( const unsigned char* data, unsigned int w, unsigned int h, bool lighting )
+AWT::OpenGLTexture::P AWT::OpenGLTexture::getInstance(const unsigned char* data, unsigned int w, unsigned int h, bool lighting)
 {
-   AUTOGETINSTANCE( AWT::OpenGLTexture, ( data, w, h, lighting ) );
+   AUTOGETINSTANCE(AWT::OpenGLTexture, (data, w, h, lighting));
 }
 
-GETNAMEMACRO( AWT::OpenGLTexture );
+GETNAMEMACRO(AWT::OpenGLTexture);
 
-bool AWT::OpenGLTexture::isOpaque( ) const
+bool AWT::OpenGLTexture::isOpaque() const
 {
    return true;
 }
 
-void AWT::OpenGLTexture::prepare( )
+void AWT::OpenGLTexture::prepare()
 {
-   if ( m_D->lighting )
-      glEnable( GL_LIGHTING );
+   if (m_D->lighting)
+      glEnable(GL_LIGHTING);
    else
-      glDisable( GL_LIGHTING );
+      glDisable(GL_LIGHTING);
 
-   glColor3f( 1.f, 1.f, 1.f );
-   glEnable( GL_TEXTURE_2D );
-   glBindTexture( GL_TEXTURE_2D, m_D->texid );
+   glColor3f(1.f, 1.f, 1.f);
+   glEnable(GL_TEXTURE_2D);
+   glBindTexture(GL_TEXTURE_2D, m_D->texid);
 
    /*
-   glMatrixMode( GL_TEXTURE );
-   glPushMatrix( );
+   glMatrixMode(GL_TEXTURE);
+   glPushMatrix();
 
    glLoadIdentity();
-   glScalef( 1.f, 1.f, 1.f );
-   glMatrixMode( GL_MODELVIEW );
+   glScalef(1.f, 1.f, 1.f);
+   glMatrixMode(GL_MODELVIEW);
    */
 }
 
-void AWT::OpenGLTexture::unprepare( )
+void AWT::OpenGLTexture::unprepare()
 {
-   glDisable( GL_TEXTURE_2D );
+   glDisable(GL_TEXTURE_2D);
 
-   glMatrixMode( GL_TEXTURE );
-   glPopMatrix( );
+   glMatrixMode(GL_TEXTURE);
+   glPopMatrix();
 
-   glMatrixMode( GL_MODELVIEW );
+   glMatrixMode(GL_MODELVIEW);
 }
 
-void AWT::OpenGLTexture::tweak( const TweakType /*tw*/, const MeshIndex /*v*/ )
+void AWT::OpenGLTexture::tweak(const TweakType /*tw*/, const MeshIndex /*v*/)
 {
    // Don't do anything
 }
 
-bool AWT::OpenGLTexture::isLighting( ) const
+bool AWT::OpenGLTexture::isLighting() const
 {
    return m_D->lighting;
 }
 
-void AWT::OpenGLTexture::setLighting( const bool v )
+void AWT::OpenGLTexture::setLighting(const bool v)
 {
-   if ( v ^ m_D->lighting )
+   if (v ^ m_D->lighting)
    {
       m_D->lighting = v;
-      modified( );
+      modified();
    }
 }

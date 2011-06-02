@@ -34,17 +34,17 @@ namespace AWT
    class NotCuttingFunction : public CuttingFunction<T>
    {
    public:
-      typedef ManagedAutoPointer<NotCuttingFunction<T>> P;
+      typedef ManagedAutoPointer<NotCuttingFunction<T> > P;
 
    protected:
-      NotCuttingFunction( CuttingFunction<T>::P func );
-      virtual ~NotCuttingFunction( );
+      NotCuttingFunction(CuttingFunction<T>::P func);
+      virtual ~NotCuttingFunction();
 
    public:
-      static P getInstance( CuttingFunction<T>::P func );
-      virtual std::string getClassName( ) const;
+      static P getInstance(CuttingFunction<T>::P func);
+      virtual std::string getClassName() const;
 
-      virtual bool accept( T* vtx );
+      virtual bool accept(T* vtx);
 
    protected:
       struct D;

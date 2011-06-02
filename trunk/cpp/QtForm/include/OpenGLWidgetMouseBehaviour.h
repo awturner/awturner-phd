@@ -38,16 +38,16 @@ namespace AWT
    {
    public:
       typedef ManagedAutoPointer<OpenGLWidgetMouseBehaviour> P;
-      static P getInstance( );
+      static P getInstance();
 
    protected:
-      OpenGLWidgetMouseBehaviour( );
-      virtual ~OpenGLWidgetMouseBehaviour( );
+      OpenGLWidgetMouseBehaviour();
+      virtual ~OpenGLWidgetMouseBehaviour();
 
    public:
-      virtual bool mouseMoved( OpenGLWidget* widget, int x, int y, int button, int keys ) = 0;
-      virtual bool mousePressed( OpenGLWidget* widget, int x, int y, int button, int keys );
-      virtual bool mouseReleased( OpenGLWidget* widget, int x, int y, int button, int keys );
+      virtual bool mouseMoved(OpenGLWidget* widget, int x, int y, int button, int keys) = 0;
+      virtual bool mousePressed(OpenGLWidget* widget, int x, int y, int button, int keys);
+      virtual bool mouseReleased(OpenGLWidget* widget, int x, int y, int button, int keys);
 
       struct SavedState
       {  
@@ -59,7 +59,7 @@ namespace AWT
          int button;
       };
 
-      virtual const SavedState* getSavedState( );
+      virtual const SavedState* getSavedState();
 
    protected:
       SavedState* m_D;

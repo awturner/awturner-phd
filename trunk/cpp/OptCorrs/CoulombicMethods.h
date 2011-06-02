@@ -34,12 +34,12 @@ namespace AWT
    {
       namespace CoulombicParticles
       {
-         void remoteMethod( initialize );
-         void remoteMethod( addMesh );
-         void remoteMethod( refine );
-         void remoteMethod( configureRefinement );
+         void remoteMethod(initialize);
+         void remoteMethod(addMesh);
+         void remoteMethod(refine);
+         void remoteMethod(configureRefinement);
 
-         void addMethods( RemoteMethods& methods );
+         void addMethods(RemoteMethods& methods);
       }
    }
 }

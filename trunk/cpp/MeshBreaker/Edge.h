@@ -41,24 +41,24 @@ namespace AWT
       typedef ManagedAutoPointer<Edge> P;
 
    protected:
-      Edge( EdgeBuilder::P eb, const MeshIndex vertex );
-      virtual ~Edge( );
+      Edge(EdgeBuilder::P eb, const MeshIndex vertex);
+      virtual ~Edge();
    
    private:
-      static P getInstance( EdgeBuilder::P eb, const MeshIndex vertex );
+      static P getInstance(EdgeBuilder::P eb, const MeshIndex vertex);
 
    public:
-      const MeshIndex getVertex( ) const;
+      const MeshIndex getVertex() const;
 
-      std::string getClassName( ) const;
+      std::string getClassName() const;
 
-      Edge* getPrevious( );
-      void setPrevious( Edge* e );
+      Edge* getPrevious();
+      void setPrevious(Edge* e);
 
-      Edge* getNext( );
-      void setNext( Edge* e );
+      Edge* getNext();
+      void setNext(Edge* e);
 
-      void destroy( );
+      void destroy();
 
    protected:
       struct D;

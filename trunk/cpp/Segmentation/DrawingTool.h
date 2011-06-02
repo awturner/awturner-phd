@@ -45,69 +45,69 @@ namespace AWT
    class DrawingTool
    {
    public:
-      DrawingTool( CommandManager* commandManager );
+      DrawingTool(CommandManager* commandManager);
 
       // The image which this tool can draw on temporarily
-      CImg<T>* getOverlayImage( );
-      void setOverlayImage( CImg<T>* im );
+      CImg<T>* getOverlayImage();
+      void setOverlayImage(CImg<T>* im);
 
       // The image which this tool will operate on
-      CImg<T>* getCurrentImage( );
-      virtual void setCurrentImage( CImg<T>* im );
+      CImg<T>* getCurrentImage();
+      virtual void setCurrentImage(CImg<T>* im);
 
       // The scan image
-      CImg<ScanT>* getScanImage( );
-      virtual void setScanImage( CImg<ScanT>* im );
+      CImg<ScanT>* getScanImage();
+      virtual void setScanImage(CImg<ScanT>* im);
 
       // The foreground and background colours
-      void getForegroundColour( T* col );
-      void setForegroundColour( T* col );
+      void getForegroundColour(T* col);
+      void setForegroundColour(T* col);
 
-      void getBackgroundColour( T* col );
-      void setBackgroundColour( T* col );
+      void getBackgroundColour(T* col);
+      void setBackgroundColour(T* col);
 
-      virtual char* getName( ) const = 0;
+      virtual char* getName() const = 0;
 
-      virtual void printState( std::ostream& os ) const
+      virtual void printState(std::ostream& os) const
       {
          os << "OK";
       }
 
-      bool activate( CImg<T>* overlayImage, CImg<T>* currentImage = 0 ) {
-         setOverlayImage( overlayImage );
+      bool activate(CImg<T>* overlayImage, CImg<T>* currentImage = 0) {
+         setOverlayImage(overlayImage);
 
-         if ( currentImage )
-            setCurrentImage( currentImage );
+         if (currentImage)
+            setCurrentImage(currentImage);
 
-         return onActivate( );
+         return onActivate();
       }
 
-      virtual bool onMouseButton( const int x, const int y, const int z, const int button )
+      virtual bool onMouseButton(const int x, const int y, const int z, const int button)
       {
          return false;
       }
 
-      virtual bool onMouseMove( const int x, const int y, const int z, const int button )
+      virtual bool onMouseMove(const int x, const int y, const int z, const int button)
       {
          return false;
       }
 
-      virtual bool onActivate( )
+      virtual bool onActivate()
       {
-         if ( m_OverlayImage )
-            m_OverlayImage->fill( 0 );
+         if (m_OverlayImage)
+            m_OverlayImage->fill(0);
 
          return true;
       }
       
-      static friend std::ostream& operator<<( std::ostream& os, DrawingTool& rhs )
+      static friend std::ostream& operator<<(std::ostream& os, DrawingTool& rhs)
       {
-         rhs.printState( os );
+         rhs.printState(os);
          return os;
       }
 
    protected:
-      void copyArray( T* src, T* dst, int n );
+      void copyArray(T* src, T* dst, int n);
 
       CImg<ScanT>*          m_ScanImage;
       CImg<T>*              m_CurrentImage;
@@ -124,14 +124,14 @@ namespace AWT
 using namespace AWT;
 
 template <class T, class ScanT, unsigned int V>
-AWT::DrawingTool<T,ScanT,V>::DrawingTool( AWT::CommandManager* _com )
-: m_CommandManager( _com )
+AWT::DrawingTool<T,ScanT,V>::DrawingTool(AWT::CommandManager* _com)
+: m_CommandManager(_com)
 {
    m_CurrentImage = m_OverlayImage = 0;
 }
 
 template <class T, class ScanT, unsigned int V>
-CImg<T>* AWT::DrawingTool<T,ScanT,V>::getOverlayImage( )
+CImg<T>* AWT::DrawingTool<T,ScanT,V>::getOverlayImage()
 {
    return m_OverlayImage;
 }
@@ -139,29 +139,29 @@ CImg<T>* AWT::DrawingTool<T,ScanT,V>::getOverlayImage( )
 template <class T, class ScanT, unsigned int V>
 void AWT::DrawingTool<T,ScanT,V>::setOverlayImage(CImg<T> *im)
 {
-   if ( im != m_OverlayImage )
+   if (im != m_OverlayImage)
    {
       m_OverlayImage = im;
    }
 }
 
 template <class T, class ScanT, unsigned int V>
-CImg<ScanT>* AWT::DrawingTool<T,ScanT,V>::getScanImage( )
+CImg<ScanT>* AWT::DrawingTool<T,ScanT,V>::getScanImage()
 {
    return m_ScanImage;
 }
 
 template <class T, class ScanT, unsigned int V>
-void AWT::DrawingTool<T,ScanT,V>::setScanImage( CImg<ScanT>* im )
+void AWT::DrawingTool<T,ScanT,V>::setScanImage(CImg<ScanT>* im)
 {
-   if ( im != m_ScanImage )
+   if (im != m_ScanImage)
    {
       m_ScanImage = im;
    }
 }
 
 template <class T, class ScanT, unsigned int V>
-CImg<T>* AWT::DrawingTool<T,ScanT,V>::getCurrentImage( )
+CImg<T>* AWT::DrawingTool<T,ScanT,V>::getCurrentImage()
 {
    return m_CurrentImage;
 }
@@ -169,9 +169,9 @@ CImg<T>* AWT::DrawingTool<T,ScanT,V>::getCurrentImage( )
 template <class T, class ScanT, unsigned int V>
 void AWT::DrawingTool<T,ScanT,V>::setCurrentImage(CImg<T> *im)
 {
-   if ( im != m_CurrentImage )
+   if (im != m_CurrentImage)
    {
-      if ( im->dimv( ) != V )
+      if (im->dimv() != V)
          AWTEXCEPTIONTHROW("Image has wrong number of planes!");
 
       m_CurrentImage = im;
@@ -180,28 +180,28 @@ void AWT::DrawingTool<T,ScanT,V>::setCurrentImage(CImg<T> *im)
 }
 
 template <class T, class ScanT, unsigned int V>
-void AWT::DrawingTool<T,ScanT,V>::copyArray( T* src, T* dst, int n )
+void AWT::DrawingTool<T,ScanT,V>::copyArray(T* src, T* dst, int n)
 {
-   while ( --n >= 0 )
+   while (--n >= 0)
       *dst++ = *src++;
 }
 
 template <class T, class ScanT, unsigned int V>
 void AWT::DrawingTool<T,ScanT,V>::getBackgroundColour(T *col)
 {
-   copyArray( m_Background, col, V );
+   copyArray(m_Background, col, V);
 }
 
 template <class T, class ScanT, unsigned int V>
 void AWT::DrawingTool<T,ScanT,V>::getForegroundColour(T *col)
 {
-   copyArray( m_Foreground, col, V );
+   copyArray(m_Foreground, col, V);
 }
 
 template <class T, class ScanT, unsigned int V>
 void AWT::DrawingTool<T,ScanT,V>::setBackgroundColour(T *col)
 {
-   copyArray( col, m_Background, V );
+   copyArray(col, m_Background, V);
 }
 
 #include <iostream>
@@ -209,7 +209,7 @@ void AWT::DrawingTool<T,ScanT,V>::setBackgroundColour(T *col)
 template <class T, class ScanT, unsigned int V>
 void AWT::DrawingTool<T,ScanT,V>::setForegroundColour(T *col)
 {
-   copyArray( col, m_Foreground, V );
+   copyArray(col, m_Foreground, V);
 }
 
 

@@ -40,13 +40,13 @@ namespace AWT
       enum TweakType { TWEAK_VERTEX, TWEAK_FACE };
 
    public:
-      virtual bool isOpaque( ) const = 0;
+      virtual bool isOpaque() const = 0;
 
-      virtual void prepare( ) = 0;
+      virtual void prepare() = 0;
 
-      virtual void tweak( const TweakType tw, const MeshIndex v ) = 0;
+      virtual void tweak(const TweakType tw, const MeshIndex v) = 0;
 
-      virtual void unprepare( ) = 0;
+      virtual void unprepare() = 0;
    };
 }
 

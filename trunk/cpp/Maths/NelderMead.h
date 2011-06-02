@@ -40,36 +40,36 @@ namespace AWT
       typedef ManagedAutoPointer<NelderMead> P;
 
    protected:
-      NelderMead( typename OptimizationFunction<T>::P func );
-      virtual ~NelderMead( );
+      NelderMead(typename OptimizationFunction<T>::P func);
+      virtual ~NelderMead();
 
    public:
-      static P getInstance( typename OptimizationFunction<T>::P func );
-      virtual std::string getClassName( ) const;
+      static P getInstance(typename OptimizationFunction<T>::P func);
+      virtual std::string getClassName() const;
 
-      void setInitialGuess( const vnl_matrix<T>& vertex, const vnl_matrix<T>& stdev );
+      void setInitialGuess(const vnl_matrix<T>& vertex, const vnl_matrix<T>& stdev);
 
-      T getRange( ) const;
+      T getRange() const;
 
-      vnl_matrix<T> getCentroid( ) const;
+      vnl_matrix<T> getCentroid() const;
 
-      vnl_matrix<T> getSimplex( ) const;
+      vnl_matrix<T> getSimplex() const;
 
-      void initialize( );
+      void initialize();
 
-      void step( );
+      void step();
 
-      T getAlpha( ) const;
-      void setAlpha( const T v );
+      T getAlpha() const;
+      void setAlpha(const T v);
 
-      T getGamma( ) const;
-      void setGamma( const T v );
+      T getGamma() const;
+      void setGamma(const T v);
 
-      T getRho( ) const;
-      void setRho( const T v );
+      T getRho() const;
+      void setRho(const T v);
 
-      T getSigma( ) const;
-      void setSigma( const T v );
+      T getSigma() const;
+      void setSigma(const T v);
 
    protected:
       struct D;

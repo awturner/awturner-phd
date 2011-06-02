@@ -37,26 +37,26 @@ namespace AWT
       typedef ManagedAutoPointer<SamplePoints> P;
 
    protected:
-      SamplePoints( MeshIndex npoints = 0 );
+      SamplePoints(MeshIndex npoints = 0);
    
-      virtual ~SamplePoints( );
+      virtual ~SamplePoints();
 
    public:
-      static P getInstance( MeshIndex npoints = 0 );
+      static P getInstance(MeshIndex npoints = 0);
       
-      const MeshIndex operator[]( MeshIndex i ) const;
+      const MeshIndex operator[](MeshIndex i) const;
 
-      MeshIndex getNumberOfSamples( ) const;
+      MeshIndex getNumberOfSamples() const;
 
-      MeshIndex getSampleIndex( MeshIndex i ) const;
+      MeshIndex getSampleIndex(MeshIndex i) const;
 
-      void ensureSize( MeshIndex i );
+      void ensureSize(MeshIndex i);
 
-      void add( MeshIndex i );
+      void add(MeshIndex i);
 
-      void clear( );
+      void clear();
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
    protected:
       struct D;

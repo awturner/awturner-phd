@@ -39,40 +39,40 @@ namespace AWT
       class STLIterator : public Iterator<T>
       {
       public:
-         typedef ManagedAutoPointer<STLIterator<T,Cont>> P;
+         typedef ManagedAutoPointer<STLIterator<T,Cont> > P;
 
       protected:
-         STLIterator( const Cont& s )
+         STLIterator(const Cont& s)
          {
-            this->iter    = s.begin( );
-            this->iterEnd = s.end( );
+            this->iter    = s.begin();
+            this->iterEnd = s.end();
          }
 
-         virtual ~STLIterator( )
+         virtual ~STLIterator()
          {
          }
 
       public:
-         static P getInstance( const Cont& s )
+         static P getInstance(const Cont& s)
          {
             typedef AWT::Container::STLIterator<T,Cont> STLIterator;
-            AUTOGETINSTANCE( STLIterator, ( s ) );
+            AUTOGETINSTANCE(STLIterator, (s));
          }
 
-         virtual bool hasNext( )
+         virtual bool hasNext()
          {
             return iter != iterEnd;
          }
 
-         virtual T next( )
+         virtual T next()
          {
-            if ( !hasNext( ) )
+            if (!hasNext())
                AWTEXCEPTIONTHROW("No such element");
 
             return *iter++;
          }
 
-         virtual std::string getClassName( ) const
+         virtual std::string getClassName() const
          {
             return "AWT::Container::STLIterator<T,Cont>";
          }
@@ -88,39 +88,39 @@ namespace AWT
       class SetIterator : public Iterator<T>
       {
       public:
-         typedef ManagedAutoPointer<SetIterator<T>> P;
+         typedef ManagedAutoPointer<SetIterator<T> > P;
 
       protected:
-         SetIterator( const std::set<T>& s )
+         SetIterator(const std::set<T>& s)
          {
-            this->iter    = s.begin( );
-            this->iterEnd = s.end( );
+            this->iter    = s.begin();
+            this->iterEnd = s.end();
          }
 
-         virtual ~SetIterator( )
+         virtual ~SetIterator()
          {
          }
 
       public:
-         static P getInstance( const std::set<T>& s )
+         static P getInstance(const std::set<T>& s)
          {
-            AUTOGETINSTANCE( AWT::Container::SetIterator<T>, ( s ) );
+            AUTOGETINSTANCE(AWT::Container::SetIterator<T>, (s));
          }
 
-         virtual bool hasNext( )
+         virtual bool hasNext()
          {
             return iter != iterEnd;
          }
 
-         virtual T next( )
+         virtual T next()
          {
-            if ( !hasNext( ) )
+            if (!hasNext())
                AWTEXCEPTIONTHROW("No such element");
 
             return *iter++;
          }
 
-         virtual std::string getClassName( ) const
+         virtual std::string getClassName() const
          {
             return "AWT::Container::SetIterator<T>";
          }

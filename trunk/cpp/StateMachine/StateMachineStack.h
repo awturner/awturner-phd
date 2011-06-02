@@ -38,32 +38,32 @@ namespace AWT
       typedef ManagedAutoPointer<StateMachineStack> P;
 
    protected:
-      StateMachineStack( );
-      virtual ~StateMachineStack( );
+      StateMachineStack();
+      virtual ~StateMachineStack();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
-      virtual StateMachineStack* getStack( );
+      virtual StateMachineStack* getStack();
 
-      virtual void push( BasicStateMachine::P m );
+      virtual void push(BasicStateMachine::P m);
 
-      virtual BasicStateMachine::P getTop( ) const;
+      virtual BasicStateMachine::P getTop() const;
 
-      virtual void clear( );
+      virtual void clear();
 
-      virtual BasicStateMachine::P pop( );
+      virtual BasicStateMachine::P pop();
 
-      virtual bool step( );
+      virtual bool step();
 
-      virtual bool isRunning( ) const;
+      virtual bool isRunning() const;
 
-      virtual bool isError( ) const;
+      virtual bool isError() const;
 
-      virtual std::string getLastError( ) const;
+      virtual std::string getLastError() const;
 
-      virtual std::string getStateName( ) const;
+      virtual std::string getStateName() const;
 
    protected:
       struct D;

@@ -41,7 +41,7 @@ struct AWT::OpenGLDrawDisplayList::D
    bool          m_First;
 };
 
-AWT::OpenGLDrawDisplayList::OpenGLDrawDisplayList( )
+AWT::OpenGLDrawDisplayList::OpenGLDrawDisplayList()
 {
    //DEBUGMACRO("Created");
    m_D = new D;
@@ -50,86 +50,86 @@ AWT::OpenGLDrawDisplayList::OpenGLDrawDisplayList( )
    m_D->m_First        = true;
 }
 
-AWT::OpenGLDrawDisplayList::~OpenGLDrawDisplayList( )
+AWT::OpenGLDrawDisplayList::~OpenGLDrawDisplayList()
 {
    //DEBUGMACRO("Destroyed");
-   if ( !m_D->m_First )
+   if (!m_D->m_First)
    {
-      glDeleteLists( m_D->m_MeshList, 1 );
+      glDeleteLists(m_D->m_MeshList, 1);
    }
 
    delete m_D;
 }
 
-void AWT::OpenGLDrawDisplayList::beforeCallList( AWT::DrawContext::P context )
+void AWT::OpenGLDrawDisplayList::beforeCallList(AWT::DrawContext::P context)
 {
    // Stub function so that you don't have to override
 }
 
 
-void AWT::OpenGLDrawDisplayList::afterCallList( AWT::DrawContext::P context )
+void AWT::OpenGLDrawDisplayList::afterCallList(AWT::DrawContext::P context)
 {
    // Stub function so that you don't have to override
 }
 
 
-void AWT::OpenGLDrawDisplayList::getBounds( double* out_Bounds )
+void AWT::OpenGLDrawDisplayList::getBounds(double* out_Bounds)
 {
-   if ( getChildModifiedTime( ) > getModifiedTime( ) || m_D->m_RecreateList )
+   if (getChildModifiedTime() > getModifiedTime() || m_D->m_RecreateList)
    {
-      updateBounds( );
+      updateBounds();
 
       // Although we've modified the bounds, we don't want
       // to miss out on updating the display list
       m_D->m_RecreateList = true;
    }
 
-   for ( unsigned int i = 0; i < 6; ++i )
-      out_Bounds[i] = getBoundImpl( i );
+   for (unsigned int i = 0; i < 6; ++i)
+      out_Bounds[i] = getBoundImpl(i);
 }
 
 
-void AWT::OpenGLDrawDisplayList::drawImpl( AWT::DrawContext::P context )
+void AWT::OpenGLDrawDisplayList::drawImpl(AWT::DrawContext::P context)
 {
-   // Mutex* mutex = AWT::Drawable::getMutex( );
+   // Mutex* mutex = AWT::Drawable::getMutex();
 
-   bool hasMutex = true; //mutex->tryAcquire( this );
+   bool hasMutex = true; //mutex->tryAcquire(this);
 
-   beforeCallList( context );
+   beforeCallList(context);
 
    // This checks to see if the list needs to be rebuilt
-   if ( hasMutex && ( getChildModifiedTime( ) > getModifiedTime( ) || m_D->m_RecreateList ) )
+   if (hasMutex && (getChildModifiedTime() > getModifiedTime() || m_D->m_RecreateList))
    {
-      if ( !m_D->m_First )
+      if (!m_D->m_First)
       {
-         glDeleteLists( m_D->m_MeshList, 1 );
+         glDeleteLists(m_D->m_MeshList, 1);
       }
       else
       {
          m_D->m_First = false;
       }
 
-      m_D->m_MeshList = glGenLists( 1 );
+      m_D->m_MeshList = glGenLists(1);
       
-      glNewList( m_D->m_MeshList, GL_COMPILE_AND_EXECUTE );
+      glNewList(m_D->m_MeshList, GL_COMPILE_AND_EXECUTE);
 
-      buildList( context );
+      buildList(context);
 
-      glEndList( );
+      glEndList();
 
-      modified( );
+      modified();
       m_D->m_RecreateList = false;
    }
    else
    {
-      glCallList( m_D->m_MeshList );
+      glCallList(m_D->m_MeshList);
    }
 
-   afterCallList( context );
+   afterCallList(context);
    
-   if ( hasMutex )
+   if (hasMutex)
    {
-      //mutex->release( this );
+      //mutex->release(this);
    }
 }
 

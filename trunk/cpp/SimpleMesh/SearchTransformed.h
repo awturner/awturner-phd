@@ -41,17 +41,17 @@ namespace AWT
          typedef ManagedAutoPointer<SearchTransformed> P;
 
       protected:
-         SearchTransformed( Search::P search, Transformation t );
-         virtual ~SearchTransformed( );
+         SearchTransformed(Search::P search, Transformation t);
+         virtual ~SearchTransformed();
 
       public:
-         static P getInstance( Search::P search, Transformation t );
-         virtual std::string getClassName( ) const;
+         static P getInstance(Search::P search, Transformation t);
+         virtual std::string getClassName() const;
 
-         void setTransformation( const Transformation& t );
-         Transformation getTransformation( ) const;
+         void setTransformation(const Transformation& t);
+         Transformation getTransformation() const;
 
-         Search::P getSearch( );
+         Search::P getSearch();
 
       protected:
          struct D;

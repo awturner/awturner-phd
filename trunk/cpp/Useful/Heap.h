@@ -37,28 +37,28 @@ namespace AWT
       class Comparator
       {
       public:
-         virtual const bool compare( const T a, const T b ) = 0;
+         virtual const bool compare(const T a, const T b) = 0;
       };
 
       template <class T>
       class DefaultComparator : public Comparator<T>
       {
       public:
-         static const DefaultComparator* instance( )
+         static const DefaultComparator* instance()
          {
-            if ( m_Instance == 0 )
-               m_Instance = new DefaultComparator( );
+            if (m_Instance == 0)
+               m_Instance = new DefaultComparator();
 
             return m_Instance;
          }
 
-         const bool compare( const T a, const T b )
+         const bool compare(const T a, const T b)
          {
             return a < b;
          }
       private:
          // Make the constructor private
-         DefaultComparator( ) {}
+         DefaultComparator() {}
 
          static DefaultComparator* m_Instance;
       };
@@ -67,14 +67,14 @@ namespace AWT
       class Heap
       {
       public:
-         Heap( int in_Capacity, Comparator<T>* in_comparator );
+         Heap(int in_Capacity, Comparator<T>* in_comparator);
          Heap(int in_Capacity);
          ~Heap();
 
-         void add( T in_obj );
-         T    remove( );
+         void add(T in_obj);
+         T    remove();
 
-         T    get( );
+         T    get();
 
          bool isHeap();
          bool isEmpty();
@@ -84,9 +84,9 @@ namespace AWT
          {
             int i;
             os << "[";
-            for ( i = 0; i < obj.m_size; i++ )
+            for (i = 0; i < obj.m_size; i++)
             {
-               if ( i != 0 )
+               if (i != 0)
                   os << ", ";
 
                os << obj.m_Data[i];
@@ -96,13 +96,13 @@ namespace AWT
             return os;
          }
 
-         static bool DefaultComparator( T a, T b )
+         static bool DefaultComparator(T a, T b)
          {
             return a < b;
          }
 
       protected:
-         void Init( int in_Capacity, Comparator<T>* in_comparator );
+         void Init(int in_Capacity, Comparator<T>* in_comparator);
 
          int  NextPowerOfTwo(int n);
          void Reallocate(int in_Capacity);
@@ -127,46 +127,46 @@ template <class T>
 AWT::Container::DefaultComparator<T>* AWT::Container::DefaultComparator<T>::m_Instance = 0;
 
 template <class T>
-void AWT::Container::Heap<T>::Init( int in_Capacity, Comparator<T>* in_Comparator )
+void AWT::Container::Heap<T>::Init(int in_Capacity, Comparator<T>* in_Comparator)
 {
    m_size     = 0;
    m_Data     = 0;
 
-   Reallocate( in_Capacity );
+   Reallocate(in_Capacity);
 
    m_Comparator = in_Comparator;
 }
 
 template <class T>
-AWT::Container::Heap<T>::Heap( int in_Capacity, Comparator<T>* in_Comparator )
+AWT::Container::Heap<T>::Heap(int in_Capacity, Comparator<T>* in_Comparator)
 {
-   Init( in_Capacity, in_Comparator );
+   Init(in_Capacity, in_Comparator);
 }
 
 template <class T>
 AWT::Container::Heap<T>::Heap(int in_Capacity)
 {
-   Init( in_Capacity, &AWT::Container::DefaultComparator<T>::getInstance( ) );
+   Init(in_Capacity, &AWT::Container::DefaultComparator<T>::getInstance());
 }
 
 template <class T>
-bool AWT::Container::Heap<T>::isHeap( )
+bool AWT::Container::Heap<T>::isHeap()
 {
-   for ( int i = size( )-1; i >= 0; i-- )
+   for (int i = size()-1; i >= 0; i--)
    {
-      if ( 2*i + 1 < size( ) )
-         if (m_Comparator->compare( m_Data[2*i + 1], m_Data[i]) )
+      if (2*i + 1 < size())
+         if (m_Comparator->compare(m_Data[2*i + 1], m_Data[i]))
          {
-            //for ( i = 0; i < size( ); i++ )
+            //for (i = 0; i < size(); i++)
             //   std::cerr << "### " << *m_Data[i] << std::endl;
 
             return false;
          }
 
-      if ( 2*i + 2 < size( ) )
-         if (m_Comparator->compare( m_Data[2*i + 2], m_Data[i]) )
+      if (2*i + 2 < size())
+         if (m_Comparator->compare(m_Data[2*i + 2], m_Data[i]))
          {
-            //for ( i = 0; i < size( ); i++ )
+            //for (i = 0; i < size(); i++)
             //   std::cerr << "~~~ " << *m_Data[i] << std::endl;
 
             return false;
@@ -177,11 +177,11 @@ bool AWT::Container::Heap<T>::isHeap( )
 }
 
 template <class T>
-void AWT::Container::Heap<T>::add/*Push*/( T in_obj )
+void AWT::Container::Heap<T>::add/*Push*/(T in_obj)
 {
-   if ( m_size == m_Capacity )
+   if (m_size == m_Capacity)
    {
-      Reallocate( 2 * m_Capacity );
+      Reallocate(2 * m_Capacity);
    }
 
    m_Data[m_size++] = in_obj;
@@ -199,7 +199,7 @@ T AWT::Container::Heap<T>::remove/*Pop*/()
 }
 
 template <class T>
-T AWT::Container::Heap<T>::get( )
+T AWT::Container::Heap<T>::get()
 {
    return m_Data[0];
 }
@@ -209,12 +209,12 @@ void AWT::Container::Heap<T>::ReheapifyUp()
 {
    int ptr = m_size - 1;
    int PoP;
-   while ( ptr > 0 )
+   while (ptr > 0)
    {
       PoP = ParentOf(ptr);
 
-      if ( m_Comparator->compare( m_Data[ptr], m_Data[PoP] ) )
-         Swap( PoP, ptr );
+      if (m_Comparator->compare(m_Data[ptr], m_Data[PoP]))
+         Swap(PoP, ptr);
       
       ptr = PoP;
    }
@@ -226,22 +226,22 @@ void AWT::Container::Heap<T>::ReheapifyDown()
    int ptr = 0;
    int kid;
 
-   while ( (kid = (ptr << 1) + 1) < m_size )
+   while ((kid = (ptr << 1) + 1) < m_size)
    {
       //kid = 2 * ptr + 1;
 
-      if ( ( kid < m_size - 1 ) && ( m_Comparator->compare( m_Data[kid + 1], m_Data[kid] ) ) )
+      if ((kid < m_size - 1) && (m_Comparator->compare(m_Data[kid + 1], m_Data[kid])))
       {
          ++kid;
       }
 
-      if ( m_Comparator->compare( m_Data[ptr], m_Data[kid] ) )
+      if (m_Comparator->compare(m_Data[ptr], m_Data[kid]))
       {
          break;
       }
       else
       {
-         Swap( kid, ptr );
+         Swap(kid, ptr);
          ptr = kid;
       }
    }
@@ -262,14 +262,14 @@ int AWT::Container::Heap<T>::ParentOf(int a)
 }
 
 template <class T>
-void AWT::Container::Heap<T>::Reallocate( int in_Capacity )
+void AWT::Container::Heap<T>::Reallocate(int in_Capacity)
 {
    int new_Capacity = NextPowerOfTwo(in_Capacity+1)-1;
    //std::cerr << "Creating array with capacity " << new_Capacity << std::endl;
 
    T* new_Data     = new T[new_Capacity];
 
-   if ( m_Data != 0 )
+   if (m_Data != 0)
    {
       for (int i = 0; i < m_size; i++)
       {

@@ -41,11 +41,11 @@ namespace AWT
       typedef ManagedAutoPointer<LMICP> P;
 
    protected:
-      LMICP( Tuples<double>::P movable, Tuples<double>::P movableNormals, Tuples<double>::P fixed, Tuples<double>::P fixedNormals, const double centroid[3], double (*func)( double ) );
-      virtual ~LMICP( );
+      LMICP(Tuples<double>::P movable, Tuples<double>::P movableNormals, Tuples<double>::P fixed, Tuples<double>::P fixedNormals, const double centroid[3], double (*func)(double));
+      virtual ~LMICP();
 
    public:
-      static vnl_matrix_fixed<double,4,4> makeTransformation( const vnl_vector<double>& params, const double centroid[3] );
+      static vnl_matrix_fixed<double,4,4> makeTransformation(const vnl_vector<double>& params, const double centroid[3]);
    protected:
       struct D;
       D* m_D;
@@ -58,14 +58,14 @@ namespace AWT
       typedef ManagedAutoPointer<LMICP> P;
 
    protected:
-      LMICP_PointPoint( Tuples<double>::P movable, Tuples<double>::P movableNormals, Tuples<double>::P fixed, Tuples<double>::P fixedNormals, const double centroid[3], double (*func)( double ) );
-      virtual ~LMICP_PointPoint( );
+      LMICP_PointPoint(Tuples<double>::P movable, Tuples<double>::P movableNormals, Tuples<double>::P fixed, Tuples<double>::P fixedNormals, const double centroid[3], double (*func)(double));
+      virtual ~LMICP_PointPoint();
 
    public:
-      static P getInstance( Tuples<double>::P movable, Tuples<double>::P movableNormals, Tuples<double>::P fixed, Tuples<double>::P fixedNormals, const double centroid[3], double (*func)( double ) );
-      std::string getClassName( ) const;
+      static P getInstance(Tuples<double>::P movable, Tuples<double>::P movableNormals, Tuples<double>::P fixed, Tuples<double>::P fixedNormals, const double centroid[3], double (*func)(double));
+      std::string getClassName() const;
 
-      virtual void f( const vnl_vector<double>& x, vnl_vector<double>& residuals );
+      virtual void f(const vnl_vector<double>& x, vnl_vector<double>& residuals);
    };
 
    class LMICP_PointPlane : public LMICP
@@ -74,14 +74,14 @@ namespace AWT
       typedef ManagedAutoPointer<LMICP> P;
 
    protected:
-      LMICP_PointPlane( Tuples<double>::P movable, Tuples<double>::P movableNormals, Tuples<double>::P fixed, Tuples<double>::P fixedNormals, const double centroid[3], double (*func)( double ) );
-      virtual ~LMICP_PointPlane( );
+      LMICP_PointPlane(Tuples<double>::P movable, Tuples<double>::P movableNormals, Tuples<double>::P fixed, Tuples<double>::P fixedNormals, const double centroid[3], double (*func)(double));
+      virtual ~LMICP_PointPlane();
 
    public:
-      static P getInstance( Tuples<double>::P movable, Tuples<double>::P movableNormals, Tuples<double>::P fixed, Tuples<double>::P fixedNormals, const double centroid[3], double (*func)( double ) );
-      std::string getClassName( ) const;
+      static P getInstance(Tuples<double>::P movable, Tuples<double>::P movableNormals, Tuples<double>::P fixed, Tuples<double>::P fixedNormals, const double centroid[3], double (*func)(double));
+      std::string getClassName() const;
 
-      virtual void f( const vnl_vector<double>& x, vnl_vector<double>& residuals );
+      virtual void f(const vnl_vector<double>& x, vnl_vector<double>& residuals);
    };
 }
 

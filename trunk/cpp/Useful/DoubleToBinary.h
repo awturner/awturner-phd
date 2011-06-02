@@ -30,7 +30,7 @@
 
 namespace AWT
 {
-   std::ostream& doubleToBinary( std::ostream& os, double dbl );
+   std::ostream& doubleToBinary(std::ostream& os, double dbl);
 }
 
 #endif // __DOUBLETOBINARY_H__

@@ -38,21 +38,21 @@ namespace AWT
          typedef ManagedAutoPointer<VisitedFaceSearchFilter> P;
 
       protected:
-         VisitedFaceSearchFilter( Mesh::P );
-         virtual ~VisitedFaceSearchFilter( );
+         VisitedFaceSearchFilter(Mesh::P);
+         virtual ~VisitedFaceSearchFilter();
 
       public:
-         static P getInstance( Mesh::P );
-         std::string getClassName( ) const;
+         static P getInstance(Mesh::P);
+         std::string getClassName() const;
 
-         void reset( );
+         void reset();
 
-         void markFaces( );
+         void markFaces();
 
-         virtual bool check( const Point p, const Index i ) const;
-         virtual void accept( const Point p, const Index i );
+         virtual bool check(const Point p, const Index i) const;
+         virtual void accept(const Point p, const Index i);
 
-         void writeUnvisitedMesh( const char* filename );
+         void writeUnvisitedMesh(const char* filename);
 
       protected:
          struct D;

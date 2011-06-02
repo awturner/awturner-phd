@@ -35,14 +35,14 @@ class QSplitterGrid : public QObject
    Q_OBJECT;
 
 public:
-   QSplitterGrid( );
-   virtual ~QSplitterGrid( );
+   QSplitterGrid();
+   virtual ~QSplitterGrid();
 
-   void addSplitterEx( QSplitterEx* splitter );
-   void removeSplitterEx( QSplitterEx* splitter );
+   void addSplitterEx(QSplitterEx* splitter);
+   void removeSplitterEx(QSplitterEx* splitter);
 
 public slots:
-   void splitterResize( QSplitterEx* splitter );
+   void splitterResize(QSplitterEx* splitter);
 
 protected:
    struct D;

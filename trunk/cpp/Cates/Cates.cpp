@@ -57,94 +57,94 @@ namespace AWT
    class CatesStateMachine : public SaveableStateMachine
    {
    public:
-      typedef ManagedAutoPointer<CatesStateMachine<T>> P;
+      typedef ManagedAutoPointer<CatesStateMachine<T> > P;
 
    protected:
-      CatesStateMachine( StateMachineStack::P stack )
+      CatesStateMachine(StateMachineStack::P stack)
       {
          sms = stack;
       }
 
-      virtual ~CatesStateMachine( )
+      virtual ~CatesStateMachine()
       {
       }
 
    public:
-      static P getInstance( StateMachineStack::P stack )
+      static P getInstance(StateMachineStack::P stack)
       {
-         AUTOGETINSTANCE( AWT::CatesStateMachine<T>, ( stack ) );
+         AUTOGETINSTANCE(AWT::CatesStateMachine<T>, (stack));
       }
 
-      virtual std::string getClassName( ) const { return "CatesStateMachine<T>"; }
+      virtual std::string getClassName() const { return "CatesStateMachine<T>"; }
 
-      virtual StateMachineStack* getStack( ) { return *this->sms; }
+      virtual StateMachineStack* getStack() { return *this->sms; }
 
-      virtual bool step( )
+      virtual bool step()
       {
          static MeshIndex iters = 0;
 
-         const MeshIndex N = pam->getParticles( )->getNumberOfPoints( );
-         Tuples<T>::P delta = TuplesImpl<T>::getInstance( 3, N );
+         const MeshIndex N = pam->getParticles()->getNumberOfPoints();
+         Tuples<T>::P delta = TuplesImpl<T>::getInstance(3, N);
 
-         pam->calculateInternalForceUpdate( delta );
+         pam->calculateInternalForceUpdate(delta);
 
          T vtx[3];
          T rms = 0;
-         for ( MeshIndex i = 0; i < N; ++i )
+         for (MeshIndex i = 0; i < N; ++i)
          {
-            delta->getPoint( i, vtx );
-            rms += dot( vtx, vtx, 3 );
+            delta->getPoint(i, vtx);
+            rms += dot(vtx, vtx, 3);
          }
 
-         rms = sqrt( rms / N );
+         rms = sqrt(rms / N);
          const T dt = 1 / rms; //*pam->getMinSigma()*pam->getMinSigma();
-         PRINTVBL( rms );
-         PRINTVBL( dt );
-         PRINTVBL( rms * dt );
+         PRINTVBL(rms);
+         PRINTVBL(dt);
+         PRINTVBL(rms * dt);
 
-         pam->updateParticles( delta, dt );
+         pam->updateParticles(delta, dt);
 
-         PRINTVBL( N );
+         PRINTVBL(N);
 
-         if ( (++iters % 50) == 0 && N < 4096 )
+         if ((++iters % 50) == 0 && N < 4096)
          {
-            DEBUGMACRO( "Splitting!" );
-            pam->splitParticles( );
+            DEBUGMACRO("Splitting!");
+            pam->splitParticles();
          }
 
          return true;
       }
 
-      virtual bool isRunning( ) const
+      virtual bool isRunning() const
       {
          return true;
       }
 
-      virtual bool isError( ) const
+      virtual bool isError() const
       {
          return false;
       }
 
-      virtual std::string getLastError( ) const
+      virtual std::string getLastError() const
       {
          return "What's an error?";
       }
 
-      virtual std::string getStateName( ) const
+      virtual std::string getStateName() const
       {
          return "Running";
       }
 
-      virtual void setParticlesAndMesh( typename ParticlesAndMesh<T>::P pam )
+      virtual void setParticlesAndMesh(typename ParticlesAndMesh<T>::P pam)
       {
          this->pam = pam;
       }
 
-      virtual std::string getMagic( ) const { return ""; }
+      virtual std::string getMagic() const { return ""; }
 
-      virtual bool load( const std::string& /*filename*/ ) { return false; }
+      virtual bool load(const std::string& /*filename*/) { return false; }
 
-      virtual void save( const std::string& /*filename*/ ) { }
+      virtual void save(const std::string& /*filename*/) { }
    protected:
       struct D;
       D* m_D;
@@ -157,29 +157,29 @@ namespace AWT
    class CatesStateMachine2 : public SaveableStateMachine
    {
    public:
-      typedef ManagedAutoPointer<CatesStateMachine2<T>> P;
+      typedef ManagedAutoPointer<CatesStateMachine2<T> > P;
 
    protected:
-      CatesStateMachine2( StateMachineStack::P stack )
+      CatesStateMachine2(StateMachineStack::P stack)
       {
          sms = stack;
       }
 
-      virtual ~CatesStateMachine2( )
+      virtual ~CatesStateMachine2()
       {
       }
 
    public:
-      static P getInstance( StateMachineStack::P stack )
+      static P getInstance(StateMachineStack::P stack)
       {
-         AUTOGETINSTANCE( AWT::CatesStateMachine2<T>, ( stack ) );
+         AUTOGETINSTANCE(AWT::CatesStateMachine2<T>, (stack));
       }
 
-      virtual std::string getClassName( ) const { return "CatesStateMachine2<T>"; }
+      virtual std::string getClassName() const { return "CatesStateMachine2<T>"; }
 
-      virtual StateMachineStack* getStack( ) { return *this->sms; }
+      virtual StateMachineStack* getStack() { return *this->sms; }
 
-      virtual bool step( )
+      virtual bool step()
       {
          static MeshIndex iters = 0;
 
@@ -187,8 +187,8 @@ namespace AWT
          BLANKLINE;
          std::cerr << "========================================" << std::endl;
 
-         PRINTVBL( iters );
-         ps->update( 100 );
+         PRINTVBL(iters);
+         ps->update(100);
 
          BLANKLINE;
          std::cerr << "========================================" << std::endl;
@@ -198,49 +198,49 @@ namespace AWT
          return true;
       }
 
-      virtual bool isRunning( ) const
+      virtual bool isRunning() const
       {
          return true;
       }
 
-      virtual bool isError( ) const
+      virtual bool isError() const
       {
          return false;
       }
 
-      virtual std::string getLastError( ) const
+      virtual std::string getLastError() const
       {
          return "What's an error?";
       }
 
-      virtual std::string getStateName( ) const
+      virtual std::string getStateName() const
       {
          return "Running";
       }
 
-      virtual void setParticleSystem( typename ParticleSystem<T>::P ps )
+      virtual void setParticleSystem(typename ParticleSystem<T>::P ps)
       {
          this->ps = ps;
       }
 
-      virtual std::string getMagic( ) const { return ""; }
+      virtual std::string getMagic() const { return ""; }
 
-      virtual bool load( const std::string& /*filename*/ ) { return false; }
+      virtual bool load(const std::string& /*filename*/) { return false; }
 
-      virtual void save( const std::string& /*filename*/ ) { }
+      virtual void save(const std::string& /*filename*/) { }
    protected:
       typename ParticleSystem<T>::P ps;
       StateMachineStack::P sms;
    };
 }
 
-void init( QtForm::P mainForm )
+void init(QtForm::P mainForm)
 {
-   DrawableWorld::P dworld = mainForm->getViewer( 0 )->getDrawableWorld( );
-   DrawableFactory<T>::P fact = dworld->getFactory( );
+   DrawableWorld::P dworld = mainForm->getViewer(0)->getDrawableWorld();
+   DrawableFactory<T>::P fact = dworld->getFactory();
 
-   ParticleSystem<T>::P ps = ParticleSystem<T>::getInstance( );
-   ps->setSigmaBounds( 1, 100 );
+   ParticleSystem<T>::P ps = ParticleSystem<T>::getInstance();
+   ps->setSigmaBounds(1, 100);
 
    const char* filenames[] = {
       "D:/PhdData/SmoothedBones/Part-1-1.vtk.5000.ply",
@@ -250,16 +250,16 @@ void init( QtForm::P mainForm )
    const MeshIndex N = 10;
 
    Mesh<T>::P mesh[M];
-   for ( MeshIndex s = 0; s < M; ++s )
+   for (MeshIndex s = 0; s < M; ++s)
    {
-      mesh[s] = VTKMeshLoader<T>::load( filenames[s], false );
-      //mesh[s] = MeshImpl<T>::getInstance( 0, 0 );
-      //MeshGenerator<T>::generateTorus( mesh[s], 25, 10, 32, 32 );
+      mesh[s] = VTKMeshLoader<T>::load(filenames[s], false);
+      //mesh[s] = MeshImpl<T>::getInstance(0, 0);
+      //MeshGenerator<T>::generateTorus(mesh[s], 25, 10, 32, 32);
 
-      AreaAveragedNormalCalculator<T>::getInstance( )->calculateNormalsAndSet( mesh[s] );
+      AreaAveragedNormalCalculator<T>::getInstance()->calculateNormalsAndSet(mesh[s]);
    }
 
-   Tuples<T>::P particlesCommon = TuplesImpl<T>::getInstance( 3, N );
+   Tuples<T>::P particlesCommon = TuplesImpl<T>::getInstance(3, N);
 
    {
       T groupbounds[] = { 
@@ -268,89 +268,89 @@ void init( QtForm::P mainForm )
          std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::infinity(),
       };
 
-      for ( MeshIndex s = 0; s < M; ++s )
+      for (MeshIndex s = 0; s < M; ++s)
       {
          T bounds[6];
-         TuplesFunctions<T>::calculateBounds( mesh[s]->getVertices(), bounds );
+         TuplesFunctions<T>::calculateBounds(mesh[s]->getVertices(), bounds);
 
-         FOREACHAXIS( ax )
+         FOREACHAXIS(ax)
          {
-            groupbounds[2*ax+0] = std::min( groupbounds[2*ax+0], bounds[2*ax+0] );
-            groupbounds[2*ax+1] = std::max( groupbounds[2*ax+1], bounds[2*ax+1] );
+            groupbounds[2*ax+0] = std::min(groupbounds[2*ax+0], bounds[2*ax+0]);
+            groupbounds[2*ax+1] = std::max(groupbounds[2*ax+1], bounds[2*ax+1]);
          }
       }
 
       T vtx[3];
-      for ( MeshIndex i = 0; i < N; ++i )
+      for (MeshIndex i = 0; i < N; ++i)
       {
-         for ( int ax = 0; ax < 3; ++ax )
-            vtx[ax] = Noise<T>::randu( groupbounds[2*ax], groupbounds[2*ax+1] );
+         for (int ax = 0; ax < 3; ++ax)
+            vtx[ax] = Noise<T>::randu(groupbounds[2*ax], groupbounds[2*ax+1]);
 
-         particlesCommon->addPoint( vtx );
+         particlesCommon->addPoint(vtx);
       }
    }
    
-   for ( MeshIndex s = 0; s < M; ++s )
+   for (MeshIndex s = 0; s < M; ++s)
    {
-      Tuples<T>::P particles = TuplesImpl<T>::getInstance( 3, N );
+      Tuples<T>::P particles = TuplesImpl<T>::getInstance(3, N);
       T vtx[3];
-      for ( MeshIndex i = 0; i < N; ++i )
+      for (MeshIndex i = 0; i < N; ++i)
       {
-         particlesCommon->getPoint( i, vtx );
-         particles->addPoint( vtx );
+         particlesCommon->getPoint(i, vtx);
+         particles->addPoint(vtx);
       }
 
-      ps->addMesh( mesh[s], particles );
+      ps->addMesh(mesh[s], particles);
       
-      DrawableMesh<T>::P dmesh = fact->createMesh( ps->getMesh(s) );
-      DrawablePoints<T>::P dpoints = fact->createPoints( ps->getParticles(s) );
+      DrawableMesh<T>::P dmesh = fact->createMesh(ps->getMesh(s));
+      DrawablePoints<T>::P dpoints = fact->createPoints(ps->getParticles(s));
       
-      dmesh->setMaterial( fact->createColour( 1.f, 0.5f, 0.5f, .5f, true ) );
-      //dmesh->setMaterial( colmap );
-      dmesh->setDrawAs( AWT::DRAWAS_SOLID );
+      dmesh->setMaterial(fact->createColour(1.f, 0.5f, 0.5f, .5f, true));
+      //dmesh->setMaterial(colmap);
+      dmesh->setDrawAs(AWT::DRAWAS_SOLID);
 
-      dpoints->setMaterial( fact->createColour( 0.f, (s==0)?0.f:1.f, (s==0)?1.f:0.f, 1.f, false ) );
-      dpoints->setPointSize( 2.f );
+      dpoints->setMaterial(fact->createColour(0.f, (s==0)?0.f:1.f, (s==0)?1.f:0.f, 1.f, false));
+      dpoints->setPointSize(2.f);
 
-      dworld->add( "Mesh", dmesh );
-      dworld->add( "Particles", dpoints );
+      dworld->add("Mesh", dmesh);
+      dworld->add("Particles", dpoints);
    }
 
-   StateMachineStack::P sms = StateMachineStack::getInstance( );
-   CatesStateMachine2<T>::P csm = CatesStateMachine2<T>::getInstance( sms );
+   StateMachineStack::P sms = StateMachineStack::getInstance();
+   CatesStateMachine2<T>::P csm = CatesStateMachine2<T>::getInstance(sms);
 
-   csm->setParticleSystem( ps );
+   csm->setParticleSystem(ps);
 
-   mainForm->setStateMachine( csm );
+   mainForm->setStateMachine(csm);
 }
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
    ReferenceCountedObject::debug = false;
 
-   QApplication app( argc, argv );
+   QApplication app(argc, argv);
 
    int ret = 999;
 
    try
    {
-      AWT::QtForm::P mainForm = AWT::QtForm::getInstance( 1, 1 );
+      AWT::QtForm::P mainForm = AWT::QtForm::getInstance(1, 1);
 
-      init( mainForm );
+      init(mainForm);
 
-      mainForm->showMaximized( );
+      mainForm->showMaximized();
 
-      ret = app.exec( );
+      ret = app.exec();
 
       DEBUGLINE;
    }
-   catch ( AWT::Exception& ex )
+   catch (AWT::Exception& ex)
    {
       std::cerr << ex << std::endl;
       throw ex;
    }
 
-   AWT::ManagedObject::report( true );
+   AWT::ManagedObject::report(true);
    DEBUGLINE;
 
    return ret;

@@ -29,30 +29,30 @@
 #include "OpenGLHeaders.h"
 
 template <class T>
-void glVertex3Tv( const T* v );
+void glVertex3Tv(const T* v);
 
 template <class T>
-void glNormal3Tv( const T* v );
+void glNormal3Tv(const T* v);
 
 template <class T>
-void glTexCoord2Tv( const T* v );
+void glTexCoord2Tv(const T* v);
 
 template <class T>
-void glVertex3T( const T a, const T b, const T c );
+void glVertex3T(const T a, const T b, const T c);
 
 template <class T>
-void glNormal3T( const T a, const T b, const T c );
+void glNormal3T(const T a, const T b, const T c);
 
 template <class T>
-void glTexCoord2T( const T a, const T b );
+void glTexCoord2T(const T a, const T b);
 
 template <class T>
-void glRasterPos3Tv( const T* v );
+void glRasterPos3Tv(const T* v);
 
 template <class T>
-void glGetTv( GLenum pname, T* v );
+void glGetTv(GLenum pname, T* v);
 
 template <class T>
-void glMultMatrixT( const T* v );
+void glMultMatrixT(const T* v);
 
 #endif // __OPENGLTEMPLATEDFUNCTIONS_H__

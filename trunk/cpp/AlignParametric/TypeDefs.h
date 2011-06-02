@@ -58,7 +58,7 @@ namespace AWT
    }
 }
 
-#define TYPED_DIV( Ty, x, y ) ( static_cast<Ty>(x) / static_cast<Ty>(y) )
+#define TYPED_DIV(Ty, x, y) (static_cast<Ty>(x) / static_cast<Ty>(y))
 
 #define ENSURESIZE
 

@@ -42,27 +42,27 @@ class FormPointPicker : public QMainWindow, public Ui::FormPointPicker, public N
    Q_OBJECT
 
 public:
-   FormPointPicker( );
-   virtual ~FormPointPicker( );
+   FormPointPicker();
+   virtual ~FormPointPicker();
 
-   void notify( );
+   void notify();
 
 public slots:
-   void switchMouseMode( bool state );
+   void switchMouseMode(bool state);
 
-   void load( );
-   void save( );
+   void load();
+   void save();
 
-   void view1( );
-   void view2( );
-   void view3( );
-   void view4( );
-   void view5( );
-   void view6( );
+   void view1();
+   void view2();
+   void view3();
+   void view4();
+   void view5();
+   void view6();
 
 protected:
-   bool loadVTK( const QString& filename, AWT::Mesh<double>::P& mesh );
-   bool loadLua( const QString& filename, AWT::Mesh<double>::P& mesh );
+   bool loadVTK(const QString& filename, AWT::Mesh<double>::P& mesh);
+   bool loadLua(const QString& filename, AWT::Mesh<double>::P& mesh);
 
    PickedPoints m_PickedPoints;
    PointListModel* m_PointListModel;

@@ -44,30 +44,30 @@ typedef vnl_vector_fixed<T,4>   TVector;
 
 using namespace AWT;
 
-const T PIBY180 = atan( 1.0 ) * 4 / 180.0;
+const T PIBY180 = atan(1.0) * 4 / 180.0;
 
-TMatrix randomTransformation( Mesh<T>::P mesh, T thetaMax, T traMax )
+TMatrix randomTransformation(Mesh<T>::P mesh, T thetaMax, T traMax)
 {
    TMatrix R;
-   R.fill( 0 );
+   R.fill(0);
 
-   const T theta = Noise<T>::randu( 0, thetaMax ) * PIBY180;
-   PRINTVBL( theta / PIBY180 );
+   const T theta = Noise<T>::randu(0, thetaMax) * PIBY180;
+   PRINTVBL(theta / PIBY180);
 
    T axisRot[3] = { 
-      Noise<T>::randu( -1, 1 ),
-      Noise<T>::randu( -1, 1 ),
-      Noise<T>::randu( -1, 1 )
+      Noise<T>::randu(-1, 1),
+      Noise<T>::randu(-1, 1),
+      Noise<T>::randu(-1, 1)
    };
    T axisTra[3] = {
-      Noise<T>::randu( -1, 1 ),
-      Noise<T>::randu( -1, 1 ),
-      Noise<T>::randu( -1, 1 )
+      Noise<T>::randu(-1, 1),
+      Noise<T>::randu(-1, 1),
+      Noise<T>::randu(-1, 1)
    };
-   normalize( axisRot, 3 );
+   normalize(axisRot, 3);
 
-   normalize( axisTra, 3 );
-   scale<T>( axisTra, traMax /*Noise<T>::randu( 0, 100 )*/, 3 );
+   normalize(axisTra, 3);
+   scale<T>(axisTra, traMax /*Noise<T>::randu(0, 100)*/, 3);
 
    const T c   = cos(theta); 
    const T s   = sin(theta); 
@@ -95,12 +95,12 @@ TMatrix randomTransformation( Mesh<T>::P mesh, T thetaMax, T traMax )
    R(2,2) = axisRot[2]*zC+c;
 
    R(3,3) = 1;
-   PRINTVBL( vnl_det( R ) );
+   PRINTVBL(vnl_det(R));
 
    // Rotate around the centroid
    T centroid[3];
-   MeshFunctions<T>::calculateFaceCentroid( mesh, centroid );
-   for ( int ax = 0; ax < 3; ++ax )
+   MeshFunctions<T>::calculateFaceCentroid(mesh, centroid);
+   for (int ax = 0; ax < 3; ++ax)
       R(ax,3) = axisTra[ax] + centroid[ax] - R(ax,0)*centroid[0] - R(ax,1)*centroid[1] - R(ax,2)*centroid[2];
 
    return R;
@@ -109,58 +109,58 @@ TMatrix randomTransformation( Mesh<T>::P mesh, T thetaMax, T traMax )
 #include "VanillaICPStateMachine.h"
 
 #if 0
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   Mesh<T>::P sourceMesh = VTKMeshLoader<T>::load( argv[1] );
-   Mesh<T>::P targetMesh = VTKMeshLoader<T>::load( argv[2] );
+   Mesh<T>::P sourceMesh = VTKMeshLoader<T>::load(argv[1]);
+   Mesh<T>::P targetMesh = VTKMeshLoader<T>::load(argv[2]);
 
-   Noise<T>::timeSeed( );
+   Noise<T>::timeSeed();
 
-   TMatrix R = randomTransformation( sourceMesh, 5, 0 );
+   TMatrix R = randomTransformation(sourceMesh, 5, 0);
 
    // Recover the angle
    const T trace = R(0,0) + R(1,1) + R(2,2);
-   const T theta = acos( ( trace - 1 ) / 2 );
+   const T theta = acos((trace - 1) / 2);
 
-   PRINTVBL( theta / PIBY180 );
+   PRINTVBL(theta / PIBY180);
 
    // Calculate the location of the centroid of the source mesh
    T sourceCentroid[3];
-   MeshFunctions<T>::calculateFaceCentroid( sourceMesh, sourceCentroid );
+   MeshFunctions<T>::calculateFaceCentroid(sourceMesh, sourceCentroid);
 
-   MeshFunctions<T>::transformMesh( sourceMesh, R );
+   MeshFunctions<T>::transformMesh(sourceMesh, R);
 
-   StateMachineStack::P sms = StateMachineStack::getInstance( );
-   VanillaICPStateMachine<T>::P sm = VanillaICPStateMachine<T>::getInstance( sms );
+   StateMachineStack::P sms = StateMachineStack::getInstance();
+   VanillaICPStateMachine<T>::P sm = VanillaICPStateMachine<T>::getInstance(sms);
 
-   sm->setFragmentMesh( sourceMesh );
-   sm->setIntactMesh( targetMesh );
+   sm->setFragmentMesh(sourceMesh);
+   sm->setIntactMesh(targetMesh);
 
    /*
-   while ( sm->isRunning( ) && !sm->isError( ) )
+   while (sm->isRunning() && !sm->isError())
    {
-      PRINTVBL( sm->getStateName( ) );
-      sm->step( );
+      PRINTVBL(sm->getStateName());
+      sm->step();
 
       {
-         vnl_matrix_fixed<T,4,4> delta = vnl_matrix_inverse<T>( R ).inverse( ) * sm->getTransformation( );
+         vnl_matrix_fixed<T,4,4> delta = vnl_matrix_inverse<T>(R).inverse() * sm->getTransformation();
          const T trace = delta(0,0) + delta(1,1) + delta(2,2);
          
          T calcCentroid[3];
-         MeshFunctions<T>::calculateFaceCentroid( sourceMesh, calcCentroid );
+         MeshFunctions<T>::calculateFaceCentroid(sourceMesh, calcCentroid);
 
-         const T deltaTrans = deltaNorm( calcCentroid, sourceCentroid, 3 );
-         const T deltaTheta = acos( ( trace - 1 ) / 2 );
+         const T deltaTrans = deltaNorm(calcCentroid, sourceCentroid, 3);
+         const T deltaTheta = acos((trace - 1) / 2);
 
-         PRINTVBL( deltaTrans );
-         PRINTVBL( deltaTheta );
+         PRINTVBL(deltaTrans);
+         PRINTVBL(deltaTheta);
       }
    }
 
-   if ( sm->isError( ) )
+   if (sm->isError())
    {
-      PRINTVBL( sm->getStateName( ) );
-      PRINTVBL( sm->getLastError( ) );
+      PRINTVBL(sm->getStateName());
+      PRINTVBL(sm->getLastError());
    }
 
    */  

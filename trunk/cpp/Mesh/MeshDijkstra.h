@@ -39,17 +39,17 @@ namespace AWT
    class MeshDijkstra : public ManagedObject
    {
    public:
-      typedef ManagedAutoPointer<MeshDijkstra<T>> P;
+      typedef ManagedAutoPointer<MeshDijkstra<T> > P;
 
    protected:
-      MeshDijkstra( typename Mesh<T>::P mesh, typename Tuples<T>::P initialData );
-      virtual ~MeshDijkstra( );
+      MeshDijkstra(typename Mesh<T>::P mesh, typename Tuples<T>::P initialData);
+      virtual ~MeshDijkstra();
 
    public:
-      static P getInstance( typename Mesh<T>::P mesh, typename Tuples<T>::P initialData );
-      virtual std::string getClassName( ) const;
+      static P getInstance(typename Mesh<T>::P mesh, typename Tuples<T>::P initialData);
+      virtual std::string getClassName() const;
 
-      virtual typename Tuples<T>::P getPointData( );
+      virtual typename Tuples<T>::P getPointData();
 
    protected:
       struct D;

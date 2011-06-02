@@ -34,20 +34,20 @@ class PickedPoint : public QObject
    Q_OBJECT
 
 public:
-   PickedPoint( );
-   PickedPoint( const PickedPoint& other );
-   PickedPoint( const QString& name );
-   PickedPoint( const QString& name, const double pnt[3] );
+   PickedPoint();
+   PickedPoint(const PickedPoint& other);
+   PickedPoint(const QString& name);
+   PickedPoint(const QString& name, const double pnt[3]);
 
-   PickedPoint& operator=( const PickedPoint& other );
+   PickedPoint& operator=(const PickedPoint& other);
 
-   virtual ~PickedPoint( );
+   virtual ~PickedPoint();
 
-   void getPoint( double pnt[3] ) const;
-   void setPoint( const double pnt[3] );
+   void getPoint(double pnt[3]) const;
+   void setPoint(const double pnt[3]);
 
-   QString getName( ) const;
-   void setName( const QString& name );
+   QString getName() const;
+   void setName(const QString& name);
 
 protected:
    QString m_Name;

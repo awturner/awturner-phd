@@ -57,73 +57,73 @@ namespace AWT
    class NonRigidAlignment : public virtual ManagedObject, public virtual MeshAlignmentDataListener<T>
    {
    public:
-      typedef ManagedAutoPointer<NonRigidAlignment<T>> P;
+      typedef ManagedAutoPointer<NonRigidAlignment<T> > P;
 
    protected:
-      NonRigidAlignment( );
+      NonRigidAlignment();
 
-      virtual ~NonRigidAlignment( );
+      virtual ~NonRigidAlignment();
 
    protected:
-      static bool badNumber( T val );
+      static bool badNumber(T val);
 
    public:
-      static P getInstance( );
+      static P getInstance();
 
-      void nonRigidAlignmentStep( );
+      void nonRigidAlignmentStep();
 
-      void rigidAlignmentStep( const bool allowScale );
+      void rigidAlignmentStep(const bool allowScale);
 
-      void updateSourcePoints( );
+      void updateSourcePoints();
 
-      void updateTargetPoints( );
+      void updateTargetPoints();
 
-      void setSourceMesh( typename Mesh<T>::P mesh );
+      void setSourceMesh(typename Mesh<T>::P mesh);
 
-      typename Mesh<T>::P getSourceMesh( ) const;
+      typename Mesh<T>::P getSourceMesh() const;
 
-      void setTargetMesh( typename Mesh<T>::P mesh );
+      void setTargetMesh(typename Mesh<T>::P mesh);
 
-      typename Mesh<T>::P getTargetMesh( ) const;
+      typename Mesh<T>::P getTargetMesh() const;
 
-      typename Mesh<T>::P getProjected( ) const;
+      typename Mesh<T>::P getProjected() const;
 
-      typename ControlPointSet<T>::P getControlPoints( );
+      typename ControlPointSet<T>::P getControlPoints();
 
-      void setControlPoints( typename ControlPointSet<T>::P cps );
+      void setControlPoints(typename ControlPointSet<T>::P cps);
 
-      typename MeshAlignmentData<T>::P getMeshAlignment( );
+      typename MeshAlignmentData<T>::P getMeshAlignment();
 
-      typename CorrespondenceFinder<T>::P getCorrespondences( );
+      typename CorrespondenceFinder<T>::P getCorrespondences();
 
-      void updateCorrespondences( );
+      void updateCorrespondences();
 
-      T getRmsMove( ) const;
+      T getRmsMove() const;
 
-      T getMaxMove( ) const;
+      T getMaxMove() const;
 
-      T getRmsError( ) const;
+      T getRmsError() const;
 
-      T getMaxError( ) const;
+      T getMaxError() const;
 
-      void setRigidScale( const T in_Scale );
+      void setRigidScale(const T in_Scale);
 
-      void setRigidTransformation( const T in_Transform[3][4] );
+      void setRigidTransformation(const T in_Transform[3][4]);
 
-      void getRotation( T out_Rotation[3][3] ) const;
+      void getRotation(T out_Rotation[3][3]) const;
 
-      T getScale( ) const;
+      T getScale() const;
 
-      void getTranslation( T out_Translation[3] ) const;
+      void getTranslation(T out_Translation[3]) const;
 
-      void addListener( typename NonRigidAlignmentListener<T>::P nral );
-      void removeListener( typename NonRigidAlignmentListener<T>::P nral );
+      void addListener(typename NonRigidAlignmentListener<T>::P nral);
+      void removeListener(typename NonRigidAlignmentListener<T>::P nral);
 
-      virtual void fixedPointsSet( typename MeshAlignmentData<T>::P mad );
+      virtual void fixedPointsSet(typename MeshAlignmentData<T>::P mad);
 
-      virtual void movingPointsSet( typename MeshAlignmentData<T>::P mad );
+      virtual void movingPointsSet(typename MeshAlignmentData<T>::P mad);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
    protected:
       struct D;

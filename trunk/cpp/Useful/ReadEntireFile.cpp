@@ -30,35 +30,35 @@
 #include <fstream>
 #include <sstream>
 
-AWT::ReadEntireFile::ReadEntireFile( )
+AWT::ReadEntireFile::ReadEntireFile()
 {
 }
 
-AWT::ReadEntireFile::~ReadEntireFile( )
+AWT::ReadEntireFile::~ReadEntireFile()
 {
 }
 
-std::string AWT::ReadEntireFile::read( const std::string& filename )
+std::string AWT::ReadEntireFile::read(const std::string& filename)
 {
-   std::ifstream is( filename.c_str( ) );
+   std::ifstream is(filename.c_str());
 
-   if ( is.bad( ) )
-      AWTEXCEPTIONTHROW_STREAM( "Could not read from " << filename );
+   if (is.bad())
+      AWTEXCEPTIONTHROW_STREAM("Could not read from " << filename);
 
    std::stringstream sstr;
    char ch;
 
-   while ( true )
+   while (true)
    {
-      is.get( ch );
+      is.get(ch);
 
-      if ( !is.good( ) )
+      if (!is.good())
          break;
 
       sstr << ch;
    }
 
-   is.close( );
+   is.close();
 
-   return sstr.str( );
+   return sstr.str();
 }

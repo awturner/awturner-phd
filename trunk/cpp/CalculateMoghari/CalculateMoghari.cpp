@@ -45,27 +45,27 @@ using namespace AWT;
 
 typedef double T;
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   if ( argc < 3 )
+   if (argc < 3)
    {
       std::cerr << "Usage: CalculateMoghari <input model filename> <radius>" << std::endl;
-      DEBUGLINEANDEXIT( 1 );
+      DEBUGLINEANDEXIT(1);
    }
 
-   T radius = static_cast<T>( atof( argv[2] ) );
+   T radius = static_cast<T>(atof(argv[2]));
 
-   Mesh<T>::P           mesh    = VTKMeshLoader<T>::load( argv[1] );
-   MoghariMeasure<T>::P mogMeas = MoghariMeasure<T>::getInstance( );
+   Mesh<T>::P           mesh    = VTKMeshLoader<T>::load(argv[1]);
+   MoghariMeasure<T>::P mogMeas = MoghariMeasure<T>::getInstance();
    
-   Tuples<T>::P         as      = mogMeas->calculate( mesh, radius );
+   Tuples<T>::P         as      = mogMeas->calculate(mesh, radius);
 
    T tuple[9];
-   for ( MeshIndex v = 0; v < as->getNumberOfPoints( ); ++v )
+   for (MeshIndex v = 0; v < as->getNumberOfPoints(); ++v)
    {
-      as->getPoint( v, tuple );
+      as->getPoint(v, tuple);
 
-      for ( int i = 0; i < 9; ++i )
+      for (int i = 0; i < 9; ++i)
          std::cout << tuple[i] << " ";
 
       std::cout << std::endl;

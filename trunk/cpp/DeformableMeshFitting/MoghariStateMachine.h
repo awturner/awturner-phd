@@ -40,33 +40,33 @@ namespace AWT
    class MoghariStateMachine : public BasicStateMachine
    {
    public:
-      typedef ManagedAutoPointer<MoghariStateMachine<T>> P;
+      typedef ManagedAutoPointer<MoghariStateMachine<T> > P;
 
    protected:
-      MoghariStateMachine( StateMachineStack::P stack );
-      virtual ~MoghariStateMachine( );
+      MoghariStateMachine(StateMachineStack::P stack);
+      virtual ~MoghariStateMachine();
 
    public:
-      static P getInstance( StateMachineStack::P stack );
-      virtual std::string getClassName( ) const;
+      static P getInstance(StateMachineStack::P stack);
+      virtual std::string getClassName() const;
 
-      virtual StateMachineStack* getStack( );
+      virtual StateMachineStack* getStack();
 
-      virtual bool step( );
+      virtual bool step();
 
-      virtual bool isRunning( ) const;
+      virtual bool isRunning() const;
 
-      virtual bool isError( ) const;
+      virtual bool isError() const;
 
-      virtual std::string getLastError( ) const;
+      virtual std::string getLastError() const;
 
-      virtual std::string getStateName( ) const;
+      virtual std::string getStateName() const;
 
-      virtual void setFragment( typename Fragment<T>::P mesh );
+      virtual void setFragment(typename Fragment<T>::P mesh);
 
-      virtual void setTargetMesh( typename Mesh<T>::P mesh );
+      virtual void setTargetMesh(typename Mesh<T>::P mesh);
 
-      virtual void setMeasureFilename( const T r, const std::string& filename );
+      virtual void setMeasureFilename(const T r, const std::string& filename);
 
    protected:
       struct D;

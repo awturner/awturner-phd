@@ -105,10 +105,10 @@
 //         * @param in_MinSize Minimum size of subtree over which to use tree-based searching - below this level, search exhaustively (more efficient for small trees)
 //         *
 //         */
-//         EKDTree( KDTreeDataElement<T,K>** in_data, const int in_npoints, const int in_MinSize = 10 );
+//         EKDTree(KDTreeDataElement<T,K>** in_data, const int in_npoints, const int in_MinSize = 10);
 //         
 //         //! Destructor
-//         ~EKDTree( );
+//         ~EKDTree();
 //      //@}
 //
 //      //! @name Queries
@@ -119,7 +119,7 @@
 //         *
 //         * @return Number of spatial dims.
 //         */
-//         const int getDimensionality( );
+//         const int getDimensionality();
 //      //@}
 //
 //      ////////////////////////////////////////////////////////////////////////////////
@@ -131,26 +131,26 @@
 //         * Starts the process of building the tree.  Called automatically upon construction, 
 //         * but could be called again e.g. if the data changes
 //         */
-//         void BuildTree( );
+//         void BuildTree();
 //
-//         EKDTreeBranch<T,K>* getRootBranch( );
+//         EKDTreeBranch<T,K>* getRootBranch();
 //
-//         int getOriginalIndex( const int in_Index ) const;
+//         int getOriginalIndex(const int in_Index) const;
 //
-//         KDTreeDataElement<T,K>* getDataElement( const int in_Index ) const;
+//         KDTreeDataElement<T,K>* getDataElement(const int in_Index) const;
 //
-//         KDTreeDataElement<T,K>* getOriginalDataElement( const int in_Index ) const;
+//         KDTreeDataElement<T,K>* getOriginalDataElement(const int in_Index) const;
 //
-//         const int getMinimumSize( );
+//         const int getMinimumSize();
 //
-//         void search( EKDSearcher<T,K>* in_Search, SearchType in_SearchType = RECURSIVE );
+//         void search(EKDSearcher<T,K>* in_Search, SearchType in_SearchType = RECURSIVE);
 //
-//         void search( EKDSearcher<T,K>* in_Search, int& searchCount, SearchType in_SearchType = RECURSIVE );
+//         void search(EKDSearcher<T,K>* in_Search, int& searchCount, SearchType in_SearchType = RECURSIVE);
 //
 //      protected:
-//         void searchRecursive ( EKDSearcher<T,K>* in_Search, EKDTreeBranch<T,K>* in_Branch, int& branchesSearched );
+//         void searchRecursive (EKDSearcher<T,K>* in_Search, EKDTreeBranch<T,K>* in_Branch, int& branchesSearched);
 //
-//         void searchExhaustive( EKDSearcher<T,K>* in_Search, EKDTreeBranch<T,K>* in_Branch );
+//         void searchExhaustive(EKDSearcher<T,K>* in_Search, EKDTreeBranch<T,K>* in_Branch);
 //
 //         /*!
 //         * Handles the recursive calls to partition the array into [ {<= median} median {>= median} ]
@@ -160,7 +160,7 @@
 //         * @param in_Dim Current discriminator dimension
 //         * @param out_Bounds Bounding box of the current points [dim1_min dim1_max dim2_min dim2_max ... ]
 //         */
-//         void recursivelyPartition( int in_Low, int in_High, int in_Dim, T* out_Bounds );
+//         void recursivelyPartition(int in_Low, int in_High, int in_Dim, T* out_Bounds);
 //
 //	      /*!
 //         * Does the meat of partitioning the array into [ {<= median} median {>= median} ]
@@ -169,11 +169,11 @@
 //         * @param in_High Last index in the array to check
 //         * @param in_Dim Current discriminator dimension
 //         */
-//         void partitionArray( int in_Low, int in_High, int in_Dim );
+//         void partitionArray(int in_Low, int in_High, int in_Dim);
 //
-//         void branchCalculateChildBounds( int in_ChildIndex, int in_Low, int in_High, int& out_Low, int& out_High, T& out_Bound );
+//         void branchCalculateChildBounds(int in_ChildIndex, int in_Low, int in_High, int& out_Low, int& out_High, T& out_Bound);
 //
-//         bool checkInvariant( int in_Low, int in_High, int in_Dim );
+//         bool checkInvariant(int in_Low, int in_High, int in_Dim);
 //
 //      ////////////////////////////////////////////////////////////////////////////////
 //      // Member variables
@@ -223,11 +223,11 @@
 //   const int rend   = high;
 //
 //template <class T, unsigned char K>
-//void EKDTree<T,K>::branchCalculateChildBounds( int in_ChildIndex, int in_Low, int in_High, int& out_Low, int& out_High, T& out_Bound )
+//void EKDTree<T,K>::branchCalculateChildBounds(int in_ChildIndex, int in_Low, int in_High, int& out_Low, int& out_High, T& out_Bound)
 //{
-//   INITPARTITIONS( in_Low, in_High );
+//   INITPARTITIONS(in_Low, in_High);
 //   
-//   switch ( in_ChildIndex )
+//   switch (in_ChildIndex)
 //   {
 //   case 0:
 //      out_Low  = lstart;
@@ -245,28 +245,28 @@
 //}
 //
 //template <class T, unsigned char K>
-//EKDTreeBranch<T,K>* EKDTree<T,K>::getRootBranch( )
+//EKDTreeBranch<T,K>* EKDTree<T,K>::getRootBranch()
 //{
-//   if ( m_Root == 0 )
-//      m_Root = new EKDTreeBranch<T,K>( this, 0, m_NPoints-1, 0, m_Bounds );
+//   if (m_Root == 0)
+//      m_Root = new EKDTreeBranch<T,K>(this, 0, m_NPoints-1, 0, m_Bounds);
 //   else
-//      m_Root->init( this, 0, m_NPoints-1, 0, m_Bounds );
+//      m_Root->init(this, 0, m_NPoints-1, 0, m_Bounds);
 //
 //   return m_Root;
 //}
 //
 //template <class T, unsigned char K>
-//const int EKDTree<T,K>::getMinimumSize( )
+//const int EKDTree<T,K>::getMinimumSize()
 //{
 //   return m_MinSize;
 //}
 //
 //// Constructor
 //template <class T, unsigned char K>
-//EKDTree<T,K>::EKDTree( KDTreeDataElement<T,K>** in_data, const int in_npoints, const int in_MinSize )
-//   : m_MinSize( in_MinSize ), m_NPoints( in_npoints )
+//EKDTree<T,K>::EKDTree(KDTreeDataElement<T,K>** in_data, const int in_npoints, const int in_MinSize)
+//   : m_MinSize(in_MinSize), m_NPoints(in_npoints)
 //{
-//   if ( in_MinSize < 1 )
+//   if (in_MinSize < 1)
 //      AWTEXCEPTIONTHROW("in_MinSize should be >= 1");
 //
 //   this->m_Root              = 0;
@@ -277,14 +277,14 @@
 //   this->m_OrthoPositions[0] = new T[m_NPoints];
 //   this->m_OrthoPositions[1] = new T[m_NPoints];
 //
-//   BuildTree( );
+//   BuildTree();
 //}
 //
 //// Destructor
 //template <class T, unsigned char K>
-//EKDTree<T,K>::~EKDTree( )
+//EKDTree<T,K>::~EKDTree()
 //{
-//   if ( m_Root != 0 )
+//   if (m_Root != 0)
 //      delete m_Root;
 //
 //   delete m_Indexes;
@@ -294,13 +294,13 @@
 //
 //// Queries
 //template <class T, unsigned char K>
-//const int EKDTree<T,K>::getDimensionality( )
+//const int EKDTree<T,K>::getDimensionality()
 //{
 //   return K;
 //}
 //
 //template <class T, unsigned char K>
-//int EKDTree<T,K>::getOriginalIndex( const int in_Index ) const
+//int EKDTree<T,K>::getOriginalIndex(const int in_Index) const
 //{
 //   return m_Indexes[in_Index];
 //}
@@ -308,7 +308,7 @@
 //template <class T, unsigned char K>
 //KDTreeDataElement<T,K>* EKDTree<T,K>::getDataElement(const int in_Index) const
 //{
-//   return getOriginalDataElement( getOriginalIndex( in_Index ) );
+//   return getOriginalDataElement(getOriginalIndex(in_Index));
 //}
 //
 //template <class T, unsigned char K>
@@ -318,43 +318,43 @@
 //}
 //
 //template <class T, unsigned char K>
-//void EKDTree<T,K>::BuildTree( )
+//void EKDTree<T,K>::BuildTree()
 //{
 //   // Fill the array of indexes - these will be [0..in_npoints-1] to start with,
 //   // but they'll be rearranged when the tree is built
-//   for ( int i = 0; i < m_NPoints; i++ )
+//   for (int i = 0; i < m_NPoints; i++)
 //   {
 //      // Make sure that the point is up-to-date
-//      m_Points[i]->update( );
+//      m_Points[i]->update();
 //      this->m_Indexes[i] = i;
 //   }
 //
-//	recursivelyPartition( 0, m_NPoints-1, 0, m_Bounds );
+//	recursivelyPartition(0, m_NPoints-1, 0, m_Bounds);
 //}
 //
 //template <class T, unsigned char K>
-//void EKDTree<T,K>::recursivelyPartition( int low, int high, int dim, T* out_Bounds )
+//void EKDTree<T,K>::recursivelyPartition(int low, int high, int dim, T* out_Bounds)
 //{
 //   //std::cerr << low << "\t" << high << std::endl;
 //
-//	if ( high - low < m_MinSize )
+//	if (high - low < m_MinSize)
 //	{
 //      int d, i;
 //      
-//      for ( d = 0; d < K; d++ )
+//      for (d = 0; d < K; d++)
 //      {
-//         out_Bounds[2*d + 0] =  std::numeric_limits<T>::max( );
+//         out_Bounds[2*d + 0] =  std::numeric_limits<T>::max();
 //         out_Bounds[2*d + 1] = -out_Bounds[2*d + 0];
 //      }
 //
-//      for ( i = low; i <= high; i++ )
+//      for (i = low; i <= high; i++)
 //      {
 //         KDTreeDataElement<T,K>* del = m_Points[m_Indexes[i]];
 //
-//         for ( d = 0; d < K; d++ )
+//         for (d = 0; d < K; d++)
 //         {
-//            out_Bounds[2*d + 0] = std::min( out_Bounds[2*d + 0], del->GetMinBound( d ) );
-//            out_Bounds[2*d + 1] = std::max( out_Bounds[2*d + 1], del->GetMaxBound( d ) );
+//            out_Bounds[2*d + 0] = std::min(out_Bounds[2*d + 0], del->GetMinBound(d));
+//            out_Bounds[2*d + 1] = std::max(out_Bounds[2*d + 1], del->GetMaxBound(d));
 //         }
 //      }
 //
@@ -362,7 +362,7 @@
 //	}
 //
 //   // Do the partitioning of the current array
-//   partitionArray( low, high, dim );
+//   partitionArray(low, high, dim);
 //
 //   INITPARTITIONS(low,high);
 //
@@ -372,24 +372,24 @@
 //
 //   // And now make the recursive calls to do the leq and geq subtrees
 //	int dimm = (dim+1) % K;
-//	recursivelyPartition( lstart, lend, dimm, boundsL );
-//	recursivelyPartition( rstart, rend, dimm, boundsR );
+//	recursivelyPartition(lstart, lend, dimm, boundsL);
+//	recursivelyPartition(rstart, rend, dimm, boundsR);
 //
 //   m_OrthoPositions[0][imedian] = boundsL[2*dim + 1];
 //   m_OrthoPositions[1][imedian] = boundsR[2*dim + 0];
 //
 //   // Work out the bounding box which surrounds the discriminator point and the two sub trees
-//   for ( int d = 0; d < K; d++ )
+//   for (int d = 0; d < K; d++)
 //   {
 //      // Take the minimum of the minimum bounds
-//      out_Bounds[2*d + 0] = std::min( m_Points[m_Indexes[imedian]]->GetMinBound(d), std::min( boundsL[2*d + 0], boundsR[2*d + 0] ) );
+//      out_Bounds[2*d + 0] = std::min(m_Points[m_Indexes[imedian]]->GetMinBound(d), std::min(boundsL[2*d + 0], boundsR[2*d + 0]));
 //
 //      // and the maximum of the maximum bounds
-//      out_Bounds[2*d + 1] = std::max( m_Points[m_Indexes[imedian]]->GetMaxBound(d), std::max( boundsL[2*d + 1], boundsR[2*d + 1] ) );
+//      out_Bounds[2*d + 1] = std::max(m_Points[m_Indexes[imedian]]->GetMaxBound(d), std::max(boundsL[2*d + 1], boundsR[2*d + 1]));
 //   }
 //
 //   /*
-//   if ( !checkInvariant( low, high, dim ) )
+//   if (!checkInvariant(low, high, dim))
 //   {
 //      std::cerr << "Invariant Error at (low=" << low << ", high=" << high << ", dim=" << dim << ")" << std::endl;
 //   }
@@ -397,19 +397,19 @@
 //}
 //
 //template <class T, unsigned char K>
-//bool EKDTree<T,K>::checkInvariant( int in_Low, int in_High, int in_Dim )
+//bool EKDTree<T,K>::checkInvariant(int in_Low, int in_High, int in_Dim)
 //{
-//   INITPARTITIONS( in_Low, in_High );
+//   INITPARTITIONS(in_Low, in_High);
 //
-//   for ( int i = lstart; i <= lend; i++ )
+//   for (int i = lstart; i <= lend; i++)
 //   {
-//      if ( m_Points[m_Indexes[i]]->GetValue( in_Dim ) > m_OrthoPositions[0][imedian] )
+//      if (m_Points[m_Indexes[i]]->GetValue(in_Dim) > m_OrthoPositions[0][imedian])
 //         return false;
 //   }
 //
-//   for ( int i = rstart; i <= rend; i++ )
+//   for (int i = rstart; i <= rend; i++)
 //   {
-//      if ( m_Points[m_Indexes[i]]->GetValue( in_Dim ) < m_OrthoPositions[1][imedian] )
+//      if (m_Points[m_Indexes[i]]->GetValue(in_Dim) < m_OrthoPositions[1][imedian])
 //         return false;
 //   }
 //
@@ -417,7 +417,7 @@
 //}
 //
 //template <class T, unsigned char K>
-//void EKDTree<T,K>::partitionArray( int in_Low, int in_High, int in_Dim )
+//void EKDTree<T,K>::partitionArray(int in_Low, int in_High, int in_Dim)
 //{
 //   // This quick and efficient implementation is based on the paper "Fast Median Search: an
 //   // ANSI C implementation," Nicolas Devillard - ndevilla AT free DOT fr, 1998.
@@ -445,8 +445,8 @@
 //			return;
 //
 //		if (in_High == in_Low + 1) { /* Two elements only */
-//			if ( m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) > m_Points[m_Indexes[in_High]]->GetValue(in_Dim) )
-//				swapElements( in_Low, in_High );
+//			if (m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) > m_Points[m_Indexes[in_High]]->GetValue(in_Dim))
+//				swapElements(in_Low, in_High);
 //
 //			break;
 //		}
@@ -455,15 +455,15 @@
 //		 * Find median of in_Low, middle and in_High items; swap into position in_Low
 //		 */
 //		middle = (in_Low + in_High) / 2;
-//		if (m_Points[m_Indexes[middle]]->GetValue(in_Dim) > m_Points[m_Indexes[in_High]]->GetValue(in_Dim) )
-//			swapElements( middle, in_High );
-//		if (m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) > m_Points[m_Indexes[in_High]]->GetValue(in_Dim) )
-//			swapElements( in_Low, in_High );
-//		if (m_Points[m_Indexes[middle]]->GetValue(in_Dim) > m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) )
-//			swapElements( middle, in_Low );
+//		if (m_Points[m_Indexes[middle]]->GetValue(in_Dim) > m_Points[m_Indexes[in_High]]->GetValue(in_Dim))
+//			swapElements(middle, in_High);
+//		if (m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) > m_Points[m_Indexes[in_High]]->GetValue(in_Dim))
+//			swapElements(in_Low, in_High);
+//		if (m_Points[m_Indexes[middle]]->GetValue(in_Dim) > m_Points[m_Indexes[in_Low]]->GetValue(in_Dim))
+//			swapElements(middle, in_Low);
 //
 //		/* Swap in_Low item (now in position middle) into position (in_Low+1) */
-//		swapElements( middle, in_Low + 1 );
+//		swapElements(middle, in_Low + 1);
 //
 //		/*
 //		 * Nibble from each end towards middle, swapping items when stuck
@@ -471,17 +471,17 @@
 //		ll = in_Low + 1;
 //		hh = in_High;
 //		while (true) {
-//			while ( m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) > m_Points[m_Indexes[  ++ll]]->GetValue(in_Dim) );
-//			while ( m_Points[m_Indexes[  --hh]]->GetValue(in_Dim) > m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) );
+//			while (m_Points[m_Indexes[in_Low]]->GetValue(in_Dim) > m_Points[m_Indexes[  ++ll]]->GetValue(in_Dim));
+//			while (m_Points[m_Indexes[  --hh]]->GetValue(in_Dim) > m_Points[m_Indexes[in_Low]]->GetValue(in_Dim));
 //			
 //			if (hh < ll)
 //				break;
 //
-//			swapElements( ll, hh );
+//			swapElements(ll, hh);
 //		}
 //
 //		/* Swap middle item (in position in_Low) back into correct position */
-//		swapElements( in_Low, hh );
+//		swapElements(in_Low, hh);
 //
 //		/* Re-set active partition */
 //		if (hh <= median)
@@ -496,62 +496,62 @@
 //#undef INITPARTITIONS
 //
 //template <class T, unsigned char K>
-//void EKDTree<T,K>::search( EKDSearcher<T,K>* in_Search, SearchType in_SearchType )
+//void EKDTree<T,K>::search(EKDSearcher<T,K>* in_Search, SearchType in_SearchType)
 //{
 //   int searchCount = 0;
-//   this->search( in_Search, searchCount, in_SearchType );
+//   this->search(in_Search, searchCount, in_SearchType);
 //}
 //
 //template <class T, unsigned char K>
-//void EKDTree<T,K>::search( EKDSearcher<T,K>* in_Search, int& searchCount, SearchType in_SearchType )
+//void EKDTree<T,K>::search(EKDSearcher<T,K>* in_Search, int& searchCount, SearchType in_SearchType)
 //{
-//   in_Search->reset( );
+//   in_Search->reset();
 //   searchCount = 0;
 //
-//   switch ( in_SearchType )
+//   switch (in_SearchType)
 //   {
 //   case EXHAUSTIVE:
-//      searchExhaustive( in_Search, getRootBranch( ) );
+//      searchExhaustive(in_Search, getRootBranch());
 //      break;
 //   case RECURSIVE:
-//      searchRecursive( in_Search, getRootBranch( ), searchCount );
+//      searchRecursive(in_Search, getRootBranch(), searchCount);
 //      break;
 //   default:
-//      AWTEXCEPTIONTHROW( "Illegal Search Type!" );
+//      AWTEXCEPTIONTHROW("Illegal Search Type!");
 //   }
 //}
 //
 //template <class T, unsigned char K>
-//void EKDTree<T,K>::searchExhaustive( EKDSearcher<T,K>* in_Search, EKDTreeBranch<T,K>* in_Branch )
+//void EKDTree<T,K>::searchExhaustive(EKDSearcher<T,K>* in_Search, EKDTreeBranch<T,K>* in_Branch)
 //{
 //   KDTreeDataElement<T,K>* dataElement;
 //   int origIndex;
 //
-//   for ( int i = 0, imax = in_Branch->getSize( ); i < imax; i++ )
+//   for (int i = 0, imax = in_Branch->getSize(); i < imax; i++)
 //   {
-//      origIndex = in_Branch->getOriginalIndex( i );
-//      dataElement = in_Branch->getOriginalDataElement( origIndex );
+//      origIndex = in_Branch->getOriginalIndex(i);
+//      dataElement = in_Branch->getOriginalDataElement(origIndex);
 //
-//      in_Search->checkPointOfInterest( dataElement, origIndex );
+//      in_Search->checkPointOfInterest(dataElement, origIndex);
 //   }
 //}
 //
 //template <class T, unsigned char K>
-//void EKDTree<T,K>::searchRecursive( EKDSearcher<T,K>* in_Search, 
-//                                            EKDTreeBranch<T,K>* in_Branch, int& branchesSearched )
+//void EKDTree<T,K>::searchRecursive(EKDSearcher<T,K>* in_Search, 
+//                                            EKDTreeBranch<T,K>* in_Branch, int& branchesSearched)
 //{
-//   if ( in_Branch == 0 )
+//   if (in_Branch == 0)
 //      return;
 //
 //   EKDTreeBranch<T,K>* children[2];
 //
-//   children[0] = in_Branch->getChild( 0 );
-//   children[1] = in_Branch->getChild( 1 );
+//   children[0] = in_Branch->getChild(0);
+//   children[1] = in_Branch->getChild(1);
 //
-//   if ( children[0] == 0 && children[1] == 0 )
+//   if (children[0] == 0 && children[1] == 0)
 //   {
 //      // Check this branch exhaustively
-//      searchExhaustive( in_Search, in_Branch );
+//      searchExhaustive(in_Search, in_Branch);
 //      ++branchesSearched;
 //
 //      return;
@@ -563,26 +563,26 @@
 //      int oi;
 //      int swap;
 //
-//      for ( int i = 0; i < 2; i++ )
+//      for (int i = 0; i < 2; i++)
 //      {
-//         if ( children[i] == 0 )
-//            lowerBounds[i] = std::numeric_limits<T>::max( );
+//         if (children[i] == 0)
+//            lowerBounds[i] = std::numeric_limits<T>::max();
 //         else
-//            lowerBounds[i] = in_Search->calculateBoxDistanceBounds2( children[i] );
+//            lowerBounds[i] = in_Search->calculateBoxDistanceBounds2(children[i]);
 //      }
 //
-//      swap = ( lowerBounds[1] < lowerBounds[0] ) ? 1 : 0;
+//      swap = (lowerBounds[1] < lowerBounds[0]) ? 1 : 0;
 //
-//      for ( int i = 0; i < 2; i++ )
+//      for (int i = 0; i < 2; i++)
 //      {
 //         oi = (i+swap) % 2;
 //
-//         if ( children[oi] != 0 && in_Search->shouldCheck( lowerBounds[oi] ) )
+//         if (children[oi] != 0 && in_Search->shouldCheck(lowerBounds[oi]))
 //         {
-//            searchRecursive( in_Search, children[oi], branchesSearched );
+//            searchRecursive(in_Search, children[oi], branchesSearched);
 //         }
 //
-//         in_Branch->finishedWithChild( oi );
+//         in_Branch->finishedWithChild(oi);
 //      }
 //   }
 //}

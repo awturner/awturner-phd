@@ -37,13 +37,13 @@ namespace AWT
    class VTKMeshLoader
    {
    public:
-      static typename Mesh<T>::P load( const char* filename, bool doClean = true );
-      static typename Mesh<T>::P convert( vtkPolyData* polyAlg );
+      static typename Mesh<T>::P load(const char* filename, bool doClean = true);
+      static typename Mesh<T>::P convert(vtkPolyData* polyAlg);
 
    protected:
       struct D;
 
-      VTKMeshLoader( );
+      VTKMeshLoader();
    };
 }
 

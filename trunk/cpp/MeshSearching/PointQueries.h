@@ -55,7 +55,7 @@ namespace AWT
       * @param in_FastBreak Fast break condition (optional)
       * @return The singleton instance
       */
-      static T getDistanceSquared( const T* in_A, const T* in_B, const T in_FastBreak = std::numeric_limits<T>::infinity( ) );
+      static T getDistanceSquared(const T* in_A, const T* in_B, const T in_FastBreak = std::numeric_limits<T>::infinity());
    };
 }
 

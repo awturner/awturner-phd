@@ -42,41 +42,41 @@ namespace AWT
       {
       public:
          typedef ManagedAutoPointer< CoulombicInfluenceAccumulator<T> > P;
-         static P getInstance( );
+         static P getInstance();
 
       protected:
-         CoulombicInfluenceAccumulator( );
-         virtual ~CoulombicInfluenceAccumulator( );
+         CoulombicInfluenceAccumulator();
+         virtual ~CoulombicInfluenceAccumulator();
 
       public:
-         virtual std::string getClassName( ) const;
+         virtual std::string getClassName() const;
 
-         virtual void calculateBoxDistanceBounds2( typename OEKDTree::OEKDTreeBranch<T,3>* in_Branch, AWT::OEKDTree::SqDistBounds<T>& in_Bounds ) const;
-         virtual bool shouldCheck( typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<T>& in_Bounds ) const;
+         virtual void calculateBoxDistanceBounds2(typename OEKDTree::OEKDTreeBranch<T,3>* in_Branch, AWT::OEKDTree::SqDistBounds<T>& in_Bounds) const;
+         virtual bool shouldCheck(typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<T>& in_Bounds) const;
 
-         virtual void checkObject( const int in_Index );
+         virtual void checkObject(const int in_Index);
 
          // This is the particle which we are searching relative to
-         virtual void initialize( const MeshIndex i, const T point[3] );
-         virtual void getTestPoint( T point[3] ) const;
-         virtual MeshIndex getTestIndex( ) const;
+         virtual void initialize(const MeshIndex i, const T point[3]);
+         virtual void getTestPoint(T point[3]) const;
+         virtual MeshIndex getTestIndex() const;
 
          // The required percentage change to bother searching
-         virtual void setThreshold( const T in_Thresh );
-         virtual T    getThreshold( ) const;
+         virtual void setThreshold(const T in_Thresh);
+         virtual T    getThreshold() const;
 
          // Minimum distance, make sure distances are at least as big as this
          // (for numerical stability)
-         virtual void setCutoff( const T v );
-         virtual T    getCutoff( ) const;
+         virtual void setCutoff(const T v);
+         virtual T    getCutoff() const;
 
          // The accumulated update
-         virtual void getUpdate( T* out_Update ) const;
-         virtual T    getEnergy( ) const;
+         virtual void getUpdate(T* out_Update) const;
+         virtual T    getEnergy() const;
 
-         virtual T    getMinDistance( ) const;
+         virtual T    getMinDistance() const;
 
-         virtual void reset( );
+         virtual void reset();
 
       protected:
          T m_UpdateNorm;
@@ -95,29 +95,29 @@ namespace AWT
 }
 
 template <class T>
-GETNAMEMACRO( AWT::AlignParametric::CoulombicInfluenceAccumulator<T> );
+GETNAMEMACRO(AWT::AlignParametric::CoulombicInfluenceAccumulator<T>);
 
 template <class T>
-typename AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::P AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getInstance( )
+typename AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::P AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getInstance()
 {
-   AUTOGETINSTANCE( AWT::AlignParametric::CoulombicInfluenceAccumulator<T>, ( ) );
+   AUTOGETINSTANCE(AWT::AlignParametric::CoulombicInfluenceAccumulator<T>, ());
 }
 
 template <class T>
-AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::CoulombicInfluenceAccumulator( )
+AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::CoulombicInfluenceAccumulator()
 {
    m_TestIndex = INVALID_INDEX;
    
-   reset( );
+   reset();
 }
 
 template <class T>
-AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::~CoulombicInfluenceAccumulator( )
+AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::~CoulombicInfluenceAccumulator()
 {
 }
 
 template <class T>
-void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::reset( )
+void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::reset()
 {
    AWT::VerticesSearch<T>::reset();
 
@@ -129,11 +129,11 @@ void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::reset( )
 }
 
 template <class T>
-void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::initialize( const MeshIndex i, const T point[3] )
+void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::initialize(const MeshIndex i, const T point[3])
 {
    m_TestIndex    = i;
 
-   for ( MeshIndex ax = 0; ax < 3; ++ax )
+   for (MeshIndex ax = 0; ax < 3; ++ax)
       m_TestPoint[ax] = point[ax];
 
    m_MinR = std::numeric_limits<T>::infinity();
@@ -142,35 +142,35 @@ void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::initialize( const M
 }
 
 template <class T>
-void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getTestPoint( T point[3] ) const
+void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getTestPoint(T point[3]) const
 {
-   for ( MeshIndex ax = 0; ax < 3; ++ax )
+   for (MeshIndex ax = 0; ax < 3; ++ax)
       point[ax] = m_TestPoint[ax];
 }
 
 template <class T>
-AWT::MeshIndex AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getTestIndex( ) const
+AWT::MeshIndex AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getTestIndex() const
 {
    return m_TestIndex;
 }
 
 template <class T>
-void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::calculateBoxDistanceBounds2( typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, AWT::OEKDTree::SqDistBounds<T>& in_bounds ) const
+void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::calculateBoxDistanceBounds2(typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, AWT::OEKDTree::SqDistBounds<T>& in_bounds) const
 {
    boxChecked();
 
    T nearestPoint[3];
-   for ( int i = 0; i < 3; i++ )
-      nearestPoint[i] = std::min( std::max( m_TestPoint[i], in_Branch->getMinimumBound( i ) ), in_Branch->getMaximumBound( i ) );
+   for (int i = 0; i < 3; i++)
+      nearestPoint[i] = std::min(std::max(m_TestPoint[i], in_Branch->getMinimumBound(i)), in_Branch->getMaximumBound(i));
 
-   const T ret = deltaNormSquared<T>( m_TestPoint, nearestPoint, 3 );
+   const T ret = deltaNormSquared<T>(m_TestPoint, nearestPoint, 3);
 
    /*
    T bounds[6];
-   for ( int i = 0; i < 3; i++ )
+   for (int i = 0; i < 3; i++)
    {
-      bounds[2*i+0] = in_Branch->getMinimumBound( i );
-      bounds[2*i+1] = in_Branch->getMaximumBound( i );
+      bounds[2*i+0] = in_Branch->getMinimumBound(i);
+      bounds[2*i+1] = in_Branch->getMaximumBound(i);
    }
    */
 
@@ -179,49 +179,49 @@ void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::calculateBoxDistanc
 }
 
 template <class T>
-bool AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::shouldCheck( typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<T>& in_Bounds ) const
+bool AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::shouldCheck(typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<T>& in_Bounds) const
 {
    // Always check if there is no current update, or if the lower bound is zero
    // (otherwise would get a divide by zero)
-   if ( m_UpdateNorm == 0 || in_Bounds.lower < m_Cutoff*m_Cutoff )
+   if (m_UpdateNorm == 0 || in_Bounds.lower < m_Cutoff*m_Cutoff)
       return true;
 
-   if ( in_Bounds.lower > m_MaxR*m_MaxR && getNumberOfChecks() > 10 )
+   if (in_Bounds.lower > m_MaxR*m_MaxR && getNumberOfChecks() > 10)
       return false;
 
    // The maximum influence is that of a virtual point located in_LowerBound away, multiplied by
    // the number of points not yet calculated
-   const T ubInfluenceMagnitude = static_cast<T>( in_Branch->getSize() ) / in_Bounds.lower;
+   const T ubInfluenceMagnitude = static_cast<T>(in_Branch->getSize()) / in_Bounds.lower;
 
    return ubInfluenceMagnitude / m_UpdateNorm > m_Threshold;
 }
 
 template <class T>
-void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::checkObject( const int in_Index )
+void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::checkObject(const int in_Index)
 {
    // Don't check thyself
-   if ( in_Index == m_TestIndex )
+   if (in_Index == m_TestIndex)
       return;
 
    const VerticesTreeData<T>* data = *m_Data;
 
    T otherPoint[3];
    T delta[3];
-   data->getPosition( in_Index, otherPoint );
+   data->getPosition(in_Index, otherPoint);
 
    // We've got the other point; now, calculate the update
-   const T rr = deltaNorm<T>( m_TestPoint, otherPoint, 3 );
+   const T rr = deltaNorm<T>(m_TestPoint, otherPoint, 3);
 
-   if ( rr > 1e-10 )
+   if (rr > 1e-10)
    {
-      const T r = std::max( m_Cutoff, rr );
+      const T r = std::max(m_Cutoff, rr);
       
       objectChecked();
 
-      //DEBUGMACRO( "Found another particle, distance is " << rr );
-      //PRINTVEC( otherPoint, 3 );
+      //DEBUGMACRO("Found another particle, distance is " << rr);
+      //PRINTVEC(otherPoint, 3);
 
-      for ( MeshIndex ax = 0; ax < 3; ++ax )
+      for (MeshIndex ax = 0; ax < 3; ++ax)
       {
          delta[ax] = 2 * (m_TestPoint[ax] - otherPoint[ax]) / pow(r,4);
          m_Update[ax] += delta[ax];
@@ -231,27 +231,27 @@ void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::checkObject( const 
       m_PotentialEnergy += 1 / (r*r);
 
       // Also, calculate the updated norm of the update
-      m_UpdateNorm = norm<T>( m_Update, 3 );
+      m_UpdateNorm = norm<T>(m_Update, 3);
 
       // Record to see if we can stop...
-      m_MinR = std::min<T>( m_MinR, r );
-      m_MaxR = std::max<T>( m_MaxR, r );
+      m_MinR = std::min<T>(m_MinR, r);
+      m_MaxR = std::max<T>(m_MaxR, r);
    }
 }
 
 template <class T>
-T    AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getMinDistance( ) const
+T    AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getMinDistance() const
 {
    return m_MinR;
 }
 
 template <class T>
-void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::setThreshold( const T v )
+void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::setThreshold(const T v)
 {
-   if ( v < 0 || v > 1 )
+   if (v < 0 || v > 1)
       throw "Threshold must be in the range 0..1";
 
-   if ( v != m_Threshold )
+   if (v != m_Threshold)
    {
       m_Threshold = v;
       modified();
@@ -259,28 +259,28 @@ void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::setThreshold( const
 }
 
 template <class T>
-T    AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getThreshold( ) const
+T    AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getThreshold() const
 {
    return m_Threshold;
 }
 
 template <class T>
-void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getUpdate( T* out_Update ) const
+void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getUpdate(T* out_Update) const
 {
-   for ( MeshIndex ax = 0; ax < 3; ++ax )
+   for (MeshIndex ax = 0; ax < 3; ++ax)
       out_Update[ax] = m_Update[ax];
 }
 
 template <class T>
-T    AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getEnergy( ) const
+T    AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getEnergy() const
 {
    return m_PotentialEnergy;
 }
 
 template <class T>
-void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::setCutoff( const T v )
+void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::setCutoff(const T v)
 {
-   if ( v != m_Cutoff )
+   if (v != m_Cutoff)
    {
       m_Cutoff = v;
       modified();
@@ -288,7 +288,7 @@ void AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::setCutoff( const T 
 }
 
 template <class T>
-T    AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getCutoff( ) const
+T    AWT::AlignParametric::CoulombicInfluenceAccumulator<T>::getCutoff() const
 {
    return m_Cutoff;
 }

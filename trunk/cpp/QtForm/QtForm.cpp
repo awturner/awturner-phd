@@ -37,7 +37,7 @@
 class QDebugStream : public std::basic_streambuf<char>
 {
 public:
-   QDebugStream(std::ostream &stream, QTextEdit* text_edit, const QColor& col) : m_stream(stream), m_Col( col )
+   QDebugStream(std::ostream &stream, QTextEdit* text_edit, const QColor& col) : m_stream(stream), m_Col(col)
    {
       log_window = text_edit;
       m_old_buf = stream.rdbuf();
@@ -55,7 +55,7 @@ public:
 protected:
    virtual int_type overflow(int_type v)
    {
-      log_window->setTextColor( m_Col );
+      log_window->setTextColor(m_Col);
       if (v == '\n')
       {
          log_window->append(m_string.c_str());
@@ -64,14 +64,14 @@ protected:
       else
          m_string += v;
 
-      log_window->moveCursor( QTextCursor::End, QTextCursor::MoveAnchor );
-      log_window->moveCursor( QTextCursor::StartOfLine, QTextCursor::MoveAnchor );
+      log_window->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
+      log_window->moveCursor(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
       return v;
    }
 
    virtual std::streamsize xsputn(const char *p, std::streamsize n)
    {
-      log_window->setTextColor( m_Col );
+      log_window->setTextColor(m_Col);
       m_string.append(p, p + n);
 
       int pos = 0;
@@ -86,8 +86,8 @@ protected:
          }
       }
 
-      log_window->moveCursor( QTextCursor::End, QTextCursor::MoveAnchor );
-      log_window->moveCursor( QTextCursor::StartOfLine, QTextCursor::MoveAnchor );
+      log_window->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
+      log_window->moveCursor(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
       return n;
    }
 
@@ -117,70 +117,70 @@ struct AWT::QtForm::D
 #include <QList>
 #include <QDesktopWidget>
 
-AWT::QtForm::QtForm( unsigned int rows, unsigned int cols, QMutex* mutex, QWidget* in_Parent, Qt::WFlags in_Fl )
-: QMainWindow( in_Parent, in_Fl )
+AWT::QtForm::QtForm(unsigned int rows, unsigned int cols, QMutex* mutex, QWidget* in_Parent, Qt::WFlags in_Fl)
+: QMainWindow(in_Parent, in_Fl)
 {
    m_D = new D;
    m_D->m_Mutex = mutex;
 
-   setupUi( this );
+   setupUi(this);
 
    {
       QDesktopWidget widge;
-      const QRect geom = widge.screenGeometry( );
+      const QRect geom = widge.screenGeometry();
       QList<int> sizeList;
-      sizeList.push_back( 3*geom.height() / 4 );
-      sizeList.push_back( 1*geom.height() / 4 );
-      splitter->setSizes( sizeList );
+      sizeList.push_back(3*geom.height() / 4);
+      sizeList.push_back(1*geom.height() / 4);
+      splitter->setSizes(sizeList);
    }
 
    // Re-route the standard error and output streams through the GUI
-   //m_D->m_Stderr = new QDebugStream( std::cerr, txtCerr, QColor( 127, 0, 0 ) );
-   //m_D->m_Stdout = new QDebugStream( std::cout, txtCout, QColor( 0, 0, 255 ) );
+   //m_D->m_Stderr = new QDebugStream(std::cerr, txtCerr, QColor(127, 0, 0));
+   //m_D->m_Stdout = new QDebugStream(std::cout, txtCout, QColor(0, 0, 255));
 
-   worldViewWidget->initialize( rows, cols, mutex );
+   worldViewWidget->initialize(rows, cols, mutex);
 
-   connect( actionStart, SIGNAL( triggered( ) ), this, SLOT( actionStartTriggered( ) ) );
-   actionStart->setShortcut( tr( "Ctrl+G" ) );
+   connect(actionStart, SIGNAL(triggered()), this, SLOT(actionStartTriggered()));
+   actionStart->setShortcut(tr("Ctrl+G"));
 
-   connect( actionStep, SIGNAL( triggered( ) ), this, SLOT( actionStepTriggered( ) ) );
-   actionStep->setShortcut( tr( "Ctrl+Alt+G" ) );
+   connect(actionStep, SIGNAL(triggered()), this, SLOT(actionStepTriggered()));
+   actionStep->setShortcut(tr("Ctrl+Alt+G"));
 
-   connect( actionStop,  SIGNAL( triggered( ) ), this, SLOT( actionStopTriggered( ) ) );
-   actionStop->setShortcut( tr( "Ctrl+Shift+G" ) );
+   connect(actionStop,  SIGNAL(triggered()), this, SLOT(actionStopTriggered()));
+   actionStop->setShortcut(tr("Ctrl+Shift+G"));
 
-   connect( actionReset, SIGNAL( triggered( ) ), this, SLOT( actionResetTriggered( ) ) );
-   actionReset->setShortcut( QKeySequence::Refresh );
+   connect(actionReset, SIGNAL(triggered()), this, SLOT(actionResetTriggered()));
+   actionReset->setShortcut(QKeySequence::Refresh);
 
-   connect( actionOpen,  SIGNAL( triggered( ) ), this, SLOT( actionOpenTriggered( ) ) );
-   actionOpen->setShortcut( QKeySequence::Open );
+   connect(actionOpen,  SIGNAL(triggered()), this, SLOT(actionOpenTriggered()));
+   actionOpen->setShortcut(QKeySequence::Open);
 
-   connect( actionSave,  SIGNAL( triggered( ) ), this, SLOT( actionSaveTriggered( ) ) );
-   actionSave->setShortcut( QKeySequence::Save );
+   connect(actionSave,  SIGNAL(triggered()), this, SLOT(actionSaveTriggered()));
+   actionSave->setShortcut(QKeySequence::Save);
 
-   connect( actionExit,  SIGNAL( triggered( ) ), this, SLOT( actionExitTriggered( ) ) );
+   connect(actionExit,  SIGNAL(triggered()), this, SLOT(actionExitTriggered()));
 
-   connect( actionReport, SIGNAL( triggered( ) ), this, SLOT( actionReportTriggered( ) ) );
+   connect(actionReport, SIGNAL(triggered()), this, SLOT(actionReportTriggered()));
 
-   connect( *m_D->m_StateMachineThread, SIGNAL( repaintWidget( ) ), worldViewWidget, SLOT( repaintViews( ) ) );
+   connect(*m_D->m_StateMachineThread, SIGNAL(repaintWidget()), worldViewWidget, SLOT(repaintViews()));
 
-   this->worldTreeView->setModel( worldViewWidget->getWorldTreeModel( ) );
+   this->worldTreeView->setModel(worldViewWidget->getWorldTreeModel());
 
-   connect( worldViewWidget->getWorldTreeModel( ), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ), worldTreeView, SLOT( expandAll( ) ) );
+   connect(worldViewWidget->getWorldTreeModel(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), worldTreeView, SLOT(expandAll()));
 }
 
-AWT::QtForm::~QtForm( )
+AWT::QtForm::~QtForm()
 {
    //delete m_D->m_Stderr;
    //delete m_D->m_Stdout;
 
-   if ( *m_D->m_StateMachineStack != 0 )
+   if (*m_D->m_StateMachineStack != 0)
    {
-      PRINTVBL( m_D->m_StateMachineStack->getReferenceCount( ) );
+      PRINTVBL(m_D->m_StateMachineStack->getReferenceCount());
 
       /*
-      while ( m_D->m_StateMachineStack->getReferenceCount( ) > 1)
-         m_D->m_StateMachineStack->release( );
+      while (m_D->m_StateMachineStack->getReferenceCount() > 1)
+         m_D->m_StateMachineStack->release();
          */
    }
 
@@ -189,155 +189,155 @@ AWT::QtForm::~QtForm( )
    DEBUGLINE;
 }
 
-AWT::QtForm::P AWT::QtForm::getInstance( unsigned int rows, unsigned int cols, QMutex* mutex, QWidget* in_Parent, Qt::WFlags in_Fl )
+AWT::QtForm::P AWT::QtForm::getInstance(unsigned int rows, unsigned int cols, QMutex* mutex, QWidget* in_Parent, Qt::WFlags in_Fl)
 {
-   AUTOGETINSTANCE( AWT::QtForm, ( rows, cols, mutex, in_Parent, in_Fl ) );
+   AUTOGETINSTANCE(AWT::QtForm, (rows, cols, mutex, in_Parent, in_Fl));
 }
 
-GETNAMEMACRO( AWT::QtForm );
+GETNAMEMACRO(AWT::QtForm);
 
-void AWT::QtForm::processingFinished( )
+void AWT::QtForm::processingFinished()
 {
-   actionStep->setEnabled( true );
-   actionStart->setEnabled( true );
-   actionStop->setEnabled( false );
+   actionStep->setEnabled(true);
+   actionStart->setEnabled(true);
+   actionStop->setEnabled(false);
 
-   //centreView( );
-   actionSaveTriggered( );
+   //centreView();
+   actionSaveTriggered();
 }
 
-void AWT::QtForm::actionOpenTriggered( )
+void AWT::QtForm::actionOpenTriggered()
 {
    typedef double T;
 
-   if ( *m_D->m_StateMachineThread != 0 && m_D->m_StateMachineThread->isRunning( ) )
+   if (*m_D->m_StateMachineThread != 0 && m_D->m_StateMachineThread->isRunning())
       return;
 
-   QString filename = QFileDialog::getOpenFileName( 
+   QString filename = QFileDialog::getOpenFileName(
       this, 
-      QString( tr( "Load" ) ), 
+      QString(tr("Load")), 
       m_D->m_LastDir,
-      QString( ) 
-      );
+      QString() 
+     );
 
-   if ( filename.length( ) != 0 )
+   if (filename.length() != 0)
    {
-      load( filename );
+      load(filename);
    }
 }
 
-void AWT::QtForm::load( const QString& /*filename*/ )
+void AWT::QtForm::load(const QString& /*filename*/)
 {
-   QMessageBox::warning( this, "Not implemented", "Loading hasn't been implemented" );
+   QMessageBox::warning(this, "Not implemented", "Loading hasn't been implemented");
 }
 
-void AWT::QtForm::centreView( )
+void AWT::QtForm::centreView()
 {
-   worldViewWidget->centreViews( );
+   worldViewWidget->centreViews();
 }
 
-void AWT::QtForm::setStateMachine( AWT::SaveableStateMachine::P sm )
+void AWT::QtForm::setStateMachine(AWT::SaveableStateMachine::P sm)
 {
    m_D->m_StateMachine = sm;
 
-   m_D->m_StateMachineStack = sm->getStack( );
-   m_D->m_StateMachineStack->clear( );
-   m_D->m_StateMachineStack->push( sm );
+   m_D->m_StateMachineStack = sm->getStack();
+   m_D->m_StateMachineStack->clear();
+   m_D->m_StateMachineStack->push(sm);
 
-   if ( *m_D->m_StateMachineThread != 0 )
-      disconnect( *m_D->m_StateMachineThread, SIGNAL( repaintWidth( ) ), worldViewWidget, SLOT( repaintViews( ) ) );
+   if (*m_D->m_StateMachineThread != 0)
+      disconnect(*m_D->m_StateMachineThread, SIGNAL(repaintWidth()), worldViewWidget, SLOT(repaintViews()));
 
-   m_D->m_StateMachineThread = StateMachineThread::getInstance( this, m_D->m_StateMachineStack, m_D->m_Mutex );
-   connect( *m_D->m_StateMachineThread, SIGNAL( repaintWidget( ) ), worldViewWidget, SLOT( repaintViews( ) ) );
+   m_D->m_StateMachineThread = StateMachineThread::getInstance(this, m_D->m_StateMachineStack, m_D->m_Mutex);
+   connect(*m_D->m_StateMachineThread, SIGNAL(repaintWidget()), worldViewWidget, SLOT(repaintViews()));
 }
 
-void AWT::QtForm::actionSaveTriggered( )
+void AWT::QtForm::actionSaveTriggered()
 {
-   QString filename = QFileDialog::getSaveFileName( 
+   QString filename = QFileDialog::getSaveFileName(
       this, 
-      QString( tr( "Saving Data" ) ), 
+      QString(tr("Saving Data")), 
       m_D->m_LastDir, 
-      QString( /*tr( "XML Files (*.xml);;All Files (*.*)" )*/ )
-      );
+      QString(/*tr("XML Files (*.xml);;All Files (*.*)")*/)
+     );
 
-   if ( filename.length( ) != 0 )
+   if (filename.length() != 0)
    {
-      m_D->m_StateMachine->save( filename.toStdString( ) );
+      m_D->m_StateMachine->save(filename.toStdString());
    }
 }
 
-void AWT::QtForm::actionExitTriggered( )
+void AWT::QtForm::actionExitTriggered()
 {
-   QApplication::exit( );
+   QApplication::exit();
 }
 
 void AWT::QtForm::clientWarning(QString str)
 {
-   if ( str.length( ) == 0 )
-      str = tr( "A client warning has occurred, but no message was provided" );
+   if (str.length() == 0)
+      str = tr("A client warning has occurred, but no message was provided");
 
-   QMessageBox::warning( this, "Client warning", str );
+   QMessageBox::warning(this, "Client warning", str);
 }
 
 void AWT::QtForm::clientError(QString str)
 {
-   if ( str.length( ) == 0 )
-      str = tr( "A client error has occurred, but no message was provided" );
+   if (str.length() == 0)
+      str = tr("A client error has occurred, but no message was provided");
 
-   QMessageBox::critical( this, "Client error", str );
+   QMessageBox::critical(this, "Client error", str);
 }
 
-void AWT::QtForm::actionStartTriggered( )
+void AWT::QtForm::actionStartTriggered()
 {
-   if ( *m_D->m_StateMachineThread == 0 )
+   if (*m_D->m_StateMachineThread == 0)
    {
-      QMessageBox::warning( this, tr("Error"), tr( "State machine not initialized" ) );
+      QMessageBox::warning(this, tr("Error"), tr("State machine not initialized"));
       return;
    }
 
-   actionStep->setEnabled( false );
-   actionStart->setEnabled( false );
-   actionStop->setEnabled( true );
-   m_D->m_StateMachineThread->start( );
+   actionStep->setEnabled(false);
+   actionStart->setEnabled(false);
+   actionStop->setEnabled(true);
+   m_D->m_StateMachineThread->start();
 }
 
-void AWT::QtForm::actionStepTriggered( )
+void AWT::QtForm::actionStepTriggered()
 {
-   if ( *m_D->m_StateMachineThread == 0 )
+   if (*m_D->m_StateMachineThread == 0)
    {
-      QMessageBox::warning( this, tr("Error"), tr( "State machine not initialized" ) );
+      QMessageBox::warning(this, tr("Error"), tr("State machine not initialized"));
       return;
    }
 
-   m_D->m_StateMachineThread->singleStep( );
+   m_D->m_StateMachineThread->singleStep();
 }
 
-void AWT::QtForm::actionStopTriggered( )
+void AWT::QtForm::actionStopTriggered()
 {
-   if ( *m_D->m_StateMachineThread == 0 )
+   if (*m_D->m_StateMachineThread == 0)
    {
-      QMessageBox::warning( this, tr("Error"), tr( "State machine not initialized" ) );
+      QMessageBox::warning(this, tr("Error"), tr("State machine not initialized"));
       return;
    }
 
-   m_D->m_StateMachineThread->requestStop( );
+   m_D->m_StateMachineThread->requestStop();
 }
 
-void AWT::QtForm::actionResetTriggered( )
+void AWT::QtForm::actionResetTriggered()
 {
 }
 
-void AWT::QtForm::actionReportTriggered( )
+void AWT::QtForm::actionReportTriggered()
 {
-   AWT::ReferenceCountedObject::report( false );
+   AWT::ReferenceCountedObject::report(false);
 }
 
-AWT::WorldViewer::P AWT::QtForm::getViewer( const unsigned int i )
+AWT::WorldViewer::P AWT::QtForm::getViewer(const unsigned int i)
 {
-   return worldViewWidget->getViewer( i );
+   return worldViewWidget->getViewer(i);
 }
 
-unsigned int AWT::QtForm::getNumberOfViewers( ) const
+unsigned int AWT::QtForm::getNumberOfViewers() const
 {
-   return worldViewWidget->getNumberOfViewers( );
+   return worldViewWidget->getNumberOfViewers();
 }

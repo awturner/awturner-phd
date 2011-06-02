@@ -37,47 +37,47 @@ using namespace AWT;
 
 typedef double T;
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   if ( argc < 4 )
+   if (argc < 4)
    {
       std::cerr << "Syntax: InnominateShapeImage <mesh filename> <resolution> <output filename>" << std::endl;
-      DEBUGLINEANDEXIT( 1 );
+      DEBUGLINEANDEXIT(1);
    }
 
-   const unsigned int res = atoi( argv[2] );
+   const unsigned int res = atoi(argv[2]);
 
-   if ( res == 0 || res > 128 )
+   if (res == 0 || res > 128)
    {
-      DEBUGMACRO( "resolution must be in range 1-128" );
-      DEBUGLINEANDEXIT( 1 );
+      DEBUGMACRO("resolution must be in range 1-128");
+      DEBUGLINEANDEXIT(1);
    }
 
-   Mesh<T>::P mesh = VTKMeshLoader<T>::load( argv[1], false );
+   Mesh<T>::P mesh = VTKMeshLoader<T>::load(argv[1], false);
 
-   FindGenerators<T>::P findGenerators = FindGenerators<T>::getInstance( mesh );
-   PelvicGeneratorDirection<T>::P pgd = PelvicGeneratorDirection<T>::getInstance( findGenerators, true );
-   mesh = pgd->getMesh( );
+   FindGenerators<T>::P findGenerators = FindGenerators<T>::getInstance(mesh);
+   PelvicGeneratorDirection<T>::P pgd = PelvicGeneratorDirection<T>::getInstance(findGenerators, true);
+   mesh = pgd->getMesh();
 
-   FlattenMesh<T>::P flattenMesh = FlattenMesh<T>::getInstance( pgd );
+   FlattenMesh<T>::P flattenMesh = FlattenMesh<T>::getInstance(pgd);
    
-   std::ofstream os( argv[3] );
+   std::ofstream os(argv[3]);
    os << "-- Shape Image" << std::endl;
    os << "shapeimage = {" << std::endl;
 
    T coords2d[2];
    T coords3d[3];
-   for ( unsigned int y = 0; y < res; ++y )
+   for (unsigned int y = 0; y < res; ++y)
    {
-      coords2d[1] = static_cast<T>( y ) / res;
+      coords2d[1] = static_cast<T>(y) / res;
 
-      for ( unsigned int x = 0; x < res; ++x )
+      for (unsigned int x = 0; x < res; ++x)
       {
-         coords2d[0] = static_cast<T>( x ) / res;
+         coords2d[0] = static_cast<T>(x) / res;
 
-         flattenMesh->mapFlattenedToMesh( coords2d, coords3d );
+         flattenMesh->mapFlattenedToMesh(coords2d, coords3d);
 
-         // Write out the coordinates as a pair ( (s,t), (x,y,z) )
+         // Write out the coordinates as a pair ((s,t), (x,y,z))
          os << "    {";
          os << " { " << coords2d[0] << ", " << coords2d[1] << " },";
          os << " { " << coords3d[0] << ", " << coords3d[1] << ", " << coords3d[2] << "}";
@@ -86,7 +86,7 @@ int main( int argc, char** argv )
    }
 
    os << "};" << std::endl;
-   os.close( );
+   os.close();
 
-   DEBUGMACRO( "Shape image written to " << argv[3] );
+   DEBUGMACRO("Shape image written to " << argv[3]);
 }

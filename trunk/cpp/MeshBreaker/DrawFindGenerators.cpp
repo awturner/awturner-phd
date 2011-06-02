@@ -41,172 +41,172 @@ struct AWT::DrawFindGenerators<T>::D
 };
 
 template <class T>
-AWT::DrawFindGenerators<T>::DrawFindGenerators( typename FindGenerators<T>::P fg )
+AWT::DrawFindGenerators<T>::DrawFindGenerators(typename FindGenerators<T>::P fg)
 {
    m_D = new D();
 
    m_D->m_FindGenerators = fg;
-   getBounds( m_D->m_Bounds );
+   getBounds(m_D->m_Bounds);
 }
 
 template <class T>
-AWT::DrawFindGenerators<T>::~DrawFindGenerators( )
+AWT::DrawFindGenerators<T>::~DrawFindGenerators()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::DrawFindGenerators<T>::P AWT::DrawFindGenerators<T>::getInstance( typename FindGenerators<T>::P fg  )
+typename AWT::DrawFindGenerators<T>::P AWT::DrawFindGenerators<T>::getInstance(typename FindGenerators<T>::P fg )
 {
-   AUTOGETINSTANCE( AWT::DrawFindGenerators<T>, ( fg ) );
+   AUTOGETINSTANCE(AWT::DrawFindGenerators<T>, (fg));
 }
 
 template <class T>
-GETNAMEMACRO( AWT::DrawFindGenerators<T> );
+GETNAMEMACRO(AWT::DrawFindGenerators<T>);
 
 template <class T>
-AWT::DrawMaterial::P AWT::DrawFindGenerators<T>::getMaterial( )
+AWT::DrawMaterial::P AWT::DrawFindGenerators<T>::getMaterial()
 {
-   return DrawMaterial::P( );
+   return DrawMaterial::P();
 }
 
 template <class T>
-void AWT::DrawFindGenerators<T>::setMaterial( AWT::DrawMaterial::P /*mat*/ )
+void AWT::DrawFindGenerators<T>::setMaterial(AWT::DrawMaterial::P /*mat*/)
 {
 }
 
 template <class T>
 void AWT::DrawFindGenerators<T>::getBounds(double *bounds)
 {
-   if ( getModifiedTime( ) > m_D->m_FindGenerators->getModifiedTime( ) || m_D->m_MeshLastModified < m_D->m_FindGenerators->getModifiedTime( ) )
+   if (getModifiedTime() > m_D->m_FindGenerators->getModifiedTime() || m_D->m_MeshLastModified < m_D->m_FindGenerators->getModifiedTime())
    {
-      Mesh<T>::P mesh = m_D->m_FindGenerators->getMesh( );
+      Mesh<T>::P mesh = m_D->m_FindGenerators->getMesh();
 
-      for ( int ax = 0; ax < 3; ++ax )
+      for (int ax = 0; ax < 3; ++ax)
       {
-         m_D->m_Bounds[2*ax+0] =  std::numeric_limits<double>::infinity( );
-         m_D->m_Bounds[2*ax+1] = -std::numeric_limits<double>::infinity( );
+         m_D->m_Bounds[2*ax+0] =  std::numeric_limits<double>::infinity();
+         m_D->m_Bounds[2*ax+1] = -std::numeric_limits<double>::infinity();
       }
 
       T vtxA[3];
 
-      //for ( MeshIndex h = 0; h < mesh->getNumberOfVertices( ); ++h )
-      MESH_EACHVERTEX( mesh, h )
+      //for (MeshIndex h = 0; h < mesh->getNumberOfVertices(); ++h)
+      MESH_EACHVERTEX(mesh, h)
       {
-         mesh->getVertex( h, vtxA );
+         mesh->getVertex(h, vtxA);
 
-         for ( int ax = 0; ax < 3; ++ax )
+         for (int ax = 0; ax < 3; ++ax)
          {
-            if ( abs( vtxA[ax] ) < std::numeric_limits<T>::infinity( ) )
+            if (abs(vtxA[ax]) < std::numeric_limits<T>::infinity())
             {
-               m_D->m_Bounds[2*ax+0] = std::min<double>( m_D->m_Bounds[2*ax+0], vtxA[ax] );
-               m_D->m_Bounds[2*ax+1] = std::max<double>( m_D->m_Bounds[2*ax+1], vtxA[ax] );
+               m_D->m_Bounds[2*ax+0] = std::min<double>(m_D->m_Bounds[2*ax+0], vtxA[ax]);
+               m_D->m_Bounds[2*ax+1] = std::max<double>(m_D->m_Bounds[2*ax+1], vtxA[ax]);
             }
          }
       }
 
-      m_D->m_MeshLastModified = m_D->m_FindGenerators->getModifiedTime( );
-      modified( );
+      m_D->m_MeshLastModified = m_D->m_FindGenerators->getModifiedTime();
+      modified();
    }
 
-   for ( int i = 0; i < 6; ++i )
+   for (int i = 0; i < 6; ++i)
       bounds[i] = m_D->m_Bounds[i];
 }
 
 #include "Useful/ArrayVectorFunctions.h"
 
 template <class T>
-void AWT::DrawFindGenerators<T>::drawImpl( AWT::DrawContext::P context )
+void AWT::DrawFindGenerators<T>::drawImpl(AWT::DrawContext::P context)
 {
-   Mesh<T>::P mesh = m_D->m_FindGenerators->getMesh( );
+   Mesh<T>::P mesh = m_D->m_FindGenerators->getMesh();
 
    T vtx[3];
 
-   glEnable( GL_COLOR_MATERIAL );
+   glEnable(GL_COLOR_MATERIAL);
 
-   glEnable( GL_COLOR_MATERIAL );
+   glEnable(GL_COLOR_MATERIAL);
    
-   glDisable( GL_LIGHTING );
+   glDisable(GL_LIGHTING);
    
    Tuples<MeshIndex>::P cont[2];
 
-   glLineWidth( 3.f );
+   glLineWidth(3.f);
 
-   HueWheelSequence::P hws = HueWheelSequence::getInstance( m_D->m_FindGenerators->getNumberOfGeneratorPairs( ) );
+   HueWheelSequence::P hws = HueWheelSequence::getInstance(m_D->m_FindGenerators->getNumberOfGeneratorPairs());
    float rgba[4];
    
-   //glEnable( GL_LINE_STIPPLE );
-   for ( MeshIndex g = 0; g < m_D->m_FindGenerators->getNumberOfGeneratorPairs( ); ++g )
+   //glEnable(GL_LINE_STIPPLE);
+   for (MeshIndex g = 0; g < m_D->m_FindGenerators->getNumberOfGeneratorPairs(); ++g)
    {
-      hws->nextColour( rgba );
+      hws->nextColour(rgba);
 
-      m_D->m_FindGenerators->getGeneratorPair( g, cont[0], cont[1] );
+      m_D->m_FindGenerators->getGeneratorPair(g, cont[0], cont[1]);
 
-      for ( int i = 0; i < 2; ++i )
+      for (int i = 0; i < 2; ++i)
       {
-         glColor3fv( rgba );
+         glColor3fv(rgba);
 
-         glBegin( GL_LINE_LOOP );
+         glBegin(GL_LINE_LOOP);
 
-         for ( MeshIndex v = 0; v < cont[i]->getNumberOfPoints( ); ++v )
+         for (MeshIndex v = 0; v < cont[i]->getNumberOfPoints(); ++v)
          {
-            mesh->getVertex( cont[i]->getPointElement( v, 0 ), vtx );
+            mesh->getVertex(cont[i]->getPointElement(v, 0), vtx);
 
-            glVertex3Tv( vtx );
+            glVertex3Tv(vtx);
          }
 
-         glEnd( );
+         glEnd();
 
-         for ( int i = 0; i < 3; ++i )
+         for (int i = 0; i < 3; ++i)
             rgba[i] = 1 - rgba[i];
       }
    }
-   //glDisable( GL_LINE_STIPPLE );
+   //glDisable(GL_LINE_STIPPLE);
 
-   glPointSize( 10.f );
-   glColor3f( 1.f, 1.f, 0.f );
+   glPointSize(10.f);
+   glColor3f(1.f, 1.f, 0.f);
 
-   mesh->getVertex( m_D->m_FindGenerators->getLastMergePoint( ), vtx );
-   glBegin( GL_POINTS );
-   glVertex3Tv( vtx );
-   glEnd( );
+   mesh->getVertex(m_D->m_FindGenerators->getLastMergePoint(), vtx);
+   glBegin(GL_POINTS);
+   glVertex3Tv(vtx);
+   glEnd();
 
-   glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-   glEnable( GL_LIGHTING );
-   glPolygonOffset( -10.f, -10.f );
-   glBegin( GL_TRIANGLES );
+   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+   glEnable(GL_LIGHTING);
+   glPolygonOffset(-10.f, -10.f);
+   glBegin(GL_TRIANGLES);
 
-   glColor3f( 1.f, 1.f, 1.f );
+   glColor3f(1.f, 1.f, 1.f);
 
    //T vtxA[3], vtxB[3], vtxC[3];
    //T nmlA[3], nmlB[3], nmlC[3];
-   //MESH_EACHFACE( mesh, f )
+   //MESH_EACHFACE(mesh, f)
    //{
-   //   if ( m_D->m_FindGenerators->isFaceVisited( f ) )
+   //   if (m_D->m_FindGenerators->isFaceVisited(f))
    //   {
-   //      mesh->getFace( f, vtxA, vtxB, vtxC );
+   //      mesh->getFace(f, vtxA, vtxB, vtxC);
 
-   //      for ( int ax = 0; ax < 3; ++ax )
+   //      for (int ax = 0; ax < 3; ++ax)
    //      {
    //         nmlA[ax] = vtxB[ax] - vtxA[ax];
    //         nmlB[ax] = vtxC[ax] - vtxA[ax];
    //      }
 
-   //      cross( nmlA, nmlB, nmlC );
+   //      cross(nmlA, nmlB, nmlC);
 
-   //      if ( dot( nmlC, nmlC, 3 ) != 0 )
-   //         normalize( nmlC, 3 );
+   //      if (dot(nmlC, nmlC, 3) != 0)
+   //         normalize(nmlC, 3);
 
-   //      glNormal3Tv( nmlC );
+   //      glNormal3Tv(nmlC);
 
-   //      glVertex3Tv( vtxA );
-   //      glVertex3Tv( vtxB );
-   //      glVertex3Tv( vtxC );
+   //      glVertex3Tv(vtxA);
+   //      glVertex3Tv(vtxB);
+   //      glVertex3Tv(vtxC);
    //   }
    //}
 
-   glEnd( );
-   glPolygonOffset( 0.f, 0.f );
+   glEnd();
+   glPolygonOffset(0.f, 0.f);
 }
 
 template class AWT::DrawFindGenerators<double>;

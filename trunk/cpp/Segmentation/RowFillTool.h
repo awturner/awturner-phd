@@ -38,22 +38,22 @@ namespace AWT
    class RowFillTool : public DrawingTool<T,ScanT,V>
    {
    public:
-      RowFillTool( CommandManager* m, DirectionLR d );
+      RowFillTool(CommandManager* m, DirectionLR d);
 
-      virtual char* getName( ) const;
+      virtual char* getName() const;
 
-      virtual bool onMouseMove( const int x, const int y, const int z, const int button );
-      virtual bool onMouseButton( const int x, const int y, const int z, const int button );
+      virtual bool onMouseMove(const int x, const int y, const int z, const int button);
+      virtual bool onMouseButton(const int x, const int y, const int z, const int button);
       
-      virtual void printState( std::ostream& os ) const
+      virtual void printState(std::ostream& os) const
       {
          os << "OK";
       }
 
    protected:
-      bool decideRange( const CImg<T>& im, const int y, 
+      bool decideRange(const CImg<T>& im, const int y, 
                           const T fg[V], const T bg[V],
-                          unsigned int& xstart, unsigned int& xend );
+                          unsigned int& xstart, unsigned int& xend);
 
       DirectionLR dir;
 
@@ -72,8 +72,8 @@ using namespace AWT;
 using namespace cimg_library;
 
 template <class T, class ScanT, unsigned int V>
-AWT::RowFillTool<T,ScanT,V>::RowFillTool( AWT::CommandManager* m, AWT::DirectionLR dir )
-: DrawingTool<T,ScanT,V>( m )
+AWT::RowFillTool<T,ScanT,V>::RowFillTool(AWT::CommandManager* m, AWT::DirectionLR dir)
+: DrawingTool<T,ScanT,V>(m)
 {
    lastMouseAtX = lastMouseAtY = -1;
    lastButton = -1;
@@ -82,9 +82,9 @@ AWT::RowFillTool<T,ScanT,V>::RowFillTool( AWT::CommandManager* m, AWT::Direction
 }
 
 template <class T, class ScanT, unsigned int V>
-char* AWT::RowFillTool<T,ScanT,V>::getName( ) const
+char* AWT::RowFillTool<T,ScanT,V>::getName() const
 {
-   switch ( dir )
+   switch (dir)
    {
    case DIR_LEFT:
       return "Left Row Fill";
@@ -96,60 +96,60 @@ char* AWT::RowFillTool<T,ScanT,V>::getName( ) const
 }
 
 template <class T, class ScanT, unsigned int V>
-bool AWT::RowFillTool<T,ScanT,V>::decideRange( const CImg<T>& im, const int y, 
+bool AWT::RowFillTool<T,ScanT,V>::decideRange(const CImg<T>& im, const int y, 
                                                   const T fg[V], const T bg[V],
-                                                  unsigned int& xstart, unsigned int& xend )
+                                                  unsigned int& xstart, unsigned int& xend)
 {
-   switch ( dir )
+   switch (dir)
    {
    case DIR_RIGHT:
       {
          // From the current location, search down the column for the first foreground pixel
-         while ( xstart < im.dimx() && im( xstart, y ) != fg[0] )
+         while (xstart < im.dimx() && im(xstart, y) != fg[0])
             ++xstart;
 
-         if ( xstart == im.dimx() )
+         if (xstart == im.dimx())
             return false;
 
          // From the current location, search down the column for the first background pixel
-         while ( xstart < im.dimx() && im( xstart, y ) != bg[0] )
+         while (xstart < im.dimx() && im(xstart, y) != bg[0])
             ++xstart;
 
-         if ( xstart == im.dimx() )
+         if (xstart == im.dimx())
             return false;
          
          xend = xstart + 1;
 
-         while ( xend < im.dimx() && im( xend, y ) == bg[0] )
+         while (xend < im.dimx() && im(xend, y) == bg[0])
             ++xend;
 
-         if ( xend == im.dimx() )
+         if (xend == im.dimx())
             return false;
       }
       break;
    case DIR_LEFT:
       {
          // From the current location, search up the column for the first foreground pixel
-         while ( im( xstart, y ) != fg[0] )
+         while (im(xstart, y) != fg[0])
          {
-            if ( xstart == 0 ) return false;
+            if (xstart == 0) return false;
 
             --xstart;
          }
 
          // From the current location, search up the column for the first background pixel
-         while ( im( xstart, y ) != bg[0] )
+         while (im(xstart, y) != bg[0])
          {
-            if ( xstart == 0 ) return false;
+            if (xstart == 0) return false;
 
             --xstart;
          }
 
          xend = xstart;
 
-         while ( im( xend, y ) == bg[0] )
+         while (im(xend, y) == bg[0])
          {
-            if ( xend == 0 ) return false;
+            if (xend == 0) return false;
 
             --xend;
          }
@@ -165,51 +165,51 @@ bool AWT::RowFillTool<T,ScanT,V>::decideRange( const CImg<T>& im, const int y,
 }
 
 template <class T, class ScanT, unsigned int V>
-bool AWT::RowFillTool<T,ScanT,V>::onMouseMove( const int mx, const int my, const int mz, const int button )
+bool AWT::RowFillTool<T,ScanT,V>::onMouseMove(const int mx, const int my, const int mz, const int button)
 {
-   if ( m_CurrentImage != 0 && m_OverlayImage != 0 )
+   if (m_CurrentImage != 0 && m_OverlayImage != 0)
    {
-      CImg<T> im = m_CurrentImage->get_shared_plane( mz );
+      CImg<T> im = m_CurrentImage->get_shared_plane(mz);
       
       T fg[V], bg[V];
-      getForegroundColour( fg );
-      getBackgroundColour( bg );
+      getForegroundColour(fg);
+      getBackgroundColour(bg);
 
-      m_OverlayImage->fill( 0 );
+      m_OverlayImage->fill(0);
 
       // Paint a line to show where the mouse is
-      cimg_forX( im, x )
-         (*m_OverlayImage)( x, my ) = 64;
+      cimg_forX(im, x)
+         (*m_OverlayImage)(x, my) = 64;
 
-      cimg_forY( im, y )
-         (*m_OverlayImage)( mx, y ) = 64;
+      cimg_forY(im, y)
+         (*m_OverlayImage)(mx, y) = 64;
 
-      if ( abs( mx - lastMouseAtX ) > 10 )
-         lastMouseAtX = ( mx > lastMouseAtX ) ? (mx-1) : (mx+1);
+      if (abs(mx - lastMouseAtX) > 10)
+         lastMouseAtX = (mx > lastMouseAtX) ? (mx-1) : (mx+1);
 
-      for ( unsigned int y = 0; y < im.dimy(); ++y )
+      for (unsigned int y = 0; y < im.dimy(); ++y)
       {
          unsigned int xstart, xend;
 
          xstart = mx;
-         if ( decideRange( im, y, fg, bg, xstart, xend ) )
+         if (decideRange(im, y, fg, bg, xstart, xend))
          {
             bool xbetween = 
-               ( my >= lastMouseAtY && y > lastMouseAtY && y <= my ) ||  // Moved right
-               ( my <= lastMouseAtY && y < lastMouseAtY && y >= my );     // Moved left
+               (my >= lastMouseAtY && y > lastMouseAtY && y <= my) ||  // Moved right
+               (my <= lastMouseAtY && y < lastMouseAtY && y >= my);     // Moved left
 
-            if ( button == 1 && xbetween && ( ( lastButton == 1 && my != lastMouseAtY ) || lastButton != 1 ) && !rowFlags[y] )
+            if (button == 1 && xbetween && ((lastButton == 1 && my != lastMouseAtY) || lastButton != 1) && !rowFlags[y])
             {
-               for ( unsigned int x = xstart; x <= xend; ++x )
-                  cimg_forV( im, v )
-                     im( x, y, 0, v ) = fg[v];
+               for (unsigned int x = xstart; x <= xend; ++x)
+                  cimg_forV(im, v)
+                     im(x, y, 0, v) = fg[v];
 
                rowFlags[y] = true;
             }
             else
             {
-               for ( unsigned int x = xstart; x <= xend; ++x )
-                  (*m_OverlayImage)( x, y ) = xbetween ? 255 : 192;
+               for (unsigned int x = xstart; x <= xend; ++x)
+                  (*m_OverlayImage)(x, y) = xbetween ? 255 : 192;
             }
          }
       }
@@ -229,18 +229,18 @@ bool AWT::RowFillTool<T,ScanT,V>::onMouseMove( const int mx, const int my, const
 }
 
 template <class T, class ScanT, unsigned int V>
-bool AWT::RowFillTool<T,ScanT,V>::onMouseButton( const int mx, const int my, const int mz, const int button )
+bool AWT::RowFillTool<T,ScanT,V>::onMouseButton(const int mx, const int my, const int mz, const int button)
 {
    lastMouseAtX = mx;
    lastMouseAtY = my;
 
-   rowFlags.clear( );
+   rowFlags.clear();
 
-   if ( m_CurrentImage )
-      for ( unsigned int i = 0; i < m_CurrentImage->dimy(); ++i )
-         rowFlags.push_back( false );
+   if (m_CurrentImage)
+      for (unsigned int i = 0; i < m_CurrentImage->dimy(); ++i)
+         rowFlags.push_back(false);
 
-   bool ret = onMouseMove( mx, my, mz, button );
+   bool ret = onMouseMove(mx, my, mz, button);
 
    lastButton = button;
 

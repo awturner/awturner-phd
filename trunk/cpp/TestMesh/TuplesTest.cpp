@@ -29,27 +29,27 @@
 
 #include "Useful/Noise.h"
 
-CPPUNIT_TEST_SUITE_REGISTRATION( TuplesTest );
+CPPUNIT_TEST_SUITE_REGISTRATION(TuplesTest);
 
 using namespace AWT;
 
-void TuplesTest::setUp( )
+void TuplesTest::setUp()
 {
-   Noise<double>::timeSeed( );
+   Noise<double>::timeSeed();
 
-   defaultDoubleTuple_1[0] = rand( ) / (RAND_MAX + 0.0);
+   defaultDoubleTuple_1[0] = rand() / (RAND_MAX + 0.0);
 
-   defaultDoubleTuple_2[0] = rand( ) / (RAND_MAX + 0.0);
-   defaultDoubleTuple_2[1] = rand( ) / (RAND_MAX + 0.0);
+   defaultDoubleTuple_2[0] = rand() / (RAND_MAX + 0.0);
+   defaultDoubleTuple_2[1] = rand() / (RAND_MAX + 0.0);
 
-   defaultDoubleTuple_3[0] = rand( ) / (RAND_MAX + 0.0);
-   defaultDoubleTuple_3[1] = rand( ) / (RAND_MAX + 0.0);
-   defaultDoubleTuple_3[2] = rand( ) / (RAND_MAX + 0.0);
+   defaultDoubleTuple_3[0] = rand() / (RAND_MAX + 0.0);
+   defaultDoubleTuple_3[1] = rand() / (RAND_MAX + 0.0);
+   defaultDoubleTuple_3[2] = rand() / (RAND_MAX + 0.0);
 
-   defaultDoubleTuple_4[0] = rand( ) / (RAND_MAX + 0.0);
-   defaultDoubleTuple_4[1] = rand( ) / (RAND_MAX + 0.0);
-   defaultDoubleTuple_4[2] = rand( ) / (RAND_MAX + 0.0);
-   defaultDoubleTuple_4[3] = rand( ) / (RAND_MAX + 0.0);
+   defaultDoubleTuple_4[0] = rand() / (RAND_MAX + 0.0);
+   defaultDoubleTuple_4[1] = rand() / (RAND_MAX + 0.0);
+   defaultDoubleTuple_4[2] = rand() / (RAND_MAX + 0.0);
+   defaultDoubleTuple_4[3] = rand() / (RAND_MAX + 0.0);
 
    doubleTuple_1 = 0;
    doubleTuple_2 = 0;
@@ -57,70 +57,70 @@ void TuplesTest::setUp( )
    doubleTuple_4 = 0;
 }
 
-void TuplesTest::tearDown( )
+void TuplesTest::tearDown()
 {
-   doubleTuple_1.set( 0 );
-   doubleTuple_2.set( 0 );
-   doubleTuple_3.set( 0 );
-   doubleTuple_4.set( 0 );
+   doubleTuple_1.set(0);
+   doubleTuple_2.set(0);
+   doubleTuple_3.set(0);
+   doubleTuple_4.set(0);
 }
 
-void TuplesTest::doubleCreationTest( )
+void TuplesTest::doubleCreationTest()
 {
    // Make sure that the variables are all uninitialized to start with
-   CPPUNIT_ASSERT_EQUAL( *doubleTuple_1, *AWT::Tuples<double>::P( ) );
-   CPPUNIT_ASSERT_EQUAL( *doubleTuple_2, *AWT::Tuples<double>::P( ) );
-   CPPUNIT_ASSERT_EQUAL( *doubleTuple_3, *AWT::Tuples<double>::P( ) );
-   CPPUNIT_ASSERT_EQUAL( *doubleTuple_4, *AWT::Tuples<double>::P( ) );
+   CPPUNIT_ASSERT_EQUAL(*doubleTuple_1, *AWT::Tuples<double>::P());
+   CPPUNIT_ASSERT_EQUAL(*doubleTuple_2, *AWT::Tuples<double>::P());
+   CPPUNIT_ASSERT_EQUAL(*doubleTuple_3, *AWT::Tuples<double>::P());
+   CPPUNIT_ASSERT_EQUAL(*doubleTuple_4, *AWT::Tuples<double>::P());
 
-   doubleTuple_1.set( *AWT::TuplesImpl<double>::getInstance( 1, &defaultDoubleTuple_1[0], 100 ) );
-   CPPUNIT_ASSERT_ASSERTION_PASS( doubleTuple_1 );
-   CPPUNIT_ASSERT_EQUAL( doubleTuple_1->getNumberOfPoints( ), static_cast<AWT::MeshIndex>( 0 ) );
-   CPPUNIT_ASSERT_EQUAL( doubleTuple_1->getTupleSize( ), static_cast<AWT::TupleIndex>( 1 ) );
+   doubleTuple_1.set(*AWT::TuplesImpl<double>::getInstance(1, &defaultDoubleTuple_1[0], 100));
+   CPPUNIT_ASSERT_ASSERTION_PASS(doubleTuple_1);
+   CPPUNIT_ASSERT_EQUAL(doubleTuple_1->getNumberOfPoints(), static_cast<AWT::MeshIndex>(0));
+   CPPUNIT_ASSERT_EQUAL(doubleTuple_1->getTupleSize(), static_cast<AWT::TupleIndex>(1));
    
-   doubleTuple_2.set( *AWT::TuplesImpl<double>::getInstance( 2, &defaultDoubleTuple_2[0], 100 ) );
-   CPPUNIT_ASSERT_ASSERTION_PASS( doubleTuple_2 );
-   CPPUNIT_ASSERT_EQUAL( doubleTuple_2->getNumberOfPoints( ), static_cast<AWT::MeshIndex>( 0 ) );
-   CPPUNIT_ASSERT_EQUAL( doubleTuple_2->getTupleSize( ), static_cast<AWT::TupleIndex>( 2 ) );
+   doubleTuple_2.set(*AWT::TuplesImpl<double>::getInstance(2, &defaultDoubleTuple_2[0], 100));
+   CPPUNIT_ASSERT_ASSERTION_PASS(doubleTuple_2);
+   CPPUNIT_ASSERT_EQUAL(doubleTuple_2->getNumberOfPoints(), static_cast<AWT::MeshIndex>(0));
+   CPPUNIT_ASSERT_EQUAL(doubleTuple_2->getTupleSize(), static_cast<AWT::TupleIndex>(2));
 
-   doubleTuple_3.set( *AWT::TuplesImpl<double>::getInstance( 3, &defaultDoubleTuple_3[0], 100 ) );
-   CPPUNIT_ASSERT_ASSERTION_PASS( doubleTuple_3 );
-   CPPUNIT_ASSERT_EQUAL( doubleTuple_3->getNumberOfPoints( ), static_cast<AWT::MeshIndex>( 0 ) );
-   CPPUNIT_ASSERT_EQUAL( doubleTuple_3->getTupleSize( ), static_cast<AWT::TupleIndex>( 3 ) );
+   doubleTuple_3.set(*AWT::TuplesImpl<double>::getInstance(3, &defaultDoubleTuple_3[0], 100));
+   CPPUNIT_ASSERT_ASSERTION_PASS(doubleTuple_3);
+   CPPUNIT_ASSERT_EQUAL(doubleTuple_3->getNumberOfPoints(), static_cast<AWT::MeshIndex>(0));
+   CPPUNIT_ASSERT_EQUAL(doubleTuple_3->getTupleSize(), static_cast<AWT::TupleIndex>(3));
 
-   doubleTuple_4.set( *AWT::TuplesImpl<double>::getInstance( 4, &defaultDoubleTuple_4[0], 100 ) );
-   CPPUNIT_ASSERT_ASSERTION_PASS( doubleTuple_4 );
-   CPPUNIT_ASSERT_EQUAL( doubleTuple_4->getNumberOfPoints( ), static_cast<AWT::MeshIndex>( 0 ) );
-   CPPUNIT_ASSERT_EQUAL( doubleTuple_4->getTupleSize( ), static_cast<AWT::TupleIndex>( 4 ) );
+   doubleTuple_4.set(*AWT::TuplesImpl<double>::getInstance(4, &defaultDoubleTuple_4[0], 100));
+   CPPUNIT_ASSERT_ASSERTION_PASS(doubleTuple_4);
+   CPPUNIT_ASSERT_EQUAL(doubleTuple_4->getNumberOfPoints(), static_cast<AWT::MeshIndex>(0));
+   CPPUNIT_ASSERT_EQUAL(doubleTuple_4->getTupleSize(), static_cast<AWT::TupleIndex>(4));
 }
 
 #include "Useful/PrintMacros.h"
 
-void TuplesTest::doubleInsertionTest( )
+void TuplesTest::doubleInsertionTest()
 {
-   doubleTuple_3 = AWT::TuplesImpl<double>::getInstance( 3, &defaultDoubleTuple_3[0], 100 );
+   doubleTuple_3 = AWT::TuplesImpl<double>::getInstance(3, &defaultDoubleTuple_3[0], 100);
    double point[3];
 
-   CPPUNIT_ASSERT_ASSERTION_PASS( *doubleTuple_3 );
+   CPPUNIT_ASSERT_ASSERTION_PASS(*doubleTuple_3);
 
-   MeshIndex startNumberOfPoints = doubleTuple_3->getNumberOfPoints( );
+   MeshIndex startNumberOfPoints = doubleTuple_3->getNumberOfPoints();
 
-   for ( MeshIndex i = 0; false && i < 10; ++i )
+   for (MeshIndex i = 0; false && i < 10; ++i)
    {
-      CPPUNIT_ASSERT_EQUAL( doubleTuple_3->getNumberOfPoints( ), i + startNumberOfPoints );
+      CPPUNIT_ASSERT_EQUAL(doubleTuple_3->getNumberOfPoints(), i + startNumberOfPoints);
 
-      MeshIndex currentNumberOfPoints = doubleTuple_3->getNumberOfPoints( );
+      MeshIndex currentNumberOfPoints = doubleTuple_3->getNumberOfPoints();
 
-      point[0] = rand( ) / (RAND_MAX+0.0);
-      point[1] = rand( ) / (RAND_MAX+0.0);
-      point[2] = rand( ) / (RAND_MAX+0.0);
-      doubleTuple_3->setPoint( currentNumberOfPoints, &point[0] );
+      point[0] = rand() / (RAND_MAX+0.0);
+      point[1] = rand() / (RAND_MAX+0.0);
+      point[2] = rand() / (RAND_MAX+0.0);
+      doubleTuple_3->setPoint(currentNumberOfPoints, &point[0]);
 
-      CPPUNIT_ASSERT_EQUAL( doubleTuple_3->getNumberOfPoints( ), currentNumberOfPoints + 1 );
+      CPPUNIT_ASSERT_EQUAL(doubleTuple_3->getNumberOfPoints(), currentNumberOfPoints + 1);
 
-      CPPUNIT_ASSERT_EQUAL( doubleTuple_3->getPointElement( startNumberOfPoints + 1, 0 ), point[0] );
-      CPPUNIT_ASSERT_EQUAL( doubleTuple_3->getPointElement( startNumberOfPoints + 1, 1 ), point[1] );
-      CPPUNIT_ASSERT_EQUAL( doubleTuple_3->getPointElement( startNumberOfPoints + 1, 2 ), point[2] );
+      CPPUNIT_ASSERT_EQUAL(doubleTuple_3->getPointElement(startNumberOfPoints + 1, 0), point[0]);
+      CPPUNIT_ASSERT_EQUAL(doubleTuple_3->getPointElement(startNumberOfPoints + 1, 1), point[1]);
+      CPPUNIT_ASSERT_EQUAL(doubleTuple_3->getPointElement(startNumberOfPoints + 1, 2), point[2]);
    }
 }
 

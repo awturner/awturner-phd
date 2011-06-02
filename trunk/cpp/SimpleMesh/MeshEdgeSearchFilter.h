@@ -38,14 +38,14 @@ namespace AWT
          typedef ManagedAutoPointer<MeshEdgeSearchFilter> P;
 
       protected:
-         MeshEdgeSearchFilter( Mesh::P );
-         virtual ~MeshEdgeSearchFilter( );
+         MeshEdgeSearchFilter(Mesh::P);
+         virtual ~MeshEdgeSearchFilter();
 
       public:
-         static P getInstance( Mesh::P );
-         std::string getClassName( ) const;
+         static P getInstance(Mesh::P);
+         std::string getClassName() const;
 
-         virtual bool check( const Point p, const Index i ) const;
+         virtual bool check(const Point p, const Index i) const;
          
       protected:
          struct D;

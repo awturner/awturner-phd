@@ -31,18 +31,18 @@ namespace AWT
    class SegmentationLUT
    {
    public:
-      SegmentationLUT( );
+      SegmentationLUT();
 
-      void setColour( unsigned char label, unsigned char or, unsigned char og, unsigned char ob,
-                                           unsigned char ur, unsigned char ug, unsigned char ub );
+      void setColour(unsigned char label, unsigned char or, unsigned char og, unsigned char ob,
+                                           unsigned char ur, unsigned char ug, unsigned char ub);
 
-      void setColour( unsigned char label, unsigned char or, unsigned char og, unsigned char ob );
+      void setColour(unsigned char label, unsigned char or, unsigned char og, unsigned char ob);
 
-      void setColour( unsigned char label, unsigned char* overcoat, unsigned char* undercoat );
+      void setColour(unsigned char label, unsigned char* overcoat, unsigned char* undercoat);
 
-      void getColour( float v, unsigned char label, unsigned char* out_Colour );
+      void getColour(float v, unsigned char label, unsigned char* out_Colour);
 
-      unsigned char getNumberOfColours( ) const;
+      unsigned char getNumberOfColours() const;
 
    protected:
       unsigned char cols;

@@ -35,117 +35,117 @@
 
 using namespace LuaPlus;
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
    LuaStateOwner state;
 
-   for ( int i = 1; i < argc; ++i )
+   for (int i = 1; i < argc; ++i)
    {
-      int isOK = state->DoFile( argv[i] );
+      int isOK = state->DoFile(argv[i]);
 
-      if ( isOK != 0 )
+      if (isOK != 0)
       {
-         PRINTVBL( isOK );
-         DEBUGLINEANDEXIT( 1 );
+         PRINTVBL(isOK);
+         DEBUGLINEANDEXIT(1);
       }
 
-      LuaObject objFilename = state->GetGlobal( "filename" );
-      if ( !objFilename.IsString( ) )
-         DEBUGLINEANDEXIT( 1 );
+      LuaObject objFilename = state->GetGlobal("filename");
+      if (!objFilename.IsString())
+         DEBUGLINEANDEXIT(1);
 
-      vtkPolyDataReader* reader = vtkPolyDataReader::New( );
-      reader->SetFileName( objFilename.GetString( ) );
+      vtkPolyDataReader* reader = vtkPolyDataReader::New();
+      reader->SetFileName(objFilename.GetString());
 
-      PRINTVBL( objFilename.GetString( ) );
+      PRINTVBL(objFilename.GetString());
 
-      reader->Update( );
+      reader->Update();
 
-      vtkPolyData* poly = reader->GetOutput( );
+      vtkPolyData* poly = reader->GetOutput();
 
-      vtkClipPolyData* cutter = vtkClipPolyData::New( );
-      vtkSphere* sphere = vtkSphere::New( );
+      vtkClipPolyData* cutter = vtkClipPolyData::New();
+      vtkSphere* sphere = vtkSphere::New();
 
-      vtkPolyDataWriter* writerInside = vtkPolyDataWriter::New( );
-      vtkPolyDataWriter* writerOutside = vtkPolyDataWriter::New( );
+      vtkPolyDataWriter* writerInside = vtkPolyDataWriter::New();
+      vtkPolyDataWriter* writerOutside = vtkPolyDataWriter::New();
 
-      cutter->SetClipFunction( sphere );
-      cutter->SetInputConnection( reader->GetOutputPort( ) );
-      cutter->GenerateClippedOutputOn( );
+      cutter->SetClipFunction(sphere);
+      cutter->SetInputConnection(reader->GetOutputPort());
+      cutter->GenerateClippedOutputOn();
 
-      writerInside->SetInputConnection( cutter->GetOutputPort( 1 ) );
-      writerOutside->SetInputConnection( cutter->GetOutputPort( 0 ) );
+      writerInside->SetInputConnection(cutter->GetOutputPort(1));
+      writerOutside->SetInputConnection(cutter->GetOutputPort(0));
 
-      LuaObject objPoints = state->GetGlobal( "points" );
-      PRINTVBL( objPoints.GetTableCount( ) );
-      for ( int i = 1; i <= objPoints.GetTableCount( ); ++i )
+      LuaObject objPoints = state->GetGlobal("points");
+      PRINTVBL(objPoints.GetTableCount());
+      for (int i = 1; i <= objPoints.GetTableCount(); ++i)
       {
-         LuaObject thisPoint = objPoints.GetByIndex( i );
+         LuaObject thisPoint = objPoints.GetByIndex(i);
 
-         LuaObject objPointName = thisPoint.GetByIndex( 1 );
-         PRINTVBL( objPointName.GetString( ) );
+         LuaObject objPointName = thisPoint.GetByIndex(1);
+         PRINTVBL(objPointName.GetString());
 
-         LuaObject objX = thisPoint.GetByIndex( 2 );
-         LuaObject objY = thisPoint.GetByIndex( 3 );
-         LuaObject objZ = thisPoint.GetByIndex( 4 );
+         LuaObject objX = thisPoint.GetByIndex(2);
+         LuaObject objY = thisPoint.GetByIndex(3);
+         LuaObject objZ = thisPoint.GetByIndex(4);
 
-         const double centre[] = { objX.GetNumber( ), objY.GetNumber( ), objZ.GetNumber( ) };
+         const double centre[] = { objX.GetNumber(), objY.GetNumber(), objZ.GetNumber() };
 
-         PRINTVEC( centre, 3 );
+         PRINTVEC(centre, 3);
 
-         sphere->SetCenter( centre[0], centre[1], centre[2] );
+         sphere->SetCenter(centre[0], centre[1], centre[2]);
 
          double pnt[3];
          double maxNorm2 = 0;
 
          // Calculate the furthest point from this centre
-         for ( vtkIdType i = 0, imax = poly->GetNumberOfPoints( ); i < imax; ++i )
+         for (vtkIdType i = 0, imax = poly->GetNumberOfPoints(); i < imax; ++i)
          {
-            poly->GetPoint( i, pnt );
+            poly->GetPoint(i, pnt);
 
             double norm2 = 0;
-            for ( int i = 0; i < 3; ++i )
+            for (int i = 0; i < 3; ++i)
             {
                pnt[i] -= centre[i];
                norm2 += pnt[i]*pnt[i];
             }
 
-            if ( norm2 > maxNorm2 )
+            if (norm2 > maxNorm2)
                maxNorm2 = norm2;
          }
 
-         const double maxR = sqrt( maxNorm2 );
+         const double maxR = sqrt(maxNorm2);
 
          const int levels[] = { 2, 4, 6, 8, 10, 20, 30, 40, 50 };
 
-         for ( int ii = 0; ii < 9; ++ii )
+         for (int ii = 0; ii < 9; ++ii)
          {
             const int i = levels[ii];
 
-            sphere->SetRadius( i / 100.0 * maxR );
+            sphere->SetRadius(i / 100.0 * maxR);
 
-            PRINTVBL( sphere->GetRadius( ) );
+            PRINTVBL(sphere->GetRadius());
 
             char fnInside[512];
-            sprintf_s( fnInside, "%s.%s.%03d.in.vtk", objFilename.GetString( ), objPointName.GetString( ), i );
-            writerInside->SetFileName( fnInside );
+            sprintf_s(fnInside, "%s.%s.%03d.in.vtk", objFilename.GetString(), objPointName.GetString(), i);
+            writerInside->SetFileName(fnInside);
 
             char fnOutside[512];
-            sprintf_s( fnOutside, "%s.%s.%03d.out.vtk", objFilename.GetString( ), objPointName.GetString( ), i );
-            writerOutside->SetFileName( fnOutside );
+            sprintf_s(fnOutside, "%s.%s.%03d.out.vtk", objFilename.GetString(), objPointName.GetString(), i);
+            writerOutside->SetFileName(fnOutside);
 
-            writerInside->Update( );
-            writerOutside->Update( );
+            writerInside->Update();
+            writerOutside->Update();
 
-            PRINTVBL( fnInside );
-            PRINTVBL( fnOutside );
+            PRINTVBL(fnInside);
+            PRINTVBL(fnOutside);
          }
 
-         PRINTVBL( maxR );
+         PRINTVBL(maxR);
       }
 
-      writerInside->Delete( );
-      cutter->Delete( );
-      sphere->Delete( );
-      reader->Delete( );
+      writerInside->Delete();
+      cutter->Delete();
+      sphere->Delete();
+      reader->Delete();
    }
 }

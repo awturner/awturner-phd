@@ -44,19 +44,19 @@ namespace AWT
       typedef ManagedAutoPointer<MoghariMeasure> P;
 
    protected:
-      MoghariMeasure( );
-      virtual ~MoghariMeasure( );
+      MoghariMeasure();
+      virtual ~MoghariMeasure();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
       struct LocalStatistics
       {
-         LocalStatistics( )
+         LocalStatistics()
          {
-            covariance.fill( 0 );
-            mean.fill( 0 );
+            covariance.fill(0);
+            mean.fill(0);
             scale = 1;
             npts = 0;
          }
@@ -70,13 +70,13 @@ namespace AWT
          MeshIndex npts;
       };
 
-      vnl_matrix_fixed<T,3,3> calculateEigenvectors( const vnl_matrix<T>& m );
+      vnl_matrix_fixed<T,3,3> calculateEigenvectors(const vnl_matrix<T>& m);
 
-      void calculateLocalStatistics( typename Mesh<T>::P mesh, const MeshIndex v, const T radius, LocalStatistics* lstats );
+      void calculateLocalStatistics(typename Mesh<T>::P mesh, const MeshIndex v, const T radius, LocalStatistics* lstats);
 
-      void calculateForVertex( typename Mesh<T>::P mesh, const MeshIndex v, const T radius, vnl_vector<T>& out_Matrix );
+      void calculateForVertex(typename Mesh<T>::P mesh, const MeshIndex v, const T radius, vnl_vector<T>& out_Matrix);
       
-      typename Tuples<T>::P calculate( typename Mesh<T>::P mesh, const T radius );
+      typename Tuples<T>::P calculate(typename Mesh<T>::P mesh, const T radius);
 
    protected:
       struct D;

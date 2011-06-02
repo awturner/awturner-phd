@@ -38,13 +38,13 @@ namespace AWT
       class MeshIO
       {
       protected:
-         MeshIO( );
-         virtual ~MeshIO( );
+         MeshIO();
+         virtual ~MeshIO();
       public:
-         static Mesh::P loadMesh( std::istream& is );
-         static ShapeModel::P loadModel( std::istream& is );
+         static Mesh::P loadMesh(std::istream& is);
+         static ShapeModel::P loadModel(std::istream& is);
 
-         static void saveMesh( std::ostream& os, Mesh::P mesh );
+         static void saveMesh(std::ostream& os, Mesh::P mesh);
 
       protected:
          struct D;

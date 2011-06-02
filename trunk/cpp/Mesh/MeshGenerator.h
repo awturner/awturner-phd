@@ -36,8 +36,8 @@ namespace AWT
    class MeshGenerator : public ManagedObject
    {
    public:
-      static void generateTorus( typename Mesh<T>::P mesh, T majorRadius, T minorRadius, MeshIndex resU, MeshIndex resV );
-      static void generatePlane( typename Mesh<T>::P mesh, MeshIndex resU, MeshIndex resV );
+      static void generateTorus(typename Mesh<T>::P mesh, T majorRadius, T minorRadius, MeshIndex resU, MeshIndex resV);
+      static void generatePlane(typename Mesh<T>::P mesh, MeshIndex resU, MeshIndex resV);
    };
 }
 

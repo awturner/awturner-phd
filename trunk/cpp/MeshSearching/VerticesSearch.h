@@ -35,8 +35,8 @@ namespace AWT
    class VerticesSearch : public MeshSearch<T>
    {
    public:
-      void setData( typename OEKDTreeData<T,3>::P in_Data );
-      typename typename VerticesTreeData<T>::P getData( );
+      void setData(typename OEKDTreeData<T,3>::P in_Data);
+      typename typename VerticesTreeData<T>::P getData();
 
    protected:
       typename VerticesTreeData<T>::P m_Data;
@@ -44,13 +44,13 @@ namespace AWT
    };
 
    template <class T>
-   void VerticesSearch<T>::setData( typename OEKDTree::OEKDTreeData<T,3>::P data )
+   void VerticesSearch<T>::setData(typename OEKDTree::OEKDTreeData<T,3>::P data)
    {
-      m_Data = checkType<OEKDTree::OEKDTreeData<T,3>,VerticesTreeData<T>>(data);
+      m_Data = checkType<OEKDTree::OEKDTreeData<T,3>,VerticesTreeData<T> >(data);
    }
 
    template <class T>
-   typename VerticesTreeData<T>::P VerticesSearch<T>::getData( )
+   typename VerticesTreeData<T>::P VerticesSearch<T>::getData()
    {
       return m_Data;
    }

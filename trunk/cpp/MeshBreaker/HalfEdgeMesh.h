@@ -54,27 +54,27 @@ namespace AWT
       typedef ManagedAutoPointer<HalfEdgeMesh> P;
 
    protected:
-      HalfEdgeMesh( );
-      virtual ~HalfEdgeMesh( );
+      HalfEdgeMesh();
+      virtual ~HalfEdgeMesh();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
-      virtual bool canAddTriangle( const MeshIndex* vs );
-      virtual void addTriangle( const MeshIndex* vs, const MeshIndex faceIndex, bool& isMerge, MeshIndex& mergePoint );
+      virtual bool canAddTriangle(const MeshIndex* vs);
+      virtual void addTriangle(const MeshIndex* vs, const MeshIndex faceIndex, bool& isMerge, MeshIndex& mergePoint);
 
-      virtual MeshIndex getNumberOfContours( );
+      virtual MeshIndex getNumberOfContours();
 
-      virtual void print( std::ostream& os );
+      virtual void print(std::ostream& os);
 
-      virtual void ensureVertices( const MeshIndex v );
+      virtual void ensureVertices(const MeshIndex v);
 
-      virtual void getCounts( MeshIndex* counts ) const;
+      virtual void getCounts(MeshIndex* counts) const;
 
    protected:
-      virtual std::vector< HalfEdgeVertex* >& getVertices( );
-      virtual std::vector< HalfEdge* >&       getEdges( );
+      virtual std::vector< HalfEdgeVertex* >& getVertices();
+      virtual std::vector< HalfEdge* >&       getEdges();
 
       struct D;
       D* m_D;

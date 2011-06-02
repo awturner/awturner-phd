@@ -36,16 +36,16 @@ namespace AWT
    class Toolbox
    {
    public:
-      Toolbox( );
-      void addTool( DrawingTool<T,ScanT,V>* in_Tool );
+      Toolbox();
+      void addTool(DrawingTool<T,ScanT,V>* in_Tool);
 
-      unsigned int getNumberOfTools( ) const;
-      DrawingTool<T,ScanT,V>* getTool( unsigned int idx ) const;
+      unsigned int getNumberOfTools() const;
+      DrawingTool<T,ScanT,V>* getTool(unsigned int idx) const;
 
-      DrawingTool<T,ScanT,V>* getCurrentTool( ) const;
+      DrawingTool<T,ScanT,V>* getCurrentTool() const;
 
-      unsigned int getCurrentToolIndex( ) const;
-      void setCurrentToolIndex( unsigned int idx );
+      unsigned int getCurrentToolIndex() const;
+      void setCurrentToolIndex(unsigned int idx);
 
    protected:
       std::vector<DrawingTool<T,ScanT,V>*> m_Tools;
@@ -54,7 +54,7 @@ namespace AWT
 }
 
 template <class T, class ScanT, unsigned int V>
-AWT::Toolbox<T,ScanT,V>::Toolbox( )
+AWT::Toolbox<T,ScanT,V>::Toolbox()
 {
    m_CurToolIdx = 0;
 }
@@ -62,40 +62,40 @@ AWT::Toolbox<T,ScanT,V>::Toolbox( )
 template <class T, class ScanT, unsigned int V>
 void AWT::Toolbox<T,ScanT,V>::addTool(AWT::DrawingTool<T,ScanT,V> *in_Tool)
 {
-   m_Tools.push_back( in_Tool );
+   m_Tools.push_back(in_Tool);
 }
 
 template <class T, class ScanT, unsigned int V>
-unsigned int AWT::Toolbox<T,ScanT,V>::getNumberOfTools( ) const
+unsigned int AWT::Toolbox<T,ScanT,V>::getNumberOfTools() const
 {
-   return m_Tools.size( );
+   return m_Tools.size();
 }
 
 template <class T, class ScanT, unsigned int V>
-AWT::DrawingTool<T,ScanT,V>* AWT::Toolbox<T,ScanT,V>::getTool( unsigned int idx ) const
+AWT::DrawingTool<T,ScanT,V>* AWT::Toolbox<T,ScanT,V>::getTool(unsigned int idx) const
 {
    return m_Tools[idx];
 }
 
 template <class T, class ScanT, unsigned int V>
-AWT::DrawingTool<T,ScanT,V>* AWT::Toolbox<T,ScanT,V>::getCurrentTool( ) const
+AWT::DrawingTool<T,ScanT,V>* AWT::Toolbox<T,ScanT,V>::getCurrentTool() const
 {
    return m_Tools[m_CurToolIdx];
 }
 
 template <class T, class ScanT, unsigned int V>
-unsigned int AWT::Toolbox<T,ScanT,V>::getCurrentToolIndex( ) const
+unsigned int AWT::Toolbox<T,ScanT,V>::getCurrentToolIndex() const
 {
    return m_CurToolIdx;
 }
 
 template <class T, class ScanT, unsigned int V>
-void AWT::Toolbox<T,ScanT,V>::setCurrentToolIndex( unsigned int idx )
+void AWT::Toolbox<T,ScanT,V>::setCurrentToolIndex(unsigned int idx)
 {
-   if ( m_Tools.size( ) == 0 )
+   if (m_Tools.size() == 0)
       AWTEXCEPTIONTHROW("No tools to select!");
 
-   m_CurToolIdx = idx % m_Tools.size( );
+   m_CurToolIdx = idx % m_Tools.size();
 }
 
 #endif // __TOOLBOX_H__

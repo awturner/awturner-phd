@@ -35,8 +35,8 @@ namespace AWT
    class WorldTreeModel : public QAbstractItemModel
    {
    public:
-      WorldTreeModel( AWT::DrawableAssembly* assm, QObject *parent = 0);
-      ~WorldTreeModel( );
+      WorldTreeModel(AWT::DrawableAssembly* assm, QObject *parent = 0);
+      ~WorldTreeModel();
 
       QVariant data(const QModelIndex &index, int role) const;
       Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -46,7 +46,7 @@ namespace AWT
       int rowCount(const QModelIndex &parent = QModelIndex()) const;
       int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
-      bool setData( const QModelIndex& index, const QVariant& value, int role );
+      bool setData(const QModelIndex& index, const QVariant& value, int role);
 
    private:
       struct D;

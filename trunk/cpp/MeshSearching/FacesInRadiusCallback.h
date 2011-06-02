@@ -44,7 +44,7 @@ namespace AWT
       typedef ManagedAutoPointer< FacesInRadiusCallback<T> > P;
 
    public:
-      virtual void faceFound( const typename OEKDTree::OEKDTreeData<T,3>::P data, const OEKDTree::ObjectIndex index ) = 0;
+      virtual void faceFound(const typename OEKDTree::OEKDTreeData<T,3>::P data, const OEKDTree::ObjectIndex index) = 0;
    };
 }
 

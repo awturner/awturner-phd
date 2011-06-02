@@ -37,7 +37,7 @@ struct AWT::MeshBreakerHistory<T>::D
 };
 
 template <class T>
-AWT::MeshBreakerHistory<T>::MeshBreakerHistory( const typename AWT::MeshBreaker<T>::Symbol sym, const AWT::MeshIndex f, const AWT::MeshIndex g, const AWT::MeshIndex distVert, const AWT::MeshIndex lneigh, const AWT::MeshIndex rneigh  )
+AWT::MeshBreakerHistory<T>::MeshBreakerHistory(const typename AWT::MeshBreaker<T>::Symbol sym, const AWT::MeshIndex f, const AWT::MeshIndex g, const AWT::MeshIndex distVert, const AWT::MeshIndex lneigh, const AWT::MeshIndex rneigh )
 {
    m_D = new D;
 
@@ -50,52 +50,52 @@ AWT::MeshBreakerHistory<T>::MeshBreakerHistory( const typename AWT::MeshBreaker<
 }
 
 template <class T>
-AWT::MeshBreakerHistory<T>::~MeshBreakerHistory( )
+AWT::MeshBreakerHistory<T>::~MeshBreakerHistory()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::MeshBreakerHistory<T>::P AWT::MeshBreakerHistory<T>::getInstance( const typename AWT::MeshBreaker<T>::Symbol sym, const AWT::MeshIndex f, const AWT::MeshIndex g, const AWT::MeshIndex distVert, const AWT::MeshIndex lneigh, const AWT::MeshIndex rneigh )
+typename AWT::MeshBreakerHistory<T>::P AWT::MeshBreakerHistory<T>::getInstance(const typename AWT::MeshBreaker<T>::Symbol sym, const AWT::MeshIndex f, const AWT::MeshIndex g, const AWT::MeshIndex distVert, const AWT::MeshIndex lneigh, const AWT::MeshIndex rneigh)
 {
-   AUTOGETINSTANCE( AWT::MeshBreakerHistory<T>, ( sym, f, g, distVert, lneigh, rneigh ) );
+   AUTOGETINSTANCE(AWT::MeshBreakerHistory<T>, (sym, f, g, distVert, lneigh, rneigh));
 }
 
 template <class T>
-GETNAMEMACRO( AWT::MeshBreakerHistory<T> );
+GETNAMEMACRO(AWT::MeshBreakerHistory<T>);
 
 template <class T>
-typename AWT::MeshBreaker<T>::Symbol AWT::MeshBreakerHistory<T>::getSymbol( ) const
+typename AWT::MeshBreaker<T>::Symbol AWT::MeshBreakerHistory<T>::getSymbol() const
 {
    return m_D->m_Symbol;
 }
 
 template <class T>
-AWT::MeshIndex AWT::MeshBreakerHistory<T>::getF( ) const
+AWT::MeshIndex AWT::MeshBreakerHistory<T>::getF() const
 {
    return m_D->m_F;
 }
 
 template <class T>
-AWT::MeshIndex AWT::MeshBreakerHistory<T>::getG( ) const
+AWT::MeshIndex AWT::MeshBreakerHistory<T>::getG() const
 {
    return m_D->m_G;
 }
 
 template <class T>
-AWT::MeshIndex AWT::MeshBreakerHistory<T>::getDistalVertex( ) const
+AWT::MeshIndex AWT::MeshBreakerHistory<T>::getDistalVertex() const
 {
    return m_D->m_DistalVertex;
 }
 
 template <class T>
-AWT::MeshIndex AWT::MeshBreakerHistory<T>::getLeftNeighbour( ) const
+AWT::MeshIndex AWT::MeshBreakerHistory<T>::getLeftNeighbour() const
 {
    return m_D->m_LeftNeighbour;
 }
 
 template <class T>
-AWT::MeshIndex AWT::MeshBreakerHistory<T>::getRightNeighbour( ) const
+AWT::MeshIndex AWT::MeshBreakerHistory<T>::getRightNeighbour() const
 {
    return m_D->m_RightNeighbour;
 }

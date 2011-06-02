@@ -39,16 +39,16 @@ namespace AWT
       typedef ManagedAutoPointer<RandomMeshSlicer> P;
 
    protected:
-      RandomMeshSlicer( typename Mesh<T>::P mesh, unsigned int nplanes );
-      virtual ~RandomMeshSlicer( );
+      RandomMeshSlicer(typename Mesh<T>::P mesh, unsigned int nplanes);
+      virtual ~RandomMeshSlicer();
 
    public:
-      static P getInstance( typename Mesh<T>::P mesh, const unsigned int nplanes );
-      virtual std::string getClassName( ) const;
+      static P getInstance(typename Mesh<T>::P mesh, const unsigned int nplanes);
+      virtual std::string getClassName() const;
 
-      unsigned int getNumberOfFragments( ) const;
+      unsigned int getNumberOfFragments() const;
 
-      typename Mesh<T>::P getFragment( const unsigned int f );
+      typename Mesh<T>::P getFragment(const unsigned int f);
 
    protected:
       struct D;

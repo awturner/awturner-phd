@@ -41,29 +41,29 @@ namespace AWT
       typedef ManagedAutoPointer<OpenGLDrawableCorrespondences> P;
 
    protected:
-      OpenGLDrawableCorrespondences( typename CorrespondenceFinder<T>::P corr );
-      virtual ~OpenGLDrawableCorrespondences( );
+      OpenGLDrawableCorrespondences(typename CorrespondenceFinder<T>::P corr);
+      virtual ~OpenGLDrawableCorrespondences();
 
    public:
-      static P getInstance( typename CorrespondenceFinder<T>::P corr );
+      static P getInstance(typename CorrespondenceFinder<T>::P corr);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual void setCorrespondences( typename CorrespondenceFinder<T>::P corr );
+      virtual void setCorrespondences(typename CorrespondenceFinder<T>::P corr);
 
    protected:
-      virtual ModifiedTime getChildModifiedTime( );
+      virtual ModifiedTime getChildModifiedTime();
 
-      virtual void buildList( AWT::DrawContext::P context );
+      virtual void buildList(AWT::DrawContext::P context);
          
-      virtual void updateBounds( );
+      virtual void updateBounds();
 
-      virtual void updateBoundsForVertex( T* vtx );
+      virtual void updateBoundsForVertex(T* vtx);
 
-      virtual double getBoundImpl( unsigned int bound );
+      virtual double getBoundImpl(unsigned int bound);
 
-      virtual DrawMaterial::P getMaterial( );
-      virtual void setMaterial( DrawMaterial::P mat );
+      virtual DrawMaterial::P getMaterial();
+      virtual void setMaterial(DrawMaterial::P mat);
 
    protected:
       struct D;

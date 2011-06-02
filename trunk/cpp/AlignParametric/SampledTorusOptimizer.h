@@ -39,25 +39,25 @@ namespace AWT
          typedef ManagedAutoPointer<SampledTorusOptimizer> P;
 
       protected:
-         SampledTorusOptimizer( );
-         virtual ~SampledTorusOptimizer( );
+         SampledTorusOptimizer();
+         virtual ~SampledTorusOptimizer();
 
       public:
-         static P getInstance( );
-         virtual std::string getClassName( ) const;
+         static P getInstance();
+         virtual std::string getClassName() const;
 
-         virtual void setSamplingMesh( MeshType::P mesh );
-         MeshType::P getSamplingMesh( );
+         virtual void setSamplingMesh(MeshType::P mesh);
+         MeshType::P getSamplingMesh();
 
-         virtual void setNumberOfKernels( const MeshIndex nk );
-         virtual void setNumberOfKernels( const MeshIndex nk[2] );
-         virtual void getNumberOfKernels( MeshIndex nk[2] );
+         virtual void setNumberOfKernels(const MeshIndex nk);
+         virtual void setNumberOfKernels(const MeshIndex nk[2]);
+         virtual void getNumberOfKernels(MeshIndex nk[2]);
 
-         virtual SampledTorusMesh::P addMesh( MeshType::P mesh );
+         virtual SampledTorusMesh::P addMesh(MeshType::P mesh);
 
       protected:
-         virtual void calculateSampleWeights( const MatrixType& meanShape, VectorType& sampleAreas );
-         virtual FaceType::P getFaces( );
+         virtual void calculateSampleWeights(const MatrixType& meanShape, VectorType& sampleAreas);
+         virtual FaceType::P getFaces();
 
          MeshType::P samplingMesh;
          MeshIndex nk[2];

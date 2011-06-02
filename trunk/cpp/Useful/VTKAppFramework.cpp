@@ -1,0 +1,107 @@
+#include "VTKAppFramework.h"
+
+#include "vtkRenderer.h"
+#include "vtkRenderWindow.h"
+#include "vtkRenderWindowInteractor.h"
+#include "vtkInteractorStyleSwitch.h"
+
+#include "vtkPolyDataAlgorithm.h"
+#include "vtkPolyData.h"
+#include "vtkPolyDataReader.h"
+#include "vtkPolyDataMapper.h"
+#include "vtkActor.h"
+
+AWT::VTKAppFramework::VTKAppFramework( )
+{
+   m_Renderer                 = vtkRenderer::New( );
+	m_RenderWindow             = vtkRenderWindow::New( );
+	m_RenderWindowInteractor   = vtkRenderWindowInteractor::New( );
+
+	m_RenderWindow->AddRenderer(m_Renderer);
+	m_RenderWindowInteractor->SetRenderWindow(m_RenderWindow);
+
+   vtkInteractorStyleSwitch* iastyle = dynamic_cast<vtkInteractorStyleSwitch*>( m_RenderWindowInteractor->GetInteractorStyle( ) );
+   if ( iastyle != 0 )
+   {
+      iastyle->SetCurrentStyleToTrackballCamera( );
+   }
+}
+
+AWT::VTKAppFramework::~VTKAppFramework( )
+{
+   m_RenderWindowInteractor->Delete( );
+   m_RenderWindow->Delete( );
+   m_Renderer->Delete( );
+}
+
+void AWT::VTKAppFramework::setWindowSize( int w, int h )
+{
+   m_RenderWindow->SetSize( w, h );
+}
+
+vtkRenderer* AWT::VTKAppFramework::getRenderer( )
+{
+   return m_Renderer;
+}
+
+vtkRenderWindow* AWT::VTKAppFramework::getRenderWindow( )
+{
+   return m_RenderWindow;
+}
+
+vtkRenderWindowInteractor* AWT::VTKAppFramework::getRenderWindowInteractor( )
+{
+   return m_RenderWindowInteractor;
+}
+
+void AWT::VTKAppFramework::start( )
+{
+   m_RenderWindowInteractor->Initialize( );
+
+   m_RenderWindowInteractor->Start( );
+}
+
+vtkActor* AWT::VTKAppFramework::addPolyData( vtkPolyData* poly )
+{
+   vtkPolyDataMapper* mapper = vtkPolyDataMapper::New( );
+   vtkActor* actor = vtkActor::New( );
+
+   mapper->SetInput( poly );
+   actor->SetMapper( mapper );
+
+   getRenderer( )->AddActor( actor );
+
+   mapper->Delete( );
+
+   return actor;
+}
+
+vtkActor* AWT::VTKAppFramework::addPolyData( vtkPolyDataAlgorithm* poly )
+{
+   vtkPolyDataMapper* mapper = vtkPolyDataMapper::New( );
+   vtkActor* actor = vtkActor::New( );
+
+   mapper->SetInputConnection( poly->GetOutputPort( ) );
+   actor->SetMapper( mapper );
+
+   getRenderer( )->AddActor( actor );
+
+   mapper->Delete( );
+
+   return actor;
+}
+
+vtkActor* AWT::VTKAppFramework::addPolyData( vtkPolyDataReader* poly )
+{
+   vtkPolyDataMapper* mapper = vtkPolyDataMapper::New( );
+   vtkActor* actor = vtkActor::New( );
+
+   mapper->SetInputConnection( poly->GetOutputPort( ) );
+   actor->SetMapper( mapper );
+
+   getRenderer( )->AddActor( actor );
+
+   mapper->Delete( );
+
+   return actor;
+}

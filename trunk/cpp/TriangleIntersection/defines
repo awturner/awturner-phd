@@ -1,0 +1,19 @@
+#define FABS(x) ((float)fabs(x))        /* implement as is fastest on your machine */
+#define USE_EPSILON_TEST TRUE  
+#define EPSILON 0.000001
+#define CROSS(dest,v1,v2)                      \
+#define DOT(v1,v2) (v1[0]*v2[0]+v1[1]*v2[1]+v1[2]*v2[2])
+#define SUB(dest,v1,v2) dest[0]=v1[0]-v2[0]; dest[1]=v1[1]-v2[1]; dest[2]=v1[2]-v2[2]; 
+#define ADD(dest,v1,v2) dest[0]=v1[0]+v2[0]; dest[1]=v1[1]+v2[1]; dest[2]=v1[2]+v2[2]; 
+#define MULT(dest,v,factor) dest[0]=factor*v[0]; dest[1]=factor*v[1]; dest[2]=factor*v[2];
+#define SET(dest,src) dest[0]=src[0]; dest[1]=src[1]; dest[2]=src[2]; 
+#define SORT(a,b)       \
+#define ISECT(VV0,VV1,VV2,D0,D1,D2,isect0,isect1) \
+#define COMPUTE_INTERVALS(VV0,VV1,VV2,D0,D1,D2,D0D1,D0D2,isect0,isect1) \
+#define EDGE_EDGE_TEST(V0,U0,U1)                      \
+#define EDGE_AGAINST_TRI_EDGES(V0,V1,U0,U1,U2) \
+#define POINT_IN_TRI(V0,U0,U1,U2)           \
+#define NEWCOMPUTE_INTERVALS(VV0,VV1,VV2,D0,D1,D2,D0D1,D0D2,A,B,C,X0,X1) \
+#define SORT2(a,b,smallest)       \
+#define ISECT2(VTX0,VTX1,VTX2,VV0,VV1,VV2,D0,D1,D2,isect0,isect1,isectpoint0,isectpoint1) \
+#define COMPUTE_INTERVALS_ISECTLINE(VERT0,VERT1,VERT2,VV0,VV1,VV2,D0,D1,D2,D0D1,D0D2,isect0,isect1,isectpoint0,isectpoint1) \

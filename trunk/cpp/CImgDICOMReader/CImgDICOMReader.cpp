@@ -1,0 +1,79 @@
+#include "CImgDICOMReader.h"
+
+using namespace AWT;
+using namespace cimg_library;
+
+#include "vtkImageAlgorithm.h"
+#include "vtkImageData.h"
+#include "vtkImageExport.h"
+#include "vtkImageCast.h"
+
+#include "vtkCustomDICOMReader/vtkCustomDICOMReader.h"
+
+#include "Useful/VTKImageType.h"
+
+/*
+template <class T>
+int getVTKImageType( T arg );
+
+#define VTK_TYPE_SPECIALIZED_TEMPLATE( Ty, VTK_Ty ) template <> int getVTKImageType( Ty ) { return VTK_Ty; }
+
+VTK_TYPE_SPECIALIZED_TEMPLATE( float,          VTK_FLOAT );
+VTK_TYPE_SPECIALIZED_TEMPLATE( double,         VTK_DOUBLE );
+VTK_TYPE_SPECIALIZED_TEMPLATE( int,            VTK_INT );
+VTK_TYPE_SPECIALIZED_TEMPLATE( unsigned int,   VTK_UNSIGNED_INT );
+VTK_TYPE_SPECIALIZED_TEMPLATE( long,           VTK_LONG );
+VTK_TYPE_SPECIALIZED_TEMPLATE( unsigned long,  VTK_UNSIGNED_LONG );
+VTK_TYPE_SPECIALIZED_TEMPLATE( short,          VTK_SHORT );
+VTK_TYPE_SPECIALIZED_TEMPLATE( unsigned short, VTK_UNSIGNED_SHORT );
+VTK_TYPE_SPECIALIZED_TEMPLATE( unsigned char,  VTK_UNSIGNED_CHAR );
+VTK_TYPE_SPECIALIZED_TEMPLATE( char,           VTK_CHAR );
+
+#undef VTK_TYPE_SPECIALIZED_TEMPLATE
+*/
+
+template <class T>
+CImg<T> AWT::loadDICOMDirectory( const char* directory, double* spacing )
+{
+   vtkImageAlgorithm* dicomData = vtkCustomDICOMReader::LoadDICOM( directory );
+   dicomData->Update( );
+
+   vtkImageData* image = dicomData->GetOutput( );
+   int extent[6];
+
+   image->GetExtent( extent );
+   image->GetSpacing( spacing );
+
+   CImg<T> img( extent[1]-extent[0]+1, extent[3]-extent[2]+1, extent[5]-extent[4]+1, 1 );
+   T* ptr = img.ptr( );
+
+   vtkImageCast* cast = vtkImageCast::New( );
+   cast->SetOutputScalarType( AWT::getVTKImageType( static_cast<T>( 0 ) ) );
+
+   vtkImageExport* exporter = vtkImageExport::New( );
+   exporter->SetInputConnection( dicomData->GetOutputPort( ) );
+   exporter->SetExportVoidPointer( ptr );
+
+   exporter->Export( );
+
+   exporter->Delete( );
+   dicomData->Delete( );
+   cast->Delete( );
+
+   return img;
+}
+
+#define INSTANTIATE_MACRO( Ty ) template CImg<Ty> AWT::loadDICOMDirectory<Ty>( const char*, double* );
+
+INSTANTIATE_MACRO( float )
+INSTANTIATE_MACRO( double )
+INSTANTIATE_MACRO( int )
+INSTANTIATE_MACRO( unsigned int )
+INSTANTIATE_MACRO( long )
+INSTANTIATE_MACRO( unsigned long )
+INSTANTIATE_MACRO( short )
+INSTANTIATE_MACRO( unsigned short )
+INSTANTIATE_MACRO( unsigned char ) 
+INSTANTIATE_MACRO( char )
+
+#undef INSTANTIATE_MACRO

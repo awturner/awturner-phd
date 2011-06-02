@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding = "Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="8,00"
+	Name="QtSegEdit"
+	ProjectGUID="{CDA87042-169A-3EEF-858A-42053A316142}"
+	Keyword="Qt4VSv1.0">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="."
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="1"
+			IntermediateDirectory="debug\"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtCore&quot;,&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtCore&quot;,&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtGui&quot;,&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtGui&quot;,&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtOpenGL&quot;,&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtOpenGL&quot;,&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include&quot;,&quot;$(AWT_WORK)&quot;,&quot;d:\Toolkits\qt-win-opensource-src-4.4.0\include\ActiveQt&quot;,&quot;debug&quot;,&quot;.&quot;,..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\mkspecs\default"
+				AdditionalOptions="-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189"
+				AssemblerListingLocation="debug\"
+				BufferSecurityCheck="false"
+				DebugInformationFormat="3"
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="debug\"
+				Optimization ="4"
+				PreprocessorDefinitions="UNICODE,WIN32,QT_LARGEFILE_SUPPORT,NOMINMAX,QT_DLL,QT_OPENGL_LIB,QT_GUI_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT"
+				ProgramDataBaseFileName=".\"
+				RuntimeLibrary="3"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib glu32.lib gdi32.lib user32.lib $(VTK_LIBS) v3p_netlib.lib vcl.lib vnl.lib vnl_algo.lib MimlabCore.lib MimlabMaths.lib MimlabMatrices.lib MimlabMatricesImpls.lib MimlabMatricesTNT.lib d:\Toolkits\qt-win-opensource-src-4.4.0\lib\QtOpenGLd4.lib d:\Toolkits\qt-win-opensource-src-4.4.0\lib\QtGuid4.lib d:\Toolkits\qt-win-opensource-src-4.4.0\lib\QtCored4.lib"
+				AdditionalLibraryDirectories="d:\Toolkits\qt-win-opensource-src-4.4.0\lib,$(VTK_BIN)/bin/$(ConfigurationName),D:/Toolkits/xvxl-1.8.0-bin/lib/$(ConfigurationName),D:/MimlabEnvironment/bin/release"
+				GenerateDebugInformation="true"
+				IgnoreImportLibrary="true"
+				OutputFile="$(AWT_WORK)\$(ConfigurationName)\QtSegEdit.exe"
+				ProgramDatabaseFile=""
+				SubSystem="1"
+				SuppressStartupBanner="true"/>
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="UNICODE,WIN32,QT_LARGEFILE_SUPPORT,NOMINMAX,QT_DLL,QT_OPENGL_LIB,QT_GUI_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT,_DEBUG"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="."
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="1"
+			IntermediateDirectory="release\"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtCore&quot;,&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtCore&quot;,&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtGui&quot;,&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtGui&quot;,&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtOpenGL&quot;,&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtOpenGL&quot;,&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include&quot;,&quot;$(AWT_WORK)&quot;,&quot;d:\Toolkits\qt-win-opensource-src-4.4.0\include\ActiveQt&quot;,&quot;release&quot;,&quot;.&quot;,..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\mkspecs\default"
+				AdditionalOptions="-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189"
+				AssemblerListingLocation="release\"
+				BufferSecurityCheck="false"
+				DebugInformationFormat="0"
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="release\"
+				Optimization ="3"
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,NOMINMAX,QT_DLL,QT_NO_DEBUG,QT_OPENGL_LIB,QT_GUI_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT,NDEBUG"
+				ProgramDataBaseFileName=".\"
+				RuntimeLibrary="2"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib glu32.lib gdi32.lib user32.lib $(VTK_LIBS) v3p_netlib.lib vcl.lib vnl.lib vnl_algo.lib MimlabCore.lib MimlabMaths.lib MimlabMatrices.lib MimlabMatricesImpls.lib MimlabMatricesTNT.lib d:\Toolkits\qt-win-opensource-src-4.4.0\lib\QtOpenGL4.lib d:\Toolkits\qt-win-opensource-src-4.4.0\lib\QtGui4.lib d:\Toolkits\qt-win-opensource-src-4.4.0\lib\QtCore4.lib"
+				AdditionalLibraryDirectories="d:\Toolkits\qt-win-opensource-src-4.4.0\lib,$(VTK_BIN)/bin/$(ConfigurationName),D:/Toolkits/xvxl-1.8.0-bin/lib/$(ConfigurationName),D:/MimlabEnvironment/bin/release"
+				GenerateDebugInformation="false"
+				IgnoreImportLibrary="true"
+				LinkIncremental="1"
+				LinkTimeCodeGeneration="true"
+				OutputFile="$(AWT_WORK)\$(ConfigurationName)\QtSegEdit.exe"
+				ProgramDatabaseFile=""
+				SubSystem="1"
+				SuppressStartupBanner="true"/>
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,NOMINMAX,QT_DLL,QT_NO_DEBUG,QT_OPENGL_LIB,QT_GUI_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath="QtSegEdit.cpp"/>
+			<File
+				RelativePath="forms\QtSegEditForm.cpp"/>
+			<File
+				RelativePath="SliceWidget.cpp"/>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="include\QtSegEditForm.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Toolkits\qt-win-opensource-src-4.4.0\bin\moc.exe;include\QtSegEditForm.h"
+						CommandLine="D:\Toolkits\qt-win-opensource-src-4.4.0\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DNOMINMAX -DQT_DLL -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtCore&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtCore&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtGui&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtGui&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtOpenGL&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtOpenGL&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include&quot; -I&quot;$(AWT_WORK)&quot; -I&quot;d:\Toolkits\qt-win-opensource-src-4.4.0\include\ActiveQt&quot; -I&quot;debug&quot; -I&quot;.&quot; -I..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\mkspecs\default -D_MSC_VER=1400 -DWIN32 include\QtSegEditForm.h -o debug\moc_QtSegEditForm.cpp"
+						Description="MOC include\QtSegEditForm.h"
+						Outputs="debug\moc_QtSegEditForm.cpp"
+						Path="d:\Toolkits\qt-win-opensource-src-4.4.0\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Toolkits\qt-win-opensource-src-4.4.0\bin\moc.exe;include\QtSegEditForm.h"
+						CommandLine="D:\Toolkits\qt-win-opensource-src-4.4.0\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DNOMINMAX -DQT_DLL -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtCore&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtCore&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtGui&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtGui&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtOpenGL&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtOpenGL&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include&quot; -I&quot;$(AWT_WORK)&quot; -I&quot;d:\Toolkits\qt-win-opensource-src-4.4.0\include\ActiveQt&quot; -I&quot;release&quot; -I&quot;.&quot; -I..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\mkspecs\default -D_MSC_VER=1400 -DWIN32 include\QtSegEditForm.h -o release\moc_QtSegEditForm.cpp"
+						Description="MOC include\QtSegEditForm.h"
+						Outputs="release\moc_QtSegEditForm.cpp"
+						Path="d:\Toolkits\qt-win-opensource-src-4.4.0\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="include\SliceWidget.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Toolkits\qt-win-opensource-src-4.4.0\bin\moc.exe;include\SliceWidget.h"
+						CommandLine="D:\Toolkits\qt-win-opensource-src-4.4.0\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DNOMINMAX -DQT_DLL -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtCore&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtCore&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtGui&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtGui&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtOpenGL&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtOpenGL&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include&quot; -I&quot;$(AWT_WORK)&quot; -I&quot;d:\Toolkits\qt-win-opensource-src-4.4.0\include\ActiveQt&quot; -I&quot;debug&quot; -I&quot;.&quot; -I..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\mkspecs\default -D_MSC_VER=1400 -DWIN32 include\SliceWidget.h -o debug\moc_SliceWidget.cpp"
+						Description="MOC include\SliceWidget.h"
+						Outputs="debug\moc_SliceWidget.cpp"
+						Path="d:\Toolkits\qt-win-opensource-src-4.4.0\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Toolkits\qt-win-opensource-src-4.4.0\bin\moc.exe;include\SliceWidget.h"
+						CommandLine="D:\Toolkits\qt-win-opensource-src-4.4.0\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DNOMINMAX -DQT_DLL -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtCore&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtCore&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtGui&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtGui&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtOpenGL&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include\QtOpenGL&quot; -I&quot;..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\include&quot; -I&quot;$(AWT_WORK)&quot; -I&quot;d:\Toolkits\qt-win-opensource-src-4.4.0\include\ActiveQt&quot; -I&quot;release&quot; -I&quot;.&quot; -I..\..\..\..\Toolkits\qt-win-opensource-src-4.4.0\mkspecs\default -D_MSC_VER=1400 -DWIN32 include\SliceWidget.h -o release\moc_SliceWidget.cpp"
+						Description="MOC include\SliceWidget.h"
+						Outputs="release\moc_SliceWidget.cpp"
+						Path="d:\Toolkits\qt-win-opensource-src-4.4.0\bin"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated Files"
+			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
+			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
+			<File
+				RelativePath="debug\moc_QtSegEditForm.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release\moc_QtSegEditForm.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug\moc_SliceWidget.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release\moc_SliceWidget.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="ui_QtSegEditForm.h"/>
+		</Filter>
+		<Filter
+			Name="Form Files"
+			Filter="ui"
+			UniqueIdentifier="{99349809-55BA-4b9d-BF79-8FDBB0286EB3}"
+			ParseFiles="false">
+			<File
+				RelativePath="forms\QtSegEditForm.ui">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Toolkits\qt-win-opensource-src-4.4.0\bin\uic.exe;forms\QtSegEditForm.ui;include\SliceWidget.h"
+						CommandLine="D:\Toolkits\qt-win-opensource-src-4.4.0\bin\uic.exe forms\QtSegEditForm.ui -o ui_QtSegEditForm.h"
+						Description="UIC forms\QtSegEditForm.ui"
+						Outputs="ui_QtSegEditForm.h"
+						Path="d:\Toolkits\qt-win-opensource-src-4.4.0\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Toolkits\qt-win-opensource-src-4.4.0\bin\uic.exe;forms\QtSegEditForm.ui;include\SliceWidget.h"
+						CommandLine="D:\Toolkits\qt-win-opensource-src-4.4.0\bin\uic.exe forms\QtSegEditForm.ui -o ui_QtSegEditForm.h"
+						Description="UIC forms\QtSegEditForm.ui"
+						Outputs="ui_QtSegEditForm.h"
+						Path="d:\Toolkits\qt-win-opensource-src-4.4.0\bin"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

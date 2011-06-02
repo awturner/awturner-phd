@@ -1,0 +1,266 @@
+<ui version="4.0" >
+ <class>QtSandboxForm</class>
+ <widget class="QMainWindow" name="QtSandboxForm" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>21</y>
+     <width>800</width>
+     <height>560</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout" >
+    <item>
+     <widget class="QSplitter" name="splitter" >
+      <property name="orientation" >
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QtWorldViewWidget" name="worldViewWidget" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Maximum" hsizetype="Preferred" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="orientation" >
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="opaqueResize" >
+        <bool>true</bool>
+       </property>
+       <property name="childrenCollapsible" >
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QTabWidget" name="tabWidget" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Minimum" hsizetype="Expanding" >
+         <horstretch>0</horstretch>
+         <verstretch>1</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="tabPosition" >
+        <enum>QTabWidget::South</enum>
+       </property>
+       <property name="currentIndex" >
+        <number>2</number>
+       </property>
+       <widget class="QWidget" name="tab" >
+        <property name="geometry" >
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>776</width>
+          <height>512</height>
+         </rect>
+        </property>
+        <attribute name="title" >
+         <string>World Contents</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_2" >
+         <item>
+          <widget class="QTreeView" name="worldTreeView" >
+           <property name="maximumSize" >
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="wordWrap" >
+            <bool>true</bool>
+           </property>
+           <property name="expandsOnDoubleClick" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_2" >
+        <property name="geometry" >
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>776</width>
+          <height>512</height>
+         </rect>
+        </property>
+        <attribute name="title" >
+         <string>std::cout</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_3" >
+         <item>
+          <widget class="QTextEdit" name="txtCout" >
+           <property name="maximumSize" >
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="font" >
+            <font>
+             <family>Courier New</family>
+            </font>
+           </property>
+           <property name="lineWrapMode" >
+            <enum>QTextEdit::NoWrap</enum>
+           </property>
+           <property name="readOnly" >
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_3" >
+        <attribute name="title" >
+         <string>std::cerr</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_4" >
+         <item>
+          <widget class="QTextEdit" name="txtCerr" >
+           <property name="maximumSize" >
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="font" >
+            <font>
+             <family>Courier New</family>
+            </font>
+           </property>
+           <property name="lineWrapMode" >
+            <enum>QTextEdit::NoWrap</enum>
+           </property>
+           <property name="readOnly" >
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="defaultUp" >
+    <bool>false</bool>
+   </property>
+   <widget class="QMenu" name="menu_File" >
+    <property name="title" >
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionOpen" />
+    <addaction name="actionSave" />
+    <addaction name="separator" />
+    <addaction name="actionExit" />
+   </widget>
+   <widget class="QMenu" name="menuState_Machine" >
+    <property name="title" >
+     <string>State Machine</string>
+    </property>
+    <addaction name="actionStart" />
+    <addaction name="actionStop" />
+    <addaction name="separator" />
+    <addaction name="actionReset" />
+   </widget>
+   <widget class="QMenu" name="menuDebugging" >
+    <property name="title" >
+     <string>Debugging</string>
+    </property>
+    <addaction name="actionReport" />
+   </widget>
+   <addaction name="menu_File" />
+   <addaction name="menuState_Machine" />
+   <addaction name="menuDebugging" />
+  </widget>
+  <widget class="QStatusBar" name="statusbar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>581</y>
+     <width>800</width>
+     <height>19</height>
+    </rect>
+   </property>
+  </widget>
+  <action name="actionLoad" >
+   <property name="text" >
+    <string>Load</string>
+   </property>
+  </action>
+  <action name="actionSave" >
+   <property name="text" >
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionOpen" >
+   <property name="text" >
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionExit" >
+   <property name="text" >
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionStart" >
+   <property name="text" >
+    <string>Start</string>
+   </property>
+  </action>
+  <action name="actionStop" >
+   <property name="text" >
+    <string>Stop</string>
+   </property>
+  </action>
+  <action name="actionReset" >
+   <property name="text" >
+    <string>Reset</string>
+   </property>
+  </action>
+  <action name="actionReport" >
+   <property name="text" >
+    <string>Report Reference Counts</string>
+   </property>
+  </action>
+  <action name="actionSave_3" >
+   <property name="text" >
+    <string>Save</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QtWorldViewWidget</class>
+   <extends>QSplitter</extends>
+   <header>QtForm/include/qtworldviewwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

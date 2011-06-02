@@ -1,0 +1,135 @@
+<ui version="4.0" >
+ <class>QtSegEditForm</class>
+ <widget class="QMainWindow" name="QtSegEditForm" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Segmentation Editor</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>21</y>
+     <width>800</width>
+     <height>560</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout" >
+    <item>
+     <widget class="QScrollArea" name="scrollArea" >
+      <property name="widgetResizable" >
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents" >
+       <property name="geometry" >
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>780</width>
+         <height>540</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2" >
+        <item>
+         <widget class="SliceWidget" name="image" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string>No Image Loaded</string>
+          </property>
+          <property name="alignment" >
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_File" >
+    <property name="title" >
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionOpen" />
+   </widget>
+   <widget class="QMenu" name="menu_View" >
+    <property name="title" >
+     <string>&amp;View</string>
+    </property>
+    <addaction name="actionFitToWindow" />
+    <addaction name="separator" />
+    <addaction name="actionZoomIn" />
+    <addaction name="actionZoomOut" />
+    <addaction name="actionNormalSize" />
+   </widget>
+   <addaction name="menu_File" />
+   <addaction name="menu_View" />
+  </widget>
+  <widget class="QStatusBar" name="statusbar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>581</y>
+     <width>800</width>
+     <height>19</height>
+    </rect>
+   </property>
+  </widget>
+  <action name="actionOpen" >
+   <property name="text" >
+    <string>&amp;Open</string>
+   </property>
+  </action>
+  <action name="actionFitToWindow" >
+   <property name="text" >
+    <string>Fit to Window</string>
+   </property>
+  </action>
+  <action name="actionZoomIn" >
+   <property name="text" >
+    <string>Zoom In 25%</string>
+   </property>
+  </action>
+  <action name="actionZoomOut" >
+   <property name="text" >
+    <string>Zoom Out 25%</string>
+   </property>
+  </action>
+  <action name="actionNormalSize" >
+   <property name="text" >
+    <string>Normal Size</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SliceWidget</class>
+   <extends>QLabel</extends>
+   <header>include/SliceWidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

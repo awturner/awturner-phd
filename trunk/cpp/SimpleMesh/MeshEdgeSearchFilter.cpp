@@ -1,0 +1,81 @@
+#include "MeshEdgeSearchFilter.h"
+
+#include <queue>
+
+#include "Connectivity.h"
+
+struct AWT::SimpleMesh::MeshEdgeSearchFilter::D
+{
+   Index* faceWalkFromBoundary;
+   bool* faceNotOnBoundary;
+   Index nf;
+};
+
+AWT::SimpleMesh::MeshEdgeSearchFilter::MeshEdgeSearchFilter( Mesh::P mesh )
+{
+   m_D = new D;
+
+   m_D->nf = mesh->nf;
+
+   // Rather than constantly query the connectivity, just pre-cache result for all faces
+   Connectivity::P conn = Connectivity::getInstance( mesh );
+
+   m_D->faceWalkFromBoundary = new Index[ mesh->nf ];
+   for ( Index f = 0; f < mesh->nf; ++f )
+      m_D->faceWalkFromBoundary[f] = INVALID_INDEX;
+
+   typedef std::pair<Index,Index> FacePair;
+   typedef std::priority_queue<FacePair> Queue;
+
+   Queue q;
+   for ( Index f = 0; f < mesh->nf; ++f )
+   {
+      if ( conn->isFaceOnBoundary( f ) )
+         q.push( FacePair( 2, f ) );
+   }
+
+   Index adjFaces[20];
+
+   while ( !q.empty() )
+   {
+      FacePair fp = q.top();
+      q.pop();
+
+      if ( fp.first < m_D->faceWalkFromBoundary[fp.second] )
+      {
+         m_D->faceWalkFromBoundary[fp.second] = fp.first;
+
+         if ( fp.first >= 1 )
+         {
+            const Index nadj = conn->getAdjacentFaces( fp.second, adjFaces );
+            for ( Index i = 0; i < nadj; ++i )
+               q.push( FacePair( fp.first-1, adjFaces[i] ) );
+         }
+      }
+   }
+
+   m_D->faceNotOnBoundary = new bool[ mesh->nf ];
+   for ( Index f = 0; f < mesh->nf; ++f )
+      m_D->faceNotOnBoundary[f] = !conn->isFaceOnBoundary( f );
+
+}
+
+AWT::SimpleMesh::MeshEdgeSearchFilter::~MeshEdgeSearchFilter( )
+{
+   delete [] m_D->faceNotOnBoundary;
+
+   delete m_D;
+}
+
+AWT::SimpleMesh::MeshEdgeSearchFilter::P AWT::SimpleMesh::MeshEdgeSearchFilter::getInstance( AWT::SimpleMesh::Mesh::P mesh )
+{
+   AUTOGETINSTANCE( AWT::SimpleMesh::MeshEdgeSearchFilter, ( mesh ) );
+}
+
+GETNAMEMACRO( AWT::SimpleMesh::MeshEdgeSearchFilter );
+
+bool AWT::SimpleMesh::MeshEdgeSearchFilter::check( const Point p, const Index i ) const
+{
+   return m_D->faceWalkFromBoundary[i] == INVALID_INDEX;
+   //return m_D->faceNotOnBoundary[ i ];
+}

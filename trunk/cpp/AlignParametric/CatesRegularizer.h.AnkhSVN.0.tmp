@@ -1,0 +1,62 @@
+#ifndef __ParticleSurfaceRegularizer_H__
+#define __ParticleSurfaceRegularizer_H__
+
+#include "ObjectManagement/ManagedObject.h"
+
+#include "Mesh/Mesh.h"
+#include "Mesh/Tuples.h"
+#include "Useful/ValueRange.h"
+#include "TypeDefs.h"
+
+#include "Cates/ParticlesAndMesh.h"
+
+namespace AWT
+{
+   namespace AlignParametric
+   {
+      class CoulombicParticleSurface;
+
+      class ParticleSurfaceRegularizer : public ManagedObject
+      {
+      public:
+         typedef ManagedAutoPointer<ParticleSurfaceRegularizer> P;
+
+         enum DistanceType { DT_EUCLIDEAN, DT_APPROXGEODESIC };
+
+      protected:
+         ParticleSurfaceRegularizer( CoulombicParticleSurface* surf, const ValueRange<T> sigmaRange );
+         virtual ~ParticleSurfaceRegularizer( );
+
+      public:
+         static P getInstance( CoulombicParticleSurface* surf, const ValueRange<T> sigmaRange );
+         virtual std::string getClassName( ) const;
+
+         TuplesType::P getSigma( );
+
+         DistanceType getDistanceType( ) const;
+         void setDistanceType( const DistanceType dt );
+
+         T getSigma( MeshIndex i ) const;
+         void setSigma( MeshIndex i, const T v );
+
+         // Calculate the force which tries to push these particles apart
+         void calculateUpdate( MatrixType& reg );
+
+         T calculateCost( const bool debug = true );
+
+         T getMinSigma( ) const;
+
+         const ValueRange<T>& getSigmaRange( ) const;
+         void setSigmaRange( const ValueRange<T>& sigmaRange );
+
+         void associateSampleToFace( const MeshIndex i, const MeshIndex f );
+
+      protected:
+         struct D;
+         D* m_D;
+
+      };
+   }
+}
+
+#endif // __ParticleSurfaceRegularizer_H__

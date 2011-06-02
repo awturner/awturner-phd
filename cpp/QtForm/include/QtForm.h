@@ -50,47 +50,47 @@ namespace AWT
       typedef ManagedAutoPointer<QtForm> P;
 
    protected:
-      QtForm( unsigned int rows = 1, unsigned int cols = 1, QMutex* mutex = 0, QWidget* in_Parent = 0, Qt::WFlags in_Fl = 0 );
-      virtual ~QtForm( );
+      QtForm(unsigned int rows = 1, unsigned int cols = 1, QMutex* mutex = 0, QWidget* in_Parent = 0, Qt::WFlags in_Fl = 0);
+      virtual ~QtForm();
 
    public:
-      static P getInstance( unsigned int rows = 1, unsigned int cols = 1, QMutex* mutex = 0, QWidget* in_Parent = 0, Qt::WFlags in_Fl = 0 );
+      static P getInstance(unsigned int rows = 1, unsigned int cols = 1, QMutex* mutex = 0, QWidget* in_Parent = 0, Qt::WFlags in_Fl = 0);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual unsigned int getNumberOfViewers( ) const;
+      virtual unsigned int getNumberOfViewers() const;
 
-      virtual WorldViewer::P getViewer( const unsigned int i );
+      virtual WorldViewer::P getViewer(const unsigned int i);
 
    signals:
-      void widgetNeedsRepainting( );
+      void widgetNeedsRepainting();
 
    protected slots:
-      void clientError( QString str );
-      void clientWarning( QString str );
+      void clientError(QString str);
+      void clientWarning(QString str);
 
    public slots:
-      void centreView( );
+      void centreView();
 
-      void processingFinished( );
+      void processingFinished();
 
-      void load( const QString& filename );
-
-   public slots:
-
-      void setStateMachine( SaveableStateMachine::P sm );
+      void load(const QString& filename);
 
    public slots:
-      void actionOpenTriggered( );
-      void actionSaveTriggered( );
-      void actionExitTriggered( );
+
+      void setStateMachine(SaveableStateMachine::P sm);
+
+   public slots:
+      void actionOpenTriggered();
+      void actionSaveTriggered();
+      void actionExitTriggered();
       
-      void actionStartTriggered( );
-      void actionStepTriggered( );
-      void actionStopTriggered( );
-      void actionResetTriggered( );
+      void actionStartTriggered();
+      void actionStepTriggered();
+      void actionStopTriggered();
+      void actionResetTriggered();
 
-      void actionReportTriggered( );
+      void actionReportTriggered();
 
    protected:
 

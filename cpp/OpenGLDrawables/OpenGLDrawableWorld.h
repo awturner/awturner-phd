@@ -25,7 +25,7 @@
 */
 #ifndef __OPENGLDRAWABLEWORLD_H__
 #define __OPENGLDRAWABLEWORLD_H__
-#pragma warning( disable: 4250 )
+#pragma warning(disable: 4250)
 
 #include "DrawableFramework/DrawableAssembly.h"
 #include "DrawableFramework/DrawableWorld.h"
@@ -38,37 +38,37 @@ namespace AWT
       typedef ManagedAutoPointer<OpenGLDrawableWorld> P;
 
    protected:
-      OpenGLDrawableWorld( AWT::DrawContext::P ctx );
+      OpenGLDrawableWorld(AWT::DrawContext::P ctx);
 
-      ~OpenGLDrawableWorld( );
+      ~OpenGLDrawableWorld();
 
    public:
-      static P getInstance( AWT::DrawContext::P ctx );
+      static P getInstance(AWT::DrawContext::P ctx);
 
-      virtual void draw( DrawContext::P context, const bool transparentPass );
+      virtual void draw(DrawContext::P context, const bool transparentPass);
 
       /*
-      void getBounds( double* out_Bounds );
+      void getBounds(double* out_Bounds);
 
-      void setVisible( const bool v );
+      void setVisible(const bool v);
 
-      bool isVisible( ) const;
+      bool isVisible() const;
       */
 
-      void setLight( Light::P light );
-      Light::P getLight( );
+      void setLight(Light::P light);
+      Light::P getLight();
 
-      void setBackground( Drawable::P background );
-      Drawable::P getBackground( );
+      void setBackground(Drawable::P background);
+      Drawable::P getBackground();
 
-      virtual BackgroundMode getBackgroundMode( ) const;
-      virtual void setBackgroundMode( const BackgroundMode mode );
+      virtual BackgroundMode getBackgroundMode() const;
+      virtual void setBackgroundMode(const BackgroundMode mode);
 
-      void doLighting( );
+      void doLighting();
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual DrawableFactory<double>* getFactory( );
+      virtual DrawableFactory<double>* getFactory();
 
    protected:
       struct D;

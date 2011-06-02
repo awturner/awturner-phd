@@ -44,41 +44,41 @@ namespace AWT
       typedef ManagedAutoPointer<Contour> P;
 
    protected:
-      Contour( EdgeBuilder::P eb );
+      Contour(EdgeBuilder::P eb);
 
-      virtual ~Contour( );
+      virtual ~Contour();
 
-      static P getInstance( EdgeBuilder::P eb );
+      static P getInstance(EdgeBuilder::P eb);
 
    public:
-      static P getInstance( EdgeBuilder::P eb, const MeshIndex* vs, const unsigned int n = 3 );
+      static P getInstance(EdgeBuilder::P eb, const MeshIndex* vs, const unsigned int n = 3);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
       // This method handles the "intelligent" insertion of the triangle into a
       // set of contours, i.e. it decides which is the active contour, as well as
       // handling splits and merges.  This assumes that the vector of contours
       // passed in is "well-behaved", i.e. essentially that it was created by
       // repeatedly calling this method, or that it is empty
-      static void insert( std::vector<Contour::P>& contours, EdgeBuilder::P eb, MeshIndex* vs, bool isSplit );
+      static void insert(std::vector<Contour::P>& contours, EdgeBuilder::P eb, MeshIndex* vs, bool isSplit);
 
-      unsigned int getLength( ) const;
+      unsigned int getLength() const;
 
-      Tuples<MeshIndex>::P getContour( );
+      Tuples<MeshIndex>::P getContour();
 
-      Edge* getEdge( );
+      Edge* getEdge();
 
-      static void printVertices( std::ostream& os, std::vector<Contour::P>& contours );
+      static void printVertices(std::ostream& os, std::vector<Contour::P>& contours);
 
-      static void printContours( std::ostream& os, std::vector<Contour::P>& contours );
+      static void printContours(std::ostream& os, std::vector<Contour::P>& contours);
 
-      static void renderGraph( const char* inputFilename, const char* outputFilename );
+      static void renderGraph(const char* inputFilename, const char* outputFilename);
 
    protected:
       // Splices the passed contour into this contour
-      void merge( P contour );
+      void merge(P contour);
 
-      bool getEdgeToVertex( MeshIndex v, Edge*& e );
+      bool getEdgeToVertex(MeshIndex v, Edge*& e);
 
       struct D;
       D* m_D;

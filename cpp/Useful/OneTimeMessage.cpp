@@ -33,35 +33,35 @@ struct AWT::OneTimeMessage::D
    bool        m_Sent;
 };
 
-AWT::OneTimeMessage::OneTimeMessage( const std::string& msg )
+AWT::OneTimeMessage::OneTimeMessage(const std::string& msg)
 {
    m_D = new D;
    m_D->m_Msg = msg;
    m_D->m_Sent = false;
 }
 
-AWT::OneTimeMessage::~OneTimeMessage( )
+AWT::OneTimeMessage::~OneTimeMessage()
 {
    delete m_D;
 }
 
-void AWT::OneTimeMessage::report( )
+void AWT::OneTimeMessage::report()
 {
-   if ( !m_D->m_Sent )
+   if (!m_D->m_Sent)
    {
-      DEBUGMACRO( m_D->m_Msg );
-      setSent( true );
+      DEBUGMACRO(m_D->m_Msg);
+      setSent(true);
    }
 }
 
-bool AWT::OneTimeMessage::isSent( ) const
+bool AWT::OneTimeMessage::isSent() const
 {
    return m_D->m_Sent;
 }
 
-void AWT::OneTimeMessage::setSent( const bool s )
+void AWT::OneTimeMessage::setSent(const bool s)
 {
-   if ( s != m_D->m_Sent )
+   if (s != m_D->m_Sent)
    {
       m_D->m_Sent = s;
    }

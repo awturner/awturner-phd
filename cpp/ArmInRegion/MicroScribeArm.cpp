@@ -39,66 +39,66 @@ int MicroscribeArm::connectedCount = 0;
 long MicroscribeArm::clocksPerUpdate = 0;
 long MicroscribeArm::lastUpdate = 0;
 
-double MicroscribeArm::PIBY180 = 4.0 * atan( 1.0 ) / 180.0;
+double MicroscribeArm::PIBY180 = 4.0 * atan(1.0) / 180.0;
 
-MicroscribeArm* MicroscribeArm::getInstance( )
+MicroscribeArm* MicroscribeArm::getInstance()
 {
-   return new MicroscribeArm( 10 );
+   return new MicroscribeArm(10);
 }
 
-MicroscribeArm::MicroscribeArm( int _updatesPerSecond )
-: updatesPerSecond( _updatesPerSecond ), secondsPerClock( 1.0 / CLOCKS_PER_SEC )
+MicroscribeArm::MicroscribeArm(int _updatesPerSecond)
+: updatesPerSecond(_updatesPerSecond), secondsPerClock(1.0 / CLOCKS_PER_SEC)
 {
    this->connected        = false;
    this->lastUpdate       = 0;
 
-   this->clocksPerUpdate  = static_cast<clock_t>( ( CLOCKS_PER_SEC + 0.0 ) / ( updatesPerSecond + 0.0 ) );
+   this->clocksPerUpdate  = static_cast<clock_t>((CLOCKS_PER_SEC + 0.0) / (updatesPerSecond + 0.0));
 
    int nResult = ArmStart(NULL);
-	if ( ARM_SUCCESS != nResult ) 
+	if (ARM_SUCCESS != nResult) 
 	{ 
       std::cerr << "Unable to Start ArmDll32" << std::endl; 
       canConnect = false;
 		return;
 	}
 
-   ArmEnd( );
+   ArmEnd();
 
    canConnect = true;
 }
 
-MicroscribeArm::~MicroscribeArm( )
+MicroscribeArm::~MicroscribeArm()
 {
    std::cerr << "Deleting me!" << std::endl;
 
-   if ( isConnected( ) )
-      disconnect( );
+   if (isConnected())
+      disconnect();
 }
 
-int MicroscribeArm::getUpdateFrequency( )
+int MicroscribeArm::getUpdateFrequency()
 {
    return updatesPerSecond;
 }
 
-bool MicroscribeArm::isAtLeastOneInstanceConnected( )
+bool MicroscribeArm::isAtLeastOneInstanceConnected()
 {
    return connectedCount != 0;
 }
 
-void MicroscribeArm::disconnectAll( )
+void MicroscribeArm::disconnectAll()
 {
    connectedCount = 0;
-   ArmEnd( );
+   ArmEnd();
 }
 
-bool MicroscribeArm::isConnected( )
+bool MicroscribeArm::isConnected()
 {
-   return connected = connected && isAtLeastOneInstanceConnected( );
+   return connected = connected && isAtLeastOneInstanceConnected();
 }
 
 bool MicroscribeArm::connect()
 {
-   if ( !canConnect )
+   if (!canConnect)
       return false;
 
    std::cerr << "There are already " << connectedCount << " clients connected." << std::endl;
@@ -106,14 +106,14 @@ bool MicroscribeArm::connect()
    std::cerr << this << "->" << canConnect << std::endl;
    // If this instance is already connected, the programmer should have
    // checked this first
-   if ( isConnected( ) )
+   if (isConnected())
    {
       throw "Arm is already connected!";
    }
 
    // If there is at least one other connected, then we don't need to do
    // anything
-   if ( isAtLeastOneInstanceConnected( ) )
+   if (isAtLeastOneInstanceConnected())
    {
       connectedCount++;
       connected = true;
@@ -123,7 +123,7 @@ bool MicroscribeArm::connect()
    int nResult;
 
    nResult = ArmStart(NULL);
-	if ( ARM_SUCCESS != nResult ) 
+	if (ARM_SUCCESS != nResult) 
 	{ 
       std::cerr << "Unable to Start ArmDll32" << std::endl; 
       canConnect = false;
@@ -136,39 +136,39 @@ bool MicroscribeArm::connect()
 	nResult = ArmSetErrorHandlerFunction(CANT_BEGIN_HANDLER, NULL);
 
    nResult = ArmConnect(0,0); 
-	if ( ARM_SUCCESS != nResult ) 
+	if (ARM_SUCCESS != nResult) 
 	{ 
       std::cerr << "Unable to Connect ArmDll32" << std::endl; 
-		disconnectAll( );
+		disconnectAll();
       canConnect = false;
 		return false;
 	}
 
-   nResult = ArmSetUpdateEx( ARM_FULL, updatesPerSecond ); 
-	if ( ARM_SUCCESS != nResult ) 
+   nResult = ArmSetUpdateEx(ARM_FULL, updatesPerSecond); 
+	if (ARM_SUCCESS != nResult) 
 	{ 
       std::cerr << "Unable to set Update type for ArmDll32" << std::endl; 
 		ArmDisconnect();
 
-		disconnectAll( );
+		disconnectAll();
 		
       return false;
 	}
 
-   ArmSetLengthUnits( ARM_MM );
-   ArmSetAngleUnits( ARM_DEGREES );
+   ArmSetLengthUnits(ARM_MM);
+   ArmSetAngleUnits(ARM_DEGREES);
 
    connected = true;
    connectedCount++;
    return true;
 }
 
-bool MicroscribeArm::disconnect( )
+bool MicroscribeArm::disconnect()
 {
    std::cerr << "There are " << connectedCount << " clients connected." << std::endl;
    std::cerr << "Arm object " << this << " is trying to disconnect." << std::endl;
    
-   if ( !isConnected( ) )
+   if (!isConnected())
    {
       throw "This arm is not connected!";
    }
@@ -176,45 +176,45 @@ bool MicroscribeArm::disconnect( )
    connectedCount--;
    connected = false;
 
-   if ( !isAtLeastOneInstanceConnected( ) )
+   if (!isAtLeastOneInstanceConnected())
    {
       std::cerr << "Last one out, switch off..." << std::endl;
       ArmDisconnect();
 
-	   disconnectAll( );
+	   disconnectAll();
    }
 
    return true;
 }
 
-bool MicroscribeArm::needsToUpdate( )
+bool MicroscribeArm::needsToUpdate()
 {
-   clock_t currentTime = clock( );
+   clock_t currentTime = clock();
 
-   return ( currentTime - lastUpdate > clocksPerUpdate );
+   return (currentTime - lastUpdate > clocksPerUpdate);
 }
 
-void MicroscribeArm::doUpdateIfNeeded( )
+void MicroscribeArm::doUpdateIfNeeded()
 {
-   if ( needsToUpdate( ) )
+   if (needsToUpdate())
    {   
       //std::cerr << "An update is needed!" << std::endl;
       
-      if ( !isConnected( ) )
+      if (!isConnected())
       {
          //std::cerr << "Arm isn't connected: connecting" << std::endl;
-         this->connect( );
+         this->connect();
       }
 
-      if ( ArmGetTipPosition( &position ) == ARM_NOT_CONNECTED 
-        || ArmGetTipOrientation( &orientation ) == ARM_NOT_CONNECTED 
-        || ArmGetJointAngles( ARM_DEGREES, joints ) == ARM_NOT_CONNECTED )
+      if (ArmGetTipPosition(&position) == ARM_NOT_CONNECTED 
+        || ArmGetTipOrientation(&orientation) == ARM_NOT_CONNECTED 
+        || ArmGetJointAngles(ARM_DEGREES, joints) == ARM_NOT_CONNECTED)
       {
          //std::cerr << "Connection lost!" << std::endl;
-         this->disconnect( );
+         this->disconnect();
 	   }
    
-      lastUpdate = clock( );
+      lastUpdate = clock();
       //std::cerr << "Successfully updated";
    }
    else
@@ -223,7 +223,7 @@ void MicroscribeArm::doUpdateIfNeeded( )
    }
 }
 
-void MicroscribeArm::zeroPositionAndOrientation( )
+void MicroscribeArm::zeroPositionAndOrientation()
 {
    this->orientation.x = this->orientation.y = this->orientation.z = 0;
    this->position.x    = this->position.y    = this->position.z    = 0;
@@ -231,7 +231,7 @@ void MicroscribeArm::zeroPositionAndOrientation( )
 
 double MicroscribeArm::getPosition(double *pos)
 {
-   doUpdateIfNeeded( );
+   doUpdateIfNeeded();
 
    pos[0] = this->position.x;
    pos[1] = this->position.y;
@@ -242,7 +242,7 @@ double MicroscribeArm::getPosition(double *pos)
 
 double MicroscribeArm::getOrientation(double *ori)
 {
-   doUpdateIfNeeded( );
+   doUpdateIfNeeded();
 
    ori[0] = this->orientation.x;
    ori[1] = this->orientation.y;
@@ -253,7 +253,7 @@ double MicroscribeArm::getOrientation(double *ori)
 
 double MicroscribeArm::getPositionAndOrientation(double* pos, double *ori, double* joints)
 {
-   doUpdateIfNeeded( );
+   doUpdateIfNeeded();
 
    pos[0] = this->position.x;
    pos[1] = this->position.y;
@@ -263,9 +263,9 @@ double MicroscribeArm::getPositionAndOrientation(double* pos, double *ori, doubl
    ori[1] = this->orientation.y;
    ori[2] = this->orientation.z;
 
-  if ( joints )
+  if (joints)
   {
-    for ( int i = 0; i < 6; ++i )
+    for (int i = 0; i < 6; ++i)
       joints[i] = this->joints[i];
   }
 
@@ -275,35 +275,35 @@ double MicroscribeArm::getPositionAndOrientation(double* pos, double *ori, doubl
 }
 
 template <class T>
-void MicroscribeArm::swap( T& a, T& b )
+void MicroscribeArm::swap(T& a, T& b)
 {
    const T tmp = a;
    a = b;
    b = tmp;
 }
 
-void MicroscribeArm::transposeMatrix( double* mat )
+void MicroscribeArm::transposeMatrix(double* mat)
 {
-   swap( mat[ 1], mat[ 4] );
-   swap( mat[ 2], mat[ 8] );
-   swap( mat[ 3], mat[12] );
+   swap(mat[ 1], mat[ 4]);
+   swap(mat[ 2], mat[ 8]);
+   swap(mat[ 3], mat[12]);
 
-   swap( mat[ 6], mat[ 9] );
-   swap( mat[ 7], mat[13] );
+   swap(mat[ 6], mat[ 9]);
+   swap(mat[ 7], mat[13]);
 
-   swap( mat[11], mat[14] );
+   swap(mat[11], mat[14]);
 }
 
-void MicroscribeArm::getMatrixRowMajor( double* mat )
+void MicroscribeArm::getMatrixRowMajor(double* mat)
 {
-   getMatrixColMajor( mat );
+   getMatrixColMajor(mat);
 
-   transposeMatrix( mat );
+   transposeMatrix(mat);
 }
 
-void MicroscribeArm::getMatrixColMajor( double* mat )
+void MicroscribeArm::getMatrixColMajor(double* mat)
 {
-   doUpdateIfNeeded( );
+   doUpdateIfNeeded();
 
    // Return 4x4 matrix in a column-major order, like OpenGL
 
@@ -313,13 +313,13 @@ void MicroscribeArm::getMatrixColMajor( double* mat )
    // [  mat[ 3]  mat[ 7]  mat[11]  mat[15]
 
    // Avoid repeated calculations...
-   double cx = cos( this->orientation.x * PIBY180 );
-   double cy = cos( this->orientation.y * PIBY180  );
-   double cz = cos( this->orientation.z * PIBY180  );
+   double cx = cos(this->orientation.x * PIBY180);
+   double cy = cos(this->orientation.y * PIBY180 );
+   double cz = cos(this->orientation.z * PIBY180 );
 
-   double sx = sin( this->orientation.x * PIBY180  );
-   double sy = sin( this->orientation.y * PIBY180  );
-   double sz = sin( this->orientation.z * PIBY180  );
+   double sx = sin(this->orientation.x * PIBY180 );
+   double sy = sin(this->orientation.y * PIBY180 );
+   double sz = sin(this->orientation.z * PIBY180 );
 
    mat[ 0] = cz * cy;
    mat[ 4] = cz * sy * sx - sz * cx;

@@ -37,77 +37,77 @@ class QtSegEditForm : public QMainWindow, public Ui::QtSegEditForm
    Q_OBJECT
 
 public:
-   QtSegEditForm( QWidget* in_Parent = 0, Qt::WFlags in_Fl = 0 )
-   : QMainWindow( in_Parent, in_Fl )
+   QtSegEditForm(QWidget* in_Parent = 0, Qt::WFlags in_Fl = 0)
+   : QMainWindow(in_Parent, in_Fl)
    {   
-      setupUi( this );
+      setupUi(this);
 
-      scrollArea->setBackgroundRole( QPalette::Dark );
-      scrollArea->setWidgetResizable( true );
+      scrollArea->setBackgroundRole(QPalette::Dark);
+      scrollArea->setWidgetResizable(true);
 
-      connect( actionOpen, SIGNAL( triggered( ) ), this, SLOT( open( ) ) );
-      actionOpen->setShortcut( tr( "Ctrl+O" ) );
+      connect(actionOpen, SIGNAL(triggered()), this, SLOT(open()));
+      actionOpen->setShortcut(tr("Ctrl+O"));
 
-      connect( actionZoomIn,  SIGNAL( triggered( ) ), this, SLOT( zoomIn( )  ) );
-      actionZoomIn->setShortcut( QKeySequence::ZoomIn );
-      connect( actionZoomOut, SIGNAL( triggered( ) ), this, SLOT( zoomOut( ) ) );
-      actionZoomOut->setShortcut( QKeySequence::ZoomOut  );
+      connect(actionZoomIn,  SIGNAL(triggered()), this, SLOT(zoomIn() ));
+      actionZoomIn->setShortcut(QKeySequence::ZoomIn);
+      connect(actionZoomOut, SIGNAL(triggered()), this, SLOT(zoomOut()));
+      actionZoomOut->setShortcut(QKeySequence::ZoomOut );
 
-      connect( actionNormalSize, SIGNAL( triggered( ) ), this, SLOT( zoomNormal( ) ) );
-      actionNormalSize->setShortcut( tr( "Ctrl+0" ) );
+      connect(actionNormalSize, SIGNAL(triggered()), this, SLOT(zoomNormal()));
+      actionNormalSize->setShortcut(tr("Ctrl+0"));
 
-      setZoomActionState( );
+      setZoomActionState();
    }
 
 private slots:
-   void open( )
+   void open()
    {
-      QString filename = QFileDialog::getOpenFileName( this,
-         tr( "Open File" ), QDir::homePath() );
+      QString filename = QFileDialog::getOpenFileName(this,
+         tr("Open File"), QDir::homePath());
 
-      if ( !filename.isEmpty() )
+      if (!filename.isEmpty())
       {
-         image->open( filename );
+         image->open(filename);
 
-         setZoomActionState( );
+         setZoomActionState();
       }
    }
 
-   void setZoomActionState( )
+   void setZoomActionState()
    {
-      if ( image->hasData( ) )
+      if (image->hasData())
       {
-         actionZoomIn->setEnabled( image->getScaleFactor( ) < 3.0 );
-         actionZoomOut->setEnabled( image->getScaleFactor( ) > 1.0/3.0 );
-         actionNormalSize->setEnabled( true );
+         actionZoomIn->setEnabled(image->getScaleFactor() < 3.0);
+         actionZoomOut->setEnabled(image->getScaleFactor() > 1.0/3.0);
+         actionNormalSize->setEnabled(true);
       }
       else
       {
-         actionZoomIn->setEnabled( false );
-         actionZoomOut->setEnabled( false );
-         actionNormalSize->setEnabled( false );
+         actionZoomIn->setEnabled(false);
+         actionZoomOut->setEnabled(false);
+         actionNormalSize->setEnabled(false);
       }
    }
 
-   void zoomIn( )
+   void zoomIn()
    {
-      image->zoomBy ( 1.25 );
-      setZoomActionState( );      
+      image->zoomBy (1.25);
+      setZoomActionState();      
    }
 
-   void zoomOut( )
+   void zoomOut()
    {
-      image->zoomBy ( 0.8 );
-      setZoomActionState( );
+      image->zoomBy (0.8);
+      setZoomActionState();
    }
 
-   void zoomNormal( )
+   void zoomNormal()
    {
-      image->zoom( 1.0 );
-      setZoomActionState( );
+      image->zoom(1.0);
+      setZoomActionState();
    }
 
-   void adjustScrollBar( QScrollBar* scrollBar, double factor )
+   void adjustScrollBar(QScrollBar* scrollBar, double factor)
    {
       scrollBar->setValue(int(factor * scrollBar->value()
                              + ((factor - 1) * scrollBar->pageStep()/2)));

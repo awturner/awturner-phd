@@ -25,7 +25,7 @@
 */
 #ifndef __OPENGLDRAWABLEMESHNORMALS_H__
 #define __OPENGLDRAWABLEMESHNORMALS_H__
-#pragma warning( disable: 4250 )
+#pragma warning(disable: 4250)
 
 #include "OpenGLDrawDisplayList.h"
 
@@ -41,38 +41,38 @@ namespace AWT
    class OpenGLDrawableMeshNormals : public OpenGLDrawDisplayList, public virtual DrawableMeshNormals<T>
    {
    public:
-      typedef ManagedAutoPointer<OpenGLDrawableMeshNormals<T>> P;
+      typedef ManagedAutoPointer<OpenGLDrawableMeshNormals<T> > P;
 
    protected:
-      OpenGLDrawableMeshNormals( typename Mesh<T>::P mesh );
-      virtual ~OpenGLDrawableMeshNormals( );
+      OpenGLDrawableMeshNormals(typename Mesh<T>::P mesh);
+      virtual ~OpenGLDrawableMeshNormals();
 
    public:
-      static P getInstance( typename Mesh<T>::P mesh );
+      static P getInstance(typename Mesh<T>::P mesh);
 
-      ModifiedTime getChildModifiedTime( );
+      ModifiedTime getChildModifiedTime();
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual typename Mesh<T>::P getMesh( );
+      virtual typename Mesh<T>::P getMesh();
 
-      virtual void setMesh( typename Mesh<T>::P mesh );
+      virtual void setMesh(typename Mesh<T>::P mesh);
 
-      virtual DrawNormalsType getDrawNormalsType( ) const;
-      virtual void setDrawNormalsType( const DrawNormalsType da );
+      virtual DrawNormalsType getDrawNormalsType() const;
+      virtual void setDrawNormalsType(const DrawNormalsType da);
 
-      virtual T getScale( ) const;
-      virtual void setScale( const T scale );
+      virtual T getScale() const;
+      virtual void setScale(const T scale);
 
-      virtual DrawMaterial::P getMaterial( );
-      virtual void setMaterial( DrawMaterial::P mat );
+      virtual DrawMaterial::P getMaterial();
+      virtual void setMaterial(DrawMaterial::P mat);
 
    protected:
-      void buildList( DrawContext::P context );
+      void buildList(DrawContext::P context);
 
-      void updateBounds( );
+      void updateBounds();
 
-      double getBoundImpl( unsigned int i );
+      double getBoundImpl(unsigned int i);
 
    protected:
       struct D;
@@ -80,5 +80,5 @@ namespace AWT
    };
 }
 
-#pragma warning( default: 4250 )
+#pragma warning(default: 4250)
 #endif // __OPENGLDRAWABLEMESHNORMALS_H__

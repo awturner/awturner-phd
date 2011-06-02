@@ -45,57 +45,57 @@ AWT::SimpleMesh::NormalSearchFilter::~NormalSearchFilter()
    delete m_D;
 }
 
-AWT::SimpleMesh::NormalSearchFilter::P AWT::SimpleMesh::NormalSearchFilter::getInstance( )
+AWT::SimpleMesh::NormalSearchFilter::P AWT::SimpleMesh::NormalSearchFilter::getInstance()
 {
-   AUTOGETINSTANCE( AWT::SimpleMesh::NormalSearchFilter, ( ) );
+   AUTOGETINSTANCE(AWT::SimpleMesh::NormalSearchFilter, ());
 }
 
-GETNAMEMACRO( AWT::SimpleMesh::NormalSearchFilter );
+GETNAMEMACRO(AWT::SimpleMesh::NormalSearchFilter);
 
 void AWT::SimpleMesh::NormalSearchFilter::setTestPoint(const AWT::SimpleMesh::Point p)
 {
    m_D->testPoint = p;
-   modified( );
+   modified();
 }
 
-bool AWT::SimpleMesh::NormalSearchFilter::check( const Point p, const Index i ) const
+bool AWT::SimpleMesh::NormalSearchFilter::check(const Point p, const Index i) const
 {
    return true;
 
    Point delta = p - m_D->testPoint;
 
-   if ( delta.squared_magnitude() < 1 )
+   if (delta.squared_magnitude() < 1)
       return true;
 
-   return inner_product<double>( delta.normalize( ), m_D->testNormal ) >= m_D->cosineThreshold;
+   return inner_product<double>(delta.normalize(), m_D->testNormal) >= m_D->cosineThreshold;
 }
 
-AWT::SimpleMesh::Point AWT::SimpleMesh::NormalSearchFilter::getTestPoint( ) const
+AWT::SimpleMesh::Point AWT::SimpleMesh::NormalSearchFilter::getTestPoint() const
 {
    return m_D->testPoint;
 }
 
 void AWT::SimpleMesh::NormalSearchFilter::setTestNormal(const AWT::SimpleMesh::Point p)
 {
-   m_D->testNormal = p / p.magnitude( );
-   modified( );
+   m_D->testNormal = p / p.magnitude();
+   modified();
 }
 
-AWT::SimpleMesh::Point AWT::SimpleMesh::NormalSearchFilter::getTestNormal( ) const
+AWT::SimpleMesh::Point AWT::SimpleMesh::NormalSearchFilter::getTestNormal() const
 {
    return m_D->testNormal;
 }
 
-void AWT::SimpleMesh::NormalSearchFilter::setCosineThreshold( const double v )
+void AWT::SimpleMesh::NormalSearchFilter::setCosineThreshold(const double v)
 {
-   if ( v != m_D->cosineThreshold )
+   if (v != m_D->cosineThreshold)
    {
       m_D->cosineThreshold = v;
-      modified( );
+      modified();
    }
 }
 
-double AWT::SimpleMesh::NormalSearchFilter::getCosineThreshold( ) const
+double AWT::SimpleMesh::NormalSearchFilter::getCosineThreshold() const
 {
    return m_D->cosineThreshold;
 }

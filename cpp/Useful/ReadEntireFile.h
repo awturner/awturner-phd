@@ -33,11 +33,11 @@ namespace AWT
    class ReadEntireFile
    {
    protected:
-      ReadEntireFile( );
-      virtual ~ReadEntireFile( );
+      ReadEntireFile();
+      virtual ~ReadEntireFile();
 
    public:
-      static std::string read( const std::string& filename );
+      static std::string read(const std::string& filename);
 
    };
 }

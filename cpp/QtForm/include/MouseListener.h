@@ -35,10 +35,10 @@ namespace AWT
    public:
       typedef ManagedAutoPointer<MouseListener> P;
 
-      virtual void mouseEntered( ) = 0;
-      virtual void mouseExited( ) = 0;
+      virtual void mouseEntered() = 0;
+      virtual void mouseExited() = 0;
 
-      virtual void mouseChanged( const double* eye, const double* normal, const int button ) = 0;
+      virtual void mouseChanged(const double* eye, const double* normal, const int button) = 0;
    };
 }
 

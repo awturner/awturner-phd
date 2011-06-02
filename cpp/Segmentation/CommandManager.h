@@ -34,18 +34,18 @@ namespace AWT
    class CommandManager
    {
    public:
-      ~CommandManager( );
+      ~CommandManager();
 
-      bool canUndo( );
-      bool canRedo( );
+      bool canUndo();
+      bool canRedo();
 
-      bool undo( );
-      bool redo( );
+      bool undo();
+      bool redo();
 
-      bool execute( Command* cmd );
+      bool execute(Command* cmd);
 
    protected:
-      void clearUndoRedo( );
+      void clearUndoRedo();
 
       std::vector<UndoableCommand*> undoStack;
       std::vector<UndoableCommand*> redoStack;

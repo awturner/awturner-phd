@@ -36,15 +36,15 @@ struct AWT::MatlabEngine::D
 Engine* AWT::MatlabEngine::D::ms_Engine = 0;
 unsigned int AWT::MatlabEngine::D::ms_count  = 0;
 
-AWT::MatlabEngine::MatlabEngine( )
+AWT::MatlabEngine::MatlabEngine()
 {
    m_D = new D;
 
-   if ( D::ms_Engine == 0 )
+   if (D::ms_Engine == 0)
    {
-      D::ms_Engine = engOpen( "\0" );
+      D::ms_Engine = engOpen("\0");
 
-      if ( !D::ms_Engine )
+      if (!D::ms_Engine)
       {
          throw "Could not start MATLAB Engine!";
       }
@@ -53,40 +53,40 @@ AWT::MatlabEngine::MatlabEngine( )
    ++D::ms_count;
 }
 
-AWT::MatlabEngine::~MatlabEngine( )
+AWT::MatlabEngine::~MatlabEngine()
 {
-   if ( --D::ms_count == 0 )
+   if (--D::ms_count == 0)
    {
-      engClose( D::ms_Engine );
+      engClose(D::ms_Engine);
       D::ms_Engine = 0;
    }
 
    delete m_D;
 }
 
-AWT::MatlabEngine::P AWT::MatlabEngine::getInstance( )
+AWT::MatlabEngine::P AWT::MatlabEngine::getInstance()
 {
-   AUTOGETINSTANCE( AWT::MatlabEngine, ( ) );
+   AUTOGETINSTANCE(AWT::MatlabEngine, ());
 }
 
-GETNAMEMACRO( AWT::MatlabEngine );
+GETNAMEMACRO(AWT::MatlabEngine);
 
-Engine* AWT::MatlabEngine::getEngine( )
+Engine* AWT::MatlabEngine::getEngine()
 {
    return D::ms_Engine;
 }
 
-int AWT::MatlabEngine::eval( const char* cmd )
+int AWT::MatlabEngine::eval(const char* cmd)
 {
-   return engEvalString( D::ms_Engine, cmd );
+   return engEvalString(D::ms_Engine, cmd);
 }
 
-AWT::MatlabArray::P AWT::MatlabEngine::getVariable( const char* name )
+AWT::MatlabArray::P AWT::MatlabEngine::getVariable(const char* name)
 {
-   return MatlabArray::getInstance( this, name );
+   return MatlabArray::getInstance(this, name);
 }
 
-int AWT::MatlabEngine::putVariable( const char* name, AWT::MatlabArray::P var )
+int AWT::MatlabEngine::putVariable(const char* name, AWT::MatlabArray::P var)
 {
-   return engPutVariable( D::ms_Engine, name, var->getArray() );
+   return engPutVariable(D::ms_Engine, name, var->getArray());
 }

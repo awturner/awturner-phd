@@ -41,20 +41,20 @@ namespace AWT
       typedef ManagedAutoPointer<DrawFindGenerators> P;
 
    protected:
-      DrawFindGenerators( typename FindGenerators<T>::P mb );
-      virtual ~DrawFindGenerators( );
+      DrawFindGenerators(typename FindGenerators<T>::P mb);
+      virtual ~DrawFindGenerators();
 
    public:
-      static P getInstance( typename FindGenerators<T>::P mb  );
-      virtual std::string getClassName( ) const;
+      static P getInstance(typename FindGenerators<T>::P mb );
+      virtual std::string getClassName() const;
 
-      virtual DrawMaterial::P getMaterial( );
-      virtual void setMaterial( DrawMaterial::P mat );
+      virtual DrawMaterial::P getMaterial();
+      virtual void setMaterial(DrawMaterial::P mat);
 
-      virtual void getBounds( double* bounds );
+      virtual void getBounds(double* bounds);
 
    protected:
-      virtual void drawImpl( DrawContext::P context );
+      virtual void drawImpl(DrawContext::P context);
 
       struct D;
       D* m_D;

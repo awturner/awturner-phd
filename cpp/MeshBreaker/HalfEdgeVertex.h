@@ -34,15 +34,15 @@ namespace AWT
    {
       friend class HalfEdgeMesh;
    protected:
-      HalfEdgeVertex( const MeshIndex v );
-      virtual ~HalfEdgeVertex( );
+      HalfEdgeVertex(const MeshIndex v);
+      virtual ~HalfEdgeVertex();
 
    public:
-      virtual MeshIndex getIndex( ) const;
+      virtual MeshIndex getIndex() const;
 
-      virtual HalfEdge* getEdge( ) const;
+      virtual HalfEdge* getEdge() const;
 
-      virtual void setEdge( HalfEdge* edge );
+      virtual void setEdge(HalfEdge* edge);
 
    protected:
       struct D;

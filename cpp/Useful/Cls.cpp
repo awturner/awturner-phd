@@ -31,7 +31,7 @@
 /* Standard error macro for reporting API errors */ 
 #define PERR(bSuccess, api){if(!(bSuccess)) printf("%s:Error %d from %s on line %d\n", __FILE__, GetLastError(), api, __LINE__);}
 
-void AWT::cls( )
+void AWT::cls()
 {
    // Top left corner coordinates
    COORD coord = {0};           
@@ -58,7 +58,7 @@ void AWT::cls( )
       dwSize = cBufferInfo.dwSize.X * cBufferInfo.dwSize.Y;
 
       // Write space characters to buffer as many times as needed, i.e. dwSize    
-      FillConsoleOutputCharacter(hI, TEXT(' '), dwSize, coord, &dwI );
+      FillConsoleOutputCharacter(hI, TEXT(' '), dwSize, coord, &dwI);
 
       // Set console cursor to top left coord
       SetConsoleCursorPosition(hI, coord); 

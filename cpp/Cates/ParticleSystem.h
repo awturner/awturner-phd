@@ -39,26 +39,26 @@ namespace AWT
       typedef ManagedAutoPointer<ParticleSystem> P;
 
    protected:
-      ParticleSystem( );
-      virtual ~ParticleSystem( );
+      ParticleSystem();
+      virtual ~ParticleSystem();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
-      MeshIndex getNumberOfMeshes( );
-      MeshIndex getNumberOfParticles( );
+      MeshIndex getNumberOfMeshes();
+      MeshIndex getNumberOfParticles();
 
-      void setSigmaBounds( const T lower, const T upper );
+      void setSigmaBounds(const T lower, const T upper);
 
-      typename Mesh<T>::P getMesh( MeshIndex i );
-      typename Tuples<T>::P getParticles( MeshIndex i );
+      typename Mesh<T>::P getMesh(MeshIndex i);
+      typename Tuples<T>::P getParticles(MeshIndex i);
 
-      void addMesh( typename Mesh<T>::P mesh, typename Tuples<T>::P particles );
+      void addMesh(typename Mesh<T>::P mesh, typename Tuples<T>::P particles);
 
-      void update( const T alpha );
+      void update(const T alpha);
 
-      void split( );
+      void split();
 
    protected:
       struct D;

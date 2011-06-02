@@ -31,8 +31,8 @@
 
 #include "Useful/PrintMacros.h"
 
-#define STANDARDGETINSTANCE( Class, Args ) { Class* ret = new Class##Args; ret->countMe( ); return ret; }
-#define GETNAMEMACRO( Class ) std::string Class::getClassName( ) const { return #Class; }
+#define STANDARDGETINSTANCE(Class, Args) { Class* ret = new Class##Args; ret->countMe(); return ret; }
+#define GETNAMEMACRO(Class) std::string Class::getClassName() const { return #Class; }
 
 namespace AWT
 {
@@ -41,70 +41,70 @@ namespace AWT
    class ReferenceCountedObject
    {
    public:
-      ReferenceCount getReferenceCount( ) const;
+      ReferenceCount getReferenceCount() const;
 
-      void keep( const void* obj = 0 );
-      void release( const void* obj = 0);
+      void keep(const void* obj = 0);
+      void release(const void* obj = 0);
 
-      void monitor( );
-      void unmonitor( );
+      void monitor();
+      void unmonitor();
 
-      virtual std::string getClassName( ) const = 0;
+      virtual std::string getClassName() const = 0;
 
-      void countMe( );
+      void countMe();
 
-      ReferenceCount getObjectCount( std::string& str );
+      ReferenceCount getObjectCount(std::string& str);
 
-      static void record( );
+      static void record();
 
-      static void compare( );
+      static void compare();
 
-      static void reportOne( const std::string key );
+      static void reportOne(const std::string key);
 
-      static void report( const bool hideZeros = true );
+      static void report(const bool hideZeros = true);
 
       static bool debug;
 
       template <class RefTy>
-      static void swapRefCountedObjects( const void* /*obj*/, RefTy*& holder, RefTy* objNew, const bool = false )
+      static void swapRefCountedObjects(const void* /*obj*/, RefTy*& holder, RefTy* objNew, const bool = false)
       {
-         if ( debug ) DEBUGLINE;
+         if (debug) DEBUGLINE;
 
-         if ( holder != objNew )
+         if (holder != objNew)
          {
             RefTy* objOld = holder;
             
-            if ( debug ) DEBUGLINE;
+            if (debug) DEBUGLINE;
 
-            if ( objNew != 0 )
+            if (objNew != 0)
             {
-               objNew->keep( );
+               objNew->keep();
             }
-            if ( debug ) DEBUGLINE;
+            if (debug) DEBUGLINE;
             
             holder = objNew;
             
-            if ( debug ) DEBUGLINE;
+            if (debug) DEBUGLINE;
             
-            if ( objOld != 0 )
+            if (objOld != 0)
             {
-               if ( debug ) DEBUGLINE;
-               objOld->release( );
+               if (debug) DEBUGLINE;
+               objOld->release();
             }
-            if ( debug ) DEBUGLINE;
+            if (debug) DEBUGLINE;
             
          }
-         if ( debug )
+         if (debug)
             DEBUGLINE;
       }
          
    protected:
-      static void report( const std::string name, const ReferenceCount n );
+      static void report(const std::string name, const ReferenceCount n);
 
-      void uncountMe( );
+      void uncountMe();
 
-      ReferenceCountedObject( );
-      virtual ~ReferenceCountedObject( );
+      ReferenceCountedObject();
+      virtual ~ReferenceCountedObject();
 
    private:
       ReferenceCount m_ReferenceCount;

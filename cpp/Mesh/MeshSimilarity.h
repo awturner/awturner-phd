@@ -37,24 +37,24 @@ namespace AWT
    class MeshSimilarity : public ManagedObject
    {
    public:
-      typedef ManagedAutoPointer<MeshSimilarity<T>> P;
+      typedef ManagedAutoPointer<MeshSimilarity<T> > P;
 
    protected:
-      MeshSimilarity( typename Mesh<T>::P meshA, typename Mesh<T>::P meshB, const T aodThresh, const unsigned int subdivs, const bool inCorr );
-      virtual ~MeshSimilarity( );
+      MeshSimilarity(typename Mesh<T>::P meshA, typename Mesh<T>::P meshB, const T aodThresh, const unsigned int subdivs, const bool inCorr);
+      virtual ~MeshSimilarity();
 
    public:
-      static P getInstance( typename Mesh<T>::P meshA, typename Mesh<T>::P meshB, const T aodThresh, const unsigned int subdivs, const bool inCorr = false );
+      static P getInstance(typename Mesh<T>::P meshA, typename Mesh<T>::P meshB, const T aodThresh, const unsigned int subdivs, const bool inCorr = false);
 
-      std::string getClassName( ) const;
+      std::string getClassName() const;
 
-      T getMeanDistance( )    const;
-      T getRmsDistance( )     const;
-      T getMaximumDistance( ) const;
-      T getAreaOfDeviation( ) const;
+      T getMeanDistance()    const;
+      T getRmsDistance()     const;
+      T getMaximumDistance() const;
+      T getAreaOfDeviation() const;
 
-      T getAreaOfDeviationThreshold( ) const;
-      unsigned int getNumberOfSubdivisions( ) const;
+      T getAreaOfDeviationThreshold() const;
+      unsigned int getNumberOfSubdivisions() const;
 
    protected:
       struct D;

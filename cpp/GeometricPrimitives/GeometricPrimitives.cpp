@@ -37,7 +37,7 @@ namespace AWT
       template AxisAlignedBox<double>;
       template GeometryQueries<double>;
       
-      template Assembly<double, Point<double>>;
+      template Assembly<double, Point<double> >;
 
       template Point<float>;
       template Plane<float>;

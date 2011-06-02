@@ -67,9 +67,9 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
       STATE_UNDEFINED                 = 11
    };
 
-   std::string getStateName( State state )
+   std::string getStateName(State state)
    {
-      switch ( state )
+      switch (state)
       {
       case STATE_SETUP:
          return "Setup";
@@ -97,41 +97,41 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
       }
    }
 
-   bool step( )
+   bool step()
    {
       m_CurrentState = m_NextState;
       m_NextState = D::STATE_UNDEFINED;
 
-      if ( !m_ExternalStop )
+      if (!m_ExternalStop)
       {
-         switch ( m_CurrentState )
+         switch (m_CurrentState)
          {
          case D::STATE_SETUP:
-            stepSetup( );
+            stepSetup();
             break;
          case D::STATE_INITIALIZE:
-            stepInitialize( );
+            stepInitialize();
             break;
          case D::STATE_BEFORE_RIGID_ALIGNMENT:
-            stepBeforeRigidAlignment( );
+            stepBeforeRigidAlignment();
             break;
          case D::STATE_RIGID_ALIGNMENT:
-            DEBUGMACRO( "RIGID" );
-            stepRigidAlignment( );
+            DEBUGMACRO("RIGID");
+            stepRigidAlignment();
             break;
          case D::STATE_MESH_REFINEMENT:
-            DEBUGMACRO( "STATE_MESH_REFINEMENT" );
-            stepMeshRefinement( );
+            DEBUGMACRO("STATE_MESH_REFINEMENT");
+            stepMeshRefinement();
             break;
          case D::STATE_BEFORE_NRIGID_ALIGNMENT:
-            stepBeforeNonRigidAlignment( );
+            stepBeforeNonRigidAlignment();
             break;
          case D::STATE_NRIGID_ALIGNMENT:
-            DEBUGMACRO( "NON RIGID" );
-            stepNonRigidAlignment( );
+            DEBUGMACRO("NON RIGID");
+            stepNonRigidAlignment();
             break;
          case D::STATE_DECIDE_TO_TERMINATE:
-            stepDecideToTerminate( );
+            stepDecideToTerminate();
             break;
          case D::STATE_STOP:
             m_Stopped = true;
@@ -156,21 +156,21 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
       return false;
    }
 
-   bool stepSetup( )
+   bool stepSetup()
    {
-      if ( 
+      if (
          !m_SourceMeshFilenameSet || 
          !m_TargetMeshFilenameSet ||
-         ( m_MeshSpacings.size( ) == 0 && *m_Nra->getControlPoints( ) == 0 )
-         )
+         (m_MeshSpacings.size() == 0 && *m_Nra->getControlPoints() == 0)
+        )
       {
          m_NextState = STATE_ERROR;
 
-         if ( !m_SourceMeshFilenameSet )
+         if (!m_SourceMeshFilenameSet)
             m_LastError = "Source mesh filename not set!";
-         else if ( !m_TargetMeshFilenameSet )
+         else if (!m_TargetMeshFilenameSet)
             m_LastError = "Target mesh filename not set!";
-         else if ( m_MeshSpacings.size( ) == 0 && *m_Nra->getControlPoints( ) == 0 )
+         else if (m_MeshSpacings.size() == 0 && *m_Nra->getControlPoints() == 0)
             m_LastError = "No mesh spacings!";
          else
             m_LastError = "Shouldn't have got to here";
@@ -183,13 +183,13 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
       return true;
    }
 
-   bool stepInitialize( )
+   bool stepInitialize()
    {
       m_MeshSpacingPointer = 0;
 
       m_TotalIterations = 0;
 
-      m_LastRms         = std::numeric_limits<T>::infinity( );
+      m_LastRms         = std::numeric_limits<T>::infinity();
 
       m_NextState = m_LoadOnly ? STATE_STOP : STATE_BEFORE_RIGID_ALIGNMENT;
 
@@ -198,7 +198,7 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
       return true;
    }
 
-   bool stepBeforeRigidAlignment( )
+   bool stepBeforeRigidAlignment()
    {
       m_RigidIterations = 0;
       m_NextState           = STATE_RIGID_ALIGNMENT;
@@ -206,7 +206,7 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
       return true;
    }
 
-   bool stepBeforeNonRigidAlignment( )
+   bool stepBeforeNonRigidAlignment()
    {
       m_NRigidIterations = 0;
       m_NextState           = STATE_NRIGID_ALIGNMENT;
@@ -214,33 +214,33 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
       return true;
    }
 
-   bool stepRigidAlignment( )
+   bool stepRigidAlignment()
    {
       ++m_RigidIterations;
       ++m_TotalIterations;
 
-      PRINTBOOL( m_AllowScale );
-      m_Nra->rigidAlignmentStep( m_AllowScale );
+      PRINTBOOL(m_AllowScale);
+      m_Nra->rigidAlignmentStep(m_AllowScale);
 
-      T gradient = m_Nra->getRmsError( )-m_LastRms;
+      T gradient = m_Nra->getRmsError()-m_LastRms;
 
-      m_LastRms = m_Nra->getRmsError( );
+      m_LastRms = m_Nra->getRmsError();
 
-      PRINTVBL( gradient );
-      PRINTVBL( m_Nra->getRmsError( ) );
-      PRINTVBL( m_Nra->getMaxError( ) );
+      PRINTVBL(gradient);
+      PRINTVBL(m_Nra->getRmsError());
+      PRINTVBL(m_Nra->getMaxError());
 
-      if ( gradient > 0 )
+      if (gradient > 0)
       {
          m_LastError = "Convergence is not monotonic!";
-         DEBUGMACRO( m_LastError );
+         DEBUGMACRO(m_LastError);
       }
 
-      if ( gradient > -1e-4  )
+      if (gradient > -1e-4 )
       {
-         if ( m_RigidOnly )
+         if (m_RigidOnly)
          {
-            if ( gradient < 0 )
+            if (gradient < 0)
             {
                m_NextState = STATE_DECIDE_TO_TERMINATE;
                return true;
@@ -253,7 +253,7 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
          }
          else
          {
-            if ( !m_AllowScale )
+            if (!m_AllowScale)
             {
                m_AllowScale = true;
                m_NextState = STATE_BEFORE_RIGID_ALIGNMENT;
@@ -274,9 +274,9 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
       return true;
    }
 
-   bool stepMeshRefinement( )
+   bool stepMeshRefinement()
    {
-      if ( m_MeshSpacingPointer < m_MeshSpacings.size( ) )
+      if (m_MeshSpacingPointer < m_MeshSpacings.size())
       {
          // Retrieve the spacing from the list
          T spacing = m_MeshSpacings[ m_MeshSpacingPointer ];
@@ -284,36 +284,36 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
          // Increment the pointer so that we don't reuse this
          ++m_MeshSpacingPointer;
 
-         ControlPointSet<T>::P cps = ControlPointSet<T>::getInstance( m_SourceBounds, spacing );
+         ControlPointSet<T>::P cps = ControlPointSet<T>::getInstance(m_SourceBounds, spacing);
 
-         if ( *m_Nra->getControlPoints( ) != 0 && m_Nra->getControlPoints( )->getNumberOfObjects( ) > 0 )
+         if (*m_Nra->getControlPoints() != 0 && m_Nra->getControlPoints()->getNumberOfObjects() > 0)
          {
             // We need to fit to the existing deformation values
-            cps->fit( m_Nra->getControlPoints( ) );   
+            cps->fit(m_Nra->getControlPoints());   
          }
 
-         m_Nra->setControlPoints( cps );
+         m_Nra->setControlPoints(cps);
 
-         m_Nra->updateSourcePoints( );
+         m_Nra->updateSourcePoints();
          
-         PRINTVBL( m_Nra->getControlPoints( )->getNumberOfObjects( ) );
+         PRINTVBL(m_Nra->getControlPoints()->getNumberOfObjects());
       }
 
       m_NextState = STATE_BEFORE_RIGID_ALIGNMENT; //STATE_BEFORE_NRIGID_ALIGNMENT;
       return true;
    }
 
-   bool stepNonRigidAlignment( )
+   bool stepNonRigidAlignment()
    {
-      ControlPointSet<T>::P cps = m_Nra->getControlPoints( );
+      ControlPointSet<T>::P cps = m_Nra->getControlPoints();
 
-      if ( *cps == 0 )
+      if (*cps == 0)
       {
          m_NextState = STATE_MESH_REFINEMENT; //STATE_DECIDE_TO_TERMINATE;
          return true;
       }
 
-      if ( m_Nra->getControlPoints( )->getNumberOfObjects( ) == 0 )
+      if (m_Nra->getControlPoints()->getNumberOfObjects() == 0)
       {
          m_NextState = STATE_MESH_REFINEMENT; //STATE_DECIDE_TO_TERMINATE;
          return true;
@@ -321,21 +321,21 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
 
       ++m_NRigidIterations;
       ++m_TotalIterations;
-      m_Nra->nonRigidAlignmentStep( );
-      T rmsGradient = m_Nra->getRmsError( )-m_LastRms;
-      m_LastRms = m_Nra->getRmsError( );
+      m_Nra->nonRigidAlignmentStep();
+      T rmsGradient = m_Nra->getRmsError()-m_LastRms;
+      m_LastRms = m_Nra->getRmsError();
 
-      PRINTVBL( rmsGradient );
-      PRINTVBL( m_Nra->getRmsError( ) );
-      PRINTVBL( m_Nra->getMaxError( ) );
+      PRINTVBL(rmsGradient);
+      PRINTVBL(m_Nra->getRmsError());
+      PRINTVBL(m_Nra->getMaxError());
 
-      if ( rmsGradient > 0 )
+      if (rmsGradient > 0)
       {
          m_LastError = "Convergence is not monotonic!";
-         DEBUGMACRO( m_LastError );
+         DEBUGMACRO(m_LastError);
       }
 
-      if ( abs(rmsGradient) < 1e-3 || m_NRigidIterations >= 20 )
+      if (abs(rmsGradient) < 1e-3 || m_NRigidIterations >= 20)
       {
          m_NextState = STATE_DECIDE_TO_TERMINATE;
          return true;
@@ -347,9 +347,9 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
       }
    }
 
-   bool stepDecideToTerminate( )
+   bool stepDecideToTerminate()
    {
-      if ( m_RigidIterations < 3 && m_NRigidIterations < 3 )
+      if (m_RigidIterations < 3 && m_NRigidIterations < 3)
       {
          m_NextState = STATE_STOP;
          return true;
@@ -397,7 +397,7 @@ struct AWT::NonRigidAlignmentStateMachine<T>::D
 };
 
 template <class T>
-AWT::NonRigidAlignmentStateMachine<T>::NonRigidAlignmentStateMachine( StateMachineStack::P stack, const bool rigidOnly )
+AWT::NonRigidAlignmentStateMachine<T>::NonRigidAlignmentStateMachine(StateMachineStack::P stack, const bool rigidOnly)
 {
    m_D = new D;
 
@@ -408,7 +408,7 @@ AWT::NonRigidAlignmentStateMachine<T>::NonRigidAlignmentStateMachine( StateMachi
 
    m_D->m_Stack = stack;
 
-   m_D->m_Nra = NonRigidAlignment<T>::getInstance( );
+   m_D->m_Nra = NonRigidAlignment<T>::getInstance();
    
    m_D->m_SourceMeshFilenameSet = false;
    m_D->m_TargetMeshFilenameSet = false;
@@ -416,28 +416,28 @@ AWT::NonRigidAlignmentStateMachine<T>::NonRigidAlignmentStateMachine( StateMachi
    m_D->m_Stopped = false;
    m_D->m_Error   = false;
 
-   m_D->m_MeshSpacings.clear( );
+   m_D->m_MeshSpacings.clear();
 
    m_D->m_NextState = D::STATE_SETUP;
 }
 
 template <class T>
-AWT::NonRigidAlignmentStateMachine<T>::~NonRigidAlignmentStateMachine( )
+AWT::NonRigidAlignmentStateMachine<T>::~NonRigidAlignmentStateMachine()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::NonRigidAlignmentStateMachine<T>::P AWT::NonRigidAlignmentStateMachine<T>::getInstance( StateMachineStack::P stack, const bool rigidOnly )
+typename AWT::NonRigidAlignmentStateMachine<T>::P AWT::NonRigidAlignmentStateMachine<T>::getInstance(StateMachineStack::P stack, const bool rigidOnly)
 {
-   AUTOGETINSTANCE( AWT::NonRigidAlignmentStateMachine<T>, ( stack, rigidOnly ) );
+   AUTOGETINSTANCE(AWT::NonRigidAlignmentStateMachine<T>, (stack, rigidOnly));
 }
 
 template <class T>
-GETNAMEMACRO( AWT::NonRigidAlignmentStateMachine<T> );
+GETNAMEMACRO(AWT::NonRigidAlignmentStateMachine<T>);
 
 template <class T>
-AWT::NonRigidAlignment<T>* AWT::NonRigidAlignmentStateMachine<T>::getNonRigidAlignment( )
+AWT::NonRigidAlignment<T>* AWT::NonRigidAlignmentStateMachine<T>::getNonRigidAlignment()
 {
    return *m_D->m_Nra;
 }
@@ -445,11 +445,11 @@ AWT::NonRigidAlignment<T>* AWT::NonRigidAlignmentStateMachine<T>::getNonRigidAli
 template <class T>
 bool AWT::NonRigidAlignmentStateMachine<T>::setControlPoints(typename ControlPointSet<T>::P cps)
 {
-   m_D->m_MeshSpacings.clear( );
+   m_D->m_MeshSpacings.clear();
 
-   m_D->m_Nra->setControlPoints( cps );
+   m_D->m_Nra->setControlPoints(cps);
 
-   m_D->m_Nra->updateSourcePoints( );
+   m_D->m_Nra->updateSourcePoints();
 
    return true;
 }
@@ -457,7 +457,7 @@ bool AWT::NonRigidAlignmentStateMachine<T>::setControlPoints(typename ControlPoi
 template <class T>
 bool AWT::NonRigidAlignmentStateMachine<T>::addControlPointSpacing(T spacing)
 {
-   switch ( m_D->m_NextState )
+   switch (m_D->m_NextState)
    {
    case D::STATE_SETUP:
       break;
@@ -465,9 +465,9 @@ bool AWT::NonRigidAlignmentStateMachine<T>::addControlPointSpacing(T spacing)
       return false;
    }
 
-   if ( m_D->m_MeshSpacings.size( ) == 0 || m_D->m_MeshSpacings[m_D->m_MeshSpacings.size( )-1] > spacing )
+   if (m_D->m_MeshSpacings.size() == 0 || m_D->m_MeshSpacings[m_D->m_MeshSpacings.size()-1] > spacing)
    {
-      m_D->m_MeshSpacings.push_back( spacing );
+      m_D->m_MeshSpacings.push_back(spacing);
       return true;
    }
    else
@@ -479,7 +479,7 @@ bool AWT::NonRigidAlignmentStateMachine<T>::addControlPointSpacing(T spacing)
 template <class T>
 bool AWT::NonRigidAlignmentStateMachine<T>::setSourceMeshFilename(const char *fn)
 {
-   switch ( m_D->m_NextState )
+   switch (m_D->m_NextState)
    {
    case D::STATE_SETUP:
       break;
@@ -490,34 +490,34 @@ bool AWT::NonRigidAlignmentStateMachine<T>::setSourceMeshFilename(const char *fn
    m_D->m_SourceMeshFilename = fn;
    m_D->m_SourceMeshFilenameSet = true;
 
-   typename Mesh<T>::P mesh = VTKMeshLoader<T>::load( m_D->m_SourceMeshFilename.c_str( ) );
-   if ( *mesh == 0 )
+   typename Mesh<T>::P mesh = VTKMeshLoader<T>::load(m_D->m_SourceMeshFilename.c_str());
+   if (*mesh == 0)
    {
       m_D->m_NextState = D::STATE_ERROR;
       m_D->m_LastError = "Could not load mesh!";
       return false;
    }
 
-   typename NormalCalculator<T>::P nc = AreaAveragedNormalCalculator<T>::getInstance( );
-   nc->calculateNormalsAndSet( *mesh );
+   typename NormalCalculator<T>::P nc = AreaAveragedNormalCalculator<T>::getInstance();
+   nc->calculateNormalsAndSet(*mesh);
    
-   m_D->m_Nra->setSourceMesh( *mesh );
+   m_D->m_Nra->setSourceMesh(*mesh);
 
    // Calculate the mesh bounds
    {
-      m_D->m_SourceBounds[0] = m_D->m_SourceBounds[2] = m_D->m_SourceBounds[4] =  std::numeric_limits<T>::infinity( );
-      m_D->m_SourceBounds[1] = m_D->m_SourceBounds[3] = m_D->m_SourceBounds[5] = -std::numeric_limits<T>::infinity( );
+      m_D->m_SourceBounds[0] = m_D->m_SourceBounds[2] = m_D->m_SourceBounds[4] =  std::numeric_limits<T>::infinity();
+      m_D->m_SourceBounds[1] = m_D->m_SourceBounds[3] = m_D->m_SourceBounds[5] = -std::numeric_limits<T>::infinity();
 
       T vtx[3];
-      //for ( MeshIndex v = 0; v < mesh->getNumberOfVertices( ); ++v )
-      MESH_EACHVERTEX( mesh, v )
+      //for (MeshIndex v = 0; v < mesh->getNumberOfVertices(); ++v)
+      MESH_EACHVERTEX(mesh, v)
       {
-         mesh->getVertex( v, vtx );
+         mesh->getVertex(v, vtx);
 
-         for ( int i = 0; i < 3; ++i )
+         for (int i = 0; i < 3; ++i)
          {
-            m_D->m_SourceBounds[2*i+0] = std::min( m_D->m_SourceBounds[2*i+0], vtx[i] );
-            m_D->m_SourceBounds[2*i+1] = std::max( m_D->m_SourceBounds[2*i+1], vtx[i] );
+            m_D->m_SourceBounds[2*i+0] = std::min(m_D->m_SourceBounds[2*i+0], vtx[i]);
+            m_D->m_SourceBounds[2*i+1] = std::max(m_D->m_SourceBounds[2*i+1], vtx[i]);
          }
       }
    }
@@ -528,7 +528,7 @@ bool AWT::NonRigidAlignmentStateMachine<T>::setSourceMeshFilename(const char *fn
 template <class T>
 bool AWT::NonRigidAlignmentStateMachine<T>::setTargetMeshFilename(const char *fn)
 {
-   switch ( m_D->m_NextState )
+   switch (m_D->m_NextState)
    {
    case D::STATE_SETUP:
       break;
@@ -539,70 +539,70 @@ bool AWT::NonRigidAlignmentStateMachine<T>::setTargetMeshFilename(const char *fn
    m_D->m_TargetMeshFilename = fn;
    m_D->m_TargetMeshFilenameSet = true;
 
-   Mesh<T>::P mesh = VTKMeshLoader<T>::load( m_D->m_TargetMeshFilename.c_str( ) );
-   if ( *mesh == 0 )
+   Mesh<T>::P mesh = VTKMeshLoader<T>::load(m_D->m_TargetMeshFilename.c_str());
+   if (*mesh == 0)
    {
       m_D->m_NextState = D::STATE_ERROR;
       m_D->m_LastError = "Could not load mesh!";
       return false;
    }
 
-   typename NormalCalculator<T>::P nc = AreaAveragedNormalCalculator<T>::getInstance( );
-   nc->calculateNormalsAndSet( *mesh );
+   typename NormalCalculator<T>::P nc = AreaAveragedNormalCalculator<T>::getInstance();
+   nc->calculateNormalsAndSet(*mesh);
    
-   if ( false )
+   if (false)
    {
-      RandomMeshSampler<T>::P sampler = RandomMeshSampler<T>::getInstance( );
-      sampler->setMaximumNumberOfSamples( 1000 );
+      RandomMeshSampler<T>::P sampler = RandomMeshSampler<T>::getInstance();
+      sampler->setMaximumNumberOfSamples(1000);
 
-      SamplePoints::P            samples     = sampler->sampleMesh( mesh );
-      typename SampledMesh<T>::P sampledMesh = SampledMesh<T>::getInstance( mesh, samples );
+      SamplePoints::P            samples     = sampler->sampleMesh(mesh);
+      typename SampledMesh<T>::P sampledMesh = SampledMesh<T>::getInstance(mesh, samples);
 
-      m_D->m_Nra->setTargetMesh( sampledMesh );
+      m_D->m_Nra->setTargetMesh(sampledMesh);
    }
    else
    {
-      m_D->m_Nra->setTargetMesh( *mesh );
+      m_D->m_Nra->setTargetMesh(*mesh);
    }
 
    return true;
 }
 
 template <class T>
-bool AWT::NonRigidAlignmentStateMachine<T>::step( )
+bool AWT::NonRigidAlignmentStateMachine<T>::step()
 {
-   return m_D->step( );
+   return m_D->step();
 }
 
 template <class T>
-void AWT::NonRigidAlignmentStateMachine<T>::getBounds( T* out_Bounds )
+void AWT::NonRigidAlignmentStateMachine<T>::getBounds(T* out_Bounds)
 {
-   for ( int i = 0; i < 6; ++i )
+   for (int i = 0; i < 6; ++i)
       out_Bounds[i] = m_D->m_SourceBounds[i];
 }
 
 template <class T>
-bool AWT::NonRigidAlignmentStateMachine<T>::isError( ) const
+bool AWT::NonRigidAlignmentStateMachine<T>::isError() const
 {
    return m_D->m_Error;
 }
 
 template <class T>
-bool AWT::NonRigidAlignmentStateMachine<T>::isRunning( ) const
+bool AWT::NonRigidAlignmentStateMachine<T>::isRunning() const
 {
    return !m_D->m_Stopped;
 }
 
 template <class T>
-std::string AWT::NonRigidAlignmentStateMachine<T>::getLastError( ) const
+std::string AWT::NonRigidAlignmentStateMachine<T>::getLastError() const
 {
    return m_D->m_LastError;
 }
 
 template <class T>
-std::string AWT::NonRigidAlignmentStateMachine<T>::getStateName( ) const
+std::string AWT::NonRigidAlignmentStateMachine<T>::getStateName() const
 {
-   return m_D->getStateName( m_D->m_CurrentState );
+   return m_D->getStateName(m_D->m_CurrentState);
 }
 
 #define LOAD_SAVE_LUA 1
@@ -610,22 +610,22 @@ std::string AWT::NonRigidAlignmentStateMachine<T>::getStateName( ) const
 #ifndef LOAD_SAVE_LUA
 
 template <class T>
-bool AWT::NonRigidAlignmentStateMachine<T>::load( const std::string& filename )
+bool AWT::NonRigidAlignmentStateMachine<T>::load(const std::string& filename)
 {
-   std::ifstream is( filename.c_str( ) );
+   std::ifstream is(filename.c_str());
 
-   PRINTVBL( filename );
+   PRINTVBL(filename);
 
    std::string magic;
-   std::getline( is, magic );
+   std::getline(is, magic);
 
-   PRINTVBL( magic );
+   PRINTVBL(magic);
 
-   if ( magic != getMagic( ) )
+   if (magic != getMagic())
    {
       std::stringstream sstream;
-      sstream << "Invalid Magic Number (expecting " << getMagic( ) << ", found " << magic << ")";
-      m_D->m_LastError = sstream.str( );
+      sstream << "Invalid Magic Number (expecting " << getMagic() << ", found " << magic << ")";
+      m_D->m_LastError = sstream.str();
       return false;
    }
 
@@ -634,84 +634,84 @@ bool AWT::NonRigidAlignmentStateMachine<T>::load( const std::string& filename )
 
    is >> sourceFilename >> targetFilename;
 
-   PRINTVBL( sourceFilename );
-   PRINTVBL( targetFilename );
+   PRINTVBL(sourceFilename);
+   PRINTVBL(targetFilename);
 
    try
    {
-      setSourceMeshFilename( sourceFilename.c_str( ) );
+      setSourceMeshFilename(sourceFilename.c_str());
    }
-   catch ( AWT::Exception& ex )
+   catch (AWT::Exception& ex)
    {
-      m_D->m_LastError = ex.getMessage( );
+      m_D->m_LastError = ex.getMessage();
       return false;
    }
 
    try
    {
-      setTargetMeshFilename( targetFilename.c_str( ) );
+      setTargetMeshFilename(targetFilename.c_str());
    }
-   catch ( AWT::Exception& ex )
+   catch (AWT::Exception& ex)
    {
-      m_D->m_LastError = ex.getMessage( );
+      m_D->m_LastError = ex.getMessage();
       return false;
    }
    
    T transformation[4][4];
 
-   for ( int r = 0; r < 4 && !is.fail( ); ++r )
-      for ( int c = 0; c < 4 && !is.fail( ); ++c )
+   for (int r = 0; r < 4 && !is.fail(); ++r)
+      for (int c = 0; c < 4 && !is.fail(); ++c)
          is >> transformation[r][c];
 
-   if ( is.fail( ) )
+   if (is.fail())
    {
 
-      addControlPointSpacing( 80.0 );
-      addControlPointSpacing( 40.0 );
-      addControlPointSpacing( 20.0 );
-      addControlPointSpacing( 10.0 );
+      addControlPointSpacing(80.0);
+      addControlPointSpacing(40.0);
+      addControlPointSpacing(20.0);
+      addControlPointSpacing(10.0);
 
       return true;
    }
 
-   m_D->m_Nra->setRigidTransformation( transformation );
+   m_D->m_Nra->setRigidTransformation(transformation);
 
-   ControlPointSet<T>::P cps = ControlPointSet<T>::getInstance( );
+   ControlPointSet<T>::P cps = ControlPointSet<T>::getInstance();
 
    T pos[3], scale, val[3];
    unsigned int used;
 
-   while ( true )
+   while (true)
    {
       is >> pos[0] >> pos[1] >> pos[2] >> scale >> val[0] >> val[1] >> val[2] >> used;
 
-      if ( is.fail( ) )
+      if (is.fail())
          break;
 
-      PRINTVEC( pos, 3 );
-      PRINTVEC( val, 3 );
-      PRINTVBL( scale );
-      PRINTVBL( used*1 );
-      ControlPoint<T>::P cp = ControlPoint<T>::getInstance( pos, scale );
-      cp->setValue( val );
-      cp->setUsed( used != 0 );
-      cps->add( cp );
+      PRINTVEC(pos, 3);
+      PRINTVEC(val, 3);
+      PRINTVBL(scale);
+      PRINTVBL(used*1);
+      ControlPoint<T>::P cp = ControlPoint<T>::getInstance(pos, scale);
+      cp->setValue(val);
+      cp->setUsed(used != 0);
+      cps->add(cp);
       
-      if ( is.eof( ) )
+      if (is.eof())
          break;
    }
 
-   setControlPoints( cps );
+   setControlPoints(cps);
 
-   is.close( );
+   is.close();
 
    return true;
 }
 
 template <class T>
-void AWT::NonRigidAlignmentStateMachine<T>::save( const std::string& filename )
+void AWT::NonRigidAlignmentStateMachine<T>::save(const std::string& filename)
 {
-   std::ofstream os( filename.c_str( ) );
+   std::ofstream os(filename.c_str());
 
    os << "<?xml version=\"1.0\"?>" << std::endl;
    os << "<nrigid>" << std::endl;
@@ -724,15 +724,15 @@ void AWT::NonRigidAlignmentStateMachine<T>::save( const std::string& filename )
    T rot[3][3];
    T tra[3];
    T scale;
-   scale = m_D->m_Nra->getScale( );
-   m_D->m_Nra->getRotation( rot );
-   m_D->m_Nra->getTranslation( tra );
+   scale = m_D->m_Nra->getScale();
+   m_D->m_Nra->getRotation(rot);
+   m_D->m_Nra->getTranslation(tra);
 
    os << "  <rigid>" << std::endl;
 
-   for ( int r = 0; r < 3; ++r )
+   for (int r = 0; r < 3; ++r)
    {
-      for ( int c = 0; c < 3; ++c )
+      for (int c = 0; c < 3; ++c)
          os << "    <m" << r << c << ">" << scale*rot[r][c] << "</m" << r << c << ">" << std::endl;
 
       os << "    <m" << r << "3>" << tra[r] << "</m" << r << "3>" << std::endl;
@@ -746,29 +746,29 @@ void AWT::NonRigidAlignmentStateMachine<T>::save( const std::string& filename )
    os << "  <nonrigid>" << std::endl;
 
    os << "    <refine>" << std::endl;
-   for ( unsigned int i = m_D->m_MeshSpacingPointer; i < m_D->m_MeshSpacings.size( ); ++i )
+   for (unsigned int i = m_D->m_MeshSpacingPointer; i < m_D->m_MeshSpacings.size(); ++i)
    {
       os << "      <spacing>" << m_D->m_MeshSpacings[i] << "</spacing>" << std::endl;
    }
    os << "    </refine>" << std::endl;
 
-   ControlPointSet<T>::P cps = m_D->m_Nra->getControlPoints( );
-   if ( *cps != 0 )
+   ControlPointSet<T>::P cps = m_D->m_Nra->getControlPoints();
+   if (*cps != 0)
    {
       os << "    <controlPoints>" << std::endl;
 
       T pos[3];
       T val[3];
       T cscale;
-      for ( OEKDTree::ObjectIndex v = 0; v < cps->getNumberOfObjects( ); ++v )
+      for (OEKDTree::ObjectIndex v = 0; v < cps->getNumberOfObjects(); ++v)
       {
-         const ControlPoint<T>::P cp = cps->getControlPointConst( v );
-         cp->getPosition( pos );
-         cp->getValue( val );
-         cscale = cp->getScale( );
+         const ControlPoint<T>::P cp = cps->getControlPointConst(v);
+         cp->getPosition(pos);
+         cp->getValue(val);
+         cscale = cp->getScale();
 
          os << "      <controlPoint>" << std::endl;
-         os << "        <used>" << (cp->isUsed( )?1:0) << "</used>" << std::endl;
+         os << "        <used>" << (cp->isUsed()?1:0) << "</used>" << std::endl;
          os << "        <scale>" << cscale << "</scale>" << std::endl;
          os << "        <pos>" << std::endl;
          os << "          <x>" << pos[0] << "</x>" << std::endl;
@@ -789,7 +789,7 @@ void AWT::NonRigidAlignmentStateMachine<T>::save( const std::string& filename )
 
    os << "</nrigid>" << std::endl;
 
-   os.close( );
+   os.close();
 }
 
 #else
@@ -797,24 +797,24 @@ void AWT::NonRigidAlignmentStateMachine<T>::save( const std::string& filename )
 #include "LuaPlus.h"
 
 template <class T>
-bool AWT::NonRigidAlignmentStateMachine<T>::load( const std::string& filename )
+bool AWT::NonRigidAlignmentStateMachine<T>::load(const std::string& filename)
 {
-   DEBUGMACRO( "Lua is loading state machine from " << filename );
+   DEBUGMACRO("Lua is loading state machine from " << filename);
 
    LuaStateOwner state;
 
-   int iret = state->DoFile( filename.c_str( ) );
-   if ( iret != 0 )
+   int iret = state->DoFile(filename.c_str());
+   if (iret != 0)
    {
       std::stringstream sstream;
       sstream << "Could not parse file (Lua returned error code " << iret << ")";
-      m_D->m_LastError = sstream.str( );
+      m_D->m_LastError = sstream.str();
       return false;
    }
 
-   LuaObject objJob = state->GetGlobal( "alignment" );
+   LuaObject objJob = state->GetGlobal("alignment");
 
-   if ( objJob.IsNil( ) )
+   if (objJob.IsNil())
    {
       m_D->m_LastError = "Could not find object called \"alignment\"";
       return false;
@@ -822,25 +822,25 @@ bool AWT::NonRigidAlignmentStateMachine<T>::load( const std::string& filename )
 
    try
    {
-      std::string sourceFilename( objJob["source"].GetString( ) );
-      setSourceMeshFilename( sourceFilename.c_str( ) );
-      PRINTVBL( sourceFilename );
+      std::string sourceFilename(objJob["source"].GetString());
+      setSourceMeshFilename(sourceFilename.c_str());
+      PRINTVBL(sourceFilename);
    }
-   catch ( AWT::Exception& ex )
+   catch (AWT::Exception& ex)
    {
-      m_D->m_LastError = ex.getMessage( );
+      m_D->m_LastError = ex.getMessage();
       return false;
    }
 
    try
    {
-      std::string targetFilename( objJob["target"].GetString( ) );
-      setTargetMeshFilename( targetFilename.c_str( ) );
-      PRINTVBL( targetFilename );
+      std::string targetFilename(objJob["target"].GetString());
+      setTargetMeshFilename(targetFilename.c_str());
+      PRINTVBL(targetFilename);
    }
-   catch ( AWT::Exception& ex )
+   catch (AWT::Exception& ex)
    {
-      m_D->m_LastError = ex.getMessage( );
+      m_D->m_LastError = ex.getMessage();
       return false;
    }
 
@@ -850,36 +850,36 @@ bool AWT::NonRigidAlignmentStateMachine<T>::load( const std::string& filename )
       T transformation[4][4];
 
       // At the very least, set the transformation to identity
-      for ( int r = 0; r < 4; ++r )
-         for ( int c = 0; c < 4; ++c )
-            transformation[r][c] = static_cast<T>( ( r == c ) ? 1 : 0 );
+      for (int r = 0; r < 4; ++r)
+         for (int c = 0; c < 4; ++c)
+            transformation[r][c] = static_cast<T>((r == c) ? 1 : 0);
 
-      PRINTVBL( *m_D->m_Nra );
-      m_D->m_Nra->setRigidTransformation( transformation );
+      PRINTVBL(*m_D->m_Nra);
+      m_D->m_Nra->setRigidTransformation(transformation);
 
       try
       {
          LuaObject objRigid = objJob["rigid"];
-         if ( objRigid.IsTable( ) )
+         if (objRigid.IsTable())
          {
-            for ( int r = 0; r < 4; ++r )
+            for (int r = 0; r < 4; ++r)
             {
                LuaObject objRow = objRigid[r+1];
 
-               for ( int c = 0; c < 4; ++c )
-                  transformation[r][c] = static_cast<T>( objRow[c+1].GetDouble( ) );
+               for (int c = 0; c < 4; ++c)
+                  transformation[r][c] = static_cast<T>(objRow[c+1].GetDouble());
             }
          }/*
-         else if ( !objRigid.IsNone() )
+         else if (!objRigid.IsNone())
          {
-            m_D->m_Nra->setRigidScale( objRigid.GetDouble( ) );
+            m_D->m_Nra->setRigidScale(objRigid.GetDouble());
          }*/
 
-         m_D->m_Nra->setRigidTransformation( transformation );
+         m_D->m_Nra->setRigidTransformation(transformation);
       }
-      catch ( AWT::Exception& ex )
+      catch (AWT::Exception& ex)
       {
-         m_D->m_LastError = ex.getMessage( );
+         m_D->m_LastError = ex.getMessage();
          return false;
       }
 
@@ -890,45 +890,45 @@ bool AWT::NonRigidAlignmentStateMachine<T>::load( const std::string& filename )
    try
    {
       LuaObject objNonRigid = objJob["nonrigid"];
-      if ( objNonRigid.IsTable( ) )
+      if (objNonRigid.IsTable())
       {
-         PRINTVBL( objNonRigid.GetTableCount( ) );
+         PRINTVBL(objNonRigid.GetTableCount());
 
-         ControlPointSet<T>::P cps = ControlPointSet<T>::getInstance( );
+         ControlPointSet<T>::P cps = ControlPointSet<T>::getInstance();
 
          T position[3], value[3];
-         for ( int i = 1; i <= objNonRigid.GetTableCount( ); ++i )
+         for (int i = 1; i <= objNonRigid.GetTableCount(); ++i)
          {
             LuaObject objControlPoint = objNonRigid[i];
 
-            bool used = objControlPoint["used"].GetBoolean( );
-            T scale   = static_cast<T>( objControlPoint["scale"].GetDouble( ) );
+            bool used = objControlPoint["used"].GetBoolean();
+            T scale   = static_cast<T>(objControlPoint["scale"].GetDouble());
 
-            for ( int ax = 0; ax < 3; ++ax )
+            for (int ax = 0; ax < 3; ++ax)
             {
-               position[ax] = static_cast<T>( objControlPoint["position"][ax+1].GetDouble( ) );
-               value[ax]    = static_cast<T>( objControlPoint["value"][ax+1].GetDouble( ) );
+               position[ax] = static_cast<T>(objControlPoint["position"][ax+1].GetDouble());
+               value[ax]    = static_cast<T>(objControlPoint["value"][ax+1].GetDouble());
             }
 
-            ControlPoint<T>::P cp = ControlPoint<T>::getInstance( position, scale );
-            cp->setValue( value );
-            cp->setUsed( used );
-            cps->add( cp );
+            ControlPoint<T>::P cp = ControlPoint<T>::getInstance(position, scale);
+            cp->setValue(value);
+            cp->setUsed(used);
+            cps->add(cp);
          }
 
-         setControlPoints( cps );
+         setControlPoints(cps);
       }
       else
       {
-         DEBUGMACRO( "No control points; assuming normal (80,40,20) refinement strategy" );
-         addControlPointSpacing( 80.0 );
-         addControlPointSpacing( 40.0 );
-         addControlPointSpacing( 20.0 );
+         DEBUGMACRO("No control points; assuming normal (80,40,20) refinement strategy");
+         addControlPointSpacing(80.0);
+         addControlPointSpacing(40.0);
+         addControlPointSpacing(20.0);
       }
    }
-   catch ( AWT::Exception& ex )
+   catch (AWT::Exception& ex)
    {
-      m_D->m_LastError = ex.getMessage( );
+      m_D->m_LastError = ex.getMessage();
       return false;
    }
 
@@ -936,15 +936,15 @@ bool AWT::NonRigidAlignmentStateMachine<T>::load( const std::string& filename )
 }
 
 template <class T>
-void AWT::NonRigidAlignmentStateMachine<T>::save( const std::string& filename )
+void AWT::NonRigidAlignmentStateMachine<T>::save(const std::string& filename)
 {
-   std::ofstream os( filename.c_str( ) );
+   std::ofstream os(filename.c_str());
 
    os << "--[[ Non-rigid Alignment State Machine" << std::endl;
-   os << "    RMS Move  = " << m_D->m_Nra->getRmsMove( ) << std::endl;
-   os << "    Max Move  = " << m_D->m_Nra->getMaxMove( ) << std::endl;
-   os << "    RMS Error = " << m_D->m_Nra->getRmsError( ) << std::endl;
-   os << "    Max Error = " << m_D->m_Nra->getMaxError( ) << std::endl;
+   os << "    RMS Move  = " << m_D->m_Nra->getRmsMove() << std::endl;
+   os << "    Max Move  = " << m_D->m_Nra->getMaxMove() << std::endl;
+   os << "    RMS Error = " << m_D->m_Nra->getRmsError() << std::endl;
+   os << "    Max Error = " << m_D->m_Nra->getMaxError() << std::endl;
    os << "--]]" << std::endl << std::endl;
 
    os << "alignment = {" << std::endl;
@@ -954,16 +954,16 @@ void AWT::NonRigidAlignmentStateMachine<T>::save( const std::string& filename )
    T rot[3][3];
    T tra[3];
    T scale;
-   scale = m_D->m_Nra->getScale( );
-   m_D->m_Nra->getRotation( rot );
-   m_D->m_Nra->getTranslation( tra );
+   scale = m_D->m_Nra->getScale();
+   m_D->m_Nra->getRotation(rot);
+   m_D->m_Nra->getTranslation(tra);
 
    os << "  rigid = {" << std::endl;
 
-   for ( int r = 0; r < 3; ++r )
+   for (int r = 0; r < 3; ++r)
    {
       os << "    { ";
-      for ( int c = 0; c < 3; ++c )
+      for (int c = 0; c < 3; ++c)
          os << scale*rot[r][c] << ", ";
 
       os << tra[r] << " }," << std::endl;
@@ -973,23 +973,23 @@ void AWT::NonRigidAlignmentStateMachine<T>::save( const std::string& filename )
    
    // Nothing in here about refinement, yet?
 
-   ControlPointSet<T>::P cps = m_D->m_Nra->getControlPoints( );
-   if ( *cps != 0 )
+   ControlPointSet<T>::P cps = m_D->m_Nra->getControlPoints();
+   if (*cps != 0)
    {
       os << "  nonrigid = {" << std::endl;
 
       T pos[3];
       T val[3];
       T cscale;
-      for ( OEKDTree::ObjectIndex v = 0; v < cps->getNumberOfObjects( ); ++v )
+      for (OEKDTree::ObjectIndex v = 0; v < cps->getNumberOfObjects(); ++v)
       {
-         const ControlPoint<T>::P cp = cps->getControlPointConst( v );
-         cp->getPosition( pos );
-         cp->getValue( val );
-         cscale = cp->getScale( );
+         const ControlPoint<T>::P cp = cps->getControlPointConst(v);
+         cp->getPosition(pos);
+         cp->getValue(val);
+         cscale = cp->getScale();
 
          os << "    {" << std::endl;
-         os << "      used = " << (cp->isUsed( )?"true":"false") << "," << std::endl;
+         os << "      used = " << (cp->isUsed()?"true":"false") << "," << std::endl;
          os << "      scale = " << cscale << "," << std::endl;
          os << "      position = { " << pos[0] << ", " << pos[1] << ", " << pos[2] << " }," << std::endl;
          os << "      value = { " << val[0] << ", " << val[1] << ", " << val[2] << " }," << std::endl;
@@ -1002,63 +1002,63 @@ void AWT::NonRigidAlignmentStateMachine<T>::save( const std::string& filename )
 
    os << "};" << std::endl;
 
-   os.close( );
+   os.close();
 }
 
 #endif
 
 template <class T>
-bool AWT::NonRigidAlignmentStateMachine<T>::saveDeformedModel( const char* fn ) const
+bool AWT::NonRigidAlignmentStateMachine<T>::saveDeformedModel(const char* fn) const
 {
-   VTKMeshWriter<T>::write( m_D->m_Nra->getSourceMesh( ), fn );
+   VTKMeshWriter<T>::write(m_D->m_Nra->getSourceMesh(), fn);
 
    return true;
 }
 
 template <class T>
-bool AWT::NonRigidAlignmentStateMachine<T>::saveTargetModel( const char* fn ) const
+bool AWT::NonRigidAlignmentStateMachine<T>::saveTargetModel(const char* fn) const
 {
-   VTKMeshWriter<T>::write( m_D->m_Nra->getTargetMesh( ), fn );
+   VTKMeshWriter<T>::write(m_D->m_Nra->getTargetMesh(), fn);
 
    return true;
 }
 
 template <class T>
-bool AWT::NonRigidAlignmentStateMachine<T>::saveProjected( const char* fn ) const
+bool AWT::NonRigidAlignmentStateMachine<T>::saveProjected(const char* fn) const
 {
    DEBUGLINE;
-   VTKMeshWriter<T>::write( m_D->m_Nra->getProjected( ), fn );
+   VTKMeshWriter<T>::write(m_D->m_Nra->getProjected(), fn);
    DEBUGLINE;
 
    return true;
 }
 
 template <class T>
-std::string AWT::NonRigidAlignmentStateMachine<T>::getMagic( ) const
+std::string AWT::NonRigidAlignmentStateMachine<T>::getMagic() const
 {
    return "NRAL";
 }
 
 template <class T>
-AWT::StateMachineStack* AWT::NonRigidAlignmentStateMachine<T>::getStack( )
+AWT::StateMachineStack* AWT::NonRigidAlignmentStateMachine<T>::getStack()
 {
    return *m_D->m_Stack;
 }
 
 template <class T>
-void AWT::NonRigidAlignmentStateMachine<T>::externalStop( )
+void AWT::NonRigidAlignmentStateMachine<T>::externalStop()
 {
    m_D->m_ExternalStop = true;
 }
 
 template <class T>
-void AWT::NonRigidAlignmentStateMachine<T>::loadOnly( )
+void AWT::NonRigidAlignmentStateMachine<T>::loadOnly()
 {
    m_D->m_LoadOnly = true;
 }
 
 template <class T>
-bool AWT::NonRigidAlignmentStateMachine<T>::aboutToRefine( ) const
+bool AWT::NonRigidAlignmentStateMachine<T>::aboutToRefine() const
 {
    return m_D->m_NextState == D::STATE_MESH_REFINEMENT;
 }

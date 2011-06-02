@@ -34,24 +34,24 @@ using namespace cimg_library;
 typedef std::vector<unsigned char> RiskMapping;
 typedef CImg<unsigned char> Image;
 
-RiskMapping loadRiskLabels( char* filename )
+RiskMapping loadRiskLabels(char* filename)
 {
    RiskMapping ret;
 
-   ret.push_back( 0 );
+   ret.push_back(0);
 
-   std::ifstream is( filename );
+   std::ifstream is(filename);
 
    int segment;
    int label;
 
-   while ( true )
+   while (true)
    {
       is >> segment >> label;
-      if ( !is.good() )
+      if (!is.good())
          break;
 
-      ret.push_back( label );
+      ret.push_back(label);
    }
 
    return ret;
@@ -67,30 +67,30 @@ unsigned char cols[7][3] = {
    { 255, 0, 0 },
 };
 
-void paintOutputImage( Image& labelImage, Image& outputImage, const RiskMapping& mapping )
+void paintOutputImage(Image& labelImage, Image& outputImage, const RiskMapping& mapping)
 {
-   cimg_forXY( outputImage, x, y )
+   cimg_forXY(outputImage, x, y)
    {
       int label = labelImage(x,y);
       int mapped = label; //mapping[label];
 
-      cimg_forV( outputImage, v )
-         outputImage( x, y, 0, v ) = cols[ mapped ][v];
+      cimg_forV(outputImage, v)
+         outputImage(x, y, 0, v) = cols[ mapped ][v];
 
    }
 }
 
-void prepareLabelImage( const Image& labelImage, const RiskMapping& riskMapping, Image& preparedImage )
+void prepareLabelImage(const Image& labelImage, const RiskMapping& riskMapping, Image& preparedImage)
 {
    // Fill the prepared image with zeros
-   preparedImage.fill( 0 );
+   preparedImage.fill(0);
 
    // Create a temporary image which will be dilated
-   Image tempImage( labelImage );
+   Image tempImage(labelImage);
 
    // Create the structuring element to dilate by
-   Image structEl( 3, 3, 3 );
-   structEl.fill( 1 );
+   Image structEl(3, 3, 3);
+   structEl.fill(1);
 
    CImgList<> allPoints;
    CImgList<> allPrimitives;
@@ -98,29 +98,29 @@ void prepareLabelImage( const Image& labelImage, const RiskMapping& riskMapping,
    CImgList<unsigned char> allColors;
    CImgList<float>         allOpacities;
 
-   for ( int label = 6; label > 0; --label )
+   for (int label = 6; label > 0; --label)
    {
       std::cerr << "Doing label " << label << std::endl;
-      tempImage.fill( 0 );
+      tempImage.fill(0);
 
-      cimg_forXYZ( labelImage, x, y, z )
+      cimg_forXYZ(labelImage, x, y, z)
       {
-         if ( riskMapping[labelImage(x,y,z)] == label )
+         if (riskMapping[labelImage(x,y,z)] == label)
             tempImage(x,y,z) = label;
       }
 
       // Now dilate the tempImage
-      tempImage.dilate( structEl );
+      tempImage.dilate(structEl);
 
-      cimg_forXYZ( tempImage, x, y, z )
+      cimg_forXYZ(tempImage, x, y, z)
       {
-         if ( tempImage( x, y, z ) > preparedImage( x, y, z ) )
+         if (tempImage(x, y, z) > preparedImage(x, y, z))
          {
-            preparedImage( x, y, z ) = tempImage( x, y, z );
+            preparedImage(x, y, z) = tempImage(x, y, z);
          }
          else
          {
-            tempImage( x, y, z ) = 0;
+            tempImage(x, y, z) = 0;
          }
       }
 
@@ -129,66 +129,66 @@ void prepareLabelImage( const Image& labelImage, const RiskMapping& riskMapping,
       CImgList<> primitives;
 
       std::cerr << "Marching cubes..." << std::endl;
-      tempImage.marching_cubes( (label+0.f)/2.f, 1.f/0.9375f, 1.f/0.9375f, 1.f/1.2f, points, primitives );
+      tempImage.marching_cubes((label+0.f)/2.f, 1.f/0.9375f, 1.f/0.9375f, 1.f/1.2f, points, primitives);
       std::cerr << "Done." << std::endl;
 
       CImgList<unsigned char> colors(points.size,3,1,1,1,255);
-      CImgList<float>         opacities(points.size,1,1,1,1,0.5f );
+      CImgList<float>         opacities(points.size,1,1,1,1,0.5f);
 
-      cimglist_for( colors, c )
+      cimglist_for(colors, c)
       {
-         colors( c, 0 ) = cols[label][0];
-         colors( c, 1 ) = cols[label][1];
-         colors( c, 2 ) = cols[label][2];
+         colors(c, 0) = cols[label][0];
+         colors(c, 1) = cols[label][1];
+         colors(c, 2) = cols[label][2];
       }
 
       std::cerr << "#points = " << points.size << "; #primitives = " << primitives.size << std::endl;
 
       // Offset the primitive indices
-      cimglist_for( primitives, p )
+      cimglist_for(primitives, p)
       {
-         primitives( p, 0, 0 ) += allPoints.size;
-         primitives( p, 0, 1 ) += allPoints.size;
-         primitives( p, 0, 2 ) += allPoints.size;
+         primitives(p, 0, 0) += allPoints.size;
+         primitives(p, 0, 1) += allPoints.size;
+         primitives(p, 0, 2) += allPoints.size;
       }
 
-      allPoints.insert( points, allPoints.size );
-      allPrimitives.insert( primitives, allPrimitives.size );
-      allColors.insert( colors, allColors.size );
-      allOpacities.insert( opacities, allOpacities.size );
+      allPoints.insert(points, allPoints.size);
+      allPrimitives.insert(primitives, allPrimitives.size);
+      allColors.insert(colors, allColors.size);
+      allOpacities.insert(opacities, allOpacities.size);
    }
 
    std::cerr << "All points size = " << allPoints.size << std::endl;
 
-   CImgDisplay disp3d( tempImage );
-   disp3d.display_object3d( allPoints, allPrimitives, allColors, true, 4, 1, true );
+   CImgDisplay disp3d(tempImage);
+   disp3d.display_object3d(allPoints, allPrimitives, allColors, true, 4, 1, true);
 
-   while ( !disp3d.is_closed )
-      cimg::wait( 20 );
+   while (!disp3d.is_closed)
+      cimg::wait(20);
 }
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
    Image image;
-   image.load( argv[1] );
+   image.load(argv[1]);
 
    std::cerr << "Loaded image from " << argv[1] << std::endl;
    std::cerr << "Dimensions: " << image.dimx() << " x " << image.dimy() << " x " << image.dimz() << std::endl;
 
-   RiskMapping riskLabels = loadRiskLabels( argv[2] );
+   RiskMapping riskLabels = loadRiskLabels(argv[2]);
    std::cerr << "Loaded risk labels from from " << argv[1] << std::endl;
 
-   Image mappedImage( image );
+   Image mappedImage(image);
 
    std::cerr << "Mapping image" << std::endl;
-   prepareLabelImage( image, riskLabels, mappedImage );
+   prepareLabelImage(image, riskLabels, mappedImage);
    std::cerr << "Created mapped image" << std::endl;
 
-   Image outputImage( image.dimx(), image.dimy(), 1, 3 );
+   Image outputImage(image.dimx(), image.dimy(), 1, 3);
 
    int slice = 0;
 
-   CImgDisplay disp( outputImage, argv[1] );
+   CImgDisplay disp(outputImage, argv[1]);
 
    slice = 20;
 
@@ -196,24 +196,24 @@ int main( int argc, char** argv )
    --slice;
    disp.wheel = 1;
 
-   while ( !disp.is_closed )
+   while (!disp.is_closed)
    {
-      if ( disp.wheel != 0 )
+      if (disp.wheel != 0)
       {
          slice += disp.wheel;
 
-         if ( slice < 0 ) slice = 0;
-         if ( slice >= image.dimz() ) slice = image.dimz() - 1;
+         if (slice < 0) slice = 0;
+         if (slice >= image.dimz()) slice = image.dimz() - 1;
 
          std::cerr << "slice = " << slice << std::endl;
 
          disp.wheel = 0;
          disp.flush();
 
-         paintOutputImage( mappedImage.get_shared_plane( slice ), outputImage, riskLabels );
+         paintOutputImage(mappedImage.get_shared_plane(slice), outputImage, riskLabels);
 
-         disp.display( outputImage );
+         disp.display(outputImage);
       }
-      cimg::wait( 20 );
+      cimg::wait(20);
    }
 }

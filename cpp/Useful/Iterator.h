@@ -36,11 +36,11 @@ namespace AWT
       class Iterator : public virtual ManagedObject
       {
       public:
-         typedef ManagedAutoPointer<Iterator<T>> P;
+         typedef ManagedAutoPointer<Iterator<T> > P;
 
       public:
-         virtual bool hasNext( ) = 0;
-         virtual T next( ) = 0;
+         virtual bool hasNext() = 0;
+         virtual T next() = 0;
       };
    }
 

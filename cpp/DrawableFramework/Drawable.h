@@ -40,32 +40,32 @@ namespace AWT
    class Drawable : public virtual ManagedObject
    {
    protected:
-      Drawable( );
-      virtual ~Drawable( );
+      Drawable();
+      virtual ~Drawable();
 
    public:
       typedef ManagedAutoPointer<Drawable> P;
 
    public:
-      virtual void draw( DrawContext::P context, const bool transparentPass ) = 0;
+      virtual void draw(DrawContext::P context, const bool transparentPass) = 0;
 
-      virtual void setVisible( const bool v ) = 0;
+      virtual void setVisible(const bool v) = 0;
 
-      virtual bool isVisible( ) const = 0;
+      virtual bool isVisible() const = 0;
 
-      virtual void getBounds( double* out_Bounds ) = 0;
+      virtual void getBounds(double* out_Bounds) = 0;
 
-      virtual void setParent( DrawableAssembly* p ) = 0;
-      virtual DrawableAssembly* getParent( ) = 0;
+      virtual void setParent(DrawableAssembly* p) = 0;
+      virtual DrawableAssembly* getParent() = 0;
 
-      //static bool acquireMutexIfNotLocked( void* obj );
-      //static void acquireMutex( void* obj );
-      //static void releaseMutex( void* obj );
+      //static bool acquireMutexIfNotLocked(void* obj);
+      //static void acquireMutex(void* obj);
+      //static void releaseMutex(void* obj);
 
-      virtual ModifiedTime getTimeObjectModified( );
+      virtual ModifiedTime getTimeObjectModified();
 
-      virtual void setTimeObject( ManagedObject::P obj );
-      virtual ManagedObject::P getTimeObject( );
+      virtual void setTimeObject(ManagedObject::P obj);
+      virtual ManagedObject::P getTimeObject();
 
    protected:
       struct D;

@@ -39,25 +39,25 @@ namespace AWT
          typedef ManagedAutoPointer<FragmentObject> P;
 
       protected:
-         FragmentObject( Mesh::P frag, Sampler::P sampler, Index nsamples );
-         virtual ~FragmentObject( );
+         FragmentObject(Mesh::P frag, Sampler::P sampler, Index nsamples);
+         virtual ~FragmentObject();
 
       public:
-         static P getInstance( Mesh::P frag, Sampler::P sampler, Index nsamples );
+         static P getInstance(Mesh::P frag, Sampler::P sampler, Index nsamples);
 
-         std::string getClassName( ) const;
+         std::string getClassName() const;
 
-         void setParameters( const Vector& params );
+         void setParameters(const Vector& params);
 
-         virtual PointIndexWeights search( const Point& pnt, const Point& nml, SearchFilter::P filter );
+         virtual PointIndexWeights search(const Point& pnt, const Point& nml, SearchFilter::P filter);
 
-         Transformation getTransformation( ) const;
+         Transformation getTransformation() const;
 
-         Transformation getInverseTransformation( ) const;
+         Transformation getInverseTransformation() const;
 
-         SearchFilter::P getEdgeFilter( );
+         SearchFilter::P getEdgeFilter();
 
-         virtual void calculateJacobian( const PointIndexWeights& p, Matrix& jac );
+         virtual void calculateJacobian(const PointIndexWeights& p, Matrix& jac);
 
       protected:
          struct D;

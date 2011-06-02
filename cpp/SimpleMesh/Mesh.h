@@ -40,26 +40,26 @@ namespace AWT
          typedef ManagedAutoPointer<Mesh> P;
 
       protected:
-         Mesh( Index nverts, Index nf );
-         Mesh( const Points& verts, const Faces& faces );
-         virtual ~Mesh( );
+         Mesh(Index nverts, Index nf);
+         Mesh(const Points& verts, const Faces& faces);
+         virtual ~Mesh();
 
       public:
-         static P getInstance( Index nverts, Index nf );
-         static P getInstance( const Points& verts, const Faces& faces );
+         static P getInstance(Index nverts, Index nf);
+         static P getInstance(const Points& verts, const Faces& faces);
 
-         virtual std::string getClassName( ) const;
+         virtual std::string getClassName() const;
 
          const Index nv;
          const Index nf;
 
-         Point getVertex( const Index i ) const;
-         Face  getFace( const Index i ) const;
+         Point getVertex(const Index i) const;
+         Face  getFace(const Index i) const;
 
-         Points& getVertices( ) const;
-         TexCoords& getTexCoords( ) const;
+         Points& getVertices() const;
+         TexCoords& getTexCoords() const;
 
-         Faces&  getFaces( ) const;
+         Faces&  getFaces() const;
 
       protected:
          struct D;

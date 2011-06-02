@@ -34,8 +34,8 @@ namespace AWT
    class SimpleLinkedList
    {
    public:
-      SimpleLinkedList( T _data, SimpleLinkedList<T>* _next = 0 )
-         : data( _data ), next( _next )
+      SimpleLinkedList(T _data, SimpleLinkedList<T>* _next = 0)
+         : data(_data), next(_next)
       {
          std::vector<int> foo;
          

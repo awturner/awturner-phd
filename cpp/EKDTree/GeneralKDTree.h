@@ -95,10 +95,10 @@
 //   * @param in_MinSize Minimum size of subtree over which to use tree-based searching - below this level, search exhaustively (more efficient for small trees)
 //   *
 //   */
-//   GeneralKDTree( T** in_data, const int in_npoints, const int in_MinSize = 10 );
+//   GeneralKDTree(T** in_data, const int in_npoints, const int in_MinSize = 10);
 //   
 //   //! Destructor
-//   ~GeneralKDTree( );
+//   ~GeneralKDTree();
 ////@}
 //
 ////! @name Queries
@@ -109,7 +109,7 @@
 //   *
 //   * @return Number of spatial dims.
 //   */
-//   const int getDimensionality( );
+//   const int getDimensionality();
 ////@}
 //
 //////////////////////////////////////////////////////////////////////////////////
@@ -119,7 +119,7 @@
 //   * Starts the process of building the tree.  Called automatically upon construction, 
 //   * but could be called again e.g. if the data changes
 //   */
-//   void BuildTree( );
+//   void BuildTree();
 //
 //   /*!
 //   * Function used to search for the closest point to the query point.
@@ -127,7 +127,7 @@
 //   * @param in_SearchPoint Query point.
 //   * @return Closest point index.
 //   */
-//   const int FindNearestPoint( T* in_SearchPoint );
+//   const int FindNearestPoint(T* in_SearchPoint);
 //
 //   /*!
 //   * Function used to search for the closest points to the query point
@@ -137,7 +137,7 @@
 //   * @param in_Radius Radius of the sphere to be searched.
 //   * @return Vector list of closest indices.
 //   */
-//   std::vector<int> FindNearestPoints( T* in_TestPoint, T in_Radius );
+//   std::vector<int> FindNearestPoints(T* in_TestPoint, T in_Radius);
 //
 //   /*!
 //   * Function used to search for the closest points to the query point
@@ -148,7 +148,7 @@
 //   * @param in_Radius Radius of the sphere to be searched.
 //   * @param out_Results Vector list of closest indices.
 //   */
-//   void FindNearestPoints( T* in_TestPoint, T in_Radius, std::vector<int>& out_Results );
+//   void FindNearestPoints(T* in_TestPoint, T in_Radius, std::vector<int>& out_Results);
 //
 //   /*!
 //   * Function used to search for the closest point to the query point.
@@ -158,7 +158,7 @@
 //   * @param in_SearchPoint Query point.
 //   * @return Closest point index.
 //   */
-//   const int FindNearestPointExhaustive( T* p );
+//   const int FindNearestPointExhaustive(T* p);
 //
 //   /*!
 //   * Function used to search for the closest points to the query point
@@ -170,7 +170,7 @@
 //   * @param in_Radius Radius of the sphere to be searched.
 //   * @return Vector list of closest indices.
 //   */
-//   std::vector<int> FindNearestPointsExhaustive( T* p, T in_Radius );
+//   std::vector<int> FindNearestPointsExhaustive(T* p, T in_Radius);
 //
 //protected:
 //   /*!
@@ -182,7 +182,7 @@
 //   * @return Squared Euclidean distance between.
 //   */
 //public:
-//   const T distanceSquaredBetweenPoints( T* in_p1, T* in_p2 );
+//   const T distanceSquaredBetweenPoints(T* in_p1, T* in_p2);
 //protected:
 //   /*!
 //   * Recursive function for finding all points within a certain radius.
@@ -196,8 +196,8 @@
 //   * @param in_Dim Current discriminator dimension
 //   * @param io_Points Vector to hold found point indices
 //   */
-//   const void FindNearestPoints( T* in_TestPoint, T in_RadiusSquared, const int in_Low, const int in_High, 
-//      int in_Dim, std::vector<int>& io_Points );
+//   const void FindNearestPoints(T* in_TestPoint, T in_RadiusSquared, const int in_Low, const int in_High, 
+//      int in_Dim, std::vector<int>& io_Points);
 //   
 //   /*!
 //   * Recursive function for finding the closest point in the specified subtree.
@@ -210,7 +210,7 @@
 //   * @param in_Bounds Bounding box of current tree
 //   * @return Nearest point index
 //   */
-//   const int FindNearestPoint( T* in_TestPoint, const int in_Low, const int in_High, int in_Dim, T& out_minD, T* in_Bounds );
+//   const int FindNearestPoint(T* in_TestPoint, const int in_Low, const int in_High, int in_Dim, T& out_minD, T* in_Bounds);
 //
 //   /*!
 //   * Function used to search for the closest point to the query point.
@@ -223,7 +223,7 @@
 //   * @param out_BestDistance Minimum squared distance
 //   * @return Closest point index.
 //   */
-//   const int FindNearestPointExhaustive( T* p, const int in_Low, const int in_High, T& out_BestDistance );
+//   const int FindNearestPointExhaustive(T* p, const int in_Low, const int in_High, T& out_BestDistance);
 //
 //   /*!
 //   * Function used to search for the closest points to the query point
@@ -237,8 +237,8 @@
 //   * @param in_High End Index
 //   * @param io_Points Vector list of closest indices.
 //   */
-//   void FindNearestPointsExhaustive( T* p, T in_RadiusSquared, const int in_Low, const int in_High, 
-//      std::vector<int>& io_Points );
+//   void FindNearestPointsExhaustive(T* p, T in_RadiusSquared, const int in_Low, const int in_High, 
+//      std::vector<int>& io_Points);
 //
 //   /*!
 //   * Handles the recursive calls to partition the array into [ {<= median} median {>= median} ]
@@ -247,7 +247,7 @@
 //   * @param in_High Last index in the array to check
 //   * @param in_Dim Current discriminator dimension
 //   */
-//   KDTreeBranch<T,K>* recursivelyPartition( int in_Low, int in_High, int in_Dim, T* out_Bounds );
+//   KDTreeBranch<T,K>* recursivelyPartition(int in_Low, int in_High, int in_Dim, T* out_Bounds);
 //
 //	/*!
 //   * Does the meat of partitioning the array into [ {<= median} median {>= median} ]
@@ -256,7 +256,7 @@
 //   * @param in_High Last index in the array to check
 //   * @param in_Dim Current discriminator dimension
 //   */
-//   void partitionArray( int in_Low, int in_High, int in_Dim );
+//   void partitionArray(int in_Low, int in_High, int in_Dim);
 //
 //////////////////////////////////////////////////////////////////////////////////
 //// Member variables
@@ -292,10 +292,10 @@
 //
 //// Constructor
 //template <class T, unsigned char K>
-//GeneralKDTree<T,K>::GeneralKDTree( T** in_data, const int in_npoints, const int in_MinSize )
-//   : m_MinSize( in_MinSize ), m_NPoints( in_npoints )
+//GeneralKDTree<T,K>::GeneralKDTree(T** in_data, const int in_npoints, const int in_MinSize)
+//   : m_MinSize(in_MinSize), m_NPoints(in_npoints)
 //{
-//   if ( in_MinSize < 0 )
+//   if (in_MinSize < 0)
 //      throw "in_MinSize >= 0";
 //
 //   this->m_Points  = in_data;
@@ -303,12 +303,12 @@
 //
 //   this->m_Bounds = new T[2*K];
 //
-//   BuildTree( );
+//   BuildTree();
 //}
 //
 //// Destructor
 //template <class T, unsigned char K>
-//GeneralKDTree<T,K>::~GeneralKDTree( )
+//GeneralKDTree<T,K>::~GeneralKDTree()
 //{
 //   delete m_Indexes;
 //   delete m_Bounds;
@@ -316,21 +316,21 @@
 //
 //// Queries
 //template <class T, unsigned char K>
-//const int GeneralKDTree<T,K>::getDimensionality( )
+//const int GeneralKDTree<T,K>::getDimensionality()
 //{
 //   return K;
 //}
 //
 //// Methods
 //template <class T, unsigned char K>
-//const int GeneralKDTree<T,K>::FindNearestPoint( T* p )
+//const int GeneralKDTree<T,K>::FindNearestPoint(T* p)
 //{
 //   // Start the recursion
-//   T minD = std::numeric_limits<T>::infinity( );
+//   T minD = std::numeric_limits<T>::infinity();
 //
 //   T* bounds = new T[2*K];
 //
-//   for ( int i = 0; i < 2*K; i++ )
+//   for (int i = 0; i < 2*K; i++)
 //   {
 //      bounds[i] = m_Bounds[i];
 //   }
@@ -343,40 +343,40 @@
 //}
 //
 //template <class T, unsigned char K>
-//std::vector<int> GeneralKDTree<T,K>::FindNearestPoints( T* in_TestPoint, T in_Radius )
+//std::vector<int> GeneralKDTree<T,K>::FindNearestPoints(T* in_TestPoint, T in_Radius)
 //{
 //   // Start the recursion
 //   std::vector<int> ret;
 //
-//   FindNearestPoints( in_TestPoint, in_Radius*in_Radius, ret );
+//   FindNearestPoints(in_TestPoint, in_Radius*in_Radius, ret);
 //   return ret;
 //}
 //
 //template <class T, unsigned char K>
-//void GeneralKDTree<T,K>::FindNearestPoints( T* in_TestPoint, T in_Radius, std::vector<int>& out_Results )
+//void GeneralKDTree<T,K>::FindNearestPoints(T* in_TestPoint, T in_Radius, std::vector<int>& out_Results)
 //{
 //   // Start the recursion
-//   FindNearestPoints( in_TestPoint, in_Radius*in_Radius, 0, m_NPoints-1, 0, out_Results );
+//   FindNearestPoints(in_TestPoint, in_Radius*in_Radius, 0, m_NPoints-1, 0, out_Results);
 //}
 //
 //template <class T, unsigned char K>
-//const int GeneralKDTree<T,K>::FindNearestPointExhaustive( T* p )
+//const int GeneralKDTree<T,K>::FindNearestPointExhaustive(T* p)
 //{
-//   T bestDistance = std::numeric_limits<T>::infinity( );
-//   return FindNearestPointExhaustive( p, 0, m_NPoints - 1, bestDistance );
+//   T bestDistance = std::numeric_limits<T>::infinity();
+//   return FindNearestPointExhaustive(p, 0, m_NPoints - 1, bestDistance);
 //}
 //
 //template <class T, unsigned char K>
-//const int GeneralKDTree<T,K>::FindNearestPointExhaustive( T* p, const int in_Low, const int in_High, T& out_BestDistance )
+//const int GeneralKDTree<T,K>::FindNearestPointExhaustive(T* p, const int in_Low, const int in_High, T& out_BestDistance)
 //{
 //   // If none of the points are better than out_BestDistance, then we should return "no point"
 //   int bestIndex    = -1;
 //   T testDistance;
 //   
-//	for ( int i = in_Low; i <= in_High; i++ )
+//	for (int i = in_Low; i <= in_High; i++)
 //	{
 //		testDistance = distanceSquaredBetweenPoints(p, m_Points[ m_Indexes[i] ]);
-//		if ( testDistance < out_BestDistance )
+//		if (testDistance < out_BestDistance)
 //		{
 //			out_BestDistance = testDistance;
 //			bestIndex        = m_Indexes[i];
@@ -387,41 +387,41 @@
 //}
 //
 //template <class T, unsigned char K>
-//std::vector<int> GeneralKDTree<T,K>::FindNearestPointsExhaustive( T* p, T in_Radius )
+//std::vector<int> GeneralKDTree<T,K>::FindNearestPointsExhaustive(T* p, T in_Radius)
 //{
 //   std::vector<int> points;
-//   FindNearestPointsExhaustive( p, in_Radius*in_Radius, 0, m_NPoints-1, points );
+//   FindNearestPointsExhaustive(p, in_Radius*in_Radius, 0, m_NPoints-1, points);
 //
 //   return points;
 //}
 //
 //template <class T, unsigned char K>
-//void GeneralKDTree<T,K>::FindNearestPointsExhaustive( T* p, T in_RadiusSquared, const int in_Low, const int in_High,
-//                                                     std::vector<int>& io_Points )
+//void GeneralKDTree<T,K>::FindNearestPointsExhaustive(T* p, T in_RadiusSquared, const int in_Low, const int in_High,
+//                                                     std::vector<int>& io_Points)
 //{
 //   // This is the no-brainer way of finding the nearest points -
 //   // just go over the whole data set
 //   T testDistance;
 //   
-//   for ( int i = in_Low; i <= in_High; i++ )
+//   for (int i = in_Low; i <= in_High; i++)
 //   {
-//      testDistance = distanceSquaredBetweenPoints( p, m_Points[ m_Indexes[i] ] );
-//      if ( testDistance < in_RadiusSquared )
+//      testDistance = distanceSquaredBetweenPoints(p, m_Points[ m_Indexes[i] ]);
+//      if (testDistance < in_RadiusSquared)
 //      {
-//         io_Points.push_back( m_Indexes[i] );
+//         io_Points.push_back(m_Indexes[i]);
 //      }
 //   }
 //}
 //
 //template <class T, unsigned char K>
-//const T GeneralKDTree<T,K>::distanceSquaredBetweenPoints( T* ps, T* qs )
+//const T GeneralKDTree<T,K>::distanceSquaredBetweenPoints(T* ps, T* qs)
 //{
 //   ++QueryCount;
 //   // Calculate Euclidean norm
 //	T ret = 0;
 //	T tmp;
 //   
-//	for ( int i = 0; i < K; i++ )
+//	for (int i = 0; i < K; i++)
 //	{
 //      tmp  = ps[i] - qs[i];
 //		ret += tmp * tmp;
@@ -429,13 +429,13 @@
 //   // but don't square root it (x^2 is monotonic in x)
 //
 //   mfs << "scatter2x([";
-//   for ( int i = 0; i < 2 && i < K; i++ )
+//   for (int i = 0; i < 2 && i < K; i++)
 //   {
 //      mfs << qs[i] << ";";
 //   }
 //   mfs << "], 'ro');" << std::endl;
 //   
-//   if ( QueryCount < 20 )
+//   if (QueryCount < 20)
 //      mfs << "text(" << qs[0] << "," << qs[1] << ", '" << QueryCount << "');" << std::endl;
 //      
 //   
@@ -444,27 +444,27 @@
 //}
 //
 //template <class T, unsigned char K>
-//const void GeneralKDTree<T,K>::FindNearestPoints( T* in_TestPoint, T in_RadiusSquared, const int low, 
-//                                                  const int high, int dim, std::vector<int>& io_Points )
+//const void GeneralKDTree<T,K>::FindNearestPoints(T* in_TestPoint, T in_RadiusSquared, const int low, 
+//                                                  const int high, int dim, std::vector<int>& io_Points)
 //{
 //   double distanceSquared;
 //
-//	if ( high - low < m_MinSize )
+//	if (high - low < m_MinSize)
 //	{
 //		// If the partition m_Indexes small, it's more efficient to do exhaustive search!
-//      FindNearestPointsExhaustive( in_TestPoint, in_RadiusSquared, low, high, io_Points );
+//      FindNearestPointsExhaustive(in_TestPoint, in_RadiusSquared, low, high, io_Points);
 //	}
 //	else
 //	{
 //      int dimm = (dim+1) % K;
 //      
-//      INITPARTITIONS( low, high );
+//      INITPARTITIONS(low, high);
 //
 //      // Firstly, test the discriminator point
 //      distanceSquared = distanceSquaredBetweenPoints(in_TestPoint, m_Points[ m_Indexes[low] ]);
-//      if ( distanceSquared < in_RadiusSquared )
+//      if (distanceSquared < in_RadiusSquared)
 //      {
-//         io_Points.push_back( m_Indexes[low] );
+//         io_Points.push_back(m_Indexes[low]);
 //      }
 //
 //      // This is the minimum distance from the test point to the discriminator hyperplane
@@ -474,7 +474,7 @@
 //		
 //      // Depending on which side of the boundary the test point lies, we want to test the leq or geq
 //      // sub-tree first
-//		if ( orthoDistance > 0 )
+//		if (orthoDistance > 0)
 //		{
 //			chstart = lstart;
 //			chend   = lend;
@@ -485,16 +485,16 @@
 //			chend   = rend;
 //		}
 //		
-//      FindNearestPoints( in_TestPoint, in_RadiusSquared, chstart, chend, dimm, io_Points );
+//      FindNearestPoints(in_TestPoint, in_RadiusSquared, chstart, chend, dimm, io_Points);
 //		
 //      // If the boundary is further away than the radius of the sphere, there's no point in checking the
 //      // other sub-tree
-//		if ( orthoDistance*orthoDistance < in_RadiusSquared )
+//		if (orthoDistance*orthoDistance < in_RadiusSquared)
 //		{
 //			chstart = lstart + rstart - chstart;
 //			chend   = lend   + rend   - chend;
 //		
-//         FindNearestPoints( in_TestPoint, in_RadiusSquared, chstart, chend, dimm, io_Points );
+//         FindNearestPoints(in_TestPoint, in_RadiusSquared, chstart, chend, dimm, io_Points);
 //		}
 //	}
 //}
@@ -502,11 +502,11 @@
 //#include <cmath>
 //
 //template <class T, unsigned char K>
-//const int GeneralKDTree<T,K>::FindNearestPoint( T* p, const int low, const int high, int dim, T& minD, T* bounds )
+//const int GeneralKDTree<T,K>::FindNearestPoint(T* p, const int low, const int high, int dim, T& minD, T* bounds)
 //{
-//	if ( high - low < m_MinSize )
+//	if (high - low < m_MinSize)
 //	{
-//      return FindNearestPointExhaustive( p, low, high, minD );
+//      return FindNearestPointExhaustive(p, low, high, minD);
 //	}
 //	else
 //	{
@@ -521,17 +521,17 @@
 //         T tmpDelta;
 //         T testDistance = 0;
 //
-//         for ( int i = 0; i < K; i++ )
+//         for (int i = 0; i < K; i++)
 //         {
-//            tmpDelta = ::min( ::max( p[i], bounds[2*i+0] ), bounds[2*i+1] ) - p[i];
+//            tmpDelta = ::min(::max(p[i], bounds[2*i+0]), bounds[2*i+1]) - p[i];
 //            testDistance += tmpDelta * tmpDelta;
 //
-//            if ( testDistance > minD )
+//            if (testDistance > minD)
 //               return -1;
 //         }
 //      }
 //
-//      if ( K >= 2 )
+//      if (K >= 2)
 //      {
 //         T x = bounds[0];
 //         T y = bounds[2];
@@ -541,7 +541,7 @@
 //         T w = r-x;
 //         T h = b-y;
 //
-//         if ( w > 0 && h > 0 )
+//         if (w > 0 && h > 0)
 //            mfs << "rectangle('Position', [" << x << " " << y << " " << w << " " << h << "]);" << std::endl;
 //      }
 //
@@ -552,7 +552,7 @@
 //		
 //      // Depending on which side of the boundary the test point lies, we want to test the leq or geq
 //      // sub-tree first
-//		if ( orthoDistance > 0 )
+//		if (orthoDistance > 0)
 //		{
 //			chstart = lstart; chend   = lend;
 //		}
@@ -567,9 +567,9 @@
 //      T minBound = bounds[2*dim+0];
 //      T maxBound = bounds[2*dim+1];
 //
-//      for ( int i = 0; i < 2; i++ )
+//      for (int i = 0; i < 2; i++)
 //      {
-//         if ( chstart == lstart )
+//         if (chstart == lstart)
 //         {
 //            bounds[2*dim+1] = m_Points[m_Indexes[imedian]][dim];
 //         }
@@ -579,9 +579,9 @@
 //         }
 //
 //         // Now check the subtree which contains the test point
-//         tmpIdx = FindNearestPoint( p, chstart, chend, dimm, testDistance = minD, bounds );
+//         tmpIdx = FindNearestPoint(p, chstart, chend, dimm, testDistance = minD, bounds);
 //
-//         if ( tmpIdx != -1 )
+//         if (tmpIdx != -1)
 //         {
 //            bestIndex = tmpIdx;
 //            minD = testDistance;
@@ -591,16 +591,16 @@
 //         bounds[2*dim+1] = maxBound;
 //
 //         
-//         if ( i == 0 )
+//         if (i == 0)
 //         {
-//            if ( orthoDistance*orthoDistance >= minD )
+//            if (orthoDistance*orthoDistance >= minD)
 //               break;
 //
 //            chstart = lstart + rstart - chstart;
 //            chend   = lend   + rend   - chend;
 //
-//            testDistance = distanceSquaredBetweenPoints( p, m_Points[ m_Indexes[imedian] ] );
-//            if ( testDistance < minD )
+//            testDistance = distanceSquaredBetweenPoints(p, m_Points[ m_Indexes[imedian] ]);
+//            if (testDistance < minD)
 //            {
 //               minD = testDistance;
 //               bestIndex = m_Indexes[imedian];
@@ -616,21 +616,21 @@
 //const char* styles[] = { "r.", "g.", "b.", "m.", "r+", "g+", "b+", "m+" };
 //
 //template <class T, unsigned char K>
-//void printPoints( KDTreeBranch<T,K>* /*branch*/, int /*depth*/ )
+//void printPoints(KDTreeBranch<T,K>* /*branch*/, int /*depth*/)
 //{
 //   /*
-//   if ( branch == 0 )
+//   if (branch == 0)
 //      return;
 //
 //   T point[K];
 //
 //   mfs << "scatter2x([";
 //
-//   for ( int i = 0, imax = branch->getSize( ); i < imax; i++ )
+//   for (int i = 0, imax = branch->getSize(); i < imax; i++)
 //   {
-//      branch->getPoint( i, point );
+//      branch->getPoint(i, point);
 //
-//      for ( int d = 0; d < K; d++ )
+//      for (int d = 0; d < K; d++)
 //         mfs << point[d] << " ";
 //   
 //      mfs << ";" << std::endl;
@@ -641,59 +641,59 @@
 //}
 //
 //template <class T, unsigned char K>
-//void copyBounds( T* bounds, T* ret )
+//void copyBounds(T* bounds, T* ret)
 //{
-//   for ( int i = 0; i < 2*K; i++ )
+//   for (int i = 0; i < 2*K; i++)
 //      ret[i] = bounds[i];
 //}
 //
 //template <class T, unsigned char K>
-//int findPlaneDirection( T* plane )
+//int findPlaneDirection(T* plane)
 //{
-//   for ( int i = 0; i < K; i++ )
-//      if ( plane[i] != 0.0 )
+//   for (int i = 0; i < K; i++)
+//      if (plane[i] != 0.0)
 //         return i;
 //
 //   throw "Degenerate plane!";
 //}
 //
 //template <class T, unsigned char K>
-//void printBranch( KDTreeBranch<T,K>* branch, int depth, T* bounds )
+//void printBranch(KDTreeBranch<T,K>* branch, int depth, T* bounds)
 //{
 //   return;
 //
 //   double* plane = new double[K+1];
 //   T* bs = new T[2*K];
 //
-//   if ( branch->getLeftChild( ) == 0 || branch->getRightChild( ) == 0 )
+//   if (branch->getLeftChild() == 0 || branch->getRightChild() == 0)
 //   {
-//      printPoints( branch, depth );
+//      printPoints(branch, depth);
 //   }
 //   else
 //   {
-//      branch->getDiscriminatorPlane( 0, plane );
-//      int ax = findPlaneDirection<T,K>( plane );
+//      branch->getDiscriminatorPlane(0, plane);
+//      int ax = findPlaneDirection<T,K>(plane);
 //
-//      copyBounds<T,K>( bounds, bs );
-//      bs[2*ax+1] = min( bs[2*ax+1], plane[2] );
+//      copyBounds<T,K>(bounds, bs);
+//      bs[2*ax+1] = min(bs[2*ax+1], plane[2]);
 //
-//      printBranch( branch->getLeftChild( ), depth+1, bs );
+//      printBranch(branch->getLeftChild(), depth+1, bs);
 //      
-//      copyBounds<T,K>( bounds, bs );
-//      bs[2*ax+0] = max( bs[2*ax+0], plane[2] );
+//      copyBounds<T,K>(bounds, bs);
+//      bs[2*ax+0] = max(bs[2*ax+0], plane[2]);
 //
-//      printBranch( branch->getRightChild( ), depth+1, bs );
+//      printBranch(branch->getRightChild(), depth+1, bs);
 //   }
 //
-//   copyBounds<T,K>( bounds, bs );
-//   branch->getDiscriminatorPlane( 0, plane );
-//   int ax = findPlaneDirection<T,K>( plane );
+//   copyBounds<T,K>(bounds, bs);
+//   branch->getDiscriminatorPlane(0, plane);
+//   int ax = findPlaneDirection<T,K>(plane);
 //
 //   bs[2*ax+0] = ((plane[ax] < 0) ? 1 : -1) * plane[2];
 //   bs[2*ax+1] = ((plane[ax] < 0) ? 1 : -1) * plane[2];
 //
 //   /*
-//   if ( depth < 10 )
+//   if (depth < 10)
 //   {
 //      mfs << "hnd = plot2x([" << bs[0] << " " << bs[2] << "; " << bs[1] << " " << bs[3] << "]', 'c');";
 //      mfs << "set(hnd, 'LineWidth', " << max(10-2*depth,1) << "); pause; %depth=" << depth << std::endl;
@@ -705,64 +705,64 @@
 //}
 //
 //template <class T, unsigned char K>
-//void printBranch( KDTreeBranch<T,K>* branch )
+//void printBranch(KDTreeBranch<T,K>* branch)
 //{
 //   T* bounds = new T[2*K];
 //
-//   for ( int d = 0; d < K; d++ )
+//   for (int d = 0; d < K; d++)
 //   {
 //      bounds[2*d+0] = branch->getMinimumBound(d);
 //      bounds[2*d+1] = branch->getMaximumBound(d);
 //   }
 //
-//   printBranch( branch, 0, bounds );
+//   printBranch(branch, 0, bounds);
 //
 //   delete bounds;
 //}
 //
 //template <class T, unsigned char K>
-//void GeneralKDTree<T,K>::BuildTree( )
+//void GeneralKDTree<T,K>::BuildTree()
 //{
 //   // Fill the array of indexes - these will be [0..in_npoints-1] to start with,
 //   // but they'll be rearranged when the tree is built
-//   for ( int i = 0; i < m_NPoints; i++ )
+//   for (int i = 0; i < m_NPoints; i++)
 //      this->m_Indexes[i] = i;
 //
-//   //mfs << "BuildTree( )" << std::endl;
-//	KDTreeBranch<T,K>* branches = recursivelyPartition( 0, m_NPoints-1, 0, m_Bounds );
+//   //mfs << "BuildTree()" << std::endl;
+//	KDTreeBranch<T,K>* branches = recursivelyPartition(0, m_NPoints-1, 0, m_Bounds);
 //
 //   std::cerr << "General Tree: Bounds = " << std::endl;
-//   for ( int i = 0; i < K; i++ )
+//   for (int i = 0; i < K; i++)
 //      std::cerr << m_Bounds[2*i+0] << "->" << m_Bounds[2*i+1] << std::endl;
 //
-//   printBranch( branches );
+//   printBranch(branches);
 //
 //   delete branches;
 //}
 //
 //template <class T, unsigned char K>
-//KDTreeBranch<T,K>* GeneralKDTree<T,K>::recursivelyPartition( int low, int high, int dim, T* out_Bounds )
+//KDTreeBranch<T,K>* GeneralKDTree<T,K>::recursivelyPartition(int low, int high, int dim, T* out_Bounds)
 //{
 //   T data;
 //
-//   if ( high - low < m_MinSize )
+//   if (high - low < m_MinSize)
 //	{
 //      int ax;
-//      for ( int i = low; i <= high; i++ )
+//      for (int i = low; i <= high; i++)
 //      {
-//         for ( ax = 0; ax < K; ++ax )
+//         for (ax = 0; ax < K; ++ax)
 //         {
 //            data = m_Points[m_Indexes[i]][ax];
-//            out_Bounds[2*ax+0] = ::min( out_Bounds[2*ax+0], data );
-//            out_Bounds[2*ax+1] = ::max( out_Bounds[2*ax+1], data );
+//            out_Bounds[2*ax+0] = ::min(out_Bounds[2*ax+0], data);
+//            out_Bounds[2*ax+1] = ::max(out_Bounds[2*ax+1], data);
 //         }
 //      }
 //
-//      return new KDTreeBranch<T,K>( this, low, high, dim, 0, 0, 0 );
+//      return new KDTreeBranch<T,K>(this, low, high, dim, 0, 0, 0);
 //	}
 //
 //   // Do the partitioning of the current array
-//   partitionArray( low, high, dim );
+//   partitionArray(low, high, dim);
 //
 //   INITPARTITIONS(low,high);
 //
@@ -772,25 +772,25 @@
 //   T* boundsL = new T[2*K];
 //   T* boundsR = new T[2*K];
 //
-//	KDTreeBranch<T,K>* left  = recursivelyPartition( lstart, lend, dimm, boundsL );
-//	KDTreeBranch<T,K>* right = recursivelyPartition( rstart, rend, dimm, boundsR );
+//	KDTreeBranch<T,K>* left  = recursivelyPartition(lstart, lend, dimm, boundsL);
+//	KDTreeBranch<T,K>* right = recursivelyPartition(rstart, rend, dimm, boundsR);
 //
-//   for ( int ax = 0; ax < K; ++ax )
+//   for (int ax = 0; ax < K; ++ax)
 //   {
 //      data = m_Points[m_Indexes[imedian]][ax];
 //
-//      out_Bounds[2*ax+0] = ::min( ::min( boundsL[2*ax+0], boundsR[2*ax+0] ), data );
-//      out_Bounds[2*ax+1] = ::max( ::max( boundsL[2*ax+1], boundsR[2*ax+1] ), data );
+//      out_Bounds[2*ax+0] = ::min(::min(boundsL[2*ax+0], boundsR[2*ax+0]), data);
+//      out_Bounds[2*ax+1] = ::max(::max(boundsL[2*ax+1], boundsR[2*ax+1]), data);
 //   }
 //
 //   delete boundsL;
 //   delete boundsR;
 //
-//   return new KDTreeBranch<T,K>( this, low, high, dim, m_Points[m_Indexes[imedian]][dim], left, right );
+//   return new KDTreeBranch<T,K>(this, low, high, dim, m_Points[m_Indexes[imedian]][dim], left, right);
 //}
 //
 //template <class T, unsigned char K>
-//void GeneralKDTree<T,K>::partitionArray( int in_Low, int in_High, int in_Dim )
+//void GeneralKDTree<T,K>::partitionArray(int in_Low, int in_High, int in_Dim)
 //{
 //   
 //   // This quick and efficient implementation is based on the paper "Fast Median Search: an
@@ -820,7 +820,7 @@
 //
 //		if (in_High == in_Low + 1) { /* Two elements only */
 //			if (m_Points[m_Indexes[in_Low]][in_Dim] > m_Points[m_Indexes[in_High]][in_Dim])
-//				swapElements( in_Low, in_High );
+//				swapElements(in_Low, in_High);
 //
 //			return;
 //		}
@@ -830,14 +830,14 @@
 //		 */
 //		middle = (in_Low + in_High) / 2;
 //		if (m_Points[m_Indexes[middle]][in_Dim] > m_Points[m_Indexes[in_High]][in_Dim])
-//			swapElements( middle, in_High );
+//			swapElements(middle, in_High);
 //		if (m_Points[m_Indexes[in_Low]][in_Dim] > m_Points[m_Indexes[in_High]][in_Dim])
-//			swapElements( in_Low, in_High );
+//			swapElements(in_Low, in_High);
 //		if (m_Points[m_Indexes[middle]][in_Dim] > m_Points[m_Indexes[in_Low]][in_Dim])
-//			swapElements( middle, in_Low );
+//			swapElements(middle, in_Low);
 //
 //		/* Swap in_Low item (now in position middle) into position (in_Low+1) */
-//		swapElements( middle, in_Low + 1 );
+//		swapElements(middle, in_Low + 1);
 //
 //		/*
 //		 * Nibble from each end towards middle, swapping items when stuck
@@ -851,11 +851,11 @@
 //			if (hh < ll)
 //				break;
 //
-//			swapElements( ll, hh );
+//			swapElements(ll, hh);
 //		}
 //
 //		/* Swap middle item (in position in_Low) back into correct position */
-//		swapElements( in_Low, hh );
+//		swapElements(in_Low, hh);
 //
 //		/* Re-set active partition */
 //		if (hh <= median)

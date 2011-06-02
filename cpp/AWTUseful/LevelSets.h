@@ -32,7 +32,7 @@ namespace AWT
    class LevelSets
    {
    public:
-      static T meanCurvatureTimesGradientMagnitude( T* in_values, T* in_spacing );
+      static T meanCurvatureTimesGradientMagnitude(T* in_values, T* in_spacing);
    };
 }
 

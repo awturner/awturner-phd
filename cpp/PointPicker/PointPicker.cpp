@@ -27,13 +27,13 @@
 
 #include <QApplication>
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   QApplication app( argc, argv );
+   QApplication app(argc, argv);
 
-   FormPointPicker* frm = new FormPointPicker( );
+   FormPointPicker* frm = new FormPointPicker();
 
-   frm->showMaximized( );
+   frm->showMaximized();
 
-   return app.exec( );
+   return app.exec();
 }

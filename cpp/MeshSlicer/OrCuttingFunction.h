@@ -34,17 +34,17 @@ namespace AWT
    class OrCuttingFunction : public CuttingFunction<T>
    {
    public:
-      typedef ManagedAutoPointer<OrCuttingFunction<T>> P;
+      typedef ManagedAutoPointer<OrCuttingFunction<T> > P;
 
    protected:
-      OrCuttingFunction( CuttingFunction<T>::P funcA, CuttingFunction<T>::P funcB );
-      virtual ~OrCuttingFunction( );
+      OrCuttingFunction(CuttingFunction<T>::P funcA, CuttingFunction<T>::P funcB);
+      virtual ~OrCuttingFunction();
 
    public:
-      static P getInstance( CuttingFunction<T>::P funcA, CuttingFunction<T>::P funcB );
-      virtual std::string getClassName( ) const;
+      static P getInstance(CuttingFunction<T>::P funcA, CuttingFunction<T>::P funcB);
+      virtual std::string getClassName() const;
 
-      virtual bool accept( T* vtx );
+      virtual bool accept(T* vtx);
 
    protected:
       struct D;

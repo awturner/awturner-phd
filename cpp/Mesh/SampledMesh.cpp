@@ -59,65 +59,65 @@ struct AWT::SampledMesh<T>::D
 
 
 template <class T>
-AWT::SampledMesh<T>::SampledMesh( typename Mesh<T>::P mesh, SamplePoints::P sampPts )
+AWT::SampledMesh<T>::SampledMesh(typename Mesh<T>::P mesh, SamplePoints::P sampPts)
 {
    m_D = new D;
 
-   m_D->m_MeshData = SampledMeshData<T>::getInstance( mesh->getMeshData( ), sampPts );
+   m_D->m_MeshData = SampledMeshData<T>::getInstance(mesh->getMeshData(), sampPts);
 
    m_D->m_SamplePoints = sampPts;
    m_D->m_Mesh = mesh;
 
-   m_D->m_Vertices = SampledTuples<T>::getInstance( mesh->getVertices( ), sampPts );
+   m_D->m_Vertices = SampledTuples<T>::getInstance(mesh->getVertices(), sampPts);
 
-   m_D->m_MeshVertexNormals = SampledTuples<T>::getInstance( mesh->getVertexNormals( ), sampPts );
-   m_D->m_MeshTextureCoords = SampledTuples<T>::getInstance( mesh->getTextureCoords( ), sampPts );
+   m_D->m_MeshVertexNormals = SampledTuples<T>::getInstance(mesh->getVertexNormals(), sampPts);
+   m_D->m_MeshTextureCoords = SampledTuples<T>::getInstance(mesh->getTextureCoords(), sampPts);
 
-   m_D->m_VerticesTree.set( 0 );
+   m_D->m_VerticesTree.set(0);
 
-   m_D->m_VerticesTreeData = VerticesTreeData<T>::getInstance( *m_D->m_Vertices );
+   m_D->m_VerticesTreeData = VerticesTreeData<T>::getInstance(*m_D->m_Vertices);
 
-   if ( *m_D->m_MeshVertexNormals )
+   if (*m_D->m_MeshVertexNormals)
    {
-      m_D->m_VertexNormals = SampledTuples<T>::getInstance( *m_D->m_MeshVertexNormals, sampPts );
+      m_D->m_VertexNormals = SampledTuples<T>::getInstance(*m_D->m_MeshVertexNormals, sampPts);
    }
    else
    {
-      m_D->m_VertexNormals.set( 0 );
+      m_D->m_VertexNormals.set(0);
    }
 
-   if ( *m_D->m_MeshTextureCoords )
+   if (*m_D->m_MeshTextureCoords)
    {
-      m_D->m_TextureCoords = SampledTuples<T>::getInstance( *m_D->m_MeshTextureCoords, sampPts );
+      m_D->m_TextureCoords = SampledTuples<T>::getInstance(*m_D->m_MeshTextureCoords, sampPts);
    }
    else
    {
-      m_D->m_TextureCoords.set( 0 );
+      m_D->m_TextureCoords.set(0);
    }
 }
 
 template <class T>
-AWT::SampledMesh<T>::~SampledMesh( )
+AWT::SampledMesh<T>::~SampledMesh()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::SampledMesh<T>::P AWT::SampledMesh<T>::getInstance( typename Mesh<T>::P mesh, SamplePoints::P sampPts )
+typename AWT::SampledMesh<T>::P AWT::SampledMesh<T>::getInstance(typename Mesh<T>::P mesh, SamplePoints::P sampPts)
 {
-   AUTOGETINSTANCE( SampledMesh<T>, ( mesh, sampPts ) );
+   AUTOGETINSTANCE(SampledMesh<T>, (mesh, sampPts));
 }
 
 template <class T>
-GETNAMEMACRO( AWT::SampledMesh<T> );
+GETNAMEMACRO(AWT::SampledMesh<T>);
 
 template <class T>
-void AWT::SampledMesh<T>::setVertices( typename AWT::Tuples<T>::P /*verts*/ )
+void AWT::SampledMesh<T>::setVertices(typename AWT::Tuples<T>::P /*verts*/)
 {
 }
 
 template <class T>
-typename AWT::Tuples<T>::P AWT::SampledMesh<T>::getVertices( ) const
+typename AWT::Tuples<T>::P AWT::SampledMesh<T>::getVertices() const
 {
    return m_D->m_Vertices;
 }
@@ -125,149 +125,149 @@ typename AWT::Tuples<T>::P AWT::SampledMesh<T>::getVertices( ) const
 #include "Useful/PrintMacros.h"
 
 template <class T>
-void AWT::SampledMesh<T>::getVertex( const MeshIndex in_Index, T* out_Vertex ) const
+void AWT::SampledMesh<T>::getVertex(const MeshIndex in_Index, T* out_Vertex) const
 {
-   m_D->m_Mesh->getVertex( m_D->m_SamplePoints->getSampleIndex( in_Index ), out_Vertex );
+   m_D->m_Mesh->getVertex(m_D->m_SamplePoints->getSampleIndex(in_Index), out_Vertex);
 }
 
 template <class T>
-void AWT::SampledMesh<T>::setVertex( const MeshIndex in_Index, const T* in_Vertex )
-{
-}
-
-template <class T>
-void AWT::SampledMesh<T>::setVertex( const MeshIndex in_Index, const T a, const T b, const T c )
+void AWT::SampledMesh<T>::setVertex(const MeshIndex in_Index, const T* in_Vertex)
 {
 }
 
 template <class T>
-void AWT::SampledMesh<T>::setVertexNormals( typename AWT::Tuples<T>::P /*in_VertexNormals*/ )
+void AWT::SampledMesh<T>::setVertex(const MeshIndex in_Index, const T a, const T b, const T c)
 {
 }
 
 template <class T>
-void AWT::SampledMesh<T>::setTextureCoords( typename AWT::Tuples<T>::P /*in_VertexNormals*/ )
+void AWT::SampledMesh<T>::setVertexNormals(typename AWT::Tuples<T>::P /*in_VertexNormals*/)
 {
 }
 
 template <class T>
-bool AWT::SampledMesh<T>::hasFaces( ) const
+void AWT::SampledMesh<T>::setTextureCoords(typename AWT::Tuples<T>::P /*in_VertexNormals*/)
+{
+}
+
+template <class T>
+bool AWT::SampledMesh<T>::hasFaces() const
 {
    return false;
 }
 
 template <class T>
-AWT::MeshIndex AWT::SampledMesh<T>::getNumberOfFaces( ) const
+AWT::MeshIndex AWT::SampledMesh<T>::getNumberOfFaces() const
 {
    return 0;
 }
 
 template <class T>
-typename AWT::Tuples<AWT::MeshIndex>::P AWT::SampledMesh<T>::getFaces( ) const
+typename AWT::Tuples<AWT::MeshIndex>::P AWT::SampledMesh<T>::getFaces() const
 {
-   return AWT::Tuples<MeshIndex>::P( );
+   return AWT::Tuples<MeshIndex>::P();
 }
 
 template <class T>
-void AWT::SampledMesh<T>::setFaces( typename AWT::Tuples<MeshIndex>::P )
+void AWT::SampledMesh<T>::setFaces(typename AWT::Tuples<MeshIndex>::P)
 {
    // Do nothing
 }
 
 template <class T>
-void AWT::SampledMesh<T>::getFace( const AWT::MeshIndex /*in_Index*/, T* /*out_VertexA*/, T* /*out_VertexB*/, T* /*out_VertexC */) const
+void AWT::SampledMesh<T>::getFace(const AWT::MeshIndex /*in_Index*/, T* /*out_VertexA*/, T* /*out_VertexB*/, T* /*out_VertexC */) const
 {
-   AWTEXCEPTIONTHROW( "Not supported" );
+   AWTEXCEPTIONTHROW("Not supported");
 }
 
 template <class T>
-void AWT::SampledMesh<T>::getFaceIndices( const AWT::MeshIndex /*in_Index*/, AWT::MeshIndex* /*out_VertexIndices*/ ) const
+void AWT::SampledMesh<T>::getFaceIndices(const AWT::MeshIndex /*in_Index*/, AWT::MeshIndex* /*out_VertexIndices*/) const
 {
-   AWTEXCEPTIONTHROW( "Not supported" );
+   AWTEXCEPTIONTHROW("Not supported");
 }
 
 template <class T>
-void AWT::SampledMesh<T>::setFaceIndices( const MeshIndex /*in_Index*/, const MeshIndex /*a*/, const MeshIndex /*b*/, const MeshIndex /*c*/ )
+void AWT::SampledMesh<T>::setFaceIndices(const MeshIndex /*in_Index*/, const MeshIndex /*a*/, const MeshIndex /*b*/, const MeshIndex /*c*/)
 {
-   AWTEXCEPTIONTHROW( "Not supported" );
+   AWTEXCEPTIONTHROW("Not supported");
 }
 
 template <class T>
-void AWT::SampledMesh<T>::setFaceIndices( const MeshIndex /*in_Index*/, const MeshIndex* /*in_VertexIndices*/ )
+void AWT::SampledMesh<T>::setFaceIndices(const MeshIndex /*in_Index*/, const MeshIndex* /*in_VertexIndices*/)
 {
-   AWTEXCEPTIONTHROW( "Not supported" );
+   AWTEXCEPTIONTHROW("Not supported");
 }
 
 template <class T>
-bool AWT::SampledMesh<T>::hasFaceNormals( ) const
+bool AWT::SampledMesh<T>::hasFaceNormals() const
 {
    return false;
 }
 
 template <class T>
-typename AWT::Tuples<T>::P AWT::SampledMesh<T>::getFaceNormals( ) const
+typename AWT::Tuples<T>::P AWT::SampledMesh<T>::getFaceNormals() const
 {
-   return AWT::Tuples<T>::P( );
+   return AWT::Tuples<T>::P();
 }
 
 template <class T>
-void AWT::SampledMesh<T>::setFaceNormals( typename AWT::Tuples<T>::P /*in_VertexNormals*/ )
+void AWT::SampledMesh<T>::setFaceNormals(typename AWT::Tuples<T>::P /*in_VertexNormals*/)
 {
-   AWTEXCEPTIONTHROW( "Not supported" );
+   AWTEXCEPTIONTHROW("Not supported");
 }
 
 template <class T>
-void AWT::SampledMesh<T>::prepareToSearchFaces( bool forceRebuild )
+void AWT::SampledMesh<T>::prepareToSearchFaces(bool forceRebuild)
 {
-   AWTEXCEPTIONTHROW( "Not supported" );
+   AWTEXCEPTIONTHROW("Not supported");
 }
 
 template <class T>
-void AWT::SampledMesh<T>::searchFaces( typename AWT::FacesSearch<T>::P /*searcher*/ )
+void AWT::SampledMesh<T>::searchFaces(typename AWT::FacesSearch<T>::P /*searcher*/)
 {
-   AWTEXCEPTIONTHROW( "Not supported" );
+   AWTEXCEPTIONTHROW("Not supported");
 }
 
 template <class T>
-void AWT::SampledMesh<T>::lock( void* obj )
+void AWT::SampledMesh<T>::lock(void* obj)
 {
-   m_D->m_Mesh->lock( obj );
+   m_D->m_Mesh->lock(obj);
 }
 
 template <class T>
-void AWT::SampledMesh<T>::unlock( void* obj )
+void AWT::SampledMesh<T>::unlock(void* obj)
 {
-   m_D->m_Mesh->unlock( obj );
+   m_D->m_Mesh->unlock(obj);
 }
 
 template <class T>
-AWT::MeshIndex AWT::SampledMesh<T>::getNumberOfVertices( ) const
+AWT::MeshIndex AWT::SampledMesh<T>::getNumberOfVertices() const
 {
-   return m_D->m_SamplePoints->getNumberOfSamples( );
+   return m_D->m_SamplePoints->getNumberOfSamples();
 }
 
 template <class T>
-bool AWT::SampledMesh<T>::hasVertexNormals( ) const
+bool AWT::SampledMesh<T>::hasVertexNormals() const
 {
-   getVertexNormals( );
+   getVertexNormals();
 
-   return m_D->m_Mesh->hasVertexNormals( );
+   return m_D->m_Mesh->hasVertexNormals();
 }
 
 template <class T>
-typename AWT::Tuples<T>::P AWT::SampledMesh<T>::getVertexNormals( ) const
+typename AWT::Tuples<T>::P AWT::SampledMesh<T>::getVertexNormals() const
 {
-   Tuples<T>::P meshVertexNormals = m_D->m_Mesh->getVertexNormals( );
+   Tuples<T>::P meshVertexNormals = m_D->m_Mesh->getVertexNormals();
 
-   if ( *m_D->m_MeshVertexNormals != *meshVertexNormals )
+   if (*m_D->m_MeshVertexNormals != *meshVertexNormals)
    {
-      if ( *meshVertexNormals != 0 )
+      if (*meshVertexNormals != 0)
       {
-         m_D->m_MeshVertexNormals = SampledTuples<T>::getInstance( m_D->m_Mesh->getVertexNormals( ), *m_D->m_SamplePoints );
+         m_D->m_MeshVertexNormals = SampledTuples<T>::getInstance(m_D->m_Mesh->getVertexNormals(), *m_D->m_SamplePoints);
       }
       else
       {
-         m_D->m_MeshVertexNormals.set( 0 );
+         m_D->m_MeshVertexNormals.set(0);
       }
    }
 
@@ -275,27 +275,27 @@ typename AWT::Tuples<T>::P AWT::SampledMesh<T>::getVertexNormals( ) const
 }
 
 template <class T>
-bool AWT::SampledMesh<T>::hasTextureCoords( ) const
+bool AWT::SampledMesh<T>::hasTextureCoords() const
 {
-   getTextureCoords( );
+   getTextureCoords();
 
-   return m_D->m_Mesh->hasTextureCoords( );
+   return m_D->m_Mesh->hasTextureCoords();
 }
 
 template <class T>
-typename AWT::Tuples<T>::P AWT::SampledMesh<T>::getTextureCoords( ) const
+typename AWT::Tuples<T>::P AWT::SampledMesh<T>::getTextureCoords() const
 {
-   Tuples<T>::P meshTextureCoords = m_D->m_Mesh->getTextureCoords( );
+   Tuples<T>::P meshTextureCoords = m_D->m_Mesh->getTextureCoords();
 
-   if ( *m_D->m_MeshTextureCoords != *meshTextureCoords )
+   if (*m_D->m_MeshTextureCoords != *meshTextureCoords)
    {
-      if ( *meshTextureCoords != 0 )
+      if (*meshTextureCoords != 0)
       {
-         m_D->m_MeshTextureCoords = SampledTuples<T>::getInstance( m_D->m_Mesh->getTextureCoords( ), *m_D->m_SamplePoints );
+         m_D->m_MeshTextureCoords = SampledTuples<T>::getInstance(m_D->m_Mesh->getTextureCoords(), *m_D->m_SamplePoints);
       }
       else
       {
-         m_D->m_MeshTextureCoords.set( 0 );
+         m_D->m_MeshTextureCoords.set(0);
       }
    }
 
@@ -303,35 +303,35 @@ typename AWT::Tuples<T>::P AWT::SampledMesh<T>::getTextureCoords( ) const
 }
 
 template <class T>
-void AWT::SampledMesh<T>::prepareToSearchVertices( bool forceRebuild )
+void AWT::SampledMesh<T>::prepareToSearchVertices(bool forceRebuild)
 {
-   if ( *m_D->m_VerticesTree == 0 || forceRebuild )
+   if (*m_D->m_VerticesTree == 0 || forceRebuild)
    {
-      m_D->m_VerticesTree = OEKDTree::OEKDTree<T,3>::getInstance( m_D->m_VerticesTreeData );
+      m_D->m_VerticesTree = OEKDTree::OEKDTree<T,3>::getInstance(m_D->m_VerticesTreeData);
    }
    
-   if ( m_D->m_VerticesTree->getModifiedTime( ) < m_D->m_Vertices->getModifiedTime( ) || forceRebuild )
+   if (m_D->m_VerticesTree->getModifiedTime() < m_D->m_Vertices->getModifiedTime() || forceRebuild)
    {
-      m_D->m_VerticesTree->build( );
+      m_D->m_VerticesTree->build();
    }
 }
 
 template <class T>
-void AWT::SampledMesh<T>::search( typename AWT::MeshSearch<T>::P searcher )
+void AWT::SampledMesh<T>::search(typename AWT::MeshSearch<T>::P searcher)
 {
-   if ( dynamic_cast<AWT::VerticesSearch<T>*>( *searcher ) != 0 )
-      searchVertices( dynamic_cast<VerticesSearch<T>*>( *searcher ) );
-   if ( dynamic_cast<AWT::FacesSearch<T>*>( *searcher ) != 0 )
-      searchFaces( dynamic_cast<FacesSearch<T>*>( *searcher ) );
+   if (dynamic_cast<AWT::VerticesSearch<T>*>(*searcher) != 0)
+      searchVertices(dynamic_cast<VerticesSearch<T>*>(*searcher));
+   if (dynamic_cast<AWT::FacesSearch<T>*>(*searcher) != 0)
+      searchFaces(dynamic_cast<FacesSearch<T>*>(*searcher));
 }
 
 template <class T>
-void AWT::SampledMesh<T>::searchVertices( typename AWT::VerticesSearch<T>::P search )
+void AWT::SampledMesh<T>::searchVertices(typename AWT::VerticesSearch<T>::P search)
 {
 }
 
 template <class T>
-typename AWT::MeshData<T>::P AWT::SampledMesh<T>::getMeshData( )
+typename AWT::MeshData<T>::P AWT::SampledMesh<T>::getMeshData()
 {
    return m_D->m_MeshData;
 }

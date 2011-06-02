@@ -29,7 +29,7 @@
 class Notifiable
 {
 public:
-   virtual void notify( ) = 0;
+   virtual void notify() = 0;
 };
 
 #endif // __NOTIFIABLE_H__

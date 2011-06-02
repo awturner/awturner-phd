@@ -41,102 +41,102 @@
 template <class T>
 void AWT::VTKMeshWriter<T>::write(typename AWT::Mesh<T>::P mesh, const char *filename)
 {
-   vtkPolyData* poly = vtkPolyData::New( );
+   vtkPolyData* poly = vtkPolyData::New();
 
-   vtkPoints*    points = vtkPoints::New( );
-   vtkCellArray* cells  = vtkCellArray::New( );
+   vtkPoints*    points = vtkPoints::New();
+   vtkCellArray* cells  = vtkCellArray::New();
 
    T vtx[3];
-   MESH_EACHVERTEX( mesh, v )
+   MESH_EACHVERTEX(mesh, v)
    {
-      mesh->getVertex( v, vtx );
+      mesh->getVertex(v, vtx);
 
-      points->InsertNextPoint( vtx );
+      points->InsertNextPoint(vtx);
    }
 
    MeshIndex idxs[3];
    vtkIdType vidxs[3];
 
-   MESH_EACHFACE( mesh, f )
+   MESH_EACHFACE(mesh, f)
    {
-      mesh->getFaceIndices( f, idxs );
+      mesh->getFaceIndices(f, idxs);
 
-      for ( int i = 0; i < 3; ++i )
+      for (int i = 0; i < 3; ++i)
          vidxs[i] = idxs[i];
 
-      cells->InsertNextCell( 3, vidxs );
+      cells->InsertNextCell(3, vidxs);
    }
 
-   poly->SetPoints( points );
-   poly->SetPolys( cells );
+   poly->SetPoints(points);
+   poly->SetPolys(cells);
 
-   if ( mesh->hasTextureCoords( ) )
+   if (mesh->hasTextureCoords())
    {
-      DEBUGMACRO( "Has Texture Coords!" );
+      DEBUGMACRO("Has Texture Coords!");
 
-      vtkDataArray* pd = vtkDoubleArray::New( );
-      pd->SetNumberOfComponents( 2 );
-      pd->SetNumberOfTuples( mesh->getNumberOfVertices( ) );
+      vtkDataArray* pd = vtkDoubleArray::New();
+      pd->SetNumberOfComponents(2);
+      pd->SetNumberOfTuples(mesh->getNumberOfVertices());
 
-      Tuples<T>::P tc = mesh->getTextureCoords( );
+      Tuples<T>::P tc = mesh->getTextureCoords();
       T tcv[2];
-      MESH_EACHVERTEX( mesh, v )
+      MESH_EACHVERTEX(mesh, v)
       {
-         tc->getPoint( v, tcv );
-         pd->InsertTuple( v, tcv );
+         tc->getPoint(v, tcv);
+         pd->InsertTuple(v, tcv);
       }
-      poly->GetPointData( )->SetTCoords( pd );
+      poly->GetPointData()->SetTCoords(pd);
    }
    /*
    else
    {
-      vtkDataArray* pd = vtkDoubleArray::New( );
+      vtkDataArray* pd = vtkDoubleArray::New();
       
-      pd->SetNumberOfComponents( 2 );
-      pd->SetNumberOfTuples( mesh->getNumberOfVertices( ) );
+      pd->SetNumberOfComponents(2);
+      pd->SetNumberOfTuples(mesh->getNumberOfVertices());
 
       T tcv[] = { -100, 100 };
-      MESH_EACHVERTEX( mesh, v )
+      MESH_EACHVERTEX(mesh, v)
       {
-         pd->InsertTuple( v, tcv );
+         pd->InsertTuple(v, tcv);
       }
-      poly->GetPointData( )->SetTCoords( pd );
+      poly->GetPointData()->SetTCoords(pd);
    }
    */
 
-   vtkPolyDataNormals* normals = vtkPolyDataNormals::New( );
-   normals->SetInput( poly );
-   normals->SplittingOff( );
+   vtkPolyDataNormals* normals = vtkPolyDataNormals::New();
+   normals->SetInput(poly);
+   normals->SplittingOff();
 
    vtkPolyDataWriter* writer = 0;
 
-   const std::string name( filename );
+   const std::string name(filename);
 
-   if ( 0 == name.compare( name.length( )-4, 4, ".vtk" ) )
-      writer = vtkPolyDataWriter::New( );
-   else if ( 0 == name.compare( name.length( )-4, 4, ".ply" ) )
+   if (0 == name.compare(name.length()-4, 4, ".vtk"))
+      writer = vtkPolyDataWriter::New();
+   else if (0 == name.compare(name.length()-4, 4, ".ply"))
    {
-      writer = vtkPLYWriter::New( );
-      writer->SetFileTypeToBinary( );
+      writer = vtkPLYWriter::New();
+      writer->SetFileTypeToBinary();
    }
-   else if ( 0 == name.compare( name.length( )-4, 4, ".stl" ) )
+   else if (0 == name.compare(name.length()-4, 4, ".stl"))
    {
-      writer = vtkSTLWriter::New( );
-      writer->SetFileTypeToBinary( );
+      writer = vtkSTLWriter::New();
+      writer->SetFileTypeToBinary();
    }
 
-   if ( writer == 0 )
-      AWTEXCEPTIONTHROW( "No writer found" );
+   if (writer == 0)
+      AWTEXCEPTIONTHROW("No writer found");
 
-   writer->SetInputConnection( normals->GetOutputPort( ) );
-   writer->SetFileName( filename );
+   writer->SetInputConnection(normals->GetOutputPort());
+   writer->SetFileName(filename);
 
-   writer->Update( );
+   writer->Update();
 
-   points->Delete( );
-   cells->Delete( );
-   writer->Delete( );
-   poly->Delete( );
+   points->Delete();
+   cells->Delete();
+   writer->Delete();
+   poly->Delete();
 }
 
 template class AWT::VTKMeshWriter<double>;

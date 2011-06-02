@@ -33,11 +33,11 @@ namespace AWT
    class WriteToClipboard : public ManagedObject
    {
    protected:
-      WriteToClipboard( );
-      virtual ~WriteToClipboard( );
+      WriteToClipboard();
+      virtual ~WriteToClipboard();
 
    public:
-      static void copyToClipboard( const std::string& string );
+      static void copyToClipboard(const std::string& string);
 
    protected:
 

@@ -44,7 +44,7 @@ Calibration calibW;
 
 int mouseX = 0, mouseY = 0, wheel = 0;
 
-void report( )
+void report()
 {
    double mx = mouseX * calibX.scale + calibX.offset;
    double my = mouseY * calibY.scale + calibY.offset;
@@ -59,21 +59,21 @@ LRESULT CALLBACK LowLevelMouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
    if (nCode >= 0) {
       PMSLLHOOKSTRUCT pmll = (PMSLLHOOKSTRUCT) lParam;
 
-      switch ( wParam )
+      switch (wParam)
       {
       case WM_MOUSEWHEEL:
          wheel += (short) HIWORD(pmll->mouseData);
       case WM_MOUSEMOVE:
          mouseX = pmll->pt.x;
          mouseY = pmll->pt.y;
-         report( );
+         report();
          break;
       }
    }
    return CallNextHookEx(g_hMouseHook, nCode, wParam, lParam);
 }
 
-void usage( )
+void usage()
 {
    std::cerr << "Usage: MouseHook <x offset> <x scale> <y offset> <y scale> <wheel offset> <wheel scale>" << std::endl;
    std::cerr << std::endl;
@@ -82,30 +82,30 @@ void usage( )
    std::cerr << std::endl;
 }
 //
-int main( int argc, char** argv ) {
-   if ( argc != 7 )
+int main(int argc, char** argv) {
+   if (argc != 7)
    {
-      usage( );
-      exit( 1 );
+      usage();
+      exit(1);
    }
 
-   calibX.offset = atof( argv[1] );
-   calibX.scale  = atof( argv[2] );
-   if ( calibX.scale == 0 )
+   calibX.offset = atof(argv[1]);
+   calibX.scale  = atof(argv[2]);
+   if (calibX.scale == 0)
    {
       std::cerr << "Warning: X scale factor is zero." << std::endl;
    }
 
-   calibY.offset = atof( argv[3] );
-   calibY.scale  = atof( argv[4] );
-   if ( calibY.scale == 0 )
+   calibY.offset = atof(argv[3]);
+   calibY.scale  = atof(argv[4]);
+   if (calibY.scale == 0)
    {
       std::cerr << "Warning: Y scale factor is zero." << std::endl;
    }
 
-   calibW.offset = atof( argv[5] );
-   calibW.scale  = atof( argv[6] );
-   if ( calibW.scale == 0 )
+   calibW.offset = atof(argv[5]);
+   calibW.scale  = atof(argv[6]);
+   if (calibW.scale == 0)
    {
       std::cerr << "Warning: Wheel scale factor is zero." << std::endl;
    }

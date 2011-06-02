@@ -38,7 +38,7 @@ namespace AWT
       typedef ManagedAutoPointer<DrawableWorldOwner> P;
 
    public:
-      virtual DrawableWorld* getDrawableWorld( ) = 0;
+      virtual DrawableWorld* getDrawableWorld() = 0;
    };
 }
 

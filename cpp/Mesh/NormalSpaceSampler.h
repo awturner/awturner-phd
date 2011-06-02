@@ -34,27 +34,27 @@ namespace AWT
    class NormalSpaceSampler : public MeshSampler<T>
    {
    public:
-      typedef ManagedAutoPointer<NormalSpaceSampler<T>> P;
+      typedef ManagedAutoPointer<NormalSpaceSampler<T> > P;
 
    protected:
-      NormalSpaceSampler( );
-      virtual ~NormalSpaceSampler( );
+      NormalSpaceSampler();
+      virtual ~NormalSpaceSampler();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
-      virtual void setLatitudeDivisions( const unsigned int d );
-      virtual unsigned int getLatitudeDivisions( ) const;
+      virtual void setLatitudeDivisions(const unsigned int d);
+      virtual unsigned int getLatitudeDivisions() const;
 
-      virtual void setLongitudeDivisions( const unsigned int d );
-      virtual unsigned int getLongitudeDivisions( ) const;
+      virtual void setLongitudeDivisions(const unsigned int d);
+      virtual unsigned int getLongitudeDivisions() const;
 
-      virtual unsigned int getMaximumNumberOfSamples( ) const;
+      virtual unsigned int getMaximumNumberOfSamples() const;
 
-      virtual void setMaximumNumberOfSamples( const unsigned int s );
+      virtual void setMaximumNumberOfSamples(const unsigned int s);
 
-      virtual SamplePoints::P sampleMesh( typename Mesh<T>::P mesh );
+      virtual SamplePoints::P sampleMesh(typename Mesh<T>::P mesh);
 
    protected:
       struct D;

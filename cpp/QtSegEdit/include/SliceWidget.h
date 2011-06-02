@@ -43,70 +43,70 @@ class SliceWidget : public QLabel
    Q_OBJECT
 
 public:
-   SliceWidget( QWidget* parent = 0, Qt::WindowFlags flags = 0 )
-      : QLabel( parent, flags )
+   SliceWidget(QWidget* parent = 0, Qt::WindowFlags flags = 0)
+      : QLabel(parent, flags)
    {
       scaleFactor = 1;
       
-      setBackgroundRole( QPalette::Light );
-      setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
-      setScaledContents( true );
+      setBackgroundRole(QPalette::Light);
+      setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+      setScaledContents(true);
    }
 
 public slots:
-   void open( const QString& filename )
+   void open(const QString& filename)
    {
-      QImage image( filename );
-      if ( image.isNull() )
+      QImage image(filename);
+      if (image.isNull())
       {
-         QMessageBox::information( this, tr( "Data Loading" ), tr( "Cannot load %1!" ).arg( filename ) );
+         QMessageBox::information(this, tr("Data Loading"), tr("Cannot load %1!").arg(filename));
          return;
       }
 
-      this->setPixmap( QPixmap::fromImage( image ) );
+      this->setPixmap(QPixmap::fromImage(image));
       
       scaleFactor = 1;
 
-      this->adjustSize( );
+      this->adjustSize();
    }
 
-   void zoomBy( double factor )
+   void zoomBy(double factor)
    {
-      if ( !hasData( ) )
+      if (!hasData())
          return;
 
-      this->adjustSize( );
+      this->adjustSize();
       scaleFactor *= factor;
 
-      scaleImage( );
+      scaleImage();
    }
 
-   void zoom( double factor )
+   void zoom(double factor)
    {
-      if ( !hasData( ) )
+      if (!hasData())
          return;
 
-      this->adjustSize( );
+      this->adjustSize();
       scaleFactor = factor;
 
-      scaleImage( );
+      scaleImage();
    }
 
 public:
-   double getScaleFactor( ) { return scaleFactor; }
+   double getScaleFactor() { return scaleFactor; }
 
-   bool hasData( ) const
+   bool hasData() const
    {
-      return pixmap( ) != 0;
+      return pixmap() != 0;
    }
 
 protected:
-   void scaleImage( )
+   void scaleImage()
    {
-      if ( !hasData( ) )
+      if (!hasData())
          return;
 
-      resize( scaleFactor * pixmap( )->size( ) );
+      resize(scaleFactor * pixmap()->size());
 
    }
 

@@ -46,7 +46,7 @@ using namespace std;
 
 typedef double T;
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
    int m, n;
 
@@ -55,70 +55,70 @@ int main( int argc, char** argv )
    vnl_matrix<T> matrix;
    vnl_vector<T> mean;
 
-   for ( int i = 2; i < argc; ++i )
+   for (int i = 2; i < argc; ++i)
    {
-      DEBUGMACRO( "Loading from " << argv[i] );
-      Mesh<T>::P mesh = VTKMeshLoader<T>::load( argv[i], false );
+      DEBUGMACRO("Loading from " << argv[i]);
+      Mesh<T>::P mesh = VTKMeshLoader<T>::load(argv[i], false);
 
-      if ( !firstTime )
+      if (!firstTime)
       {
-         if ( 3*mesh->getNumberOfVertices( ) != m )
-            AWTEXCEPTIONTHROW( "Incompatible numbers of vertices!" );
+         if (3*mesh->getNumberOfVertices() != m)
+            AWTEXCEPTIONTHROW("Incompatible numbers of vertices!");
       }
       else
       {
          // This is run first time round
-         m = 3*mesh->getNumberOfVertices( );
+         m = 3*mesh->getNumberOfVertices();
          n = argc - 2;
 
-         PRINTVBL( m );
-         PRINTVBL( n );
+         PRINTVBL(m);
+         PRINTVBL(n);
 
-         matrix.set_size( m, n );
-         mean.set_size( m );
+         matrix.set_size(m, n);
+         mean.set_size(m);
 
-         matrix.fill( 0 );
-         mean.fill( 0 );    
+         matrix.fill(0);
+         mean.fill(0);    
 
          firstTime = false;
       }
 
       T vtx[3];
       int vv;
-      //for ( MeshIndex v = 0; v < mesh->getNumberOfVertices( ); ++v )
-      MESH_EACHVERTEX( mesh, v )
+      //for (MeshIndex v = 0; v < mesh->getNumberOfVertices(); ++v)
+      MESH_EACHVERTEX(mesh, v)
       {
-         mesh->getVertex( v, vtx );
+         mesh->getVertex(v, vtx);
 
          vv = v;
 
-         for ( int ax = 0; ax < 3; ++ax )
+         for (int ax = 0; ax < 3; ++ax)
          {
-            mean( 3*vv+ax ) += ( matrix( 3*vv+ax, i-2 ) = vtx[ax] );
+            mean(3*vv+ax) += (matrix(3*vv+ax, i-2) = vtx[ax]);
          }
       }
    }
 
-   DEBUGMACRO( "Calculating mean..." );
+   DEBUGMACRO("Calculating mean...");
    mean /= n;
 
-   DEBUGMACRO( "Writing mean shape..." );
+   DEBUGMACRO("Writing mean shape...");
    {
-      Mesh<T>::P meanMesh = VTKMeshLoader<T>::load( argv[1], false );
-      for ( int v = 0; v < m; v += 3 )
+      Mesh<T>::P meanMesh = VTKMeshLoader<T>::load(argv[1], false);
+      for (int v = 0; v < m; v += 3)
       {
-         meanMesh->setVertex( v/3, mean(v+0), mean(v+1), mean(v+2) );
+         meanMesh->setVertex(v/3, mean(v+0), mean(v+1), mean(v+2));
       }
-      VTKMeshWriter<T>::write( meanMesh, "meanMesh.vtk" );
+      VTKMeshWriter<T>::write(meanMesh, "meanMesh.vtk");
    }
 
-   DEBUGMACRO( "Shifting vectors..." );
-   for ( int w = 0; w < n; ++w )
+   DEBUGMACRO("Shifting vectors...");
+   for (int w = 0; w < n; ++w)
    {
-      matrix.set_column( w, matrix.get_column( w ) - mean );
+      matrix.set_column(w, matrix.get_column(w) - mean);
    }
 
-   vnl_svd<T> svd( matrix );
+   vnl_svd<T> svd(matrix);
 
    vnl_matrix<T> mimU = svd.U();
    vnl_matrix<T> mimS = svd.W();
@@ -126,13 +126,13 @@ int main( int argc, char** argv )
    vnl_matrix<T> modes = mimU * mimS;
 
    T totalS = 0;
-   for ( int w = 0; w < n; ++w )
+   for (int w = 0; w < n; ++w)
    {
       totalS += mimS(w,w);
    }
 
    T cumSum = 0;
-   for ( int w = 0; w < n; ++w )
+   for (int w = 0; w < n; ++w)
    {
       cumSum += mimS(w,w);
       std::cerr << (w+1) << "\t" << mimS(w,w) << "\t" << cumSum/totalS << std::endl;
@@ -140,45 +140,45 @@ int main( int argc, char** argv )
 
    char filename[MAX_PATH];
 
-   for ( int w = 0; w < n-1; ++w )
+   for (int w = 0; w < n-1; ++w)
    {
-      sprintf_s( filename, "mode.%04d.dat", w+1 );
+      sprintf_s(filename, "mode.%04d.dat", w+1);
 
-      DEBUGMACRO( "Writing mode " << (w+1) << " to " << filename );
+      DEBUGMACRO("Writing mode " << (w+1) << " to " << filename);
 
-      ofstream os( filename );
+      ofstream os(filename);
 
-      for ( int v = 0; v < m; v += 3 )
+      for (int v = 0; v < m; v += 3)
          os << modes(v+0,w) << " " << modes(v+1,w) << " " << modes(v+2,w) << std::endl;
 
-      os.close( );
+      os.close();
    }
 
    {
       TCHAR szDirectory[MAX_PATH] = "";
-      GetCurrentDirectory( sizeof( szDirectory )-1, szDirectory );
+      GetCurrentDirectory(sizeof(szDirectory)-1, szDirectory);
 
-      sprintf_s( filename, "%s\\model.model", szDirectory );
+      sprintf_s(filename, "%s\\model.model", szDirectory);
 
-      DEBUGMACRO( "Writing model file to " << filename );
+      DEBUGMACRO("Writing model file to " << filename);
 
-      ofstream os( filename );
+      ofstream os(filename);
 
-      sprintf_s( filename, "%s\\meanMesh.vtk", szDirectory );
+      sprintf_s(filename, "%s\\meanMesh.vtk", szDirectory);
       os << filename << std::endl;
 
-      for ( int w = 0; w < n; ++w )
+      for (int w = 0; w < n; ++w)
       {
-         sprintf_s( filename, "%s\\mode.%04d.dat", szDirectory, w+1 );
+         sprintf_s(filename, "%s\\mode.%04d.dat", szDirectory, w+1);
 
          os << filename << std::endl;
       }
 
-      os.close( );
+      os.close();
 
-      DEBUGMACRO( "Done." );
+      DEBUGMACRO("Done.");
    }   
 
 
-   DEBUGMACRO( "Done." );
+   DEBUGMACRO("Done.");
 }

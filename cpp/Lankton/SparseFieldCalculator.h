@@ -38,11 +38,11 @@ namespace AWT
       typedef ManagedAutoPointer<SparseFieldCalculator> P;
 
    protected:
-      SparseFieldCalculator( );
-      virtual ~SparseFieldCalculator( );
+      SparseFieldCalculator();
+      virtual ~SparseFieldCalculator();
 
    public:
-      virtual PhiType calculateForce( const SegLabel label, const SubIndexType& pos ) = 0;
+      virtual PhiType calculateForce(const SegLabel label, const SubIndexType& pos) = 0;
    };
 }
 

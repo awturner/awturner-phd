@@ -42,60 +42,60 @@
 
 using namespace AWT;
 
-double timeFunction( LuaRegion& region, const unsigned int ntests )
+double timeFunction(LuaRegion& region, const unsigned int ntests)
 {
    ProfilingTimer timer;
 
    double* vtxs = new double[ 3*ntests ];
-   for ( unsigned int i = 0; i < ntests; ++i )
+   for (unsigned int i = 0; i < ntests; ++i)
    {
-      vtxs[3*i + 0] = Noise<double>::randu( -20, 20 );
-      vtxs[3*i + 1] = Noise<double>::randu( -20, 20 );
-      vtxs[3*i + 2] = Noise<double>::randu( -20, 20 );
+      vtxs[3*i + 0] = Noise<double>::randu(-20, 20);
+      vtxs[3*i + 1] = Noise<double>::randu(-20, 20);
+      vtxs[3*i + 2] = Noise<double>::randu(-20, 20);
    }
 
    timer.start();
-   for ( unsigned int i = 0; i < ntests; ++i )
-      region.testPoint( &vtxs[3*i] );
+   for (unsigned int i = 0; i < ntests; ++i)
+      region.testPoint(&vtxs[3*i]);
    timer.stop();
 
    delete [] vtxs;
 
-   return timer.getDurationInSecs( ) / ntests;
+   return timer.getDurationInSecs() / ntests;
 }
 
-void traceShape( LuaRegion& region )
+void traceShape(LuaRegion& region)
 {
-   LuaRegionImplicitFunction* regFunc = LuaRegionImplicitFunction::New( );
-   regFunc->SetRegion( &region );
+   LuaRegionImplicitFunction* regFunc = LuaRegionImplicitFunction::New();
+   regFunc->SetRegion(&region);
 
-   vtkSampleFunction* sampFunc = vtkSampleFunction::New( );
-   sampFunc->SetImplicitFunction( regFunc );
+   vtkSampleFunction* sampFunc = vtkSampleFunction::New();
+   sampFunc->SetImplicitFunction(regFunc);
 
    int sampling[3];
    double bounds[6];
 
-   region.getBounds( bounds );
-   region.getSampling( sampling );
+   region.getBounds(bounds);
+   region.getSampling(sampling);
 
-   sampFunc->SetModelBounds( bounds );
-   sampFunc->SetSampleDimensions( sampling );
+   sampFunc->SetModelBounds(bounds);
+   sampFunc->SetSampleDimensions(sampling);
 
-   sampFunc->Update( );
+   sampFunc->Update();
 
-   vtkContourFilter* contFilt = vtkContourFilter::New( );
-   contFilt->SetInputConnection( sampFunc->GetOutputPort( ) );
+   vtkContourFilter* contFilt = vtkContourFilter::New();
+   contFilt->SetInputConnection(sampFunc->GetOutputPort());
 
-   vtkPolyDataWriter* writer = vtkPolyDataWriter::New( );
-   writer->SetInputConnection( contFilt->GetOutputPort( ) );
-   writer->SetFileName( "file.vtk" );
+   vtkPolyDataWriter* writer = vtkPolyDataWriter::New();
+   writer->SetInputConnection(contFilt->GetOutputPort());
+   writer->SetFileName("file.vtk");
 
-   writer->Update( );
+   writer->Update();
 
-   writer->Delete( );
-   contFilt->Delete( );
-   sampFunc->Delete( );
-   regFunc->Delete( );
+   writer->Delete();
+   contFilt->Delete();
+   sampFunc->Delete();
+   regFunc->Delete();
 
    DEBUGLINE;
 }
@@ -104,60 +104,60 @@ void traceShape( LuaRegion& region )
 
 bool keepRunning = true;
 
-void interrupted( int i )
+void interrupted(int i)
 {
    keepRunning = false;
 }
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   MicroscribeArm* arm = MicroscribeArm::getInstance( );
-   if ( !arm->connect( ) )
+   MicroscribeArm* arm = MicroscribeArm::getInstance();
+   if (!arm->connect())
    {
-      DEBUGMACRO( "Cannot connect to arm" );
-      DEBUGLINEANDEXIT( 1 );
+      DEBUGMACRO("Cannot connect to arm");
+      DEBUGLINEANDEXIT(1);
    }
    
    double pos[3], ori[3];
 
-   signal( SIGINT, interrupted );
+   signal(SIGINT, interrupted);
    
    keepRunning = true;
-   while ( keepRunning )
+   while (keepRunning)
    {
-      arm->getPositionAndOrientation( pos, ori );
-      PRINTVEC( pos, 3 );
+      arm->getPositionAndOrientation(pos, ori);
+      PRINTVEC(pos, 3);
    }
 
-   arm->disconnect( );
+   arm->disconnect();
 
-   DEBUGLINEANDEXIT( 1 );
+   DEBUGLINEANDEXIT(1);
 
    try
    {
-      LuaRegion region( "my.lua" );
+      LuaRegion region("my.lua");
 
-      traceShape( region );
+      traceShape(region);
 
-      system( "DisplayPolyData file.vtk -nocull" );
+      system("DisplayPolyData file.vtk -nocull");
 
       // This is checking how fast the function runs
-      PRINTVBL( timeFunction( region, 100000 ) );
+      PRINTVBL(timeFunction(region, 100000));
 
       /*
       double vtx[3];
-      std::ofstream os( "region.m" );
+      std::ofstream os("region.m");
 
       os << "pts = [" << std::endl;
-      for ( int i = 0; i < 5000; )
+      for (int i = 0; i < 5000;)
       {
-         vtx[0] = Noise<double>::randu( -2, 2 );
-         vtx[1] = Noise<double>::randu( -2, 2 );
-         vtx[2] = Noise<double>::randu( -2, 2 );
+         vtx[0] = Noise<double>::randu(-2, 2);
+         vtx[1] = Noise<double>::randu(-2, 2);
+         vtx[2] = Noise<double>::randu(-2, 2);
 
-         const double d = region.testPoint( vtx );
+         const double d = region.testPoint(vtx);
 
-         if ( d < 0 && d > -0.05 )
+         if (d < 0 && d > -0.05)
          {
             ++i;
             os << vtx[0] << " " << vtx[1] << " " << vtx[2] << std::endl;
@@ -165,11 +165,11 @@ int main( int argc, char** argv )
       }
 
       os << "]';" << std::endl;
-      os.close( );
+      os.close();
       */
    }
-   catch ( std::exception ex )
+   catch (std::exception ex)
    {
-      PRINTVBL( ex.what() );
+      PRINTVBL(ex.what());
    }
 }

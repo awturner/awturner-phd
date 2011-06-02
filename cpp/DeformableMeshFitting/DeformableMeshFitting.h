@@ -56,46 +56,46 @@ namespace AWT
       typedef ManagedAutoPointer< DeformableMeshFitting<T> > P;
 
    protected:
-      DeformableMeshFitting( );
-      virtual ~DeformableMeshFitting( );
+      DeformableMeshFitting();
+      virtual ~DeformableMeshFitting();
 
    public:
-      static P getInstance( );
+      static P getInstance();
 
-      void setDeformableMesh( typename DeformableMesh<T>::P defMesh );
+      void setDeformableMesh(typename DeformableMesh<T>::P defMesh);
       
-      void addTargetMesh( typename Mesh<T>::P mesh, SamplePoints::P sampPts );
+      void addTargetMesh(typename Mesh<T>::P mesh, SamplePoints::P sampPts);
 
-      void getInitialPose( const TargetIndex i, typename Pose<T>::P pose );
-      void setInitialPose( const TargetIndex i, typename Pose<T>::P pose );
+      void getInitialPose(const TargetIndex i, typename Pose<T>::P pose);
+      void setInitialPose(const TargetIndex i, typename Pose<T>::P pose);
 
-      typename CorrespondenceFinder<T>::P getCorrespondences( const TargetIndex i );
+      typename CorrespondenceFinder<T>::P getCorrespondences(const TargetIndex i);
 
-      void calculateRegistrationError( const TargetIndex a, const TargetIndex b, T& angularError, T& translationalError );
+      void calculateRegistrationError(const TargetIndex a, const TargetIndex b, T& angularError, T& translationalError);
 
-      void setInitialParameters( const T* params );
+      void setInitialParameters(const T* params);
 
-      TargetIndex getNumberOfTargetMeshes( ) const;
-      typename Fragment<T>::P getFragment( TargetIndex i );
-      typename DeformableMesh<T>::P getDeformableMesh( );
+      TargetIndex getNumberOfTargetMeshes() const;
+      typename Fragment<T>::P getFragment(TargetIndex i);
+      typename DeformableMesh<T>::P getDeformableMesh();
 
-      void updateCorrespondences( );
+      void updateCorrespondences();
 
-      void stepRigidUpdate( );
+      void stepRigidUpdate();
 
-      void stepParameterUpdate( );
+      void stepParameterUpdate();
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      T getRmsError( ) const;
-      T getMaxError( ) const;
+      T getRmsError() const;
+      T getMaxError() const;
 
-      void getPose( const TargetIndex i, typename Pose<T>::P pose ) const;
+      void getPose(const TargetIndex i, typename Pose<T>::P pose) const;
       
-      void addListener( typename DeformableMeshFittingListener<T>::P nral );
-      void removeListener( typename DeformableMeshFittingListener<T>::P nral );
+      void addListener(typename DeformableMeshFittingListener<T>::P nral);
+      void removeListener(typename DeformableMeshFittingListener<T>::P nral);
 
-      void setLoading( const bool loading );
+      void setLoading(const bool loading);
 
    protected:
       struct D;

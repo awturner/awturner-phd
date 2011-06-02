@@ -38,18 +38,18 @@ namespace AWT
          typedef ManagedAutoPointer<MultiSearchFilter> P;
 
       protected:
-         MultiSearchFilter( const unsigned int alloc );
-         virtual ~MultiSearchFilter( );
+         MultiSearchFilter(const unsigned int alloc);
+         virtual ~MultiSearchFilter();
 
       public:
-         static P getInstance( const unsigned int alloc = 2 );
-         std::string getClassName( ) const;
+         static P getInstance(const unsigned int alloc = 2);
+         std::string getClassName() const;
          
-         virtual void addFilter( SearchFilter::P filter );
+         virtual void addFilter(SearchFilter::P filter);
 
       public:
-         virtual bool check( const Point p, const Index i ) const;
-         virtual void accept( const Point p, const Index i );
+         virtual bool check(const Point p, const Index i) const;
+         virtual void accept(const Point p, const Index i);
 
          std::vector<SearchFilter::P> filters;
       };

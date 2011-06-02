@@ -37,34 +37,34 @@
 template <class T>
 struct AWT::Pose<T>::D
 {
-   D( )
+   D()
    {
-      identity( m_Matrix );
+      identity(m_Matrix);
    }
 
-   static void identity( PoseMatrix& mat )
+   static void identity(PoseMatrix& mat)
    {
-      mat.set_identity( );
+      mat.set_identity();
    }
 
-   static void mult4x4( const T* a, const T* b, T* m )
+   static void mult4x4(const T* a, const T* b, T* m)
    {
-      for ( int r = 0; r < 4; ++r )
-         for ( int c = 0; c < 4; ++c )
+      for (int r = 0; r < 4; ++r)
+         for (int c = 0; c < 4; ++c)
          {
             m[4*c + r] = 0;
 
-            for ( int i = 0; i < 4; ++i )
+            for (int i = 0; i < 4; ++i)
                m[4*c + r] += a[4*i + r] * b[4*c + i];
          }
    }
 
-   static void transpose( PoseMatrix& mat )
+   static void transpose(PoseMatrix& mat)
    {
-      mat = mat.transpose( );
+      mat = mat.transpose();
    }
 
-   static void swap( T& a, T& b )
+   static void swap(T& a, T& b)
    {
       T tmp = a;
       a = b;
@@ -75,101 +75,101 @@ struct AWT::Pose<T>::D
 };
 
 template <class T>
-AWT::Pose<T>::Pose( )
+AWT::Pose<T>::Pose()
 {
    m_D = new D;
 }
 
 template <class T>
-AWT::Pose<T>::~Pose( )
+AWT::Pose<T>::~Pose()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::Pose<T>::P AWT::Pose<T>::getInstance( )
+typename AWT::Pose<T>::P AWT::Pose<T>::getInstance()
 {
-   AUTOGETINSTANCE( AWT::Pose<T>, ( ) );
+   AUTOGETINSTANCE(AWT::Pose<T>, ());
 }
 
 template <class T>
-GETNAMEMACRO( AWT::Pose<T> );
+GETNAMEMACRO(AWT::Pose<T>);
 
 template <class T>
-typename AWT::Pose<T>::PoseMatrix AWT::Pose<T>::getMatrix( ) const
+typename AWT::Pose<T>::PoseMatrix AWT::Pose<T>::getMatrix() const
 {
    return m_D->m_Matrix;
 }
 
 template <class T>
-void AWT::Pose<T>::setMatrix( const PoseMatrix& matrix )
+void AWT::Pose<T>::setMatrix(const PoseMatrix& matrix)
 {
    m_D->m_Matrix = matrix;
-   modified( );
+   modified();
 }
 
 template <class T>
-void AWT::Pose<T>::project( const T* in_Point, T* out_Point, const T implicit ) const
+void AWT::Pose<T>::project(const T* in_Point, T* out_Point, const T implicit) const
 {
    vnl_vector_fixed<T,4> pnt;
 
-   for ( unsigned int ax = 0; ax < 3; ++ax )
+   for (unsigned int ax = 0; ax < 3; ++ax)
       pnt[ax] = in_Point[ax];
    pnt[3] = implicit;
 
    vnl_vector_fixed<T,4> proj = m_D->m_Matrix * pnt;
 
-   if ( proj[3] != 0 )
+   if (proj[3] != 0)
    {
-      for ( unsigned int ax = 0; ax < 4; ++ax )
+      for (unsigned int ax = 0; ax < 4; ++ax)
          proj[ax] /= proj[3];
    }
 
-   for ( unsigned int ax = 0; ax < 3; ++ax )
+   for (unsigned int ax = 0; ax < 3; ++ax)
       out_Point[ax] = proj[ax];
 }
 
 template <class T>
-typename AWT::Pose<T>::P AWT::Pose<T>::getInversePose( ) const
+typename AWT::Pose<T>::P AWT::Pose<T>::getInversePose() const
 {
-   typename Pose<T>::P ident = getInstance( );
-   typename Pose<T>::P ret   = getRelativePose( ident );
+   typename Pose<T>::P ident = getInstance();
+   typename Pose<T>::P ret   = getRelativePose(ident);
 
    return ret;
 }
 
 template <class T>
-typename AWT::Pose<T>::P AWT::Pose<T>::getRelativePose( const typename Pose<T>::P pose ) const
+typename AWT::Pose<T>::P AWT::Pose<T>::getRelativePose(const typename Pose<T>::P pose) const
 {
-   PoseMatrix iMat = vnl_svd<T>( m_D->m_Matrix ).inverse( );
+   PoseMatrix iMat = vnl_svd<T>(m_D->m_Matrix).inverse();
 
-   PoseMatrix rel = pose->getMatrix( ) * iMat;
+   PoseMatrix rel = pose->getMatrix() * iMat;
 
-   rel /= rel( 3, 3 );
+   rel /= rel(3, 3);
 
-   Pose<T>::P ret = getInstance( );
+   Pose<T>::P ret = getInstance();
 
-   ret->setMatrix( rel );
+   ret->setMatrix(rel);
 
    return ret;
 }
 
 template <class T>
-vnl_matrix<T> operator*( const AWT::Pose<T>& pose, const vnl_matrix<T>& points )
+vnl_matrix<T> operator*(const AWT::Pose<T>& pose, const vnl_matrix<T>& points)
 {
-   vnl_matrix<T> ret( 3, points.cols( ) );
+   vnl_matrix<T> ret(3, points.cols());
 
    T vtx[3];
    T proj[3];
 
-   for ( unsigned int c = 0; c < points.cols( ); ++c )
+   for (unsigned int c = 0; c < points.cols(); ++c)
    {
-      for ( unsigned int ax = 0; ax < 3; ++ax )
-         vtx[ax] = points( ax, c );
+      for (unsigned int ax = 0; ax < 3; ++ax)
+         vtx[ax] = points(ax, c);
 
-      pose.project( vtx, proj );
+      pose.project(vtx, proj);
 
-      for ( unsigned int ax = 0; ax < 3; ++ax )
+      for (unsigned int ax = 0; ax < 3; ++ax)
          ret[ax][c] = proj[ax];
    }
 
@@ -177,113 +177,113 @@ vnl_matrix<T> operator*( const AWT::Pose<T>& pose, const vnl_matrix<T>& points )
 }
 
 template <class T>
-void AWT::Pose<T>::identity( )
+void AWT::Pose<T>::identity()
 {
-   D::identity( m_D->m_Matrix );
+   D::identity(m_D->m_Matrix);
 
-   modified( );
+   modified();
 }
 
 template <class T>
-void AWT::Pose<T>::translate( const T* trans )
+void AWT::Pose<T>::translate(const T* trans)
 {
-   m_D->m_Matrix( 0, 3 ) += trans[0];
-   m_D->m_Matrix( 1, 3 ) += trans[1];
-   m_D->m_Matrix( 2, 3 ) += trans[2];
+   m_D->m_Matrix(0, 3) += trans[0];
+   m_D->m_Matrix(1, 3) += trans[1];
+   m_D->m_Matrix(2, 3) += trans[2];
 
-   modified( );
+   modified();
 }
 
 template <class T>
-void AWT::Pose<T>::rotateDeg( const T theta, const T* axis )
+void AWT::Pose<T>::rotateDeg(const T theta, const T* axis)
 {
-   rotate( theta * AWT::Constants<T>::DegreesToRadians, axis );
+   rotate(theta * AWT::Constants<T>::DegreesToRadians, axis);
 }
 
 template <class T>
-void AWT::Pose<T>::rotateDeg( const T theta, const T* axis, const T* centre )
+void AWT::Pose<T>::rotateDeg(const T theta, const T* axis, const T* centre)
 {
-   rotate( theta * AWT::Constants<T>::DegreesToRadians, axis, centre );
+   rotate(theta * AWT::Constants<T>::DegreesToRadians, axis, centre);
 }
 
 template <class T>
-void AWT::Pose<T>::rotate( const T theta, const T* axis )
+void AWT::Pose<T>::rotate(const T theta, const T* axis)
 {
    static const T centre[] = { 0, 0, 0 };
-   rotate( theta, axis, centre );
+   rotate(theta, axis, centre);
 }
 
 template <class T>
-void AWT::Pose<T>::rotate( const T theta, const T* axis, const T* centre )
+void AWT::Pose<T>::rotate(const T theta, const T* axis, const T* centre)
 {
    // http://local.wasp.uwa.edu.au/~pbourke/geometry/rotate/
 
    PoseMatrix overall;
-   overall.set_identity( );
+   overall.set_identity();
 
    PoseMatrix trans;
    T normAxis[3];
 
-   T axisLength = sqrt( axis[0]*axis[0] + axis[1]*axis[1] + axis[2]*axis[2] );
+   T axisLength = sqrt(axis[0]*axis[0] + axis[1]*axis[1] + axis[2]*axis[2]);
 
    // Step 1 - translate so that rotation axis goes through origin
-   trans.set_identity( );
-   for ( int i = 0; i < 3; ++i )
+   trans.set_identity();
+   for (int i = 0; i < 3; ++i)
    {
-      trans( i, 3 ) -= centre[i];
+      trans(i, 3) -= centre[i];
       normAxis[i] = axis[i] / axisLength;
    }
 
    // Step 2 - Rotate space about the x axis so that the rotation axis lies in the xz plane
-   PoseMatrix rx; rx.set_identity( );
-   T d = sqrt( normAxis[1]*normAxis[1] + normAxis[2]*normAxis[2] );
-   if ( d != 0 )
+   PoseMatrix rx; rx.set_identity();
+   T d = sqrt(normAxis[1]*normAxis[1] + normAxis[2]*normAxis[2]);
+   if (d != 0)
    {
-      rx( 1, 1 ) =  normAxis[2] / d;
-      rx( 2, 1 ) =  normAxis[1] / d;
+      rx(1, 1) =  normAxis[2] / d;
+      rx(2, 1) =  normAxis[1] / d;
 
-      rx( 1, 2 ) = -normAxis[1] / d;
-      rx( 2, 2 ) =  normAxis[2] / d;
+      rx(1, 2) = -normAxis[1] / d;
+      rx(2, 2) =  normAxis[2] / d;
    }
 
    // Step 3 - Rotate space about the y axis so that the rotation axis lies along the positive z axis
-   PoseMatrix ry; ry.set_identity( );
+   PoseMatrix ry; ry.set_identity();
 
-   ry( 0, 0 ) =  d;
-   ry( 2, 0 ) =  normAxis[0];
+   ry(0, 0) =  d;
+   ry(2, 0) =  normAxis[0];
 
-   ry( 0, 2 ) = -normAxis[0];
-   ry( 2, 2 ) =  d;
+   ry(0, 2) = -normAxis[0];
+   ry(2, 2) =  d;
 
    // Step 4 - Rotation about the z axis by t (theta)
-   PoseMatrix rz; rz.set_identity( );
-   rz( 0, 0 ) =  rz( 1, 1 ) = cos( theta );
-   rz( 1, 0 ) =  rz( 0, 1 ) = sin( theta );
-   rz( 1, 0 ) = -rz( 1, 0 );
+   PoseMatrix rz; rz.set_identity();
+   rz(0, 0) =  rz(1, 1) = cos(theta);
+   rz(1, 0) =  rz(0, 1) = sin(theta);
+   rz(1, 0) = -rz(1, 0);
 
-   overall = trans.transpose( ) * rx.transpose( ) * ry.transpose( ) * rz * ry * rx * trans;
+   overall = trans.transpose() * rx.transpose() * ry.transpose() * rz * ry * rx * trans;
 
    m_D->m_Matrix = overall * m_D->m_Matrix;
 
-   modified( );
+   modified();
 }
 
 template <class T>
-void AWT::Pose<T>::scale( const T sc )
+void AWT::Pose<T>::scale(const T sc)
 {
    PoseMatrix overall;
-   overall.set_identity( );
+   overall.set_identity();
 
-   for ( int i = 0; i < 3; ++i )
+   for (int i = 0; i < 3; ++i)
       overall(i,i) = sc;
 
    m_D->m_Matrix = overall * m_D->m_Matrix;
 
-   modified( );
+   modified();
 }
 
 template class AWT::Pose<double>;
 template class AWT::Pose<float>;
 
-template vnl_matrix<double> operator*( const AWT::Pose<double>& pose, const vnl_matrix<double>& points );
-template vnl_matrix<float> operator*( const AWT::Pose<float>& pose, const vnl_matrix<float>& points );
+template vnl_matrix<double> operator*(const AWT::Pose<double>& pose, const vnl_matrix<double>& points);
+template vnl_matrix<float> operator*(const AWT::Pose<float>& pose, const vnl_matrix<float>& points);

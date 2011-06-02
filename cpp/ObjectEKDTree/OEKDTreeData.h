@@ -41,13 +41,13 @@ namespace AWT
          typedef ManagedAutoPointer< OEKDTreeData<T,K> > P;
 
       public:
-         virtual ObjectIndex getNumberOfObjects( ) const = 0;
+         virtual ObjectIndex getNumberOfObjects() const = 0;
 
-         virtual T getCoordinate( ObjectIndex objectIndex, AxisIndex axis ) const = 0;
-         virtual void getPosition( const ObjectIndex objectIndex, T* pos ) const = 0;
+         virtual T getCoordinate(ObjectIndex objectIndex, AxisIndex axis) const = 0;
+         virtual void getPosition(const ObjectIndex objectIndex, T* pos) const = 0;
 
-         virtual T getMinimumBound( ObjectIndex objectIndex, AxisIndex axis ) const = 0;
-         virtual T getMaximumBound( ObjectIndex objectIndex, AxisIndex axis ) const = 0;
+         virtual T getMinimumBound(ObjectIndex objectIndex, AxisIndex axis) const = 0;
+         virtual T getMaximumBound(ObjectIndex objectIndex, AxisIndex axis) const = 0;
       };
    }
 }

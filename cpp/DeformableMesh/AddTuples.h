@@ -46,93 +46,93 @@ namespace AWT
       typedef ManagedAutoPointer< AddTuples<T> > P;
 
    protected:
-      AddTuples( TupleIndex tupleSize )
+      AddTuples(TupleIndex tupleSize)
       {
          m_TupleSize = tupleSize;
 
          m_Default[0] = m_Default[1] = m_Default[2] = 0;
       }
 
-      virtual ~AddTuples( )
+      virtual ~AddTuples()
       {
       }
 
    public:
-      static P getInstance( TupleIndex tupleSize )
+      static P getInstance(TupleIndex tupleSize)
       {
-         AUTOGETINSTANCE( AddTuples<T>, ( tupleSize ) );
+         AUTOGETINSTANCE(AddTuples<T>, (tupleSize));
       }
 
-      virtual void insert( Tuples<T>::P tuples, T weight = 1 )
+      virtual void insert(Tuples<T>::P tuples, T weight = 1)
       {
-         m_Tuples.push_back( tuples );
-         m_Multipliers.push_back( weight );
+         m_Tuples.push_back(tuples);
+         m_Multipliers.push_back(weight);
       }
 
-      virtual TupleIndex getTupleSize( ) const
+      virtual TupleIndex getTupleSize() const
       {
          return m_TupleSize;
       }
 
-      virtual MeshIndex getNumberOfComponents( ) const
+      virtual MeshIndex getNumberOfComponents() const
       {
-         return static_cast<MeshIndex>( m_Tuples.size( ) );
+         return static_cast<MeshIndex>(m_Tuples.size());
       }
 
-      virtual MeshIndex getNumberOfPoints( ) const
+      virtual MeshIndex getNumberOfPoints() const
       {
-         return m_Tuples.back( )->getNumberOfPoints( );
+         return m_Tuples.back()->getNumberOfPoints();
       }
 
-      virtual T    getPointElement( const MeshIndex in_Index, const TupleIndex i ) const
+      virtual T    getPointElement(const MeshIndex in_Index, const TupleIndex i) const
       {
          T ret = 0;
 
          T weight;
 
-         //size_t p = m_Tuples.size( );
+         //size_t p = m_Tuples.size();
          //do
          //{
          //   --p;
 
          //   weight = m_Multipliers[p];
 
-         //   ret += weight * m_Tuples[p]->getPointElement( in_Index, i );
+         //   ret += weight * m_Tuples[p]->getPointElement(in_Index, i);
          //}
-         //while ( p != 0 );
+         //while (p != 0);
 
          
-         std::vector<Tuples<T>::P>::const_iterator begin = m_Tuples.begin( );
-         std::vector<Tuples<T>::P>::const_iterator end   = m_Tuples.end( );
+         std::vector<Tuples<T>::P>::const_iterator begin = m_Tuples.begin();
+         std::vector<Tuples<T>::P>::const_iterator end   = m_Tuples.end();
 
-         std::vector<T>::const_iterator beginMult = m_Multipliers.begin( );
+         std::vector<T>::const_iterator beginMult = m_Multipliers.begin();
 
-         for ( ; begin != end; ++begin, ++beginMult )
+         for (; begin != end; ++begin, ++beginMult)
          {
             weight = *beginMult;
-            ret += weight * (*begin)->getPointElement( in_Index, i );
+            ret += weight * (*begin)->getPointElement(in_Index, i);
          }
          
 
          return ret;
       }
 
-      virtual void getPoint( const MeshIndex in_Index, T* out_Point ) const
+      virtual void getPoint(const MeshIndex in_Index, T* out_Point) const
       {
-         std::vector<Tuples<T>::P>::const_iterator begin = m_Tuples.begin( );
-         std::vector<Tuples<T>::P>::const_iterator end   = m_Tuples.end( );
+         std::vector<Tuples<T>::P>::const_iterator begin = m_Tuples.begin();
+         std::vector<Tuples<T>::P>::const_iterator end   = m_Tuples.end();
 
-         std::vector<T>::const_iterator beginMult = m_Multipliers.begin( );
+         std::vector<T>::const_iterator beginMult = m_Multipliers.begin();
 
          out_Point[0] = out_Point[1] = out_Point[2] = 0;
 
          T tmp[3];
          T weight;
 
-         for ( ; begin != end; ++begin, ++beginMult )
+         for (; begin != end; ++begin, ++beginMult)
          {
             weight = *beginMult;
-            (*begin)->getPoint( in_Index, tmp );
+            (*begin)->getPoint(in_Index, tmp);
             
             out_Point[0] += weight * tmp[0];
             out_Point[1] += weight * tmp[1];
@@ -140,89 +140,89 @@ namespace AWT
          }
       }
 
-      virtual void addPoint( const T* in_Point )
+      virtual void addPoint(const T* in_Point)
       {
-         setPoint( getNumberOfPoints( ), in_Point );
+         setPoint(getNumberOfPoints(), in_Point);
       }
 
-      virtual void setPointElement( const MeshIndex /*in_Index*/, const TupleIndex /*i*/, const T /*in_Value*/ )
+      virtual void setPointElement(const MeshIndex /*in_Index*/, const TupleIndex /*i*/, const T /*in_Value*/)
       {
-         AWTEXCEPTIONTHROW( "Not supported" );
+         AWTEXCEPTIONTHROW("Not supported");
       }
 
-      virtual void setPoint( const MeshIndex /*in_Index*/, const T* /*in_Point*/ )
+      virtual void setPoint(const MeshIndex /*in_Index*/, const T* /*in_Point*/)
       {
-         AWTEXCEPTIONTHROW( "Not supported" );
+         AWTEXCEPTIONTHROW("Not supported");
       }
 
-      virtual void ensureSize( MeshIndex /*size*/ )
+      virtual void ensureSize(MeshIndex /*size*/)
       {
-         AWTEXCEPTIONTHROW( "Not supported" );
+         AWTEXCEPTIONTHROW("Not supported");
       }
 
-      virtual void clear( )
+      virtual void clear()
       {
          // Do nothing
       }
 
-      virtual void lock( void* )
+      virtual void lock(void*)
       {
          // Do nothing, this will always appear locked
       }
 
-      virtual void unlock( void* )
+      virtual void unlock(void*)
       {
          // Do nothing, this will always appear locked
       }
 
-      virtual bool isLocked( ) const
+      virtual bool isLocked() const
       {
          return true;
       }
 
-      virtual T getScale( const unsigned int index ) const
+      virtual T getScale(const unsigned int index) const
       {
          return m_Multipliers[index];
       }
 
-      virtual void setScale( const unsigned int index, const T sc )
+      virtual void setScale(const unsigned int index, const T sc)
       {
          m_Multipliers[index] = sc;
-         modified( );
+         modified();
       }
 
-      virtual void setScale( const T* scales )
+      virtual void setScale(const T* scales)
       {
-         for ( unsigned int i = 0; i < m_Multipliers.size( ); ++i )
+         for (unsigned int i = 0; i < m_Multipliers.size(); ++i)
             m_Multipliers[i] = scales[i];
          modified();
       }
 
-      ModifiedTime getModifiedTime( ) const
+      ModifiedTime getModifiedTime() const
       {
-         ModifiedTime ret = Tuples<T>::getModifiedTime( );
+         ModifiedTime ret = Tuples<T>::getModifiedTime();
 
-         std::vector<Tuples<T>::P>::const_iterator begin = m_Tuples.begin( );
-         std::vector<Tuples<T>::P>::const_iterator end   = m_Tuples.end( );
+         std::vector<Tuples<T>::P>::const_iterator begin = m_Tuples.begin();
+         std::vector<Tuples<T>::P>::const_iterator end   = m_Tuples.end();
 
-         for ( ; begin != end; ++begin )
+         for (; begin != end; ++begin)
          {
-            ret = std::max<ModifiedTime>( ret, (*begin)->getModifiedTime( ) );
+            ret = std::max<ModifiedTime>(ret, (*begin)->getModifiedTime());
          }
 
          return ret;
       }
 
-      virtual const T* getDefault( ) const
+      virtual const T* getDefault() const
       {
          return m_Default;
       }
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual unsigned int getNumberOfMembers( ) const
+      virtual unsigned int getNumberOfMembers() const
       {
-         return static_cast<unsigned int>( m_Tuples.size( ) );
+         return static_cast<unsigned int>(m_Tuples.size());
       }
 
    protected:
@@ -234,6 +234,6 @@ namespace AWT
 }
 
 template <class T>
-GETNAMEMACRO( AWT::AddTuples<T> );
+GETNAMEMACRO(AWT::AddTuples<T>);
 
 #endif __ADDTUPLES_H__

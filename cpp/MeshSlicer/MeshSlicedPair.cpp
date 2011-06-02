@@ -36,7 +36,7 @@ struct AWT::MeshSlicedPair<T>::D
 };
 
 template <class T>
-AWT::MeshSlicedPair<T>::MeshSlicedPair( typename AWT::Mesh<T>::P included, typename AWT::Mesh<T>::P excluded )
+AWT::MeshSlicedPair<T>::MeshSlicedPair(typename AWT::Mesh<T>::P included, typename AWT::Mesh<T>::P excluded)
 {
    m_D = new D;
 
@@ -45,28 +45,28 @@ AWT::MeshSlicedPair<T>::MeshSlicedPair( typename AWT::Mesh<T>::P included, typen
 }
 
 template <class T>
-AWT::MeshSlicedPair<T>::~MeshSlicedPair( )
+AWT::MeshSlicedPair<T>::~MeshSlicedPair()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::MeshSlicedPair<T>::P AWT::MeshSlicedPair<T>::getInstance( typename AWT::Mesh<T>::P included, typename AWT::Mesh<T>::P excluded )
+typename AWT::MeshSlicedPair<T>::P AWT::MeshSlicedPair<T>::getInstance(typename AWT::Mesh<T>::P included, typename AWT::Mesh<T>::P excluded)
 {
-   AUTOGETINSTANCE( AWT::MeshSlicedPair<T>, ( included, excluded ) );
+   AUTOGETINSTANCE(AWT::MeshSlicedPair<T>, (included, excluded));
 }
 
 template <class T>
-GETNAMEMACRO( AWT::MeshSlicedPair<T> );
+GETNAMEMACRO(AWT::MeshSlicedPair<T>);
 
 template <class T>
-typename AWT::Mesh<T>::P AWT::MeshSlicedPair<T>::getIncluded( )
+typename AWT::Mesh<T>::P AWT::MeshSlicedPair<T>::getIncluded()
 {
    return m_D->m_Included;
 }
 
 template <class T>
-typename AWT::Mesh<T>::P AWT::MeshSlicedPair<T>::getExcluded( )
+typename AWT::Mesh<T>::P AWT::MeshSlicedPair<T>::getExcluded()
 {
    return m_D->m_Excluded;
 }

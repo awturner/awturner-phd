@@ -36,27 +36,27 @@ namespace AWT
       typedef ManagedAutoPointer<DrawableBackground> P;
 
    protected:
-      DrawableBackground( );
+      DrawableBackground();
 
-      virtual ~DrawableBackground( );
+      virtual ~DrawableBackground();
 
    public:
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual bool isVisible( ) const;
+      virtual bool isVisible() const;
 
-      virtual void setVisible( const bool vis );
+      virtual void setVisible(const bool vis);
 
-      virtual void getTopColor( float* col ) const;
+      virtual void getTopColor(float* col) const;
 
-      virtual void setTopColor( const float* col );
+      virtual void setTopColor(const float* col);
 
-      virtual void getBottomColor( float* col ) const;
+      virtual void getBottomColor(float* col) const;
 
-      virtual void setBottomColor( const float* col );
+      virtual void setBottomColor(const float* col);
 
-      virtual void getBounds( double* out_Bounds );
+      virtual void getBounds(double* out_Bounds);
 
    protected:
       struct D;

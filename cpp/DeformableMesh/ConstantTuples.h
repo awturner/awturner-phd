@@ -46,87 +46,87 @@ namespace AWT
       typedef ManagedAutoPointer< ConstantTuples<T> > P;
 
    protected:
-      ConstantTuples( const TupleIndex tupleSize, const T* def, const MeshIndex numberOfPoints )
+      ConstantTuples(const TupleIndex tupleSize, const T* def, const MeshIndex numberOfPoints)
       {
          m_TupleSize = tupleSize;
          m_NumberOfPoints = numberOfPoints;
 
          m_Def = new T[tupleSize];
-         for ( int i = 0; i < tupleSize; ++i )
+         for (int i = 0; i < tupleSize; ++i)
             m_Def[i] = def[i];
       }
 
-      ~ConstantTuples( )
+      ~ConstantTuples()
       {
          delete m_Def;
       }
 
    public:
-      static P getInstance( const TupleIndex tupleSize, const T* def, const MeshIndex numberOfPoints )
+      static P getInstance(const TupleIndex tupleSize, const T* def, const MeshIndex numberOfPoints)
       {
-         AUTOGETINSTANCE( ConstantTuples<T>, (tupleSize, def, numberOfPoints) );
+         AUTOGETINSTANCE(ConstantTuples<T>, (tupleSize, def, numberOfPoints));
       }
 
-      virtual TupleIndex getTupleSize( ) const
+      virtual TupleIndex getTupleSize() const
       {
          return m_TupleSize;
       }
 
-      virtual MeshIndex getNumberOfPoints( ) const
+      virtual MeshIndex getNumberOfPoints() const
       {
          return m_NumberOfPoints;
       }
 
-      virtual T    getPointElement( const MeshIndex in_Index, const TupleIndex i ) const
+      virtual T    getPointElement(const MeshIndex in_Index, const TupleIndex i) const
       {
          return m_Def[i];
       }
 
-      virtual void getPoint( const MeshIndex in_Index, T* out_Point ) const
+      virtual void getPoint(const MeshIndex in_Index, T* out_Point) const
       {
-         for ( int i = 0; i < 3; ++i )
+         for (int i = 0; i < 3; ++i)
             out_Point[i] = m_Def[i];
       }
 
-      virtual void setPointElement( const MeshIndex in_Index, const TupleIndex i, const T in_Value )
+      virtual void setPointElement(const MeshIndex in_Index, const TupleIndex i, const T in_Value)
       {
-         AWTEXCEPTIONTHROW( "Not supported" );
+         AWTEXCEPTIONTHROW("Not supported");
       }
 
-      virtual void setPoint( const MeshIndex in_Index, const T* in_Point )
+      virtual void setPoint(const MeshIndex in_Index, const T* in_Point)
       {
-         AWTEXCEPTIONTHROW( "Not supported" );
+         AWTEXCEPTIONTHROW("Not supported");
       }
 
-      virtual void ensureSize( MeshIndex size )
+      virtual void ensureSize(MeshIndex size)
       {
-         m_NumberOfPoints = std::max<MeshIndex>( size, m_NumberOfPoints );
+         m_NumberOfPoints = std::max<MeshIndex>(size, m_NumberOfPoints);
       }
 
-      virtual void clear( )
+      virtual void clear()
       {
          m_NumberOfPoints = 0;
       }
 
-      virtual void lock( void* /*obj*/ )
+      virtual void lock(void* /*obj*/)
       {
       }
 
-      virtual void unlock( void* /*obj*/ )
+      virtual void unlock(void* /*obj*/)
       {
       }
 
-      virtual bool isLocked( ) const
+      virtual bool isLocked() const
       {
          return true;
       }
 
-      virtual const T* getDefault( ) const
+      virtual const T* getDefault() const
       {
          return m_Def;
       }
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
    protected:
       TupleIndex m_TupleSize;
@@ -137,6 +137,6 @@ namespace AWT
 }
 
 template <class T>
-GETNAMEMACRO( AWT::ConstantTuples<T> );
+GETNAMEMACRO(AWT::ConstantTuples<T>);
 
 #endif // __CONSTANTTUPLES_H__

@@ -36,9 +36,9 @@ namespace AWT
       T lower;
       T upper;
 
-      const T clamp( const T& v ) const
+      const T clamp(const T& v) const
       {
-         return std::max<T>( lower, std::min<T>( upper, v ) );
+         return std::max<T>(lower, std::min<T>(upper, v));
       }
    };
 }

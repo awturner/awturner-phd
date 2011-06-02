@@ -33,13 +33,13 @@ namespace AWT
    class OneTimeMessage
    {
    public:
-      OneTimeMessage( const std::string& msg );
-      virtual ~OneTimeMessage( );
+      OneTimeMessage(const std::string& msg);
+      virtual ~OneTimeMessage();
 
-      virtual void report( );
+      virtual void report();
 
-      virtual bool isSent( ) const;
-      virtual void setSent( const bool s );
+      virtual bool isSent() const;
+      virtual void setSent(const bool s);
 
    protected:
       struct D;

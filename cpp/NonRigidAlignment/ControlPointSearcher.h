@@ -51,32 +51,32 @@ namespace AWT
    class ControlPointSearcher : public OEKDTree::OEKDNearestSearcher<T,3>
    {
    public:
-      typedef ManagedAutoPointer<ControlPointSearcher<T>> P;
+      typedef ManagedAutoPointer<ControlPointSearcher<T> > P;
 
    protected:
-      ControlPointSearcher( );
+      ControlPointSearcher();
 
-      virtual ~ControlPointSearcher( );
+      virtual ~ControlPointSearcher();
 
    public:
-      static P getInstance( );
+      static P getInstance();
 
-      virtual void setCallback( typename ControlPointSearcherCallback<T>::P callback );
+      virtual void setCallback(typename ControlPointSearcherCallback<T>::P callback);
 
-      virtual void calculateBoxDistanceBounds2( typename OEKDTree::OEKDTreeBranch<T,3>* in_Branch, OEKDTree::SqDistBounds<T>& bounds  ) const;
+      virtual void calculateBoxDistanceBounds2(typename OEKDTree::OEKDTreeBranch<T,3>* in_Branch, OEKDTree::SqDistBounds<T>& bounds ) const;
 
-      virtual void checkObject( const int in_Index );
+      virtual void checkObject(const int in_Index);
 
-      virtual bool shouldCheck( OEKDTree::OEKDTreeBranch<T,3> *, const OEKDTree::SqDistBounds<T> &) const;
+      virtual bool shouldCheck(OEKDTree::OEKDTreeBranch<T,3> *, const OEKDTree::SqDistBounds<T> &) const;
 
-      virtual void setTestPoint( const MeshIndex in_Index, const T* in_TestPoint  );
+      virtual void setTestPoint(const MeshIndex in_Index, const T* in_TestPoint );
 
-      virtual void getTestPoint( T* out_TestPoint ) const;
+      virtual void getTestPoint(T* out_TestPoint) const;
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      typename ControlPointSetTreeData<T>::P getData( );
-      void setData( typename OEKDTree::OEKDTreeData<T,3>::P data );
+      typename ControlPointSetTreeData<T>::P getData();
+      void setData(typename OEKDTree::OEKDTreeData<T,3>::P data);
 
    protected:
       struct D;

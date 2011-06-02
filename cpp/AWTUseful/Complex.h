@@ -38,59 +38,59 @@ namespace AWT
    public:
       static const T PI;
 
-      Complex( Complex& other );
-      Complex( );
-      Complex( T _x );
-      Complex( T _x, T _y );
+      Complex(Complex& other);
+      Complex();
+      Complex(T _x);
+      Complex(T _x, T _y);
 
-      T real( );
-      T imag( );
-      T abs( );
-      T arg( );
+      T real();
+      T imag();
+      T abs();
+      T arg();
 
-      Complex conj( );
-      Complex power( T pow );
-      Complex power( T pow, int n );
+      Complex conj();
+      Complex power(T pow);
+      Complex power(T pow, int n);
 
-      Complex operator+( T scalar );
-      Complex operator+( Complex& other );
+      Complex operator+(T scalar);
+      Complex operator+(Complex& other);
 
-      Complex operator-( T scalar );
-      Complex operator-( Complex& other );
+      Complex operator-(T scalar);
+      Complex operator-(Complex& other);
 
-      Complex operator*( T scalar );
-      Complex operator*( Complex& other );
+      Complex operator*(T scalar);
+      Complex operator*(Complex& other);
 
-      Complex operator/( T scalar );
-      Complex operator/( Complex& other );
+      Complex operator/(T scalar);
+      Complex operator/(Complex& other);
 
-      bool    operator==( T scalar );
-      bool    operator==( Complex& other );
+      bool    operator==(T scalar);
+      bool    operator==(Complex& other);
 
-      Complex operator-( );
+      Complex operator-();
 
-      friend std::ostream& operator<<(std::ostream & os, Complex& c )
+      friend std::ostream& operator<<(std::ostream & os, Complex& c)
       {
          double x, y;
 
          switch (c.rep)
          {
          case CARTESIAN:
-            x = c.real( );
-            y = c.imag( );
+            x = c.real();
+            y = c.imag();
 
-            if ( x == 0 && y == 0 )
+            if (x == 0 && y == 0)
             {
                os << x;
             }
             else
             {
-               if ( x != 0.0 )
+               if (x != 0.0)
                   os << x;
 
-               if ( y != 0.0 )
+               if (y != 0.0)
                {
-                  if ( x != 0.0 && y > 0 )
+                  if (x != 0.0 && y > 0)
                      os << "+";
 
                   os << y << "*j";
@@ -98,8 +98,8 @@ namespace AWT
             }
             break;
          case POLAR:
-            x = c.abs( );
-            y = c.arg( );
+            x = c.abs();
+            y = c.arg();
 
             os << x << "*exp(" << y << "j)";
             break;
@@ -110,9 +110,9 @@ namespace AWT
    protected:
       enum Representation { CARTESIAN, POLAR };
 
-      Complex( T _x, T _y, Representation _rep );
+      Complex(T _x, T _y, Representation _rep);
 
-      static T clampArgument( T newArg );
+      static T clampArgument(T newArg);
 
       T x;
       T y;

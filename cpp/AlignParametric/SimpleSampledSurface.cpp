@@ -36,9 +36,9 @@ struct AWT::AlignParametric::SimpleSampledSurface<Dims>::D
 };
 
 template <unsigned char Dims>
-AWT::AlignParametric::SimpleSampledSurface<Dims>::SimpleSampledSurface( TuplesType::P points )
+AWT::AlignParametric::SimpleSampledSurface<Dims>::SimpleSampledSurface(TuplesType::P points)
 {
-   if ( points->getTupleSize( ) != Dims )
+   if (points->getTupleSize() != Dims)
       throw "Wrong number of components in tuple!";
 
    m_D = new D;
@@ -47,70 +47,70 @@ AWT::AlignParametric::SimpleSampledSurface<Dims>::SimpleSampledSurface( TuplesTy
 }
 
 template <unsigned char Dims>
-AWT::AlignParametric::SimpleSampledSurface<Dims>::~SimpleSampledSurface( )
+AWT::AlignParametric::SimpleSampledSurface<Dims>::~SimpleSampledSurface()
 {
    delete m_D;
 }
 
 template <unsigned char Dims>
-typename AWT::AlignParametric::SimpleSampledSurface<Dims>::P AWT::AlignParametric::SimpleSampledSurface<Dims>::getInstance( TuplesType::P points )
+typename AWT::AlignParametric::SimpleSampledSurface<Dims>::P AWT::AlignParametric::SimpleSampledSurface<Dims>::getInstance(TuplesType::P points)
 {
-   AUTOGETINSTANCE( AWT::AlignParametric::SimpleSampledSurface<Dims>, ( points ) );
+   AUTOGETINSTANCE(AWT::AlignParametric::SimpleSampledSurface<Dims>, (points));
 }
 
 template <unsigned char Dims>
-GETNAMEMACRO( AWT::AlignParametric::SimpleSampledSurface<Dims> );
+GETNAMEMACRO(AWT::AlignParametric::SimpleSampledSurface<Dims>);
 
 template <unsigned char Dims>
-AWT::AlignParametric::Idx AWT::AlignParametric::SimpleSampledSurface<Dims>::getParameterDimensionality( ) const
+AWT::AlignParametric::Idx AWT::AlignParametric::SimpleSampledSurface<Dims>::getParameterDimensionality() const
 {
    return Dims;
 }
 
 template <unsigned char Dims>
-AWT::AlignParametric::Idx AWT::AlignParametric::SimpleSampledSurface<Dims>::getNumberOfSamples( ) const
+AWT::AlignParametric::Idx AWT::AlignParametric::SimpleSampledSurface<Dims>::getNumberOfSamples() const
 {
-   return m_D->points->getNumberOfPoints( );
+   return m_D->points->getNumberOfPoints();
 }
 
 template <unsigned char Dims>
-void AWT::AlignParametric::SimpleSampledSurface<Dims>::getSamples( vnl_matrix<T>& samples ) const
+void AWT::AlignParametric::SimpleSampledSurface<Dims>::getSamples(vnl_matrix<T>& samples) const
 {
-   const Idx N = getNumberOfSamples( );
-   samples.set_size( Dims, N );
+   const Idx N = getNumberOfSamples();
+   samples.set_size(Dims, N);
 
    T vtx[Dims];
-   for ( Idx i = 0; i < N; ++i )
+   for (Idx i = 0; i < N; ++i)
    {
-      m_D->points->getPoint( i, vtx );
+      m_D->points->getPoint(i, vtx);
 
-      for ( Idx d = 0; d < Dims; ++d )
-         samples( d, i ) = vtx[d];
+      for (Idx d = 0; d < Dims; ++d)
+         samples(d, i) = vtx[d];
    }
 }
 
 template <unsigned char Dims>
-AWT::AlignParametric::Idx AWT::AlignParametric::SimpleSampledSurface<Dims>::getNumberOfParameters( ) const
+AWT::AlignParametric::Idx AWT::AlignParametric::SimpleSampledSurface<Dims>::getNumberOfParameters() const
 {
-   return m_D->points->getNumberOfPoints( );
+   return m_D->points->getNumberOfPoints();
 }
 
 template <unsigned char Dims>
-void AWT::AlignParametric::SimpleSampledSurface<Dims>::getParameters( vnl_matrix<T>& controls ) const
+void AWT::AlignParametric::SimpleSampledSurface<Dims>::getParameters(vnl_matrix<T>& controls) const
 {
-   const Idx N = getNumberOfSamples( );
-   const Idx C = getParameterDimensionality( );
+   const Idx N = getNumberOfSamples();
+   const Idx C = getParameterDimensionality();
 
-   controls.set_size( C, N );
+   controls.set_size(C, N);
 
    T* vtx = new T[Dims];
-   for ( Idx i = 0; i < N; ++i )
+   for (Idx i = 0; i < N; ++i)
    {
-      m_D->points->getPoint( i, vtx );
+      m_D->points->getPoint(i, vtx);
 
-      for ( Idx d = 0; d < C; ++d )
+      for (Idx d = 0; d < C; ++d)
       {
-         controls( d, i ) = vtx[d];
+         controls(d, i) = vtx[d];
       }
    }
 
@@ -118,56 +118,56 @@ void AWT::AlignParametric::SimpleSampledSurface<Dims>::getParameters( vnl_matrix
 }
 
 template <unsigned char Dims>
-void AWT::AlignParametric::SimpleSampledSurface<Dims>::setParameters( vnl_matrix<T>& controls )
+void AWT::AlignParametric::SimpleSampledSurface<Dims>::setParameters(vnl_matrix<T>& controls)
 {
-   const Idx N = getNumberOfSamples( );
-   const Idx C = getParameterDimensionality( );
+   const Idx N = getNumberOfSamples();
+   const Idx C = getParameterDimensionality();
 
    T vtx[Dims];
-   for ( Idx i = 0; i < N; ++i )
+   for (Idx i = 0; i < N; ++i)
    {
-      m_D->points->getPoint( i, vtx );
+      m_D->points->getPoint(i, vtx);
 
-      for ( Idx d = 0; d < C; ++d )
-         vtx[d] = controls( d, i );
+      for (Idx d = 0; d < C; ++d)
+         vtx[d] = controls(d, i);
 
-      m_D->points->setPoint( i, vtx );
+      m_D->points->setPoint(i, vtx);
    }
 }
 
 template <unsigned char Dims>
-void AWT::AlignParametric::SimpleSampledSurface<Dims>::jacobian( const AWT::AlignParametric::Idx l, const AWT::AlignParametric::Idx p, vnl_matrix<T>& matrix ) const
+void AWT::AlignParametric::SimpleSampledSurface<Dims>::jacobian(const AWT::AlignParametric::Idx l, const AWT::AlignParametric::Idx p, vnl_matrix<T>& matrix) const
 {
-   const Idx C = getParameterDimensionality( );
+   const Idx C = getParameterDimensionality();
 
-   matrix.set_size( Dims, C );
-   matrix.fill( 0 );
+   matrix.set_size(Dims, C);
+   matrix.fill(0);
 
-   if ( l == p )
+   if (l == p)
    {
-      for ( Idx d = 0; d < C; ++d )
-         matrix( d, d ) = 1;
+      for (Idx d = 0; d < C; ++d)
+         matrix(d, d) = 1;
    }
 }
 
 template <unsigned char Dims>
-void AWT::AlignParametric::SimpleSampledSurface<Dims>::resetIterator( )
+void AWT::AlignParametric::SimpleSampledSurface<Dims>::resetIterator()
 {
    m_D->iteratorPtr = 0;
 }
 
 template <unsigned char Dims>
-bool AWT::AlignParametric::SimpleSampledSurface<Dims>::next( Idx& l, Idx& p )
+bool AWT::AlignParametric::SimpleSampledSurface<Dims>::next(Idx& l, Idx& p)
 {
-   const bool ret = m_D->iteratorPtr < getNumberOfSamples( );
+   const bool ret = m_D->iteratorPtr < getNumberOfSamples();
 
-   if ( ret )
+   if (ret)
    {
       l = p = m_D->iteratorPtr++;
    }
    else
    {
-      l = p = std::numeric_limits<Idx>::max( );
+      l = p = std::numeric_limits<Idx>::max();
    }
 
    return ret;

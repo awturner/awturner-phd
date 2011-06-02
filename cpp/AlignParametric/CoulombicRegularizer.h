@@ -47,27 +47,27 @@ namespace AWT
          typedef ManagedAutoPointer<CoulombicRegularizer> P;
 
       protected:
-         CoulombicRegularizer( CoulombicParticleSurface* surf );
-         virtual ~CoulombicRegularizer( );
+         CoulombicRegularizer(CoulombicParticleSurface* surf);
+         virtual ~CoulombicRegularizer();
 
       public:
-         static P getInstance( CoulombicParticleSurface* surf );
-         virtual std::string getClassName( ) const;
+         static P getInstance(CoulombicParticleSurface* surf);
+         virtual std::string getClassName() const;
 
-         T getCutoffDistance( ) const;
-         void setCutoffDistance( const T v );
+         T getCutoffDistance() const;
+         void setCutoffDistance(const T v);
 
-         T getThreshold( ) const;
-         void setThreshold( const T v );
+         T getThreshold() const;
+         void setThreshold(const T v);
 
-         virtual T getMinDistance( const Idx p );
+         virtual T getMinDistance(const Idx p);
 
          // Calculate the force which tries to push these particles apart
-         void calculateUpdate( MatrixType& reg );
+         void calculateUpdate(MatrixType& reg);
 
-         T calculateCost( const bool debug = true );
+         T calculateCost(const bool debug = true);
 
-         void associateSampleToFace( const MeshIndex i, const MeshIndex f );
+         void associateSampleToFace(const MeshIndex i, const MeshIndex f);
 
       protected:
          struct D;

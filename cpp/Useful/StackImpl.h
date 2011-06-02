@@ -42,39 +42,39 @@ namespace AWT
       class StackImpl : public AWT::Container::Stack<T>
       {
       public:
-         StackImpl( );
-         ~StackImpl( );
+         StackImpl();
+         ~StackImpl();
 
-         virtual const bool isEmpty( );
-         virtual const int  size( );
-         virtual const T    top( );
+         virtual const bool isEmpty();
+         virtual const int  size();
+         virtual const T    top();
 
-         virtual void    push( const T data );
-         virtual const T pop( );
+         virtual void    push(const T data);
+         virtual const T pop();
 
-         virtual Iterator<T>* iterator( );
+         virtual Iterator<T>* iterator();
 
       protected:
          class LinkedListNode
          {
          public:
-            LinkedListNode ( T _data ) : next( 0 ), data( _data ) { NodeCount++; }
-            ~LinkedListNode ( )
+            LinkedListNode (T _data) : next(0), data(_data) { NodeCount++; }
+            ~LinkedListNode ()
             {
                NodeCount--;
-               if ( next )
+               if (next)
                   delete next;
             }
 
-            LinkedListNode* push( const T data )
+            LinkedListNode* push(const T data)
             {
-               LinkedListNode* newNode = new LinkedListNode( data );
+               LinkedListNode* newNode = new LinkedListNode(data);
                newNode->next = this;
 
                return newNode;
             }
 
-            LinkedListNode* pop( )
+            LinkedListNode* pop()
             {
                LinkedListNode* ret = this->next;
                this->next = 0;
@@ -83,12 +83,12 @@ namespace AWT
                return ret;
             }
 
-            const int size( )
+            const int size()
             {
                int size = 0;
                AWT::Container::LinkedListNode<T>* node = this;
 
-               while ( node != 0 )
+               while (node != 0)
                {
                   size++;
                   node = node->next;
@@ -106,17 +106,17 @@ namespace AWT
          virtual class StackImplIterator : public AWT::Container::Iterator<T>
          {
          public:
-            StackImplIterator( StackImpl* p )
+            StackImplIterator(StackImpl* p)
             {
                node = p->m_Top;
             }
 
-            virtual bool hasNext( )
+            virtual bool hasNext()
             {
                return node != 0;
             }
 
-            virtual T    next( )
+            virtual T    next()
             {
                T ret = node->data;
                node = node->next;
@@ -136,53 +136,53 @@ namespace AWT
 template <class T>
 AWT::Container::Iterator<T>* AWT::Container::StackImpl<T>::iterator()
 {
-   return new AWT::Container::StackImpl<T>::StackImplIterator( this );
+   return new AWT::Container::StackImpl<T>::StackImplIterator(this);
 }
 
 template <class T>
-AWT::Container::StackImpl<T>::StackImpl( )
+AWT::Container::StackImpl<T>::StackImpl()
 {
    m_Size = 0;
    m_Top = 0;
 }
 
 template <class T>
-AWT::Container::StackImpl<T>::~StackImpl( )
+AWT::Container::StackImpl<T>::~StackImpl()
 {
-   if ( m_Top != 0 )
+   if (m_Top != 0)
       delete m_Top;
 }
 
 template <class T>
-const bool AWT::Container::StackImpl<T>::isEmpty( )
+const bool AWT::Container::StackImpl<T>::isEmpty()
 {
    return m_Size == 0;
 }
 
 template <class T>
-const int AWT::Container::StackImpl<T>::size( )
+const int AWT::Container::StackImpl<T>::size()
 {
    return m_Size;
 }
 
 template <class T>
-const T AWT::Container::StackImpl<T>::top( )
+const T AWT::Container::StackImpl<T>::top()
 {
    return m_Top->data;
 }
 
 template <class T>
-void AWT::Container::StackImpl<T>::push( const T data )
+void AWT::Container::StackImpl<T>::push(const T data)
 {
    m_Size++;
-   m_Top = m_Top->push( data );
+   m_Top = m_Top->push(data);
 }
 
 template <class T>
-const T AWT::Container::StackImpl<T>::pop( )
+const T AWT::Container::StackImpl<T>::pop()
 {
    T ret = m_Top->data;
-   m_Top = m_Top->pop( );
+   m_Top = m_Top->pop();
    m_Size--;
 
    return ret;

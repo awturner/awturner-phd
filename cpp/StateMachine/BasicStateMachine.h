@@ -39,17 +39,17 @@ namespace AWT
    public:
       typedef ManagedAutoPointer<BasicStateMachine> P;
 
-      virtual StateMachineStack* getStack( ) = 0;
+      virtual StateMachineStack* getStack() = 0;
 
-      virtual bool step( ) = 0;
+      virtual bool step() = 0;
 
-      virtual bool isRunning( ) const = 0;
+      virtual bool isRunning() const = 0;
 
-      virtual bool isError( ) const = 0;
+      virtual bool isError() const = 0;
 
-      virtual std::string getLastError( ) const = 0;
+      virtual std::string getLastError() const = 0;
 
-      virtual std::string getStateName( ) const = 0;
+      virtual std::string getStateName() const = 0;
    };
 }
 

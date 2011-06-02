@@ -32,27 +32,27 @@
 
 using namespace AWT::SimpleMesh;
 
-void readVector( int& i, char** argv, Vector& params )
+void readVector(int& i, char** argv, Vector& params)
 {
-   for ( Index m = 0; m < params.size(); ++m )
+   for (Index m = 0; m < params.size(); ++m)
    {
       const char* modeweightStr = argv[++i];
 
-      if ( strcmp( modeweightStr, "-" ) == 0 )
+      if (strcmp(modeweightStr, "-") == 0)
          break;
 
-      params[m] = atof( modeweightStr );
+      params[m] = atof(modeweightStr);
    }
 
-   PRINTVBL( params );
+   PRINTVBL(params);
 }
 
-void calculateTransformation( const Vector& v, Transformation& mat, const bool normalize = true )
+void calculateTransformation(const Vector& v, Transformation& mat, const bool normalize = true)
 {
    Vector q(4);
-   q.set( v.data_block() );
+   q.set(v.data_block());
 
-   if ( normalize )
+   if (normalize)
       q.normalize();
 
    mat(0,0) = q(0) * q(0) + q(1) * q(1) - q(2) * q(2) - q(3) * q(3);
@@ -75,35 +75,35 @@ void calculateTransformation( const Vector& v, Transformation& mat, const bool n
    mat(3,3) = 1;
 }
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
    int i = 0;
 
-   Mesh::P model = MeshIO::loadMesh( std::ifstream( argv[++i] ) );
+   Mesh::P model = MeshIO::loadMesh(std::ifstream(argv[++i]));
 
-   const double scale = atof( argv[++i] );
-   PRINTVBL( scale );
+   const double scale = atof(argv[++i]);
+   PRINTVBL(scale);
 
-   Vector vec( 7 );
-   vec.fill( 0 );
+   Vector vec(7);
+   vec.fill(0);
    vec[0] = 1;
-   readVector( i, argv, vec );
+   readVector(i, argv, vec);
 
-   PRINTVBL( vec );
+   PRINTVBL(vec);
 
    Transformation trans;
-   calculateTransformation( vec, trans );
+   calculateTransformation(vec, trans);
 
-   PRINTVBLNL( trans );
+   PRINTVBLNL(trans);
 
-   affineTransform( model->getVertices(), trans );
+   affineTransform(model->getVertices(), trans);
 
    // Isotropically scale
    model->getVertices() *= scale;
-   model->getVertices().set_row( 3, 1 );
+   model->getVertices().set_row(3, 1);
 
    const char* outFilename = argv[++i];
-   PRINTVBL( outFilename );
+   PRINTVBL(outFilename);
 
-   MeshIO::saveMesh( std::ofstream( outFilename ), model );
+   MeshIO::saveMesh(std::ofstream(outFilename), model);
 }

@@ -42,20 +42,20 @@ namespace AWT
       typedef ManagedAutoPointer<FlattenOptimization> P;
 
    protected:
-      FlattenOptimization( typename AWT::FlattenMeshPair<T>::P flatten, 
+      FlattenOptimization(typename AWT::FlattenMeshPair<T>::P flatten, 
                                                   typename AWT::Tuples<T>::P referencePoints,
-                                                  std::vector< typename ControlPoint<T>::P > controlPoints );
-      virtual ~FlattenOptimization( );
+                                                  std::vector< typename ControlPoint<T>::P > controlPoints);
+      virtual ~FlattenOptimization();
 
    public:
-      static P getInstance( typename AWT::FlattenMeshPair<T>::P flatten, 
+      static P getInstance(typename AWT::FlattenMeshPair<T>::P flatten, 
                                                   typename AWT::Tuples<T>::P referencePoints,
-                                                  std::vector< typename ControlPoint<T>::P > controlPoints );
-      virtual std::string getClassName( ) const;
+                                                  std::vector< typename ControlPoint<T>::P > controlPoints);
+      virtual std::string getClassName() const;
 
-      virtual void getControlParameters( vnl_matrix<T>& v );
+      virtual void getControlParameters(vnl_matrix<T>& v);
 
-      virtual void incrementControlParameters( vnl_matrix<T>& v );
+      virtual void incrementControlParameters(vnl_matrix<T>& v);
 
    protected:
       struct D;

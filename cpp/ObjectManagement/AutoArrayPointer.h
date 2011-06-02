@@ -34,32 +34,32 @@ namespace AWT
    class AutoArrayPointer
    {
    public:
-      AutoArrayPointer( )
+      AutoArrayPointer()
       {
          m_Data = 0;
       }
 
-      AutoArrayPointer( const unsigned long length )
+      AutoArrayPointer(const unsigned long length)
       {
          m_Data = 0;
 
-         allocate( length );
+         allocate(length);
       }
 
-      virtual ~AutoArrayPointer( )
+      virtual ~AutoArrayPointer()
       {
          delete[] m_Data;
       }
 
-      void reallocate( const unsigned long length )
+      void reallocate(const unsigned long length)
       {
-         if ( m_Data != 0 )
+         if (m_Data != 0)
             delete[] m_Data;
 
          m_Data = new DataType[length];
       }
 
-      DataType* operator*( )
+      DataType* operator*()
       {
          return m_Data;
       }

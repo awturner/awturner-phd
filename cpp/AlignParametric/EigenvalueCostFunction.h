@@ -39,7 +39,7 @@ namespace AWT
       public:
          typedef ManagedAutoPointer<EigenvalueCostFunction> P;
 
-         virtual T calculate( const VectorType& eigenvalues, VectorType& E_gradients ) = 0;
+         virtual T calculate(const VectorType& eigenvalues, VectorType& E_gradients) = 0;
       };
    }
 }

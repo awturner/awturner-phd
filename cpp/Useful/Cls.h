@@ -28,7 +28,7 @@
 
 namespace AWT
 {
-   void cls( );
+   void cls();
 }
 
 #endif // __CLS_H__

@@ -34,10 +34,10 @@ namespace AWT
    {
       namespace Fixed
       {
-         void remoteMethod( initialize );
-         void remoteMethod( addMesh );
+         void remoteMethod(initialize);
+         void remoteMethod(addMesh);
 
-         void addMethods( RemoteMethods& methods );
+         void addMethods(RemoteMethods& methods);
       }
    }
 }

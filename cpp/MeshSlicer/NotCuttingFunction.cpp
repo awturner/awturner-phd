@@ -34,7 +34,7 @@ struct AWT::NotCuttingFunction<T>::D
 };
 
 template <class T>
-AWT::NotCuttingFunction<T>::NotCuttingFunction( typename CuttingFunction<T>::P func )
+AWT::NotCuttingFunction<T>::NotCuttingFunction(typename CuttingFunction<T>::P func)
 {
    m_D = new D;
 
@@ -42,24 +42,24 @@ AWT::NotCuttingFunction<T>::NotCuttingFunction( typename CuttingFunction<T>::P f
 }
 
 template <class T>
-AWT::NotCuttingFunction<T>::~NotCuttingFunction( )
+AWT::NotCuttingFunction<T>::~NotCuttingFunction()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::NotCuttingFunction<T>::P AWT::NotCuttingFunction<T>::getInstance( typename CuttingFunction<T>::P func )
+typename AWT::NotCuttingFunction<T>::P AWT::NotCuttingFunction<T>::getInstance(typename CuttingFunction<T>::P func)
 {
-   AUTOGETINSTANCE( AWT::NotCuttingFunction<T>, ( func ) );
+   AUTOGETINSTANCE(AWT::NotCuttingFunction<T>, (func));
 }
 
 template <class T>
-GETNAMEMACRO( AWT::NotCuttingFunction<T> );
+GETNAMEMACRO(AWT::NotCuttingFunction<T>);
 
 template <class T>
-bool AWT::NotCuttingFunction<T>::accept( T* vtx )
+bool AWT::NotCuttingFunction<T>::accept(T* vtx)
 {
-   return !m_D->m_Func->accept( vtx );
+   return !m_D->m_Func->accept(vtx);
 }
 
 template class AWT::NotCuttingFunction<double>;

@@ -34,23 +34,23 @@ namespace AWT
    class SphericalCut : public CuttingFunction<T>
    {
    public:
-      typedef ManagedAutoPointer<SphericalCut<T>> P;
+      typedef ManagedAutoPointer<SphericalCut<T> > P;
 
    protected:
-      SphericalCut( );
-      virtual ~SphericalCut( );
+      SphericalCut();
+      virtual ~SphericalCut();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
-      virtual void getCentre( T* out_Centre ) const;
-      virtual void setCentre( const T* in_Centre );
+      virtual void getCentre(T* out_Centre) const;
+      virtual void setCentre(const T* in_Centre);
 
-      virtual T getRadius( ) const;
-      virtual void setRadius( const T in_Radius );
+      virtual T getRadius() const;
+      virtual void setRadius(const T in_Radius);
 
-      virtual bool accept( T* vtx );
+      virtual bool accept(T* vtx);
 
    protected:
       struct D;

@@ -45,7 +45,7 @@ struct AWT::HalfEdge::D
    MeshIndex m_Face;
 };
 
-AWT::HalfEdge::HalfEdge( )
+AWT::HalfEdge::HalfEdge()
 {
    m_D = new D;
 
@@ -54,24 +54,24 @@ AWT::HalfEdge::HalfEdge( )
 
    m_D->m_Vertex = 0;
 
-   m_D->m_Face = std::numeric_limits<MeshIndex>::max( );
+   m_D->m_Face = std::numeric_limits<MeshIndex>::max();
 
    m_D->m_Crossable = true;
 
-   m_D->m_Label = std::numeric_limits<MeshIndex>::max( );
+   m_D->m_Label = std::numeric_limits<MeshIndex>::max();
 }
 
-AWT::HalfEdge::~HalfEdge( )
+AWT::HalfEdge::~HalfEdge()
 {
    delete m_D;
 }
 
-AWT::HalfEdge* AWT::HalfEdge::getPair( ) const
+AWT::HalfEdge* AWT::HalfEdge::getPair() const
 {
    return m_D->m_Pair;
 }
 
-void AWT::HalfEdge::setPair( AWT::HalfEdge* p )
+void AWT::HalfEdge::setPair(AWT::HalfEdge* p)
 {
    m_D->m_Pair = p;
 }
@@ -79,107 +79,107 @@ void AWT::HalfEdge::setPair( AWT::HalfEdge* p )
 #include "Useful/Exception.h"
 #include "Useful/PrintMacros.h"
 
-AWT::HalfEdge* AWT::HalfEdge::getPrevious( )
+AWT::HalfEdge* AWT::HalfEdge::getPrevious()
 {
    // e is an outgoing edge from a vertex; get the incoming pair
-   HalfEdge* start = getPair( );
+   HalfEdge* start = getPair();
    HalfEdge* e     = start;
 
-   //DEBUGMACRO( "Trying to find previous of " << *this );
+   //DEBUGMACRO("Trying to find previous of " << *this);
 
    do
    {
-      //DEBUGMACRO( "e = " << *e );
-      if ( e->getNext( ) == this )
+      //DEBUGMACRO("e = " << *e);
+      if (e->getNext() == this)
          return e;
 
-      // Move on to the next incoming edge - getNext( ) is outgoing
-      e = e->getNext( )->getPair( );
+      // Move on to the next incoming edge - getNext() is outgoing
+      e = e->getNext()->getPair();
    }
-   while ( e != start );
+   while (e != start);
 
-   AWTEXCEPTIONTHROW( "Could not find previous edge!" );
+   AWTEXCEPTIONTHROW("Could not find previous edge!");
 }
 
-AWT::HalfEdge* AWT::HalfEdge::getNext( ) const
+AWT::HalfEdge* AWT::HalfEdge::getNext() const
 {
    return m_D->m_Next;
 }
 
-void AWT::HalfEdge::setNext( AWT::HalfEdge* e )
+void AWT::HalfEdge::setNext(AWT::HalfEdge* e)
 {
    m_D->m_Next = e;
 }
 
-AWT::HalfEdgeVertex* AWT::HalfEdge::getVertex( ) const
+AWT::HalfEdgeVertex* AWT::HalfEdge::getVertex() const
 {
    return m_D->m_Vertex;
 }
 
-void AWT::HalfEdge::setVertex( HalfEdgeVertex* v )
+void AWT::HalfEdge::setVertex(HalfEdgeVertex* v)
 {
    m_D->m_Vertex = v;
 }
 
-bool AWT::HalfEdge::hasFace( ) const
+bool AWT::HalfEdge::hasFace() const
 {
-   return m_D->m_Face != std::numeric_limits<MeshIndex>::max( );
+   return m_D->m_Face != std::numeric_limits<MeshIndex>::max();
 }
 
-AWT::MeshIndex AWT::HalfEdge::getFace( ) const
+AWT::MeshIndex AWT::HalfEdge::getFace() const
 {
    return m_D->m_Face;
 }
 
-void AWT::HalfEdge::setFace( const AWT::MeshIndex f )
+void AWT::HalfEdge::setFace(const AWT::MeshIndex f)
 {
    m_D->m_Face = f;
 }
 
-bool AWT::HalfEdge::isCrossable( ) const
+bool AWT::HalfEdge::isCrossable() const
 {
    return m_D->m_Crossable;
 }
 
-void AWT::HalfEdge::setCrossable( const bool c )
+void AWT::HalfEdge::setCrossable(const bool c)
 {
    m_D->m_Crossable = c;
-   getPair( )->m_D->m_Crossable = c;
+   getPair()->m_D->m_Crossable = c;
 }
 
-AWT::MeshIndex AWT::HalfEdge::getLabel( ) const
+AWT::MeshIndex AWT::HalfEdge::getLabel() const
 {
    return m_D->m_Label;
 }
 
-void AWT::HalfEdge::setLabel( const AWT::MeshIndex v )
+void AWT::HalfEdge::setLabel(const AWT::MeshIndex v)
 {
    m_D->m_Label = v;
 }
 
-std::ostream& AWT::operator<<( std::ostream& os, const AWT::HalfEdge& e )
+std::ostream& AWT::operator<<(std::ostream& os, const AWT::HalfEdge& e)
 {
    
-   os << "  \"" << e.getPair( )->getVertex( )->getIndex( ) << "\"";
+   os << "  \"" << e.getPair()->getVertex()->getIndex() << "\"";
    os << " -> ";
-   os << "\"" << e.getVertex( )->getIndex( ) << "\"";
+   os << "\"" << e.getVertex()->getIndex() << "\"";
 
-   if ( halfEdgeVerbose )
+   if (halfEdgeVerbose)
    {
       os << " [arrowhead=halfopen,"; //label=\"" << &e << "\"";
 
-      MeshIndex label = e.getLabel( );
+      MeshIndex label = e.getLabel();
       
-      if ( !e.isCrossable( ) )
+      if (!e.isCrossable())
       {
          os << "penwidth=4,";
       }
 
-      if ( label == std::numeric_limits<MeshIndex>::max( ) )
+      if (label == std::numeric_limits<MeshIndex>::max())
       {
          os << "style=dashed,color=";
 
-         if ( e.isCrossable( ) )
+         if (e.isCrossable())
             os << "gray";
          else
             os << "gray";
@@ -187,7 +187,7 @@ std::ostream& AWT::operator<<( std::ostream& os, const AWT::HalfEdge& e )
       else
       {
          os << "color=";
-         switch ( label % 7 )
+         switch (label % 7)
          {
          case 0: os << "red"; break;
          case 1: os << "blue"; break;
@@ -202,8 +202,8 @@ std::ostream& AWT::operator<<( std::ostream& os, const AWT::HalfEdge& e )
       os << "]";
    }
    
-   if ( halfEdgePrintComment )
-      os << " /* this=" << &e << ", pair=" << e.getPair( ) << ", next=" << e.getNext( ) << ", label=" << e.getLabel( ) << ", hasFace=" << (e.hasFace() ? "true" : "false") << " */";
+   if (halfEdgePrintComment)
+      os << " /* this=" << &e << ", pair=" << e.getPair() << ", next=" << e.getNext() << ", label=" << e.getLabel() << ", hasFace=" << (e.hasFace() ? "true" : "false") << " */";
 
    return os;
 }

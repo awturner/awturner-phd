@@ -25,30 +25,30 @@
 */
 #include "CommandManager.h"
 
-AWT::CommandManager::~CommandManager( )
+AWT::CommandManager::~CommandManager()
 {
-   clearUndoRedo( );
+   clearUndoRedo();
 }
 
-bool AWT::CommandManager::canUndo( )
+bool AWT::CommandManager::canUndo()
 {
-   return !undoStack.empty( );
+   return !undoStack.empty();
 }
 
-bool AWT::CommandManager::canRedo( )
+bool AWT::CommandManager::canRedo()
 {
-   return !redoStack.empty( );
+   return !redoStack.empty();
 }
 
-bool AWT::CommandManager::undo( )
+bool AWT::CommandManager::undo()
 {
-   if ( canUndo( ) )
+   if (canUndo())
    {
-      bool ret = undoStack.back( )->undo( );
-      if ( ret )
+      bool ret = undoStack.back()->undo();
+      if (ret)
       {
-         redoStack.push_back( undoStack.back( ) );
-         undoStack.pop_back( );
+         redoStack.push_back(undoStack.back());
+         undoStack.pop_back();
       }
       return ret;
    }
@@ -58,15 +58,15 @@ bool AWT::CommandManager::undo( )
    }
 }
 
-bool AWT::CommandManager::redo( )
+bool AWT::CommandManager::redo()
 {
-   if ( canRedo( ) )
+   if (canRedo())
    {
-      bool ret = redoStack.back( )->execute( );
-      if ( ret )
+      bool ret = redoStack.back()->execute();
+      if (ret)
       {
-         undoStack.push_back( redoStack.back( ) );
-         redoStack.pop_back( );
+         undoStack.push_back(redoStack.back());
+         redoStack.pop_back();
       }
       return ret;
    }
@@ -76,34 +76,34 @@ bool AWT::CommandManager::redo( )
    }
 }
 
-bool AWT::CommandManager::execute( Command* cmd )
+bool AWT::CommandManager::execute(Command* cmd)
 {
-   if ( dynamic_cast<UndoableCommand*>( cmd ) != 0 )
+   if (dynamic_cast<UndoableCommand*>(cmd) != 0)
    {
-      bool ret = cmd->execute( );
-      if ( ret )
-         undoStack.push_back( dynamic_cast<UndoableCommand*>( cmd ) );
+      bool ret = cmd->execute();
+      if (ret)
+         undoStack.push_back(dynamic_cast<UndoableCommand*>(cmd));
 
       return ret;
    }
    else
    {
-      clearUndoRedo( );
-      return cmd->execute( );
+      clearUndoRedo();
+      return cmd->execute();
    }
 }
 
-void AWT::CommandManager::clearUndoRedo( )
+void AWT::CommandManager::clearUndoRedo()
 {  
-   while ( !undoStack.empty( ) )
+   while (!undoStack.empty())
    {
-      delete undoStack.back( );
-      undoStack.pop_back( );
+      delete undoStack.back();
+      undoStack.pop_back();
    }
 
-   while ( !redoStack.empty( ) )
+   while (!redoStack.empty())
    {
-      delete redoStack.back( );
-      redoStack.pop_back( );
+      delete redoStack.back();
+      redoStack.pop_back();
    }
 }

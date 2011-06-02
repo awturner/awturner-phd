@@ -39,32 +39,32 @@ namespace AWT
    class NonRigidAlignmentListener : public virtual ManagedObject
    {
    public:
-      typedef ManagedAutoPointer<NonRigidAlignmentListener<T>> P;
+      typedef ManagedAutoPointer<NonRigidAlignmentListener<T> > P;
 
    public:
       // Fired when the fixed mesh is set
-      virtual void fixedMeshSet( NonRigidAlignment<T>* nra ) = 0;
+      virtual void fixedMeshSet(NonRigidAlignment<T>* nra) = 0;
 
       // Fired when the moving mesh is set
-      virtual void movingMeshSet( NonRigidAlignment<T>* nra ) = 0;
+      virtual void movingMeshSet(NonRigidAlignment<T>* nra) = 0;
 
       // Fired when the set of correspondences between the fixed and moving meshes is found
-      virtual void correspondencesFound( NonRigidAlignment<T>* nra ) = 0;
+      virtual void correspondencesFound(NonRigidAlignment<T>* nra) = 0;
 
       // Fired when there is an update of the rigid parameters
-      virtual void rigidParameterUpdate( NonRigidAlignment<T>* nra ) = 0;
+      virtual void rigidParameterUpdate(NonRigidAlignment<T>* nra) = 0;
 
       // Fired when there is an update of the non-rigid parameters
-      virtual void nonRigidParameterUpdate( NonRigidAlignment<T>* nra ) = 0;
+      virtual void nonRigidParameterUpdate(NonRigidAlignment<T>* nra) = 0;
 
       // Fired when the control points change
-      virtual void controlPointsChanged( NonRigidAlignment<T>* nra ) = 0;
+      virtual void controlPointsChanged(NonRigidAlignment<T>* nra) = 0;
 
       // Fired when the alignment starts
-      virtual void alignmentStart( NonRigidAlignment<T>* nra ) = 0;
+      virtual void alignmentStart(NonRigidAlignment<T>* nra) = 0;
 
       // Fired when the alignment completes
-      virtual void alignmentComplete( NonRigidAlignment<T>* nra ) = 0;
+      virtual void alignmentComplete(NonRigidAlignment<T>* nra) = 0;
    };
 }
 
@@ -72,10 +72,10 @@ namespace AWT
 //namespace AWT
 //{
 //   template <class T>
-//   class CompositeNonRigidAlignmentListener : public CompositeListener<typename NonRigidAlignmentListener<T>,NonRigidAlignment<T>>
+//   class CompositeNonRigidAlignmentListener : public CompositeListener<typename NonRigidAlignmentListener<T>,NonRigidAlignment<T> >
 //   {
 //   public:
-//      virtual std::string getClassName( ) const { return "AWT::CompositeNonRigidAlignmentListener<T>"; }
+//      virtual std::string getClassName() const { return "AWT::CompositeNonRigidAlignmentListener<T>"; }
 //   };
 //}
 

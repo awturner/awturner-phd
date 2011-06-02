@@ -28,37 +28,37 @@ alignment = {
 };
 
 -- Creates a generic state machine
-function CreateStateMachine( )
+function CreateStateMachine()
 
 	statemachine = {
 		-- Delegates the step function to the state
-		step = function( self )
-			return self.state.step( self )
+		step = function(self)
+			return self.state.step(self)
 		end,
 		
 		-- Gets the description of the current state
-		description = function( self )
+		description = function(self)
 			return self.state.description
 		end,
 		
 		states = {
 			initial = {
 				description = 'The state machine is in its initial state!';
-				step = function( sm ) sm.state = sm.states.stopped end
+				step = function(sm) sm.state = sm.states.stopped end
 			},
 			
 			stopped = {
 				description = 'The state machine has stopped!';
-				step = function( sm ) end
+				step = function(sm) end
 			},
 			
 			err = {
 				description = 'The state machine has stopped with an error!';
-				step = function( sm ) end
+				step = function(sm) end
 			},
 		},
 		
-		isStopped = function( self )
+		isStopped = function(self)
 			return self.state == self.states.stopped or self.state == self.states.err;
 		end,
 	};
@@ -68,14 +68,14 @@ function CreateStateMachine( )
 	return statemachine;
 end
 
-StateMachine = CreateStateMachine( );
+StateMachine = CreateStateMachine();
 
 StateMachine.numberofcalls = 0;
 
 StateMachine.states.initial = {
 	description = 'This is the first state',
 	
-	step = function( sm )
+	step = function(sm)
 		sm.state = sm.states.setup;
 	end
 };
@@ -83,18 +83,18 @@ StateMachine.states.initial = {
 StateMachine.states.setup = {
 	description = 'Setting things up',
 	
-	step = function( sm )
-		if ( sm.sourceMeshFilename == nil ) then
+	step = function(sm)
+		if (sm.sourceMeshFilename == nil) then
 			sm.state = sm.states.err;
 			--return false;
 		end
 		
-		if ( sm.targetMeshFilename == nil ) then
+		if (sm.targetMeshFilename == nil) then
 			sm.state = sm.states.err;
 			--return false;
 		end
 		
-		if ( ( sm.meshspacings == nil or #sm.meshspacings == 0 ) and ( sm.controlpoints == nil or #sm.controlpoints == 0 ) ) then
+		if ((sm.meshspacings == nil or #sm.meshspacings == 0) and (sm.controlpoints == nil or #sm.controlpoints == 0)) then
 			sm.state = sm.states.err;
 			--return false;
 		end
@@ -113,7 +113,7 @@ StateMachine.states.setup = {
 StateMachine.states.preRigidAlignment = {
 	description = "Getting ready for rigid alignment",
 	
-	step = function( sm )
+	step = function(sm)
 		
 		sm.rigidIterations = 0;
 		sm.state = sm.states.rigidAlignment;
@@ -124,7 +124,7 @@ StateMachine.states.preRigidAlignment = {
 StateMachine.states.rigidAlignment = {
 	description = "Performing rigid alignment",
 	
-	step = function( sm )
+	step = function(sm)
 		sm.state = sm.states.err;
 	end
 }

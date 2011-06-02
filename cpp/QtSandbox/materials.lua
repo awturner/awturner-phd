@@ -1,4 +1,4 @@
-local primarygenerator = function( r, g, b )
+local primarygenerator = function(r, g, b)
 	return {
 		ambient = { 0, 0, 0 },
 		diffuse = { r, g, b },
@@ -39,13 +39,13 @@ materials.kilgard = {
 materials.bone = { ambient = { 0, 0, 0 }, diffuse = { 1, 1, 0.8 }, specular = { 0, 0, 0 }, shininess = 1 };
 
 materials.primary = {
-	red     = primarygenerator( 1, 0, 0 ),
-	green   = primarygenerator( 0, 1, 0 ),
-	blue    = primarygenerator( 0, 0, 1 ),
-	yellow  = primarygenerator( 1, 1, 0 ),
-	magenta = primarygenerator( 1, 0, 1 ),
-	cyan    = primarygenerator( 0, 1, 1 ),
+	red     = primarygenerator(1, 0, 0),
+	green   = primarygenerator(0, 1, 0),
+	blue    = primarygenerator(0, 0, 1),
+	yellow  = primarygenerator(1, 1, 0),
+	magenta = primarygenerator(1, 0, 1),
+	cyan    = primarygenerator(0, 1, 1),
 	
-	white   = primarygenerator( 1, 1, 1 ),
-	black   = primarygenerator( 0, 0, 0 ),
+	white   = primarygenerator(1, 1, 1),
+	black   = primarygenerator(0, 0, 0),
 };

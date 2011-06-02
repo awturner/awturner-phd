@@ -36,32 +36,32 @@ namespace AWT
       typedef ManagedAutoPointer<OpenGLSimpleColour> P;
 
    protected:
-      OpenGLSimpleColour( float r = 1.f , float g = 1.f , float b = 1.f , float a = 1.f, bool lighting = false );
+      OpenGLSimpleColour(float r = 1.f , float g = 1.f , float b = 1.f , float a = 1.f, bool lighting = false);
 
-      virtual ~OpenGLSimpleColour( );
+      virtual ~OpenGLSimpleColour();
 
    public:
-      static P getInstance( float r = 1.f , float g = 1.f , float b = 1.f , float a = 1.f, bool lighting = false );
+      static P getInstance(float r = 1.f , float g = 1.f , float b = 1.f , float a = 1.f, bool lighting = false);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual bool isOpaque( ) const;
+      virtual bool isOpaque() const;
 
-      virtual void prepare( );
+      virtual void prepare();
 
-      virtual void unprepare( );
+      virtual void unprepare();
 
-      virtual void tweak( const TweakType tw, const MeshIndex v );
+      virtual void tweak(const TweakType tw, const MeshIndex v);
 
-      void setColour( const float* col );
+      void setColour(const float* col);
 
-      void setColour( const float r, const float g, const float b, const float a = 1.0 );
+      void setColour(const float r, const float g, const float b, const float a = 1.0);
 
-      void getColour( float* col ) const;
+      void getColour(float* col) const;
 
-      bool isLighting( ) const;
+      bool isLighting() const;
 
-      void setLighting( const bool v );
+      void setLighting(const bool v);
 
    protected:
       struct D;

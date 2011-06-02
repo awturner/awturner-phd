@@ -75,18 +75,18 @@ struct FPCSTargets
 const double PI = atan(1.0) * 4;
 const double DEG_TO_RAD = PI / 180.0;
 
-double calculateSinAngle( const Point line1[2], const Point line2[2] )
+double calculateSinAngle(const Point line1[2], const Point line2[2])
 {
    const Point delta[] = { (line1[1] - line1[0]).normalize(), (line2[1] - line2[0]).normalize() };
 
    Point crossVec;
-   AWT::cross<Coordinate>( delta[0].data_block(), delta[1].data_block(), crossVec.data_block() );
+   AWT::cross<Coordinate>(delta[0].data_block(), delta[1].data_block(), crossVec.data_block());
    crossVec[3] = 0;
 
    return crossVec.magnitude();
 }
 
-void findExtrema( Points& points, const Point& axis, Point extrema[2] )
+void findExtrema(Points& points, const Point& axis, Point extrema[2])
 {
    Coordinate extremes[] = { FAR_FAR_AWAY, -FAR_FAR_AWAY };
    Point extremePnt[2];
@@ -94,7 +94,7 @@ void findExtrema( Points& points, const Point& axis, Point extrema[2] )
    for (Index col = 0; col < points.cols(); ++col)
    {
       Point mu = points.get_column(col);
-      Coordinate c = dot( axis, mu, 4 );
+      Coordinate c = dot(axis, mu, 4);
 
       if (c < extremes[0])
       {
@@ -110,7 +110,7 @@ void findExtrema( Points& points, const Point& axis, Point extrema[2] )
    }
 }
 
-void calculateFPCSTargets( Points& pts, Points& nmls, FPCSTargets& tgts )
+void calculateFPCSTargets(Points& pts, Points& nmls, FPCSTargets& tgts)
 {
    Point delta[] = { pts.get_column(1)-pts.get_column(0), pts.get_column(3)-pts.get_column(2) };
    tgts.targets[0].length = delta[0].magnitude();
@@ -123,11 +123,11 @@ void calculateFPCSTargets( Points& pts, Points& nmls, FPCSTargets& tgts )
    Point c = pts.get_column(2) - a;
    Point d = pts.get_column(3) - a;
 
-   Coordinate lambda = ( dot(c,b,3) + dot(d,b,3) ) / ( 2 * dot(b,b,3) );
+   Coordinate lambda = (dot(c,b,3) + dot(d,b,3)) / (2 * dot(b,b,3));
    Point x = a + lambda * b;
 
-   tgts.targets[0].ratio = ( x - pts.get_column(0) ).magnitude() / ( pts.get_column(1) - pts.get_column(0) ).magnitude();
-   tgts.targets[1].ratio = ( x - pts.get_column(2) ).magnitude() / ( pts.get_column(3) - pts.get_column(2) ).magnitude();
+   tgts.targets[0].ratio = (x - pts.get_column(0)).magnitude() / (pts.get_column(1) - pts.get_column(0)).magnitude();
+   tgts.targets[1].ratio = (x - pts.get_column(2)).magnitude() / (pts.get_column(3) - pts.get_column(2)).magnitude();
 
    // Store the cos of the dihedral angle
    tgts.targets[0].dihedral = inner_product(nmls.get_column(1), nmls.get_column(0));
@@ -138,19 +138,19 @@ void calculateFPCSTargets( Points& pts, Points& nmls, FPCSTargets& tgts )
    delta[1].normalize();
 
    Point crossVec;
-   AWT::cross<Coordinate>( delta[0].data_block(), delta[1].data_block(), crossVec.data_block() );
+   AWT::cross<Coordinate>(delta[0].data_block(), delta[1].data_block(), crossVec.data_block());
    crossVec[3] = 0;
 
    tgts.sinAngle = crossVec.magnitude();
 
 }
 
-const double radiusForAngle( const double theta )
+const double radiusForAngle(const double theta)
 {
-   return sqrt( 2 - 2*cos(theta) );
+   return sqrt(2 - 2*cos(theta));
 }
 
-void constructSearchSet( Search::P normalSearcher, Mesh::P mesh, const FPCSTarget& tgt, const double delta, std::vector<IntersectionPoint>& res )
+void constructSearchSet(Search::P normalSearcher, Mesh::P mesh, const FPCSTarget& tgt, const double delta, std::vector<IntersectionPoint>& res)
 {
    Mesh::P normalMesh = normalSearcher->getMesh();
    const Index N = normalMesh->nv;
@@ -166,7 +166,7 @@ void constructSearchSet( Search::P normalSearcher, Mesh::P mesh, const FPCSTarge
    typedef std::pair<Index,Index> IndexPair;
    std::set<IndexPair> checkSet;
 
-   for ( Index i = 0; i < N; ++i )
+   for (Index i = 0; i < N; ++i)
    {
       vbp->reset();
 
@@ -179,13 +179,13 @@ void constructSearchSet( Search::P normalSearcher, Mesh::P mesh, const FPCSTarge
       vbp->setTestPlane(1, p1);
 
       /*
-      PRINTVBL( theta/DEG_TO_RAD );
-      PRINTVBLMATLAB( q );
-      PRINTVBLMATLAB( p0 );
-      PRINTVBLMATLAB( p1 );
+      PRINTVBL(theta/DEG_TO_RAD);
+      PRINTVBLMATLAB(q);
+      PRINTVBLMATLAB(p0);
+      PRINTVBLMATLAB(p1);
       */
       
-      normalSearcher->search( vbp );
+      normalSearcher->search(vbp);
 
       std::vector<Index>& found = vbp->getVertices();
 
@@ -202,10 +202,10 @@ void constructSearchSet( Search::P normalSearcher, Mesh::P mesh, const FPCSTarge
             Point p0 = mesh->getVertex(vs[0]);
             Point p1 = mesh->getVertex(vs[1]);
 
-            if ( abs( (p0-p1).squared_magnitude() - tgt.length ) < delta )
+            if (abs((p0-p1).squared_magnitude() - tgt.length) < delta)
             {
                for (Index swap = 0; swap < 2; ++swap)
-                  checkSet.insert( IndexPair( vs[swap],vs[1-swap]) );
+                  checkSet.insert(IndexPair(vs[swap],vs[1-swap]));
        
                PRINTVBL(i);
                PRINTVBL(found.size());
@@ -238,12 +238,12 @@ void constructSearchSet( Search::P normalSearcher, Mesh::P mesh, const FPCSTarge
    }
 }
 
-void constructSearchSet( Search::P searcher, Points& normals, const FPCSTarget& tgt, const double delta, std::vector<IntersectionPoint>& res )
+void constructSearchSet(Search::P searcher, Points& normals, const FPCSTarget& tgt, const double delta, std::vector<IntersectionPoint>& res)
 {
-   VerticesInRadius::P vir = VerticesInRadius::getInstance( );
+   VerticesInRadius::P vir = VerticesInRadius::getInstance();
 
-   vir->setInnerRadius( tgt.length - delta );
-   vir->setOuterRadius( tgt.length + delta );
+   vir->setInnerRadius(tgt.length - delta);
+   vir->setOuterRadius(tgt.length + delta);
 
    Mesh::P mesh = searcher->getMesh();
    Points& vs = mesh->getVertices();
@@ -258,7 +258,7 @@ void constructSearchSet( Search::P searcher, Points& normals, const FPCSTarget& 
    const double upperD = cos(std::max(0.0, theta-dtheta/2));
    const double lowerD = cos(std::min(theta+dtheta/2,PI));
 
-   for ( Index i = 0; i < N; ++i )
+   for (Index i = 0; i < N; ++i)
    {
       if (i % 500 == 499)
          PRINTVBL(i);
@@ -281,16 +281,16 @@ void constructSearchSet( Search::P searcher, Points& normals, const FPCSTarget& 
          Index vs[] = { i, *it };
 
          // Check to see if the normals of these points are compatible
-         const double dihedral = inner_product( normals.get_column(vs[0]), normals.get_column(vs[1]) );
-         if (dihedral <= upperD && dihedral >= lowerD )
+         const double dihedral = inner_product(normals.get_column(vs[0]), normals.get_column(vs[1]));
+         if (dihedral <= upperD && dihedral >= lowerD)
          {
             for (Index swap = 0; swap < 2; ++swap)
-               checkSet.insert( IndexPair( vs[swap],vs[1-swap]) );
+               checkSet.insert(IndexPair(vs[swap],vs[1-swap]));
          }
       }
 
       if (checkSet.size() != checkSetSize)
-         DEBUGMACRO(i << "\t" << N << "\t" << checkSet.size() << "\t" << ((0.0+checkSet.size())/i) );
+         DEBUGMACRO(i << "\t" << N << "\t" << checkSet.size() << "\t" << ((0.0+checkSet.size())/i));
    }
 
    {
@@ -311,15 +311,15 @@ void constructSearchSet( Search::P searcher, Points& normals, const FPCSTarget& 
    }
 }
 
-Mesh::P sampleMesh( Mesh::P model, const Index nsamples, Points& normals )
+Mesh::P sampleMesh(Mesh::P model, const Index nsamples, Points& normals)
 {
    Mesh::P ret = Mesh::getInstance(nsamples,0);
-   UniformSampler::P sampler = UniformSampler::getInstance( model );
+   UniformSampler::P sampler = UniformSampler::getInstance(model);
 
    normals.set_size(4,nsamples);
 
    Matrix& vs = ret->getVertices();
-   for ( Index i = 0; i < nsamples; ++i )
+   for (Index i = 0; i < nsamples; ++i)
    {
       PointIndexWeights piw = sampler->sample();
       vs.set_column(i,piw.p);
@@ -330,9 +330,9 @@ Mesh::P sampleMesh( Mesh::P model, const Index nsamples, Points& normals )
    return ret;
 }
 
-Search::P constructNormalSearcher( Mesh::P mesh )
+Search::P constructNormalSearcher(Mesh::P mesh)
 {
-   Mesh::P normalMesh = Mesh::getInstance( mesh->nv, 0 );
+   Mesh::P normalMesh = Mesh::getInstance(mesh->nv, 0);
    calculateVertexNormals(mesh, normalMesh->getVertices(), true);
 
    // Make these into points
@@ -341,19 +341,19 @@ Search::P constructNormalSearcher( Mesh::P mesh )
    return Search::getInstance(normalMesh, false);
 }
 
-void pickCoplanarPoints( Search::P searcher, Points& pts, Points& nmls )
+void pickCoplanarPoints(Search::P searcher, Points& pts, Points& nmls)
 {
    Mesh::P mesh = searcher->getMesh();
 
    // Calculate the mesh's centroid
-   Point centroid = calculateCentroid( mesh );
+   Point centroid = calculateCentroid(mesh);
 
    // Pick a random normal
    Point plane;
    for (Index ax = 0; ax < 3; ++ax)
       plane(ax) = random::randu(-1,1);
    
-   plane(3) = -dot( plane, centroid, 3 );
+   plane(3) = -dot(plane, centroid, 3);
 
    FacesIntersectPlane::P fip = FacesIntersectPlane::getInstance();
    fip->setTestPlane(plane);
@@ -394,12 +394,12 @@ void pickCoplanarPoints( Search::P searcher, Points& pts, Points& nmls )
    // Correct for zero mean shift
    covar = covar - outer_product(sumx, sumx) / sumw;
 
-   Transformation axes = vnl_svd<Coordinate>( covar ).U();
+   Transformation axes = vnl_svd<Coordinate>(covar).U();
 
    // Pick the extremal points in the principal direction
    Point extremePnt[2][2];
-   findExtrema( mus, axes.get_column(0), extremePnt[0] );
-   findExtrema( mus, axes.get_column(1), extremePnt[1] );
+   findExtrema(mus, axes.get_column(0), extremePnt[0]);
+   findExtrema(mus, axes.get_column(1), extremePnt[1]);
 
    pts.set_size(4,4);
    pts.set_column(0,extremePnt[0][0]);
@@ -409,12 +409,12 @@ void pickCoplanarPoints( Search::P searcher, Points& pts, Points& nmls )
 
    // Go back and recover the face normals
    // Average over all faces intersecting sphere
-   FacesInRadius::P fir = FacesInRadius::getInstance( );
-   fir->setTestRadius( 5 );
+   FacesInRadius::P fir = FacesInRadius::getInstance();
+   fir->setTestRadius(5);
    nmls.set_size(4,4);
-   for ( Index a = 0; a < 2; ++a )
+   for (Index a = 0; a < 2; ++a)
    {
-      for ( Index b = 0; b < 2; ++b )
+      for (Index b = 0; b < 2; ++b)
       {
          fir->reset();
          fir->setTestPoint(extremePnt[a][b]);
@@ -432,13 +432,13 @@ void pickCoplanarPoints( Search::P searcher, Points& pts, Points& nmls )
          }
          while (++it != en);
 
-         PRINTVBL( nml.normalize() );
+         PRINTVBL(nml.normalize());
          nmls.set_column(2*a + b, nml.normalize());
       }
    }
 }
 
-Transformation absoluteOrientation( const Points& ps, const Points& qs )
+Transformation absoluteOrientation(const Points& ps, const Points& qs)
 {
    Matrix covar(4,4, 0);
    Point  sum_p; sum_p.fill(0);
@@ -449,14 +449,14 @@ Transformation absoluteOrientation( const Points& ps, const Points& qs )
    const Index N = ps.cols();
    const Coordinate NN = static_cast<Coordinate>(N);
 
-   for ( Index i = 0; i < N; ++i )
+   for (Index i = 0; i < N; ++i)
    {
       Point pc = ps.get_column(i);
       Point qc = qs.get_column(i);
 
       pc(3) = qc(3) = 0;
 
-      covar += outer_product<Coordinate>( pc, qc );
+      covar += outer_product<Coordinate>(pc, qc);
 
       sum_p += pc;
       sum_q += qc;
@@ -471,14 +471,14 @@ Transformation absoluteOrientation( const Points& ps, const Points& qs )
    var_q -= inner_product<Coordinate>(sum_q, sum_q) / static_cast<Coordinate>(N);
 
    // Calculate the scale
-   const Coordinate sc = sqrt( var_p / var_q );
+   const Coordinate sc = sqrt(var_p / var_q);
 
    // Calculate the (scaled) rotation
-   vnl_svd<Coordinate> svd( covar );
+   vnl_svd<Coordinate> svd(covar);
    Transformation R = sc * svd.V() * svd.U().transpose(); R(3,3) = 1;
 
    // Calculate the translation
-   Point t = -( R*sum_p - sum_q ) / static_cast<Coordinate>(N);
+   Point t = -(R*sum_p - sum_q) / static_cast<Coordinate>(N);
    t(3) = 1;
    R.set_column(3,t);
 
@@ -493,13 +493,13 @@ int main(int argc, char** argv)
 
    random::timeSeed();
 
-   DEBUGMACRO( "Loading mesh from " << argv[1] );
-   Mesh::P mesh = MeshIO::loadMesh( std::ifstream(argv[1]) );
+   DEBUGMACRO("Loading mesh from " << argv[1]);
+   Mesh::P mesh = MeshIO::loadMesh(std::ifstream(argv[1]));
 
-   DEBUGMACRO( "Loading model from " << argv[2] );
-   ShapeModel::P shapeModel = MeshIO::loadModel( std::ifstream(argv[2]) );
+   DEBUGMACRO("Loading model from " << argv[2]);
+   ShapeModel::P shapeModel = MeshIO::loadModel(std::ifstream(argv[2]));
 
-   DEBUGMACRO( "Constructing searchers..." );
+   DEBUGMACRO("Constructing searchers...");
    Search::P faceSearcher = Search::getInstance(mesh, true);
 
    Points quad, nmls;
@@ -507,9 +507,9 @@ int main(int argc, char** argv)
 
    do
    {
-      DEBUGMACRO( "Picking coplanar points..." );
-      pickCoplanarPoints( faceSearcher, quad, nmls );
-      calculateFPCSTargets( quad, nmls, targets );
+      DEBUGMACRO("Picking coplanar points...");
+      pickCoplanarPoints(faceSearcher, quad, nmls);
+      calculateFPCSTargets(quad, nmls, targets);
    }
    while (targets.sinAngle < 0.707);
 
@@ -534,8 +534,8 @@ int main(int argc, char** argv)
    IntersectionPoints isect[2];
 
    /*
-   constructSearchSet( modelSampleSearcher, normals, targets.targets[0], delta, isect[0] );
-   constructSearchSet( modelSampleSearcher, normals, targets.targets[1], delta, isect[1] );
+   constructSearchSet(modelSampleSearcher, normals, targets.targets[0], delta, isect[0]);
+   constructSearchSet(modelSampleSearcher, normals, targets.targets[1], delta, isect[1]);
    */
 
    {
@@ -544,9 +544,9 @@ int main(int argc, char** argv)
       calculateVertexNormals(shapeModelInst, normals, true);
 
       DEBUGLINE;
-      constructSearchSet( modelVertexSearcher, normals, targets.targets[0], delta, isect[0] );
+      constructSearchSet(modelVertexSearcher, normals, targets.targets[0], delta, isect[0]);
       DEBUGLINE;
-      constructSearchSet( modelVertexSearcher, normals, targets.targets[1], delta, isect[1] );
+      constructSearchSet(modelVertexSearcher, normals, targets.targets[1], delta, isect[1]);
       DEBUGLINE;
    }
 
@@ -559,12 +559,12 @@ int main(int argc, char** argv)
    constructSearchSet(normalSearcher, shapeModelInst, targets.targets[1], delta, isect[1]);
    */
 
-   PRINTVBL( isect[0].size() );
-   PRINTVBL( isect[1].size() );
+   PRINTVBL(isect[0].size());
+   PRINTVBL(isect[1].size());
    PAUSE;
 
    // Construct a mesh from the second set
-   Mesh::P intersectionSearchMesh = Mesh::getInstance( isect[1].size(), 0 );
+   Mesh::P intersectionSearchMesh = Mesh::getInstance(isect[1].size(), 0);
    {
       Points& vs = intersectionSearchMesh->getVertices();
 
@@ -573,7 +573,7 @@ int main(int argc, char** argv)
       Index i = 0;
       do
       {
-         vs.set_column( i++, it->p );
+         vs.set_column(i++, it->p);
       }
       while (++it != en);
    }
@@ -593,8 +593,8 @@ int main(int argc, char** argv)
 
       const double deltaTheta = 5 * DEG_TO_RAD;
 
-      const double maxSinTheta = sin( std::min<double>( PI/2, asin(targets.sinAngle) + deltaTheta ) );
-      const double minSinTheta = sin( std::max<double>(    0, asin(targets.sinAngle) - deltaTheta ) );
+      const double maxSinTheta = sin(std::min<double>(PI/2, asin(targets.sinAngle) + deltaTheta));
+      const double minSinTheta = sin(std::max<double>(   0, asin(targets.sinAngle) - deltaTheta));
 
       Points qs(4,4);
 
@@ -620,7 +620,7 @@ int main(int argc, char** argv)
          qs.set_column(0, modelSampleMesh->getVertex(it->vs[0]));
          qs.set_column(1, modelSampleMesh->getVertex(it->vs[1]));
 
-         if ( !agent->getVertices().empty() )
+         if (!agent->getVertices().empty())
          {
             typedef std::vector<Index> Indexes;
             Indexes::iterator iit = agent->getVertices().begin();
@@ -633,10 +633,10 @@ int main(int argc, char** argv)
                qs.set_column(2, modelSampleMesh->getVertex(isect[1][*iit].vs[0]));
                qs.set_column(3, modelSampleMesh->getVertex(isect[1][*iit].vs[1]));
 
-               const double sinTheta = calculateSinAngle( ends1, ends2 );
+               const double sinTheta = calculateSinAngle(ends1, ends2);
                if (sinTheta >= minSinTheta && sinTheta <= maxSinTheta)
                {
-                  Transformation trans = absoluteOrientation( quad, qs );
+                  Transformation trans = absoluteOrientation(quad, qs);
 
                   Index support = 0;
                   double fro2 = 0;
@@ -647,7 +647,7 @@ int main(int argc, char** argv)
                      // If there aren't enough points left to beat the
                      // current support, stop!
                      const Index remaining = nmeshSamples - s;
-                     if ( support + remaining < bestSupport )
+                     if (support + remaining < bestSupport)
                         break;
 
                      // Transform the point
@@ -660,17 +660,17 @@ int main(int argc, char** argv)
                      if (!fir->getFaces().empty())
                      {
                         ++support;
-                        fro2 += ( fir->getFaces()[0].p - p ).squared_magnitude();
+                        fro2 += (fir->getFaces()[0].p - p).squared_magnitude();
                      }
                   }
 
-                  if (support > bestSupport || (support == bestSupport && fro2 < bestFro2) )
+                  if (support > bestSupport || (support == bestSupport && fro2 < bestFro2))
                   {
                      bestSupport = support;
                      bestFro2 = fro2;
                      bestTrans = trans;
 
-                     DEBUGMACRO( bestSupport << "\t" << (bestFro2/bestSupport) );
+                     DEBUGMACRO(bestSupport << "\t" << (bestFro2/bestSupport));
                   }
                }
             }
@@ -680,12 +680,12 @@ int main(int argc, char** argv)
       }
       while (++it != en);
 
-      PRINTVBLNL( bestTrans );
-      PRINTVBL( foundCount );
+      PRINTVBLNL(bestTrans);
+      PRINTVBL(foundCount);
    }
 
-   DEBUGMACRO( "Done." );
-   PRINTVBL( quad );
+   DEBUGMACRO("Done.");
+   PRINTVBL(quad);
 
    {
       vnl_matlab_filewrite fw("fpcs.mat");

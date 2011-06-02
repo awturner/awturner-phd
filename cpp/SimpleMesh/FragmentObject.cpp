@@ -42,15 +42,15 @@ struct AWT::SimpleMesh::FragmentObject::D
 
    double wiggleSize;
 
-   static void orthoInvert( const Transformation& fwd, Transformation& inv )
+   static void orthoInvert(const Transformation& fwd, Transformation& inv)
    {
-      inv.set_column( 3, 0.0 );
-      inv.set_row( 3, 0.0 );
+      inv.set_column(3, 0.0);
+      inv.set_row(3, 0.0);
       inv(3,3) = 1;
 
-      for ( Index r = 0; r < 3; ++r )
+      for (Index r = 0; r < 3; ++r)
       {
-         for ( Index c = 0; c < 3; ++c )
+         for (Index c = 0; c < 3; ++c)
          {
             // Transpose the rotation block
             inv(c, r) = fwd(r, c);
@@ -61,10 +61,10 @@ struct AWT::SimpleMesh::FragmentObject::D
       }
    }
 
-   static void calculateTransformation( const Vector& v, Transformation& mat )
+   static void calculateTransformation(const Vector& v, Transformation& mat)
    {
       Vector q(4);
-      q.set( v.data_block() );
+      q.set(v.data_block());
       q.normalize();
 
       mat(0,0) = q(0) * q(0) + q(1) * q(1) - q(2) * q(2) - q(3) * q(3);
@@ -87,34 +87,34 @@ struct AWT::SimpleMesh::FragmentObject::D
       mat(3,3) = 1;
    }
 
-   void updateTransformations( const Vector& setPoint )
+   void updateTransformations(const Vector& setPoint)
    {
       // Calculate the forward and reverse transformation
-      calculateTransformation( setPoint, trans );
-      orthoInvert( trans, inv );
+      calculateTransformation(setPoint, trans);
+      orthoInvert(trans, inv);
 
       // preJacs[i] * a sample point = the gradient of that point wrt element i
       Vector v(7);
-      v.update( setPoint );
+      v.update(setPoint);
       Transformation Tp, Tn;
-      for ( Index i = 0; i < 7; ++i )
+      for (Index i = 0; i < 7; ++i)
       {
          v[i] = setPoint[i] + wiggleSize;
-         calculateTransformation( v, Tp );
+         calculateTransformation(v, Tp);
 
          v[i] = setPoint[i] - wiggleSize;
-         calculateTransformation( v, Tn );
+         calculateTransformation(v, Tn);
 
          // Finite-difference approximation to the gradient
-         preJacs[i] = ( Tp - Tn ) / ( 2*wiggleSize );
+         preJacs[i] = (Tp - Tn) / (2*wiggleSize);
 
-         v.update( setPoint );
+         v.update(setPoint);
       }
    }
 };
 
-AWT::SimpleMesh::FragmentObject::FragmentObject( Mesh::P frag, Sampler::P sampler, Index nsamples )
-: AlignObject( nsamples )
+AWT::SimpleMesh::FragmentObject::FragmentObject(Mesh::P frag, Sampler::P sampler, Index nsamples)
+: AlignObject(nsamples)
 {
    m_D = new D;
 
@@ -124,73 +124,73 @@ AWT::SimpleMesh::FragmentObject::FragmentObject( Mesh::P frag, Sampler::P sample
    this->mesh    = frag;
    this->sampler = sampler;
 
-   this->searcher = Search::getInstance( this->mesh, true );
-   //PRINTVBL( this->mesh->nf );
-   //PRINTVBL( this->mesh->nv );
+   this->searcher = Search::getInstance(this->mesh, true);
+   //PRINTVBL(this->mesh->nf);
+   //PRINTVBL(this->mesh->nv);
 
    // Create this so we can know if a correspondence is on the fragment's edge
-   m_D->edgeFilter = MeshEdgeSearchFilter::getInstance( this->mesh );
+   m_D->edgeFilter = MeshEdgeSearchFilter::getInstance(this->mesh);
 
    // Initialize the parameters
-   params.set_size( 7 );
-   params.fill( 0 );
+   params.set_size(7);
+   params.fill(0);
    params(0) = 1;
 
-   setParameters( params );
+   setParameters(params);
 }
 
-AWT::SimpleMesh::FragmentObject::~FragmentObject( )
+AWT::SimpleMesh::FragmentObject::~FragmentObject()
 {
    delete m_D;
 }
 
-AWT::SimpleMesh::FragmentObject::P AWT::SimpleMesh::FragmentObject::getInstance( Mesh::P frag, Sampler::P sampler, Index nsamples )
+AWT::SimpleMesh::FragmentObject::P AWT::SimpleMesh::FragmentObject::getInstance(Mesh::P frag, Sampler::P sampler, Index nsamples)
 {
-   AUTOGETINSTANCE( AWT::SimpleMesh::FragmentObject, ( frag, sampler, nsamples ) );
+   AUTOGETINSTANCE(AWT::SimpleMesh::FragmentObject, (frag, sampler, nsamples));
 }
 
-GETNAMEMACRO( AWT::SimpleMesh::FragmentObject );
+GETNAMEMACRO(AWT::SimpleMesh::FragmentObject);
 
-void AWT::SimpleMesh::FragmentObject::setParameters( const Vector& params )
+void AWT::SimpleMesh::FragmentObject::setParameters(const Vector& params)
 {
-   AlignObject::setParameters( params );
+   AlignObject::setParameters(params);
 
    Vector q(4);
-   q.set( params.data_block() );
+   q.set(params.data_block());
    q.normalize();
 
-   this->params.update( q, 0 );
+   this->params.update(q, 0);
 
-   m_D->updateTransformations( this->params );
+   m_D->updateTransformations(this->params);
 }
 
-PointIndexWeights AWT::SimpleMesh::FragmentObject::search( const Point& pnt, const Point& nml, SearchFilter::P filter )
+PointIndexWeights AWT::SimpleMesh::FragmentObject::search(const Point& pnt, const Point& nml, SearchFilter::P filter)
 {
-   PointIndexWeights piw = searcher->search( pnt, nml, filter );
+   PointIndexWeights piw = searcher->search(pnt, nml, filter);
 
    return piw;
 }
 
-Transformation AWT::SimpleMesh::FragmentObject::getTransformation( ) const
+Transformation AWT::SimpleMesh::FragmentObject::getTransformation() const
 {
    return m_D->trans;
 }
 
-Transformation AWT::SimpleMesh::FragmentObject::getInverseTransformation( ) const
+Transformation AWT::SimpleMesh::FragmentObject::getInverseTransformation() const
 {
    return m_D->inv;
 }
 
-void AWT::SimpleMesh::FragmentObject::calculateJacobian( const PointIndexWeights& piw, Matrix& jac )
+void AWT::SimpleMesh::FragmentObject::calculateJacobian(const PointIndexWeights& piw, Matrix& jac)
 {
-   ensureSize( jac, 4, 7 );
+   ensureSize(jac, 4, 7);
 
-   jac.fill( 0 );
-   for ( Index i = 0; i < 7; ++i )
-      jac.set_column( i, m_D->preJacs[i] * piw.p );
+   jac.fill(0);
+   for (Index i = 0; i < 7; ++i)
+      jac.set_column(i, m_D->preJacs[i] * piw.p);
 }
 
-SearchFilter::P AWT::SimpleMesh::FragmentObject::getEdgeFilter( )
+SearchFilter::P AWT::SimpleMesh::FragmentObject::getEdgeFilter()
 {
    return m_D->edgeFilter;
 }

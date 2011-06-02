@@ -30,23 +30,23 @@
 
 using namespace AWT::SimpleMesh;
 
-const Index  AWT::SimpleMesh::INVALID_INDEX      = std::numeric_limits<Index>::max( );
+const Index  AWT::SimpleMesh::INVALID_INDEX      = std::numeric_limits<Index>::max();
 const double AWT::SimpleMesh::FAR_FAR_AWAY       = std::numeric_limits<double>::infinity();
 const double AWT::SimpleMesh::INVALID_COORDINATE = std::numeric_limits<double>::quiet_NaN();
 
-AWT::SimpleMesh::PointIndexWeights::PointIndexWeights( )
+AWT::SimpleMesh::PointIndexWeights::PointIndexWeights()
 {
-   p.fill( INVALID_COORDINATE );
+   p.fill(INVALID_COORDINATE);
    i = INVALID_INDEX;
-   w.fill( INVALID_COORDINATE );
+   w.fill(INVALID_COORDINATE);
 }
 
-AWT::SimpleMesh::LameckerMeasures::LameckerMeasures( )
+AWT::SimpleMesh::LameckerMeasures::LameckerMeasures()
 {
    modelScale = 1;
 }
 
-std::ostream& operator<<( std::ostream& os, const AWT::SimpleMesh::Correspondence& self )
+std::ostream& operator<<(std::ostream& os, const AWT::SimpleMesh::Correspondence& self)
 {
    os << "Correspondence[" << std::endl;
    os << "\tmodelPoint=("<<self.modelPoint.p<<");" << std::endl;
@@ -58,10 +58,10 @@ std::ostream& operator<<( std::ostream& os, const AWT::SimpleMesh::Correspondenc
    return os;
 }
 
-void AWT::SimpleMesh::calculateTransformation( const AWT::SimpleMesh::Vector& v, AWT::SimpleMesh::Transformation& mat )
+void AWT::SimpleMesh::calculateTransformation(const AWT::SimpleMesh::Vector& v, AWT::SimpleMesh::Transformation& mat)
 {
    Vector q(4);
-   q.set( v.data_block() );
+   q.set(v.data_block());
    q.normalize();
 
    mat(0,0) = q(0) * q(0) + q(1) * q(1) - q(2) * q(2) - q(3) * q(3);
@@ -111,7 +111,7 @@ AWT::SimpleMesh::Vector AWT::SimpleMesh::matrixToPose(const AWT::SimpleMesh::Tra
    Point bestQuat = svd.U().get_column(0);
 
    Vector pose(7);
-   for ( Index i = 0; i < 4; ++i )
+   for (Index i = 0; i < 4; ++i)
       pose(i) = bestQuat(i);
 
    pose(4) = R(0,3);

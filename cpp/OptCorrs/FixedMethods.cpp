@@ -34,34 +34,34 @@ using namespace AWT;
 using namespace AWT::AlignParametric;
 using namespace XmlRpc;
 
-void remoteMethod( AWT::AlignParametric::Fixed::initialize )
+void remoteMethod(AWT::AlignParametric::Fixed::initialize)
 {
    // Clear any existing state
-   CommonMethods::reset( );
+   CommonMethods::reset();
 
-   DEBUGMACRO( "Creating an \"optimizer\"" );
-   eigOpt = FixedOptimizer::getInstance( );
+   DEBUGMACRO("Creating an \"optimizer\"");
+   eigOpt = FixedOptimizer::getInstance();
 }
 
-void remoteMethod( AWT::AlignParametric::Fixed::addMesh )
+void remoteMethod(AWT::AlignParametric::Fixed::addMesh)
 {
    const std::string filename = params[0];
 
-   DEBUGMACRO( "Adding surface from " << filename );
+   DEBUGMACRO("Adding surface from " << filename);
 
-   MeshType::P modelMesh = VTKMeshLoader<T>::load( filename.c_str(), false );
+   MeshType::P modelMesh = VTKMeshLoader<T>::load(filename.c_str(), false);
 
-   FixedOptimizer* sto = dynamic_cast<FixedOptimizer*>( *eigOpt );
+   FixedOptimizer* sto = dynamic_cast<FixedOptimizer*>(*eigOpt);
 
-   DEBUGMACRO( "Adding to optimizer" );
-   SampledSurface::P surf = sto->addMesh( modelMesh );
-   sampledSurfaces.push_back( surf );
+   DEBUGMACRO("Adding to optimizer");
+   SampledSurface::P surf = sto->addMesh(modelMesh);
+   sampledSurfaces.push_back(surf);
    
-   DEBUGMACRO( "Done." );
+   DEBUGMACRO("Done.");
 }
 
-void AWT::AlignParametric::Fixed::addMethods( AWT::RemoteMethods& methods )
+void AWT::AlignParametric::Fixed::addMethods(AWT::RemoteMethods& methods)
 {
-   methods.push_back( RemoteMethod( "fixed.initialize", initialize ) );
-   methods.push_back( RemoteMethod( "fixed.addMesh", addMesh ) );
+   methods.push_back(RemoteMethod("fixed.initialize", initialize));
+   methods.push_back(RemoteMethod("fixed.addMesh", addMesh));
 }

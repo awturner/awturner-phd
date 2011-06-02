@@ -33,13 +33,13 @@ namespace AWT
    class CommandLineArg
    {
    public:
-      CommandLineArg( char* name, bool req );
+      CommandLineArg(char* name, bool req);
 
-      virtual bool isRequired( ) const;
-      virtual bool isSet( ) const;
-      virtual bool isValid( ) const;
+      virtual bool isRequired() const;
+      virtual bool isSet() const;
+      virtual bool isValid() const;
 
-      virtual const char* getName( ) const;
+      virtual const char* getName() const;
 
    protected:
       const char* m_Name;
@@ -51,23 +51,23 @@ namespace AWT
    class MultiCommandLineArg : public CommandLineArg
    {
    public:
-      MultiCommandLineArg( char* name, int n, bool req );
-      ~MultiCommandLineArg( );
+      MultiCommandLineArg(char* name, int n, bool req);
+      ~MultiCommandLineArg();
 
-      T getValue( const int idx ) const;
+      T getValue(const int idx) const;
 
-      int getNumberOfValues( ) const
+      int getNumberOfValues() const
       {
          return m_N;
       }
 
-      virtual void parse( char** argv );
+      virtual void parse(char** argv);
 
-      virtual bool isSet( ) const;
-      virtual bool isValid( ) const;
+      virtual bool isSet() const;
+      virtual bool isValid() const;
 
    protected:
-      virtual bool parse( char* arg, T& out_Value );
+      virtual bool parse(char* arg, T& out_Value);
 
       const int   m_N;
       T*          m_Values;

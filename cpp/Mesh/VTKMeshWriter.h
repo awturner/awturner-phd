@@ -37,7 +37,7 @@ namespace AWT
    class VTKMeshWriter
    {
    public:
-      static void write( typename Mesh<T>::P mesh, const char* filename );
+      static void write(typename Mesh<T>::P mesh, const char* filename);
    };
 }
 

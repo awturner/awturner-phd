@@ -32,82 +32,82 @@ struct AWT::StateMachineStack::D
    std::vector<BasicStateMachine::P> stack;
 };
 
-AWT::StateMachineStack::StateMachineStack( )
+AWT::StateMachineStack::StateMachineStack()
 {
    m_D = new D;
 }
 
-AWT::StateMachineStack::~StateMachineStack( )
+AWT::StateMachineStack::~StateMachineStack()
 {
    delete m_D;
 }
 
-AWT::StateMachineStack::P AWT::StateMachineStack::getInstance( )
+AWT::StateMachineStack::P AWT::StateMachineStack::getInstance()
 {
-   AUTOGETINSTANCE( AWT::StateMachineStack, ( ) );
+   AUTOGETINSTANCE(AWT::StateMachineStack, ());
 }
 
-GETNAMEMACRO( AWT::StateMachineStack );
+GETNAMEMACRO(AWT::StateMachineStack);
 
-AWT::StateMachineStack* AWT::StateMachineStack::getStack( )
+AWT::StateMachineStack* AWT::StateMachineStack::getStack()
 {
    return this;
 }
 
-void AWT::StateMachineStack::push( AWT::BasicStateMachine::P m )
+void AWT::StateMachineStack::push(AWT::BasicStateMachine::P m)
 {
-   m_D->stack.push_back( m );
+   m_D->stack.push_back(m);
 }
 
-AWT::BasicStateMachine::P AWT::StateMachineStack::getTop( ) const
+AWT::BasicStateMachine::P AWT::StateMachineStack::getTop() const
 {
-   if ( m_D->stack.empty( ) )
-      return AWT::BasicStateMachine::P( );
+   if (m_D->stack.empty())
+      return AWT::BasicStateMachine::P();
 
-   return m_D->stack.back( );
+   return m_D->stack.back();
 }
 
-AWT::BasicStateMachine::P AWT::StateMachineStack::pop( )
+AWT::BasicStateMachine::P AWT::StateMachineStack::pop()
 {
-   BasicStateMachine::P ret = m_D->stack.back( );
+   BasicStateMachine::P ret = m_D->stack.back();
 
-   m_D->stack.pop_back( );
+   m_D->stack.pop_back();
 
    return ret;
 }
 
-bool AWT::StateMachineStack::step( )
+bool AWT::StateMachineStack::step()
 {
-   //PRINTVBL( getTop( )->getName( ) );
-   bool ret = getTop( )->step( );
+   //PRINTVBL(getTop()->getName());
+   bool ret = getTop()->step();
 
-   if ( !isRunning( ) && !isError( ) && m_D->stack.size( ) > 1 )
-      pop( );
+   if (!isRunning() && !isError() && m_D->stack.size() > 1)
+      pop();
 
    return ret;
 }
 
-bool AWT::StateMachineStack::isRunning( ) const
+bool AWT::StateMachineStack::isRunning() const
 {
-   return getTop( )->isRunning( );
+   return getTop()->isRunning();
 }
 
-bool AWT::StateMachineStack::isError( ) const
+bool AWT::StateMachineStack::isError() const
 {
-   return getTop( )->isError( );
+   return getTop()->isError();
 }
 
-std::string AWT::StateMachineStack::getLastError( ) const
+std::string AWT::StateMachineStack::getLastError() const
 {
-   return getTop( )->getLastError( );
+   return getTop()->getLastError();
 }
 
-std::string AWT::StateMachineStack::getStateName( ) const
+std::string AWT::StateMachineStack::getStateName() const
 {
-   return getTop( )->getStateName( );
+   return getTop()->getStateName();
 }
 
-void AWT::StateMachineStack::clear( )
+void AWT::StateMachineStack::clear()
 {
    m_D->stack.clear();
 }

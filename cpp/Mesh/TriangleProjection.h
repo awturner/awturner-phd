@@ -39,17 +39,17 @@ namespace AWT
       typedef ManagedAutoPointer<TriangleProjection> P;
 
    protected:
-      TriangleProjection( );
-      virtual ~TriangleProjection( );
+      TriangleProjection();
+      virtual ~TriangleProjection();
 
    public:
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      static void projectFromTriangle( const typename Mesh<T>::P in_Mesh, const MeshIndex in_Index, const T* vertex2d, T* vertex3d );
-      static void projectFromTriangle( const T* vtxOrigin, const T* vtxX, const T* vtxY, const T* vertex2d, T* vertex3d );
+      static void projectFromTriangle(const typename Mesh<T>::P in_Mesh, const MeshIndex in_Index, const T* vertex2d, T* vertex3d);
+      static void projectFromTriangle(const T* vtxOrigin, const T* vtxX, const T* vtxY, const T* vertex2d, T* vertex3d);
 
-      static void projectOntoTriangle( const typename Mesh<T>::P in_Mesh, const MeshIndex in_Index, const T* vertex3d, T* vertex2d );
-      static void projectOntoTriangle( const T* vtxOrigin, const T* vtxX, const T* vtxY, const T* vertex3d, T* vertex2d );
+      static void projectOntoTriangle(const typename Mesh<T>::P in_Mesh, const MeshIndex in_Index, const T* vertex3d, T* vertex2d);
+      static void projectOntoTriangle(const T* vtxOrigin, const T* vtxX, const T* vtxY, const T* vertex3d, T* vertex2d);
 
    protected:
       struct D;

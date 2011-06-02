@@ -65,11 +65,11 @@ namespace AWT
 
       typedef vnl_matrix_fixed<Coordinate,4,4> Transformation;
       
-      void calculateTransformation( const Vector& v, Transformation& mat );
+      void calculateTransformation(const Vector& v, Transformation& mat);
 
       struct PointIndexWeights
       {
-         PointIndexWeights( );
+         PointIndexWeights();
 
          Point p;
          Index i;
@@ -87,7 +87,7 @@ namespace AWT
 
          Coordinate lengthSquared;
 
-         bool valid( ) const
+         bool valid() const
          {
             const Coordinate m = modelPoint.p.squared_magnitude();
             const Coordinate f = fragPoint.p.squared_magnitude();
@@ -104,7 +104,7 @@ namespace AWT
 
       struct LameckerMeasures
       {
-         LameckerMeasures( );
+         LameckerMeasures();
 
          double mean;
          double rms;
@@ -119,6 +119,6 @@ namespace AWT
    }
 }
 
-std::ostream& operator<<( std::ostream& os, const AWT::SimpleMesh::Correspondence& self );
+std::ostream& operator<<(std::ostream& os, const AWT::SimpleMesh::Correspondence& self);
 
 #endif // __TYPEDEFS_H__

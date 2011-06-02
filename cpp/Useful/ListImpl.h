@@ -37,33 +37,33 @@ namespace AWT
       class ListImpl : public List<T>
       {
       public:
-         ListImpl( );
-         ~ListImpl( );
+         ListImpl();
+         ~ListImpl();
 
-         virtual const bool isEmpty( );
-         virtual const int size( );
-         virtual const T get( int );
+         virtual const bool isEmpty();
+         virtual const int size();
+         virtual const T get(int);
 
-         virtual void add( const T );
-         virtual void add( int, const T );
+         virtual void add(const T);
+         virtual void add(int, const T);
 
-         virtual T remove( int );
-         virtual void clear( );
+         virtual T remove(int);
+         virtual void clear();
 
-         virtual Iterator<T>* iterator( );
+         virtual Iterator<T>* iterator();
 
       protected:
          class DoubleLinkedListNode
          {
          public:
-            DoubleLinkedListNode( T _data ) : data( _data )
+            DoubleLinkedListNode(T _data) : data(_data)
             {
                next = prev = 0;
 
                //std::cerr << "Created" << std::endl;
             }
 
-            ~DoubleLinkedListNode( )
+            ~DoubleLinkedListNode()
             {
                //std::cerr << "Destroyed" << std::endl;
             }
@@ -74,23 +74,23 @@ namespace AWT
             const T               data;
          };
 
-         DoubleLinkedListNode* getIthNode( int idx )
+         DoubleLinkedListNode* getIthNode(int idx)
          {
             DoubleLinkedListNode* node;
-            int curSize = size( );
+            int curSize = size();
 
             // Wrap the index around
 
-            while ( idx < 0 )
+            while (idx < 0)
                idx += curSize;
 
-            while ( idx >= curSize )
+            while (idx >= curSize)
                idx -= curSize;
 
-            if ( idx < curSize / 2 )
+            if (idx < curSize / 2)
             {
                node = m_header->next;
-               while ( idx > 0 )
+               while (idx > 0)
                {
                   node = node->next;
                   idx--;
@@ -100,7 +100,7 @@ namespace AWT
             {
                idx = curSize - 1 - idx;
                node = m_header->prev;
-               while ( idx > 0 )
+               while (idx > 0)
                {
                   node = node->prev;
                   idx--;
@@ -113,18 +113,18 @@ namespace AWT
          virtual class ListImplIterator : public AWT::Container::Iterator<T>
          {
          public:
-            ListImplIterator( ListImpl* p )
+            ListImplIterator(ListImpl* p)
             {
                this->p = p;
                node = p->m_header;
             }
 
-            virtual bool hasNext( )
+            virtual bool hasNext()
             {
                return node->next != p->m_header;
             }
 
-            virtual T    next( )
+            virtual T    next()
             {
                node = node->next;
                return node->data;
@@ -142,30 +142,30 @@ namespace AWT
 }
 
 template <class T>
-AWT::Container::Iterator<T>* AWT::Container::ListImpl<T>::iterator( )
+AWT::Container::Iterator<T>* AWT::Container::ListImpl<T>::iterator()
 {
-   return new ListImplIterator( this );
+   return new ListImplIterator(this);
 }
 
 template <class T>
-AWT::Container::ListImpl<T>::ListImpl( )
+AWT::Container::ListImpl<T>::ListImpl()
 {
    m_size = 0;
 
-   m_header = new DoubleLinkedListNode( 0 );
+   m_header = new DoubleLinkedListNode(0);
    m_header->next = m_header;
    m_header->prev = m_header;
 }
 
 template <class T>
-AWT::Container::ListImpl<T>::~ListImpl( )
+AWT::Container::ListImpl<T>::~ListImpl()
 {
-   clear( );
+   clear();
    delete m_header;
 }
 
 template <class T>
-const int AWT::Container::ListImpl<T>::size( )
+const int AWT::Container::ListImpl<T>::size()
 {
    return m_size;
 }
@@ -173,7 +173,7 @@ const int AWT::Container::ListImpl<T>::size( )
 template <class T>
 void AWT::Container::ListImpl<T>::add(T data)
 {
-   DoubleLinkedListNode* newNode = new DoubleLinkedListNode( data );
+   DoubleLinkedListNode* newNode = new DoubleLinkedListNode(data);
 
    newNode->next = m_header;
    newNode->prev = m_header->prev;
@@ -187,8 +187,8 @@ void AWT::Container::ListImpl<T>::add(T data)
 template <class T>
 void AWT::Container::ListImpl<T>::add(int idx, T data)
 {
-   DoubleLinkedListNode* node = getIthNode( idx );
-   DoubleLinkedListNode* newNode = new DoubleLinkedListNode( data );
+   DoubleLinkedListNode* node = getIthNode(idx);
+   DoubleLinkedListNode* newNode = new DoubleLinkedListNode(data);
 
    newNode->next = node;
    newNode->prev = node->prev;
@@ -200,15 +200,15 @@ void AWT::Container::ListImpl<T>::add(int idx, T data)
 }
 
 template <class T>
-const T AWT::Container::ListImpl<T>::get( int idx )
+const T AWT::Container::ListImpl<T>::get(int idx)
 {
-   return getIthNode( idx )->data;
+   return getIthNode(idx)->data;
 }
 
 template <class T>
-T AWT::Container::ListImpl<T>::remove( int idx )
+T AWT::Container::ListImpl<T>::remove(int idx)
 {
-   DoubleLinkedListNode* node = getIthNode( idx );
+   DoubleLinkedListNode* node = getIthNode(idx);
    T ret = node->data;
 
    node->next->prev = node->prev;
@@ -223,20 +223,20 @@ T AWT::Container::ListImpl<T>::remove( int idx )
 }
 
 template <class T>
-const bool AWT::Container::ListImpl<T>::isEmpty( )
+const bool AWT::Container::ListImpl<T>::isEmpty()
 {
    return m_size == 0;
 }
 
 template <class T>
-void AWT::Container::ListImpl<T>::clear( )
+void AWT::Container::ListImpl<T>::clear()
 {
-   if ( isEmpty( ) )
+   if (isEmpty())
       return;
 
    DoubleLinkedListNode* node = m_header->next;
    
-   while ( node != m_header )
+   while (node != m_header)
    {
       node = node->next;
       delete node->prev;

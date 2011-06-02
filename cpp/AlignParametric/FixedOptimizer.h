@@ -39,18 +39,18 @@ namespace AWT
          typedef ManagedAutoPointer<FixedOptimizer> P;
 
       protected:
-         FixedOptimizer( );
-         virtual ~FixedOptimizer( );
+         FixedOptimizer();
+         virtual ~FixedOptimizer();
 
       public:
-         static P getInstance( );
-         virtual std::string getClassName( ) const;
+         static P getInstance();
+         virtual std::string getClassName() const;
 
-         virtual FixedSurface::P addMesh( MeshType::P mesh );
+         virtual FixedSurface::P addMesh(MeshType::P mesh);
 
       protected:
-         virtual void calculateSampleWeights( const MatrixType& meanShape, VectorType& sampleAreas );
-         virtual FaceType::P getFaces( );
+         virtual void calculateSampleWeights(const MatrixType& meanShape, VectorType& sampleAreas);
+         virtual FaceType::P getFaces();
 
          FaceType::P faces;
       };

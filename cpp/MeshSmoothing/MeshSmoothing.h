@@ -35,10 +35,10 @@ namespace AWT
    class MeshSmoothing
    {
    public:
-      static typename Mesh<T>::P smooth( typename Mesh<T>::P m, T spatialSigma, T influenceSigma );
+      static typename Mesh<T>::P smooth(typename Mesh<T>::P m, T spatialSigma, T influenceSigma);
 
    protected:
-      static typename Mesh<T>::P smoothImpl( typename Mesh<T>::P m, T spatialSigma, T influenceSigma, bool mollify, typename Tuples<T>::P n = typename Tuples<T>::P( ) );
+      static typename Mesh<T>::P smoothImpl(typename Mesh<T>::P m, T spatialSigma, T influenceSigma, bool mollify, typename Tuples<T>::P n = typename Tuples<T>::P());
    };
 }
 

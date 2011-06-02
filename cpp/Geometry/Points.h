@@ -36,11 +36,11 @@ namespace AWT
    class Points
    {
    public:
-      virtual GeometryIndex    getNumberOfVertices( ) const = 0;
+      virtual GeometryIndex    getNumberOfVertices() const = 0;
 
-      virtual void             getVertex( const GeometryIndex vertexIndex, CoordinateType* outVertexLocation ) const = 0;
+      virtual void             getVertex(const GeometryIndex vertexIndex, CoordinateType* outVertexLocation) const = 0;
 
-      virtual bool             findClosestVertex( const CoordinateType* inTrialPoint, GeometryIndex& outIndex ) const = 0;
+      virtual bool             findClosestVertex(const CoordinateType* inTrialPoint, GeometryIndex& outIndex) const = 0;
    };
 }
 

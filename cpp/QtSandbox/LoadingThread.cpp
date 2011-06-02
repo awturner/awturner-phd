@@ -41,11 +41,11 @@ struct AWT::LoadingThread::D
       STATE_UNDEFINED
    };
 
-   void load( )
+   void load()
    {
       m_State = STATE_LOADING;
 
-      (*m_StateMachine)->load( m_LoadFilename );
+      (*m_StateMachine)->load(m_LoadFilename);
 
       m_State = STATE_LOADED;
    }
@@ -58,50 +58,50 @@ struct AWT::LoadingThread::D
    std::string m_LastError;
 };
 
-AWT::LoadingThread::LoadingThread( )
+AWT::LoadingThread::LoadingThread()
 {
-   m_D = new D( );
+   m_D = new D();
 
    m_D->m_State = D::STATE_NOFILENAME;
    m_D->m_Error = false;
 }
 
-AWT::LoadingThread::~LoadingThread( )
+AWT::LoadingThread::~LoadingThread()
 {
    delete m_D;
 }
 
-AWT::LoadingThread* AWT::LoadingThread::getInstance( )
+AWT::LoadingThread* AWT::LoadingThread::getInstance()
 {
-   return new LoadingThread( );
+   return new LoadingThread();
 }
 
-GETNAMEMACRO( AWT::LoadingThread );
+GETNAMEMACRO(AWT::LoadingThread);
 
-std::string AWT::LoadingThread::getLoadFilename( ) const
+std::string AWT::LoadingThread::getLoadFilename() const
 {
    return m_D->m_LoadFilename;
 }
 
-void AWT::LoadingThread::setLoadFilename( const std::string& str )
+void AWT::LoadingThread::setLoadFilename(const std::string& str)
 {
    m_D->m_LoadFilename = str;
    m_D->m_State = D::STATE_WAITINGTOLOAD;
 }
 
-bool AWT::LoadingThread::step( )
+bool AWT::LoadingThread::step()
 {
    D::State currentState = m_D->m_State;
    m_D->m_State = D::STATE_UNDEFINED;
 
-   switch ( currentState )
+   switch (currentState)
    {
    case D::STATE_NOFILENAME:
       m_D->m_Error = true;
       m_D->m_LastError = "Filename not set";
       break;
    case D::STATE_WAITINGTOLOAD:
-      m_D->load( );
+      m_D->load();
       break;
    case D::STATE_LOADING:
       break;
@@ -119,9 +119,9 @@ bool AWT::LoadingThread::step( )
    return true;
 }
 
-bool AWT::LoadingThread::isRunning( ) const
+bool AWT::LoadingThread::isRunning() const
 {
-   switch ( m_D->m_State )
+   switch (m_D->m_State)
    {
    case D::STATE_WAITINGTOLOAD:
    case D::STATE_LOADING:
@@ -131,19 +131,19 @@ bool AWT::LoadingThread::isRunning( ) const
    }
 }
 
-bool AWT::LoadingThread::isError( ) const
+bool AWT::LoadingThread::isError() const
 {
    return m_D->m_Error;
 }
 
-std::string AWT::LoadingThread::getLastError( ) const
+std::string AWT::LoadingThread::getLastError() const
 {
    return m_D->m_LastError;
 }
 
-std::string AWT::LoadingThread::getStateName( ) const
+std::string AWT::LoadingThread::getStateName() const
 {
-   switch ( m_D->m_State )
+   switch (m_D->m_State)
    {
    case D::STATE_NOFILENAME:
       return "STATE_NOFILENAME";
@@ -161,12 +161,12 @@ std::string AWT::LoadingThread::getStateName( ) const
    }
 }
 
-void AWT::LoadingThread::setStateMachine( AWT::SaveableStateMachine* sm )
+void AWT::LoadingThread::setStateMachine(AWT::SaveableStateMachine* sm)
 {
-   m_D->m_StateMachine.set( sm );
+   m_D->m_StateMachine.set(sm);
 }
 
-AWT::SaveableStateMachine* AWT::LoadingThread::getStateMachine( )
+AWT::SaveableStateMachine* AWT::LoadingThread::getStateMachine()
 {
    return *m_D->m_StateMachine;
 }

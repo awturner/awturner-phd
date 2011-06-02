@@ -63,9 +63,9 @@ namespace AWT
          Coord y; 
          Coord z; 
          
-         IndexType( ) { }
-         IndexType( Coord _x, Coord _y, Coord _z )
-            : x( _x ), y( _y ), z( _z )
+         IndexType() { }
+         IndexType(Coord _x, Coord _y, Coord _z)
+            : x(_x), y(_y), z(_z)
          {
          }
       };
@@ -74,12 +74,12 @@ namespace AWT
       struct SubIndexType { 
          SubCoord x; SubCoord y; SubCoord z; 
 
-         static IndexType round( const SubIndexType& pos )
+         static IndexType round(const SubIndexType& pos)
          {
             IndexType rpos;
-            rpos.x = static_cast<Coord>( floor( static_cast<SubCoord>(1)/2 + pos.x ) );
-            rpos.y = static_cast<Coord>( floor( static_cast<SubCoord>(1)/2 + pos.y ) );
-            rpos.z = static_cast<Coord>( floor( static_cast<SubCoord>(1)/2 + pos.z ) );
+            rpos.x = static_cast<Coord>(floor(static_cast<SubCoord>(1)/2 + pos.x));
+            rpos.y = static_cast<Coord>(floor(static_cast<SubCoord>(1)/2 + pos.y));
+            rpos.z = static_cast<Coord>(floor(static_cast<SubCoord>(1)/2 + pos.z));
             return rpos;
          }
       };
@@ -88,28 +88,28 @@ namespace AWT
       class ForceFunction
       {
       public:
-         virtual void setSolver( SparseFieldSolver* solv ) = 0;
+         virtual void setSolver(SparseFieldSolver* solv) = 0;
 
-         virtual TimeType getMaximumStep( ) const = 0;
-         virtual int      getNumberOfLayers( ) const = 0;
-         virtual bool     useSubPixelAccuracy( ) const = 0;
+         virtual TimeType getMaximumStep() const = 0;
+         virtual int      getNumberOfLayers() const = 0;
+         virtual bool     useSubPixelAccuracy() const = 0;
 
-         virtual PhiType  calculateForce( const SegLabel label, const SubIndexType& pos ) const { return 0; }
-         virtual PhiType  calculateForce( const SegLabel label, const IndexType& pos ) const { return 0; }
+         virtual PhiType  calculateForce(const SegLabel label, const SubIndexType& pos) const { return 0; }
+         virtual PhiType  calculateForce(const SegLabel label, const IndexType& pos) const { return 0; }
       };
 
    protected:
-      SparseFieldSolver( ForceFunction* func, const SegmentedImage& initSeg );
-      virtual ~SparseFieldSolver( );
+      SparseFieldSolver(ForceFunction* func, const SegmentedImage& initSeg);
+      virtual ~SparseFieldSolver();
 
    public:
-      static P getInstance( ForceFunction* func, const SegmentedImage& initSeg );
+      static P getInstance(ForceFunction* func, const SegmentedImage& initSeg);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual TimeType update( const bool debug = false );
+      virtual TimeType update(const bool debug = false);
 
-      virtual const LevelSetImage& getLevelSetImage( const SegLabel label ) const;
+      virtual const LevelSetImage& getLevelSetImage(const SegLabel label) const;
 
    protected:
       struct D;

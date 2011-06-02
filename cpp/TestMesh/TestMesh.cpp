@@ -45,13 +45,13 @@ int main (int argc, char* argv[])
 
    // insert test-suite at test-runner by registry
    CPPUNIT_NS :: TestRunner testrunner;
-   testrunner.addTest (CPPUNIT_NS :: TestFactoryRegistry :: getRegistry ( ).makeTest ( ));
+   testrunner.addTest (CPPUNIT_NS :: TestFactoryRegistry :: getRegistry ().makeTest ());
    testrunner.run (testresult);
 
    // output results in compiler-format
    CPPUNIT_NS :: CompilerOutputter compileroutputter (&collectedresults, std::cerr);
-   compileroutputter.write ( );
+   compileroutputter.write ();
 
    // return 0 if tests were successful
-   return collectedresults.wasSuccessful ( ) ? 0 : 1;
+   return collectedresults.wasSuccessful () ? 0 : 1;
 }

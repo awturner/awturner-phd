@@ -35,11 +35,11 @@ namespace AWT
    class ModifiedTimeObject
    {
    protected:
-      ModifiedTimeObject( );
+      ModifiedTimeObject();
       
    public:
-      virtual ModifiedTime getModifiedTime( ) const;
-      void                 modified( );
+      virtual ModifiedTime getModifiedTime() const;
+      void                 modified();
 
    private:
       mutable ModifiedTime mtime;

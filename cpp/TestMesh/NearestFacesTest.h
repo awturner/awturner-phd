@@ -36,15 +36,15 @@ class NearestFacesTest  : public CPPUNIT_NS::TestFixture
    CPPUNIT_TEST_SUITE (NearestFacesTest);
    CPPUNIT_TEST (nearestFacesTestSelf);
    CPPUNIT_TEST (nearestFacesTestNotSelf);
-   CPPUNIT_TEST_SUITE_END( );
+   CPPUNIT_TEST_SUITE_END();
 
 public:
    void setUp (void);
    void tearDown (void);
 
 protected:
-   void nearestFacesTestSelf( );
-   void nearestFacesTestNotSelf( );
+   void nearestFacesTestSelf();
+   void nearestFacesTestNotSelf();
 
 private:
    AWT::Mesh<double>::P m_Mesh;

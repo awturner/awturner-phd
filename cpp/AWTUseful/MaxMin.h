@@ -32,34 +32,34 @@ namespace AWT
    class MaxMin
    {
    public:
-      static T minimum( T a, T b );
-      static T maximum( T a, T b );
+      static T minimum(T a, T b);
+      static T maximum(T a, T b);
 
-      static T minimum( T* in_values, int in_cnt );
-      static T maximum( T* in_values, int in_cnt );
+      static T minimum(T* in_values, int in_cnt);
+      static T maximum(T* in_values, int in_cnt);
    };
 }
 
 template <class T>
-T AWT::MaxMin<T>::minimum( T a, T b )
+T AWT::MaxMin<T>::minimum(T a, T b)
 {
-   return ( a < b ) ? a : b;
+   return (a < b) ? a : b;
 }
 
 template <class T>
-T AWT::MaxMin<T>::maximum( T a, T b )
+T AWT::MaxMin<T>::maximum(T a, T b)
 {
-   return ( a > b ) ? a : b;
+   return (a > b) ? a : b;
 }
 
 template <class T>
-T AWT::MaxMin<T>::minimum( T* in_value, int in_cnt )
+T AWT::MaxMin<T>::minimum(T* in_value, int in_cnt)
 {
    int idxMin = 0;
 
-   for ( int i = 1; i < in_cnt; i++ )
+   for (int i = 1; i < in_cnt; i++)
    {
-      if ( in_value[i] < in_value[idxMin] )
+      if (in_value[i] < in_value[idxMin])
          idxMin = i;
    }
 
@@ -67,13 +67,13 @@ T AWT::MaxMin<T>::minimum( T* in_value, int in_cnt )
 }
 
 template <class T>
-T AWT::MaxMin<T>::maximum( T* in_value, int in_cnt )
+T AWT::MaxMin<T>::maximum(T* in_value, int in_cnt)
 {
    int idxMax = 0;
 
-   for ( int i = 1; i < in_cnt; i++ )
+   for (int i = 1; i < in_cnt; i++)
    {
-      if ( in_value[i] > in_value[idxMax] )
+      if (in_value[i] > in_value[idxMax])
          idxMax = i;
    }
 

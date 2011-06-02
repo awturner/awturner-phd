@@ -42,10 +42,10 @@ namespace AWT
       class GeometricPrimitive : public ReferenceCountedObject, public ModifiedTimeObject<T>
       {
       public:
-         static bool checkValue( const T& in_Val );
-         static bool checkVector( const T* in_Vec, unsigned int N );
+         static bool checkValue(const T& in_Val);
+         static bool checkVector(const T* in_Vec, unsigned int N);
 
-         virtual void refresh( );
+         virtual void refresh();
 
       protected:
          GeometricPrimitive();
@@ -67,14 +67,14 @@ void AWT::GeometricPrimitives::GeometricPrimitive<T>::refresh()
 template <class T>
 bool AWT::GeometricPrimitives::GeometricPrimitive<T>::checkValue(const T &in_Val)
 {
-   return ( in_Val == in_Val ) && ( abs(in_Val) != std::numeric_limits<T>::infinity() );
+   return (in_Val == in_Val) && (abs(in_Val) != std::numeric_limits<T>::infinity());
 }
 
 template <class T>
-bool AWT::GeometricPrimitives::GeometricPrimitive<T>::checkVector( const T* in_Vec, unsigned int N )
+bool AWT::GeometricPrimitives::GeometricPrimitive<T>::checkVector(const T* in_Vec, unsigned int N)
 {
-   for (  unsigned int i = 0; i < N; ++i )
-      if ( !checkValue(in_Vec[i]) )
+   for ( unsigned int i = 0; i < N; ++i)
+      if (!checkValue(in_Vec[i]))
          return false;
 
    return true;

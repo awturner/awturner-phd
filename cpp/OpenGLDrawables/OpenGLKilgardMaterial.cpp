@@ -102,90 +102,90 @@ float AWT::OpenGLKilgardMaterial::D::data[] = {
    0.f, 0.f, 0.f, 1.f, 1.f, 0.f, 1.f, 1.f, 1.f, .6f, // Yellow
 };
 
-AWT::OpenGLKilgardMaterial::OpenGLKilgardMaterial( const std::string& name, const float opacity )
+AWT::OpenGLKilgardMaterial::OpenGLKilgardMaterial(const std::string& name, const float opacity)
 {
    m_D = new D;
 
-   m_D->m_Opacity = std::max<float>( 0, std::min<float>( 1, opacity ) );
+   m_D->m_Opacity = std::max<float>(0, std::min<float>(1, opacity));
 
-   if ( !strcmp( name.c_str( ),"kilgard::emerald" ) )
+   if (!strcmp(name.c_str(),"kilgard::emerald"))
       m_D->m_Mat = D::emerald;
-   else if  ( !strcmp( name.c_str( ), "kilgard::jade" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::jade"))
       m_D->m_Mat = D::jade;
-   else if  ( !strcmp( name.c_str( ), "kilgard::obsidian" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::obsidian"))
       m_D->m_Mat = D::obsidian;
-   else if  ( !strcmp( name.c_str( ), "kilgard::pearl" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::pearl"))
       m_D->m_Mat = D::pearl;
-   else if  ( !strcmp( name.c_str( ), "kilgard::ruby" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::ruby"))
       m_D->m_Mat = D::ruby;
-   else if  ( !strcmp( name.c_str( ), "kilgard::turquoise" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::turquoise"))
       m_D->m_Mat = D::turquoise;
-   else if  ( !strcmp( name.c_str( ), "kilgard::brass" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::brass"))
       m_D->m_Mat = D::brass;
-   else if  ( !strcmp( name.c_str( ), "kilgard::bronze" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::bronze"))
       m_D->m_Mat = D::bronze;
-   else if  ( !strcmp( name.c_str( ), "kilgard::chrome" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::chrome"))
       m_D->m_Mat = D::chrome;
-   else if  ( !strcmp( name.c_str( ), "kilgard::copper" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::copper"))
       m_D->m_Mat = D::copper;
-   else if  ( !strcmp( name.c_str( ), "kilgard::gold" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::gold"))
       m_D->m_Mat = D::gold;
-   else if  ( !strcmp( name.c_str( ), "kilgard::silver" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::silver"))
       m_D->m_Mat = D::silver;
-   else if  ( !strcmp( name.c_str( ), "kilgard::black_plastic" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::black_plastic"))
       m_D->m_Mat = D::black_plastic;
-   else if  ( !strcmp( name.c_str( ), "kilgard::cyan_plastic" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::cyan_plastic"))
       m_D->m_Mat = D::cyan_plastic;
-   else if  ( !strcmp( name.c_str( ), "kilgard::green_plastic" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::green_plastic"))
       m_D->m_Mat = D::green_plastic;
-   else if  ( !strcmp( name.c_str( ), "kilgard::red_plastic" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::red_plastic"))
       m_D->m_Mat = D::red_plastic;
-   else if  ( !strcmp( name.c_str( ), "kilgard::white_plastic" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::white_plastic"))
       m_D->m_Mat = D::white_plastic;
-   else if  ( !strcmp( name.c_str( ), "kilgard::yellow_plastic" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::yellow_plastic"))
       m_D->m_Mat = D::yellow_plastic;
-   else if  ( !strcmp( name.c_str( ), "kilgard::black_rubber" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::black_rubber"))
       m_D->m_Mat = D::black_rubber;
-   else if  ( !strcmp( name.c_str( ), "kilgard::cyan_rubber" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::cyan_rubber"))
       m_D->m_Mat = D::cyan_rubber;
-   else if  ( !strcmp( name.c_str( ), "kilgard::green_rubber" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::green_rubber"))
       m_D->m_Mat = D::green_rubber;
-   else if  ( !strcmp( name.c_str( ), "kilgard::red_rubber" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::red_rubber"))
       m_D->m_Mat = D::red_rubber;
-   else if  ( !strcmp( name.c_str( ), "kilgard::white_rubber" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::white_rubber"))
       m_D->m_Mat = D::white_rubber;
-   else if  ( !strcmp( name.c_str( ), "kilgard::yellow_rubber" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::yellow_rubber"))
       m_D->m_Mat = D::yellow_rubber;
-   else if  ( !strcmp( name.c_str( ), "kilgard::bone" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::bone"))
       m_D->m_Mat = D::bone;
-   else if  ( !strcmp( name.c_str( ), "kilgard::red" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::red"))
       m_D->m_Mat = D::red;
-   else if  ( !strcmp( name.c_str( ), "kilgard::yellow" ) )
+   else if  (!strcmp(name.c_str(), "kilgard::yellow"))
       m_D->m_Mat = D::yellow;
 }
 
-AWT::OpenGLKilgardMaterial::~OpenGLKilgardMaterial( )
+AWT::OpenGLKilgardMaterial::~OpenGLKilgardMaterial()
 {
    delete m_D;
 }
 
-AWT::OpenGLKilgardMaterial::P AWT::OpenGLKilgardMaterial::getInstance( const std::string& name, const float opacity )
+AWT::OpenGLKilgardMaterial::P AWT::OpenGLKilgardMaterial::getInstance(const std::string& name, const float opacity)
 {
-   AUTOGETINSTANCE( OpenGLKilgardMaterial, ( name, opacity ) );
+   AUTOGETINSTANCE(OpenGLKilgardMaterial, (name, opacity));
 }
 
-bool AWT::OpenGLKilgardMaterial::isOpaque( ) const
+bool AWT::OpenGLKilgardMaterial::isOpaque() const
 {
    return m_D->m_Opacity == 1.f;
 }
 
-void AWT::OpenGLKilgardMaterial::prepare( )
+void AWT::OpenGLKilgardMaterial::prepare()
 {
-   glEnable( GL_LIGHTING );
+   glEnable(GL_LIGHTING);
 
    unsigned int offset = (m_D->m_Mat - 1)*10;
 
-   glDisable( GL_COLOR_MATERIAL );
+   glDisable(GL_COLOR_MATERIAL);
 
    float mat[4];
 
@@ -211,12 +211,12 @@ void AWT::OpenGLKilgardMaterial::prepare( )
    glShadeModel(GL_SMOOTH);
 }
 
-void AWT::OpenGLKilgardMaterial::unprepare( )
+void AWT::OpenGLKilgardMaterial::unprepare()
 {
 }
 
-void AWT::OpenGLKilgardMaterial::tweak( const TweakType /*tw*/, const AWT::MeshIndex /*v*/ )
+void AWT::OpenGLKilgardMaterial::tweak(const TweakType /*tw*/, const AWT::MeshIndex /*v*/)
 {
 }
 
-GETNAMEMACRO( AWT::OpenGLKilgardMaterial );
+GETNAMEMACRO(AWT::OpenGLKilgardMaterial);

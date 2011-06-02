@@ -41,26 +41,26 @@ namespace AWT
          typedef ManagedAutoPointer<ModelObject> P;
 
       protected:
-         ModelObject( ShapeModel::P model, SamplerFactory::P fact, Index nsamples );
-         virtual ~ModelObject( );
+         ModelObject(ShapeModel::P model, SamplerFactory::P fact, Index nsamples);
+         virtual ~ModelObject();
 
       public:
-         static P getInstance( ShapeModel::P model, SamplerFactory::P fact, Index nsamples );
+         static P getInstance(ShapeModel::P model, SamplerFactory::P fact, Index nsamples);
 
-         std::string getClassName( ) const;
+         std::string getClassName() const;
 
-         ShapeModel::P getModel( );
+         ShapeModel::P getModel();
 
-         void setParameters( const Vector& params );
+         void setParameters(const Vector& params);
 
-         void activateAllModes( );
-         void setNumberOfModes( const Index i );
+         void activateAllModes();
+         void setNumberOfModes(const Index i);
 
-         Index getNumberOfModes( ) const;
+         Index getNumberOfModes() const;
 
-         virtual PointIndexWeights search( const Point& pnt, const Point& nml, SearchFilter::P filter );
+         virtual PointIndexWeights search(const Point& pnt, const Point& nml, SearchFilter::P filter);
 
-         virtual void calculateJacobian( const PointIndexWeights& p, Matrix& jac );
+         virtual void calculateJacobian(const PointIndexWeights& p, Matrix& jac);
 
       protected:
          struct D;

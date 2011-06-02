@@ -71,12 +71,12 @@ namespace AWT
          friend class OEKDTreeBranch;
 
       public:
-         typedef ManagedAutoPointer<OEKDTree<T,K>> P;
+         typedef ManagedAutoPointer<OEKDTree<T,K> > P;
 
       //! @name Construction
       //@{
       public:
-         static P getInstance( typename OEKDTreeData<T,K>::P in_Data, const int in_MinSize = 10, const bool in_KeepData = false );
+         static P getInstance(typename OEKDTreeData<T,K>::P in_Data, const int in_MinSize = 10, const bool in_KeepData = false);
 
          /*! Class constructor used to build the tree.
          *
@@ -86,10 +86,10 @@ namespace AWT
          *
          */
       protected:
-         OEKDTree( typename OEKDTreeData<T,K>::P in_Data, const int in_MinSize, const bool in_KeepData );
+         OEKDTree(typename OEKDTreeData<T,K>::P in_Data, const int in_MinSize, const bool in_KeepData);
          
          //! Destructor
-         ~OEKDTree( );
+         ~OEKDTree();
       //@}
 
       //! @name Queries
@@ -100,14 +100,14 @@ namespace AWT
          *
          * @return Number of spatial dims.
          */
-         const int getDimensionality( );
+         const int getDimensionality();
       //@}
 
-         typename OEKDTreeData<T,K>::P getData( ) const;
+         typename OEKDTreeData<T,K>::P getData() const;
 
-         int getOriginalIndex( const int in_Index ) const;
+         int getOriginalIndex(const int in_Index) const;
 
-         virtual std::string getClassName( ) const;
+         virtual std::string getClassName() const;
 
       ////////////////////////////////////////////////////////////////////////////////
       // Member functions
@@ -116,18 +116,18 @@ namespace AWT
          * Starts the process of building the tree.  Called automatically upon construction, 
          * but could be called again e.g. if the data changes
          */
-         void build( );
+         void build();
 
-         const int getMinimumSize( );
+         const int getMinimumSize();
 
-         //void search( OEKDSearcher<T,K>* in_Search, SearchType in_SearchType = RECURSIVE );
+         //void search(OEKDSearcher<T,K>* in_Search, SearchType in_SearchType = RECURSIVE);
 
-         typename OEKDTreeBranch<T,K>* getRootBranch( );
+         typename OEKDTreeBranch<T,K>* getRootBranch();
 
       protected:
          /*
-         void searchRecursive ( OEKDSearcher<T,K>* in_Search, OEKDTreeBranch<T,K>* in_Branch );
-         void searchExhaustive( OEKDSearcher<T,K>* in_Search, OEKDTreeBranch<T,K>* in_Branch );
+         void searchRecursive (OEKDSearcher<T,K>* in_Search, OEKDTreeBranch<T,K>* in_Branch);
+         void searchExhaustive(OEKDSearcher<T,K>* in_Search, OEKDTreeBranch<T,K>* in_Branch);
          */
 
          /*!
@@ -138,7 +138,7 @@ namespace AWT
          * @param in_Dim Current discriminator dimension
          * @param out_Bounds Bounding box of the current points [dim1_min dim1_max dim2_min dim2_max ... ]
          */
-         void recursivelyPartition( const int in_Low, const int in_High, const int in_Dim, T* out_Bounds );
+         void recursivelyPartition(const int in_Low, const int in_High, const int in_Dim, T* out_Bounds);
 
 	      /*!
          * Does the meat of partitioning the array into [ {<= median} median {>= median} ]
@@ -147,11 +147,11 @@ namespace AWT
          * @param in_High Last index in the array to check
          * @param in_Dim Current discriminator dimension
          */
-         void partitionArray( int in_Low, int in_High, int in_Dim );
+         void partitionArray(int in_Low, int in_High, int in_Dim);
 
-         void branchCalculateChildBounds( const int in_ChildIndex, const int in_Low, const int in_High, int& out_Low, int& out_High, unsigned char& dim, T& out_Bound );
+         void branchCalculateChildBounds(const int in_ChildIndex, const int in_Low, const int in_High, int& out_Low, int& out_High, unsigned char& dim, T& out_Bound);
 
-         bool checkInvariant( const int in_Low, const int in_High, const int in_Dim );
+         bool checkInvariant(const int in_Low, const int in_High, const int in_Dim);
 
       ////////////////////////////////////////////////////////////////////////////////
       // Member variables
@@ -194,17 +194,17 @@ using namespace AWT::OEKDTree;
 
 // Constructor
 template <class T, unsigned char K>
-AWT::OEKDTree::OEKDTree<T,K>::OEKDTree( typename OEKDTreeData<T,K>::P in_data, const int in_MinSize, const bool in_KeepData )
-   : m_MinSize( in_MinSize )
+AWT::OEKDTree::OEKDTree<T,K>::OEKDTree(typename OEKDTreeData<T,K>::P in_data, const int in_MinSize, const bool in_KeepData)
+   : m_MinSize(in_MinSize)
 {
-   if ( in_MinSize < 1 )
+   if (in_MinSize < 1)
       AWTEXCEPTIONTHROW("in_MinSize should be >= 1");
 
    this->m_KeepData = in_KeepData;
 
-   if ( in_KeepData )
+   if (in_KeepData)
    {
-      in_data->keep( );
+      in_data->keep();
    }
 
    this->m_Data = in_data;
@@ -216,26 +216,26 @@ AWT::OEKDTree::OEKDTree<T,K>::OEKDTree( typename OEKDTreeData<T,K>::P in_data, c
    this->m_NPoints           = 0;
    this->m_SplitAxis         = 0;
 
-   build( );
+   build();
 }
 
 // Destructor
 template <class T, unsigned char K>
-AWT::OEKDTree::OEKDTree<T,K>::~OEKDTree( )
+AWT::OEKDTree::OEKDTree<T,K>::~OEKDTree()
 {
-   if ( this->m_KeepData )
-      m_Data->release( );
+   if (this->m_KeepData)
+      m_Data->release();
 
-   if ( m_Indexes != 0 )
+   if (m_Indexes != 0)
       delete m_Indexes;
 
-   if ( m_OrthoPositions[0] != 0 )
+   if (m_OrthoPositions[0] != 0)
       delete m_OrthoPositions[0];
 
-   if ( m_OrthoPositions[1] != 0 )
+   if (m_OrthoPositions[1] != 0)
       delete m_OrthoPositions[1];
 
-   if ( m_SplitAxis != 0 )
+   if (m_SplitAxis != 0)
       delete m_SplitAxis;
 }
 
@@ -251,17 +251,17 @@ AWT::OEKDTree::OEKDTree<T,K>::~OEKDTree( )
    const int rend   = high;
 
 template <class T, unsigned char K>
-std::string AWT::OEKDTree::OEKDTree<T,K>::getClassName( ) const
+std::string AWT::OEKDTree::OEKDTree<T,K>::getClassName() const
 {
    return "AWT::OEKDTree::OEKDTree<T,K>";
 }
 
 template <class T, unsigned char K>
-void AWT::OEKDTree::OEKDTree<T,K>::branchCalculateChildBounds( const int in_ChildIndex, const int in_Low, const int in_High, int& out_Low, int& out_High, unsigned char& out_Dim, T& out_Bound )
+void AWT::OEKDTree::OEKDTree<T,K>::branchCalculateChildBounds(const int in_ChildIndex, const int in_Low, const int in_High, int& out_Low, int& out_High, unsigned char& out_Dim, T& out_Bound)
 {
-   INITPARTITIONS( in_Low, in_High );
+   INITPARTITIONS(in_Low, in_High);
    
-   switch ( in_ChildIndex )
+   switch (in_ChildIndex)
    {
    case 0:
       out_Low  = lstart;
@@ -280,57 +280,57 @@ void AWT::OEKDTree::OEKDTree<T,K>::branchCalculateChildBounds( const int in_Chil
 }
 
 template <class T, unsigned char K>
-const int AWT::OEKDTree::OEKDTree<T,K>::getMinimumSize( )
+const int AWT::OEKDTree::OEKDTree<T,K>::getMinimumSize()
 {
    return m_MinSize;
 }
 
 template <class T, unsigned char K>
-typename AWT::OEKDTree::OEKDTree<T,K>::P AWT::OEKDTree::OEKDTree<T,K>::getInstance( typename OEKDTreeData<T,K>::P in_data, const int in_MinSize, const bool in_KeepData )
+typename AWT::OEKDTree::OEKDTree<T,K>::P AWT::OEKDTree::OEKDTree<T,K>::getInstance(typename OEKDTreeData<T,K>::P in_data, const int in_MinSize, const bool in_KeepData)
 {
-   OEKDTree<T,K>* inst = new OEKDTree<T,K>( in_data, in_MinSize, in_KeepData );
-   inst->countMe( );
+   OEKDTree<T,K>* inst = new OEKDTree<T,K>(in_data, in_MinSize, in_KeepData);
+   inst->countMe();
 
-   OEKDTree<T,K>::P ret( inst );
-   inst->release( );
+   OEKDTree<T,K>::P ret(inst);
+   inst->release();
 
    return ret;
 }
 
 // Queries
 template <class T, unsigned char K>
-const int AWT::OEKDTree::OEKDTree<T,K>::getDimensionality( )
+const int AWT::OEKDTree::OEKDTree<T,K>::getDimensionality()
 {
    return K;
 }
 
 template <class T, unsigned char K>
-typename AWT::OEKDTree::OEKDTreeData<T,K>::P AWT::OEKDTree::OEKDTree<T,K>::getData( ) const
+typename AWT::OEKDTree::OEKDTreeData<T,K>::P AWT::OEKDTree::OEKDTree<T,K>::getData() const
 {
    return m_Data;
 }
 
 template <class T, unsigned char K>
-void AWT::OEKDTree::OEKDTree<T,K>::build( )
+void AWT::OEKDTree::OEKDTree<T,K>::build()
 {
    // Fill the array of indexes - these will be [0..in_npoints-1] to start with,
    // but they'll be rearranged when the tree is built
 
-   if ( this->m_Indexes == 0 || this->m_OrthoPositions[0] == 0 || this->m_OrthoPositions[1] == 0 ||
-      m_NPoints != m_Data->getNumberOfObjects( ) )
+   if (this->m_Indexes == 0 || this->m_OrthoPositions[0] == 0 || this->m_OrthoPositions[1] == 0 ||
+      m_NPoints != m_Data->getNumberOfObjects())
    {
-      m_NPoints = m_Data->getNumberOfObjects( );
+      m_NPoints = m_Data->getNumberOfObjects();
 
-      if ( this->m_Indexes != 0 )
+      if (this->m_Indexes != 0)
          delete [] this->m_Indexes;
 
-      if ( this->m_OrthoPositions[0] )
+      if (this->m_OrthoPositions[0])
          delete [] this->m_OrthoPositions[0];
 
-      if ( this->m_OrthoPositions[1] )
+      if (this->m_OrthoPositions[1])
          delete [] this->m_OrthoPositions[0];
 
-      if ( this->m_SplitAxis )
+      if (this->m_SplitAxis)
          delete [] this->m_SplitAxis;
 
       this->m_Indexes           = new int[m_NPoints];
@@ -339,37 +339,37 @@ void AWT::OEKDTree::OEKDTree<T,K>::build( )
       this->m_SplitAxis         = new unsigned char[m_NPoints];
    }
 
-   for ( int i = 0; i < m_NPoints; i++ )
+   for (int i = 0; i < m_NPoints; i++)
    {
       this->m_Indexes[i] = i;
    }
 
-	recursivelyPartition( 0, m_NPoints-1, 0, m_Bounds );
+	recursivelyPartition(0, m_NPoints-1, 0, m_Bounds);
    
-   this->modified( );
+   this->modified();
 }
 
 template <class T, unsigned char K>
-void AWT::OEKDTree::OEKDTree<T,K>::recursivelyPartition( const int low, const int high, const int dim, T* out_Bounds )
+void AWT::OEKDTree::OEKDTree<T,K>::recursivelyPartition(const int low, const int high, const int dim, T* out_Bounds)
 {
    //std::cerr << low << "\t" << high << std::endl;
 
-	if ( high - low < m_MinSize )
+	if (high - low < m_MinSize)
 	{
       int d, i;
       
-      for ( d = 0; d < K; d++ )
+      for (d = 0; d < K; d++)
       {
-         out_Bounds[2*d + 0] =  std::numeric_limits<T>::max( );
+         out_Bounds[2*d + 0] =  std::numeric_limits<T>::max();
          out_Bounds[2*d + 1] = -out_Bounds[2*d + 0];
       }
 
-      for ( i = low; i <= high; i++ )
+      for (i = low; i <= high; i++)
       {
-         for ( d = 0; d < K; d++ )
+         for (d = 0; d < K; d++)
          {
-            out_Bounds[2*d + 0] = std::min( out_Bounds[2*d + 0], m_Data->getMinimumBound( m_Indexes[i], d ) );
-            out_Bounds[2*d + 1] = std::max( out_Bounds[2*d + 1], m_Data->getMaximumBound( m_Indexes[i], d ) );
+            out_Bounds[2*d + 0] = std::min(out_Bounds[2*d + 0], m_Data->getMinimumBound(m_Indexes[i], d));
+            out_Bounds[2*d + 1] = std::max(out_Bounds[2*d + 1], m_Data->getMaximumBound(m_Indexes[i], d));
          }
       }
 
@@ -377,7 +377,7 @@ void AWT::OEKDTree::OEKDTree<T,K>::recursivelyPartition( const int low, const in
 	}
 
    // Do the partitioning of the current array
-   partitionArray( low, high, dim );
+   partitionArray(low, high, dim);
    
    // Calculate the direction of most variance
    T variance[K], sums[K];
@@ -387,7 +387,7 @@ void AWT::OEKDTree::OEKDTree<T,K>::recursivelyPartition( const int low, const in
    T pos[K];
    for (int i = low; i <= high; ++i)
    {
-      m_Data->getPosition( m_Indexes[i], pos );
+      m_Data->getPosition(m_Indexes[i], pos);
       for (unsigned char d = 0; d < K; ++d)
       {
          variance[d] += pos[d]*pos[d];
@@ -414,45 +414,45 @@ void AWT::OEKDTree::OEKDTree<T,K>::recursivelyPartition( const int low, const in
    // And now make the recursive calls to do the leq and geq subtrees
 	const int dimm = bestDim; //(dim+1) % K;
    
-   //DEBUGMACRO( dimm << "\t" << (1*bestDim) );
+   //DEBUGMACRO(dimm << "\t" << (1*bestDim));
 
-	recursivelyPartition( lstart, lend, dimm, boundsL );
-	recursivelyPartition( rstart, rend, dimm, boundsR );
+	recursivelyPartition(lstart, lend, dimm, boundsL);
+	recursivelyPartition(rstart, rend, dimm, boundsR);
    
    m_OrthoPositions[0][imedian] = boundsL[2*dim + 1];
    m_OrthoPositions[1][imedian] = boundsR[2*dim + 0];
    m_SplitAxis[imedian]         = dimm;
 
    // Work out the bounding box which surrounds the discriminator point and the two sub trees
-   for ( int d = 0; d < K; d++ )
+   for (int d = 0; d < K; d++)
    {
       // Take the minimum of the minimum bounds
-      out_Bounds[2*d + 0] = std::min( m_Data->getMinimumBound( m_Indexes[imedian], d ), std::min( boundsL[2*d + 0], boundsR[2*d + 0] ) );
+      out_Bounds[2*d + 0] = std::min(m_Data->getMinimumBound(m_Indexes[imedian], d), std::min(boundsL[2*d + 0], boundsR[2*d + 0]));
 
       // and the maximum of the maximum bounds
-      out_Bounds[2*d + 1] = std::max( m_Data->getMaximumBound( m_Indexes[imedian], d ), std::max( boundsL[2*d + 1], boundsR[2*d + 1] ) );
+      out_Bounds[2*d + 1] = std::max(m_Data->getMaximumBound(m_Indexes[imedian], d), std::max(boundsL[2*d + 1], boundsR[2*d + 1]));
    }
 
-   if ( !checkInvariant( low, high, dim ) )
+   if (!checkInvariant(low, high, dim))
    {
       std::cerr << "Invariant Error at (low=" << low << ", high=" << high << ", dim=" << dim << ")" << std::endl;
    }
 }
 
 template <class T, unsigned char K>
-bool AWT::OEKDTree::OEKDTree<T,K>::checkInvariant( const int in_Low, const int in_High, const int in_Dim )
+bool AWT::OEKDTree::OEKDTree<T,K>::checkInvariant(const int in_Low, const int in_High, const int in_Dim)
 {
-   INITPARTITIONS( in_Low, in_High );
+   INITPARTITIONS(in_Low, in_High);
 
-   for ( int i = lstart; i <= lend; i++ )
+   for (int i = lstart; i <= lend; i++)
    {
-      if ( m_Data->getCoordinate( m_Indexes[i], in_Dim ) > m_OrthoPositions[0][imedian] )
+      if (m_Data->getCoordinate(m_Indexes[i], in_Dim) > m_OrthoPositions[0][imedian])
          return false;
    }
 
-   for ( int i = rstart; i <= rend; i++ )
+   for (int i = rstart; i <= rend; i++)
    {
-      if ( m_Data->getCoordinate( m_Indexes[i], in_Dim ) < m_OrthoPositions[1][imedian] )
+      if (m_Data->getCoordinate(m_Indexes[i], in_Dim) < m_OrthoPositions[1][imedian])
          return false;
    }
 
@@ -460,7 +460,7 @@ bool AWT::OEKDTree::OEKDTree<T,K>::checkInvariant( const int in_Low, const int i
 }
 
 template <class T, unsigned char K>
-void AWT::OEKDTree::OEKDTree<T,K>::partitionArray( int in_Low, int in_High, int in_Dim )
+void AWT::OEKDTree::OEKDTree<T,K>::partitionArray(int in_Low, int in_High, int in_Dim)
 {
    // This quick and efficient implementation is based on the paper "Fast Median Search: an
    // ANSI C implementation," Nicolas Devillard - ndevilla AT free DOT fr, 1998.
@@ -488,8 +488,8 @@ void AWT::OEKDTree::OEKDTree<T,K>::partitionArray( int in_Low, int in_High, int 
 			return;
 
 		if (in_High == in_Low + 1) { /* Two elements only */
-			if ( m_Data->getCoordinate( m_Indexes[in_Low], in_Dim ) > m_Data->getCoordinate( m_Indexes[in_High], in_Dim ) )
-				swapElements( in_Low, in_High );
+			if (m_Data->getCoordinate(m_Indexes[in_Low], in_Dim) > m_Data->getCoordinate(m_Indexes[in_High], in_Dim))
+				swapElements(in_Low, in_High);
 
 			break;
 		}
@@ -498,15 +498,15 @@ void AWT::OEKDTree::OEKDTree<T,K>::partitionArray( int in_Low, int in_High, int 
 		 * Find median of in_Low, middle and in_High items; swap into position in_Low
 		 */
 		middle = (in_Low + in_High) / 2;
-		if ( m_Data->getCoordinate( m_Indexes[middle], in_Dim ) > m_Data->getCoordinate( m_Indexes[in_High], in_Dim ) )
-			swapElements( middle, in_High );
-		if ( m_Data->getCoordinate( m_Indexes[in_Low], in_Dim ) > m_Data->getCoordinate( m_Indexes[in_High], in_Dim ) )
-			swapElements( in_Low, in_High );
-		if ( m_Data->getCoordinate( m_Indexes[middle], in_Dim ) > m_Data->getCoordinate( m_Indexes[in_Low], in_Dim ) )
-			swapElements( middle, in_Low );
+		if (m_Data->getCoordinate(m_Indexes[middle], in_Dim) > m_Data->getCoordinate(m_Indexes[in_High], in_Dim))
+			swapElements(middle, in_High);
+		if (m_Data->getCoordinate(m_Indexes[in_Low], in_Dim) > m_Data->getCoordinate(m_Indexes[in_High], in_Dim))
+			swapElements(in_Low, in_High);
+		if (m_Data->getCoordinate(m_Indexes[middle], in_Dim) > m_Data->getCoordinate(m_Indexes[in_Low], in_Dim))
+			swapElements(middle, in_Low);
 
 		/* Swap in_Low item (now in position middle) into position (in_Low+1) */
-		swapElements( middle, in_Low + 1 );
+		swapElements(middle, in_Low + 1);
 
 		/*
 		 * Nibble from each end towards middle, swapping items when stuck
@@ -514,17 +514,17 @@ void AWT::OEKDTree::OEKDTree<T,K>::partitionArray( int in_Low, int in_High, int 
 		ll = in_Low + 1;
 		hh = in_High;
 		while (true) {
-			while ( m_Data->getCoordinate( m_Indexes[in_Low], in_Dim ) > m_Data->getCoordinate( m_Indexes[++ll], in_Dim ) );
-			while ( m_Data->getCoordinate( m_Indexes[--hh], in_Dim ) > m_Data->getCoordinate( m_Indexes[in_Low], in_Dim ) );
+			while (m_Data->getCoordinate(m_Indexes[in_Low], in_Dim) > m_Data->getCoordinate(m_Indexes[++ll], in_Dim));
+			while (m_Data->getCoordinate(m_Indexes[--hh], in_Dim) > m_Data->getCoordinate(m_Indexes[in_Low], in_Dim));
 			
 			if (hh < ll)
 				break;
 
-			swapElements( ll, hh );
+			swapElements(ll, hh);
 		}
 
 		/* Swap middle item (in position in_Low) back into correct position */
-		swapElements( in_Low, hh );
+		swapElements(in_Low, hh);
 
 		/* Re-set active partition */
 		if (hh <= median)
@@ -540,16 +540,16 @@ void AWT::OEKDTree::OEKDTree<T,K>::partitionArray( int in_Low, int in_High, int 
 
 
 template <class T, unsigned char K>
-int AWT::OEKDTree::OEKDTree<T,K>::getOriginalIndex( const int in_Index ) const
+int AWT::OEKDTree::OEKDTree<T,K>::getOriginalIndex(const int in_Index) const
 {
    return m_Indexes[in_Index];
 }
 
 template <class T, unsigned char K>
-AWT::OEKDTree::OEKDTreeBranch<T,K>* AWT::OEKDTree::OEKDTree<T,K>::getRootBranch( )
+AWT::OEKDTree::OEKDTreeBranch<T,K>* AWT::OEKDTree::OEKDTree<T,K>::getRootBranch()
 {
    OEKDTreeBranch<T,K>* root = OEKDTreeBranch<T,K>::checkOut();
-   root->init( this, 0, m_NPoints-1, 0, m_Bounds );
+   root->init(this, 0, m_NPoints-1, 0, m_Bounds);
 
    return root;
 }

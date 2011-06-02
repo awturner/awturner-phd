@@ -41,18 +41,18 @@ namespace AWT
          typedef ManagedAutoPointer<SearchFilter> P;
 
       protected:
-         SearchFilter( );
-         virtual ~SearchFilter( );
+         SearchFilter();
+         virtual ~SearchFilter();
 
       public:
-         static P getInstance( );
-         std::string getClassName( ) const;
+         static P getInstance();
+         std::string getClassName() const;
 
-         bool handle( const Point p, const Index i );
+         bool handle(const Point p, const Index i);
 
       public:
-         virtual bool check( const Point p, const Index i ) const;
-         virtual void accept( const Point p, const Index i );
+         virtual bool check(const Point p, const Index i) const;
+         virtual void accept(const Point p, const Index i);
       };
    }
 }

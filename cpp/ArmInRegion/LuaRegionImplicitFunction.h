@@ -34,20 +34,20 @@ class LuaRegionImplicitFunction : public vtkImplicitFunction
 {
 public:
 
-   static LuaRegionImplicitFunction* New( );
+   static LuaRegionImplicitFunction* New();
 
-   void SetRegion( LuaRegion* reg );
-   LuaRegion* GetRegion( );
+   void SetRegion(LuaRegion* reg);
+   LuaRegion* GetRegion();
 
-   void SetStep( double step );
-   double GetStep( );
+   void SetStep(double step);
+   double GetStep();
 
-   virtual double EvaluateFunction( double x[] );
-   virtual void EvaluateGradient( double x[], double g[] );
+   virtual double EvaluateFunction(double x[]);
+   virtual void EvaluateGradient(double x[], double g[]);
 
 protected:
-   LuaRegionImplicitFunction( );
-   virtual ~LuaRegionImplicitFunction( );
+   LuaRegionImplicitFunction();
+   virtual ~LuaRegionImplicitFunction();
 
    LuaRegion* Region;
    double Step;

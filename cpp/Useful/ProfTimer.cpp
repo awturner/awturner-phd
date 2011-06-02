@@ -36,27 +36,27 @@
 class AWT::ProfilingTimer::D
 {
 public:
-   void start( );
-   void stop( );
+   void start();
+   void stop();
 
-   double getDurationInSecs( );
+   double getDurationInSecs();
 
 protected:
    LARGE_INTEGER mTimeStart;
    LARGE_INTEGER mTimeStop;
 };
 
-void AWT::ProfilingTimer::D::start( )
+void AWT::ProfilingTimer::D::start()
 {
    QueryPerformanceCounter(&mTimeStart);
 }
 
-void AWT::ProfilingTimer::D::stop( )
+void AWT::ProfilingTimer::D::stop()
 {
    QueryPerformanceCounter(&mTimeStop);
 }
 
-double AWT::ProfilingTimer::D::getDurationInSecs( )
+double AWT::ProfilingTimer::D::getDurationInSecs()
 {
    LARGE_INTEGER freq;
    QueryPerformanceFrequency(&freq);
@@ -70,29 +70,29 @@ double AWT::ProfilingTimer::D::getDurationInSecs( )
 
 #endif
 
-AWT::ProfilingTimer::ProfilingTimer( )
+AWT::ProfilingTimer::ProfilingTimer()
 {
    m_D = new D;
 }
 
-AWT::ProfilingTimer::~ProfilingTimer( )
+AWT::ProfilingTimer::~ProfilingTimer()
 {
    delete m_D;
 }
 
-void AWT::ProfilingTimer::start( )
+void AWT::ProfilingTimer::start()
 {
-   m_D->start( );
+   m_D->start();
 }
 
-void AWT::ProfilingTimer::stop( )
+void AWT::ProfilingTimer::stop()
 {
-   m_D->stop( );
+   m_D->stop();
 }
 
-double AWT::ProfilingTimer::getDurationInSecs( )
+double AWT::ProfilingTimer::getDurationInSecs()
 {
-   return m_D->getDurationInSecs( );
+   return m_D->getDurationInSecs();
 }
 
 #include <string>
@@ -103,25 +103,25 @@ struct AWT::TimedBlock::D
    std::string msg;
 };
 
-AWT::TimedBlock::TimedBlock( const char* msg )
+AWT::TimedBlock::TimedBlock(const char* msg)
 {
    m_D = new D;
 
-   m_D->msg = std::string( msg );
+   m_D->msg = std::string(msg);
    m_D->timer.start();
 }
 
-AWT::TimedBlock::~TimedBlock( )
+AWT::TimedBlock::~TimedBlock()
 {
    m_D->timer.stop();
    const double time = m_D->timer.getDurationInSecs();
 
-   DEBUGMACRO( m_D->msg << ": " << time << " seconds" );
+   DEBUGMACRO(m_D->msg << ": " << time << " seconds");
 
    delete m_D;
 }
 
-double AWT::TimedBlock::getDurationInSecs( )
+double AWT::TimedBlock::getDurationInSecs()
 {
    return m_D->timer.getDurationInSecs();
 }

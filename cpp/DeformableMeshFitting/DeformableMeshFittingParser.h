@@ -40,14 +40,14 @@ namespace AWT
       typedef ManagedAutoPointer< DeformableMeshFittingParser<T> > P;
 
    protected:
-      DeformableMeshFittingParser( );
-      virtual ~DeformableMeshFittingParser( );
+      DeformableMeshFittingParser();
+      virtual ~DeformableMeshFittingParser();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
-      bool parse( const std::string& text, DeformableMeshFittingStateMachine<T>* dmfsm );
+      bool parse(const std::string& text, DeformableMeshFittingStateMachine<T>* dmfsm);
 
    protected:
       struct D;

@@ -35,25 +35,25 @@ namespace AWT
       class OtherNormalSearchFilter : public SearchFilter
       {
       protected:
-         OtherNormalSearchFilter( Mesh::P mesh );
-         virtual ~OtherNormalSearchFilter( );
+         OtherNormalSearchFilter(Mesh::P mesh);
+         virtual ~OtherNormalSearchFilter();
 
       public:
          typedef ManagedAutoPointer<OtherNormalSearchFilter> P;
 
-         static P getInstance( Mesh::P mesh );
-         std::string getClassName( ) const;
+         static P getInstance(Mesh::P mesh);
+         std::string getClassName() const;
 
-         void setTestPoint( const Point p );
-         Point getTestPoint( ) const;
+         void setTestPoint(const Point p);
+         Point getTestPoint() const;
 
-         Mesh::P getTestMesh( ) const;
+         Mesh::P getTestMesh() const;
 
-         void setCosineThreshold( const double v );
-         double getCosineThreshold( ) const;
+         void setCosineThreshold(const double v);
+         double getCosineThreshold() const;
 
       public:
-         virtual bool check( const Point p, const Index i ) const;
+         virtual bool check(const Point p, const Index i) const;
 
       protected:
          struct D;

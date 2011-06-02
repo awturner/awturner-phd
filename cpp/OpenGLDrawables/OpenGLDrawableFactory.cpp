@@ -52,7 +52,7 @@ struct AWT::OpenGLDrawableFactory<T>::D
 };
 
 template <class T>
-AWT::OpenGLDrawableFactory<T>::OpenGLDrawableFactory( DrawContext::P ctx )
+AWT::OpenGLDrawableFactory<T>::OpenGLDrawableFactory(DrawContext::P ctx)
 {
    m_D = new D;
 
@@ -60,115 +60,115 @@ AWT::OpenGLDrawableFactory<T>::OpenGLDrawableFactory( DrawContext::P ctx )
 }
 
 template <class T>
-AWT::OpenGLDrawableFactory<T>::~OpenGLDrawableFactory( )
+AWT::OpenGLDrawableFactory<T>::~OpenGLDrawableFactory()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::OpenGLDrawableFactory<T>::P AWT::OpenGLDrawableFactory<T>::getInstance( DrawContext::P ctx )
+typename AWT::OpenGLDrawableFactory<T>::P AWT::OpenGLDrawableFactory<T>::getInstance(DrawContext::P ctx)
 {
-   AUTOGETINSTANCE( AWT::OpenGLDrawableFactory<T>, ( ctx ) );
+   AUTOGETINSTANCE(AWT::OpenGLDrawableFactory<T>, (ctx));
 }
 
 template <class T>
-GETNAMEMACRO( AWT::OpenGLDrawableFactory<T> );
+GETNAMEMACRO(AWT::OpenGLDrawableFactory<T>);
 
 template <class T>
-AWT::DrawableWorld::P AWT::OpenGLDrawableFactory<T>::createWorld( )
+AWT::DrawableWorld::P AWT::OpenGLDrawableFactory<T>::createWorld()
 {
-   return OpenGLDrawableWorld::getInstance( m_D->ctx );
+   return OpenGLDrawableWorld::getInstance(m_D->ctx);
 }
 
 template <class T>
-AWT::DrawableAssembly::P AWT::OpenGLDrawableFactory<T>::createAssembly( )
+AWT::DrawableAssembly::P AWT::OpenGLDrawableFactory<T>::createAssembly()
 {
-   return DrawableAssembly::getInstance( );
+   return DrawableAssembly::getInstance();
 }
 
 template <class T>
-AWT::DrawableLight::P AWT::OpenGLDrawableFactory<T>::createLight( AWT::Light::P light )
+AWT::DrawableLight::P AWT::OpenGLDrawableFactory<T>::createLight(AWT::Light::P light)
 {
-   return OpenGLDrawableLight::getInstance( light );
+   return OpenGLDrawableLight::getInstance(light);
 }
 
 template <class T>
-typename AWT::Transformation<T>::P AWT::OpenGLDrawableFactory<T>::createTransformation( AWT::Drawable::P drawable )
+typename AWT::Transformation<T>::P AWT::OpenGLDrawableFactory<T>::createTransformation(AWT::Drawable::P drawable)
 {
-   return OpenGLTransformation<T>::getInstance( drawable, Pose<T>::getInstance( ) );
+   return OpenGLTransformation<T>::getInstance(drawable, Pose<T>::getInstance());
 }
 
 template <class T>
-typename AWT::Transformation<T>::P AWT::OpenGLDrawableFactory<T>::createTransformation( AWT::Drawable::P drawable, typename AWT::Pose<T>::P pose )
+typename AWT::Transformation<T>::P AWT::OpenGLDrawableFactory<T>::createTransformation(AWT::Drawable::P drawable, typename AWT::Pose<T>::P pose)
 {
-   return OpenGLTransformation<T>::getInstance( drawable, pose );
+   return OpenGLTransformation<T>::getInstance(drawable, pose);
 }
 
 template <class T>
-typename AWT::DrawableMesh<T>::P AWT::OpenGLDrawableFactory<T>::createMesh( typename AWT::Mesh<T>::P mesh )
+typename AWT::DrawableMesh<T>::P AWT::OpenGLDrawableFactory<T>::createMesh(typename AWT::Mesh<T>::P mesh)
 {
-   return OpenGLDrawableMesh<T>::getInstance( mesh );
+   return OpenGLDrawableMesh<T>::getInstance(mesh);
 }
 
 template <class T>
-AWT::DrawMaterial::P AWT::OpenGLDrawableFactory<T>::createMaterial( const std::string& name )
+AWT::DrawMaterial::P AWT::OpenGLDrawableFactory<T>::createMaterial(const std::string& name)
 {
-   return OpenGLKilgardMaterial::getInstance( name );
+   return OpenGLKilgardMaterial::getInstance(name);
 }
 
 template <class T>
-AWT::DrawColour::P AWT::OpenGLDrawableFactory<T>::createColour( const float* rgba, const bool lighting )
+AWT::DrawColour::P AWT::OpenGLDrawableFactory<T>::createColour(const float* rgba, const bool lighting)
 {
-   return OpenGLSimpleColour::getInstance( rgba[0], rgba[1], rgba[2], rgba[3], lighting );
+   return OpenGLSimpleColour::getInstance(rgba[0], rgba[1], rgba[2], rgba[3], lighting);
 }
 
 template <class T>
-AWT::DrawMaterial::P AWT::OpenGLDrawableFactory<T>::createTexture( const unsigned char* data, const unsigned int w, const unsigned int h, const bool lighting = true )
+AWT::DrawMaterial::P AWT::OpenGLDrawableFactory<T>::createTexture(const unsigned char* data, const unsigned int w, const unsigned int h, const bool lighting = true)
 {
    m_D->ctx->makeCurrent();
-   return OpenGLTexture::getInstance( data, w, h, lighting );
+   return OpenGLTexture::getInstance(data, w, h, lighting);
 }
 
 template <class T>
-AWT::DrawMaterial::P AWT::OpenGLDrawableFactory<T>::createMaterial( const float* ambient, const float* diffuse, const float* specular, const float shininess, const float opacity )
+AWT::DrawMaterial::P AWT::OpenGLDrawableFactory<T>::createMaterial(const float* ambient, const float* diffuse, const float* specular, const float shininess, const float opacity)
 {
-   return OpenGLMaterial::getInstance( ambient, diffuse, specular, shininess, opacity );
+   return OpenGLMaterial::getInstance(ambient, diffuse, specular, shininess, opacity);
 }
 
 template <class T>
-AWT::DrawColour::P AWT::OpenGLDrawableFactory<T>::createColour( const float r, const float g, const float b, const float a, const bool lighting )
+AWT::DrawColour::P AWT::OpenGLDrawableFactory<T>::createColour(const float r, const float g, const float b, const float a, const bool lighting)
 {
-   return OpenGLSimpleColour::getInstance( r, g, b, a, lighting );
+   return OpenGLSimpleColour::getInstance(r, g, b, a, lighting);
 }
 
 template <class T>
-AWT::DrawableImpl::P AWT::OpenGLDrawableFactory<T>::createAABB( typename AWT::AxisAlignedBoundingBox<T,3>::P box )
+AWT::DrawableImpl::P AWT::OpenGLDrawableFactory<T>::createAABB(typename AWT::AxisAlignedBoundingBox<T,3>::P box)
 {
-   return OpenGLDrawableAABB<T>::getInstance( box );
+   return OpenGLDrawableAABB<T>::getInstance(box);
 }
 
 template <class T>
-typename AWT::DrawablePoints<T>::P AWT::OpenGLDrawableFactory<T>::createPoints( typename AWT::Tuples<T>::P points )
+typename AWT::DrawablePoints<T>::P AWT::OpenGLDrawableFactory<T>::createPoints(typename AWT::Tuples<T>::P points)
 {
-   return OpenGLDrawablePoints<T>::getInstance( points );
+   return OpenGLDrawablePoints<T>::getInstance(points);
 }
 
 template <class T>
-typename AWT::DrawableQuiver<T>::P AWT::OpenGLDrawableFactory<T>::createQuiver( typename AWT::Tuples<T>::P points, typename AWT::Tuples<T>::P points2 )
+typename AWT::DrawableQuiver<T>::P AWT::OpenGLDrawableFactory<T>::createQuiver(typename AWT::Tuples<T>::P points, typename AWT::Tuples<T>::P points2)
 {
-   return OpenGLDrawableQuiver<T>::getInstance( points, points2 );
+   return OpenGLDrawableQuiver<T>::getInstance(points, points2);
 }
 
 template <class T>
-typename AWT::DrawableMeshNormals<T>::P AWT::OpenGLDrawableFactory<T>::createMeshNormals( typename Mesh<T>::P mesh )
+typename AWT::DrawableMeshNormals<T>::P AWT::OpenGLDrawableFactory<T>::createMeshNormals(typename Mesh<T>::P mesh)
 {
-   return OpenGLDrawableMeshNormals<T>::getInstance( mesh );
+   return OpenGLDrawableMeshNormals<T>::getInstance(mesh);
 }
 
 template <class T>
 typename AWT::DrawAxis::P AWT::OpenGLDrawableFactory<T>::createAxis(const double scale)
 {
-   return OpenGLDrawAxis::getInstance( scale );
+   return OpenGLDrawAxis::getInstance(scale);
 }
 
 template class AWT::OpenGLDrawableFactory<double>;

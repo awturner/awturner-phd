@@ -47,30 +47,30 @@ namespace AWT
          typedef ManagedAutoPointer<CatesParticleSurface> P;
 
       protected:
-         CatesParticleSurface( MeshType::P mesh, const TuplesType::P samples, const Idx ntake, const ValueRange<T> _sigmaRange );
-         virtual ~CatesParticleSurface( );
+         CatesParticleSurface(MeshType::P mesh, const TuplesType::P samples, const Idx ntake, const ValueRange<T> _sigmaRange);
+         virtual ~CatesParticleSurface();
 
       public:
-         static P getInstance( MeshType::P mesh, const TuplesType::P samples, const Idx ntake, const ValueRange<T> _sigmaRange );
-         virtual std::string getClassName( ) const;
+         static P getInstance(MeshType::P mesh, const TuplesType::P samples, const Idx ntake, const ValueRange<T> _sigmaRange);
+         virtual std::string getClassName() const;
 
          // Distance to the closest neighbour particle
-         virtual T getMinDistance( const Idx p );
+         virtual T getMinDistance(const Idx p);
 
          // Calculate the regularization cost
-         virtual T regularizationCost( );
+         virtual T regularizationCost();
 
          // Calculate the regularization update
-         virtual void regularizationGradient( MatrixType& reg, const Transformation& trans );
+         virtual void regularizationGradient(MatrixType& reg, const Transformation& trans);
 
-         virtual CatesRegularizer::P getRegularizer( );
+         virtual CatesRegularizer::P getRegularizer();
 
          void fixSigma(const bool state);
 
       protected:
          CatesRegularizer::P regularizer;
 
-         virtual int updatePointLocation( const Idx i, const T* vtx, FacesNearestPointSearch<T>::P searcher );
+         virtual int updatePointLocation(const Idx i, const T* vtx, FacesNearestPointSearch<T>::P searcher);
       };
    }
 }

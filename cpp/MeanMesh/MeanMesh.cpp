@@ -31,59 +31,59 @@ using namespace AWT;
 
 typedef double T;
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   Mesh<T>::P mesh = VTKMeshLoader<T>::load( argv[2], false );
+   Mesh<T>::P mesh = VTKMeshLoader<T>::load(argv[2], false);
 
    T vtx[3];
    T vtxAdd[3];
 
    unsigned int meshCount = 1;
 
-   for ( int i = 3; i < argc; ++i )
+   for (int i = 3; i < argc; ++i)
    {
-      DEBUGMACRO( argv[i] );
-      Mesh<T>::P addMesh = VTKMeshLoader<T>::load( argv[i], false );
+      DEBUGMACRO(argv[i]);
+      Mesh<T>::P addMesh = VTKMeshLoader<T>::load(argv[i], false);
 
-      if ( addMesh->getNumberOfVertices() != mesh->getNumberOfVertices() )
+      if (addMesh->getNumberOfVertices() != mesh->getNumberOfVertices())
       {
-         PRINTVBL( addMesh->getNumberOfVertices() );
-         PRINTVBL( mesh->getNumberOfVertices() );
+         PRINTVBL(addMesh->getNumberOfVertices());
+         PRINTVBL(mesh->getNumberOfVertices());
 
-         DEBUGMACRO( "Meshes are incompatible!" );
-         AWTEXCEPTIONTHROW( "Meshes are incompatible!" );
+         DEBUGMACRO("Meshes are incompatible!");
+         AWTEXCEPTIONTHROW("Meshes are incompatible!");
       }
 
-      DEBUGMACRO( "Skipping connectivity check" );
+      DEBUGMACRO("Skipping connectivity check");
 
-      MESH_EACHVERTEX( mesh, v )
+      MESH_EACHVERTEX(mesh, v)
       {
-         mesh->getVertex( v, vtx );
-         addMesh->getVertex( v, vtxAdd );
+         mesh->getVertex(v, vtx);
+         addMesh->getVertex(v, vtxAdd);
 
-         FOREACHAXIS( ax )
+         FOREACHAXIS(ax)
             vtx[ax] += vtxAdd[ax];
 
-         mesh->setVertex( v, vtx );
+         mesh->setVertex(v, vtx);
       }
       ++meshCount;
 
       BLANKLINE;
    }
 
-   DEBUGMACRO( "Dividing through..." );
-   MESH_EACHVERTEX( mesh, v )
+   DEBUGMACRO("Dividing through...");
+   MESH_EACHVERTEX(mesh, v)
    {
-      mesh->getVertex( v, vtx );
+      mesh->getVertex(v, vtx);
 
-      FOREACHAXIS( ax )
+      FOREACHAXIS(ax)
          vtx[ax] /= meshCount;
 
-      mesh->setVertex( v, vtx );
+      mesh->setVertex(v, vtx);
    }
 
-   DEBUGMACRO( "Writing mean mesh to " << argv[1] );
-   VTKMeshWriter<T>::write( mesh, argv[1] );
+   DEBUGMACRO("Writing mean mesh to " << argv[1]);
+   VTKMeshWriter<T>::write(mesh, argv[1]);
 
-   DEBUGMACRO( "Done." );
+   DEBUGMACRO("Done.");
 }

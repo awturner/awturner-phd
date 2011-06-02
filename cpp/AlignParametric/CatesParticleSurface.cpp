@@ -41,47 +41,47 @@
 using namespace AWT;
 using namespace AWT::AlignParametric;
 
-AWT::AlignParametric::CatesParticleSurface::CatesParticleSurface( MeshType::P mesh, const TuplesType::P samples, const Idx ntake, const ValueRange<T> _sigmaRange )
-: ParticleSurface( mesh, samples, ntake )
+AWT::AlignParametric::CatesParticleSurface::CatesParticleSurface(MeshType::P mesh, const TuplesType::P samples, const Idx ntake, const ValueRange<T> _sigmaRange)
+: ParticleSurface(mesh, samples, ntake)
 {
    // Construct the Cates regularizer
-   regularizer = CatesRegularizer::getInstance( this, _sigmaRange );
+   regularizer = CatesRegularizer::getInstance(this, _sigmaRange);
 }
 
-AWT::AlignParametric::CatesParticleSurface::~CatesParticleSurface( )
+AWT::AlignParametric::CatesParticleSurface::~CatesParticleSurface()
 {
 }
 
-AWT::AlignParametric::CatesParticleSurface::P AWT::AlignParametric::CatesParticleSurface::getInstance( MeshType::P mesh, const TuplesType::P samples, const Idx ntake, const ValueRange<T> _sigmaRange )
+AWT::AlignParametric::CatesParticleSurface::P AWT::AlignParametric::CatesParticleSurface::getInstance(MeshType::P mesh, const TuplesType::P samples, const Idx ntake, const ValueRange<T> _sigmaRange)
 {
-   AUTOGETINSTANCE( AWT::AlignParametric::CatesParticleSurface, ( mesh, samples, ntake, _sigmaRange ) );
+   AUTOGETINSTANCE(AWT::AlignParametric::CatesParticleSurface, (mesh, samples, ntake, _sigmaRange));
 }
 
-GETNAMEMACRO( AWT::AlignParametric::CatesParticleSurface );
+GETNAMEMACRO(AWT::AlignParametric::CatesParticleSurface);
 
 // Calculate a regularization term
-T AWT::AlignParametric::CatesParticleSurface::regularizationCost( )
+T AWT::AlignParametric::CatesParticleSurface::regularizationCost()
 {
-   const T ret = regularizer->calculateCost( );
-   PRINTVBL2( "reg cost", ret );
+   const T ret = regularizer->calculateCost();
+   PRINTVBL2("reg cost", ret);
 
    return ret;
 }
 
 // Calculate a regularization term
-void AWT::AlignParametric::CatesParticleSurface::regularizationGradient( MatrixType& reg, const Transformation& trans )
+void AWT::AlignParametric::CatesParticleSurface::regularizationGradient(MatrixType& reg, const Transformation& trans)
 {
    const Idx N = samples->getNumberOfPoints();
 
-   if ( reg.rows() != N || reg.cols() != 3 )
-      reg.set_size( N, 3 );
-   reg.fill( 0 );
+   if (reg.rows() != N || reg.cols() != 3)
+      reg.set_size(N, 3);
+   reg.fill(0);
    
-   regularizer->calculateUpdate( reg );
+   regularizer->calculateUpdate(reg);
 
    const double minSig = regularizer->getMinSigma();
 
-   PRINTVBL( minSig*minSig );
+   PRINTVBL(minSig*minSig);
 
    return;
 
@@ -92,11 +92,11 @@ void AWT::AlignParametric::CatesParticleSurface::regularizationGradient( MatrixT
 
    const T twiddles[] = { 1e-6 };
 
-   for ( Idx i = 0; i < samples->getNumberOfPoints(); ++i )
+   for (Idx i = 0; i < samples->getNumberOfPoints(); ++i)
    {
-      for ( Idx ax = 0; ax < 3; ++ax )
+      for (Idx ax = 0; ax < 3; ++ax)
       {
-         for ( Idx t = 0; t < 1; ++t )
+         for (Idx t = 0; t < 1; ++t)
          {
             const T twiddle = twiddles[t]; //1e-6;
             // Wiggle each part around
@@ -108,7 +108,7 @@ void AWT::AlignParametric::CatesParticleSurface::regularizationGradient( MatrixT
 
             const T gradient = (Ep-Em) / (2*twiddle);
 
-            DEBUGMACRO( "Numerical:" << gradient << "; " << "Calculated:" << reg(i,ax) );
+            DEBUGMACRO("Numerical:" << gradient << "; " << "Calculated:" << reg(i,ax));
 
             // Put it back where you found it
             samples->setPointElement(i,ax,samplesCopy->getPointElement(i,ax));
@@ -118,7 +118,7 @@ void AWT::AlignParametric::CatesParticleSurface::regularizationGradient( MatrixT
 
    // Put the samples back
    T vtx[3];
-   for ( Idx i = 0; i < samples->getNumberOfPoints(); ++i )
+   for (Idx i = 0; i < samples->getNumberOfPoints(); ++i)
    {
       samplesCopy->getPoint(i,vtx);
       samples->setPoint(i,vtx);
@@ -127,18 +127,18 @@ void AWT::AlignParametric::CatesParticleSurface::regularizationGradient( MatrixT
 
 T AWT::AlignParametric::CatesParticleSurface::getMinDistance(const AWT::AlignParametric::Idx p)
 {
-   return regularizer->getSigma( p );
+   return regularizer->getSigma(p);
 }
 
-CatesRegularizer::P AWT::AlignParametric::CatesParticleSurface::getRegularizer( )
+CatesRegularizer::P AWT::AlignParametric::CatesParticleSurface::getRegularizer()
 {
    return regularizer;
 }
 
-int AWT::AlignParametric::CatesParticleSurface::updatePointLocation( const Idx i, const T* vtx, FacesNearestPointSearch<T>::P searcher )
+int AWT::AlignParametric::CatesParticleSurface::updatePointLocation(const Idx i, const T* vtx, FacesNearestPointSearch<T>::P searcher)
 {
    const int np = ParticleSurface::updatePointLocation(i,vtx, searcher);
-   regularizer->associateSampleToFace( i, np );
+   regularizer->associateSampleToFace(i, np);
    return np;
 }
 

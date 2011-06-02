@@ -43,41 +43,41 @@ struct AWT::SimpleMesh::FacesIntersectPlane::D
    std::vector<IndexLine> foundPoints;
 };
 
-AWT::SimpleMesh::FacesIntersectPlane::FacesIntersectPlane( )
+AWT::SimpleMesh::FacesIntersectPlane::FacesIntersectPlane()
 {
    m_D = new D;
 
-   reset( );
+   reset();
 }
 
-AWT::SimpleMesh::FacesIntersectPlane::~FacesIntersectPlane( )
+AWT::SimpleMesh::FacesIntersectPlane::~FacesIntersectPlane()
 {
    delete m_D;
 }
 
-AWT::SimpleMesh::FacesIntersectPlane::P AWT::SimpleMesh::FacesIntersectPlane::getInstance( )
+AWT::SimpleMesh::FacesIntersectPlane::P AWT::SimpleMesh::FacesIntersectPlane::getInstance()
 {
-   AUTOGETINSTANCE( AWT::SimpleMesh::FacesIntersectPlane, ( ) );
+   AUTOGETINSTANCE(AWT::SimpleMesh::FacesIntersectPlane, ());
 }
 
-GETNAMEMACRO( AWT::SimpleMesh::FacesIntersectPlane );
+GETNAMEMACRO(AWT::SimpleMesh::FacesIntersectPlane);
 
-void AWT::SimpleMesh::FacesIntersectPlane::calculateBoxDistanceBounds2( OEKDTreeBranch<double,3>* in_Branch, SqDistBounds<double>& bounds ) const
+void AWT::SimpleMesh::FacesIntersectPlane::calculateBoxDistanceBounds2(OEKDTreeBranch<double,3>* in_Branch, SqDistBounds<double>& bounds) const
 {
    boxChecked();
 
    // Get the 8 vertices of the box and see which side of the plane they are on
    Point p;
    int countSigns = 0;
-   for ( Index v = 0; v < 8; ++v )
+   for (Index v = 0; v < 8; ++v)
    {
-      for ( Index ax = 0; ax < 3; ++ax )
+      for (Index ax = 0; ax < 3; ++ax)
       {
          p(ax) = (v & (1 << ax)) ? in_Branch->getMinimumBound(ax) : in_Branch->getMaximumBound(ax);
       }
       p(3) = 1;
 
-      if ( dot( p, m_D->testPlane, 4 ) >= 0 )
+      if (dot(p, m_D->testPlane, 4) >= 0)
          ++countSigns;
    }
 
@@ -85,17 +85,17 @@ void AWT::SimpleMesh::FacesIntersectPlane::calculateBoxDistanceBounds2( OEKDTree
    bounds.upper = FAR_FAR_AWAY;
 }
 
-void AWT::SimpleMesh::FacesIntersectPlane::checkObject( const int in_Index )
+void AWT::SimpleMesh::FacesIntersectPlane::checkObject(const int in_Index)
 {
    objectChecked();
 
    Point vs[3];
-   getFaceVertices( mesh, in_Index, vs );
+   getFaceVertices(mesh, in_Index, vs);
 
    // Calculate the sign of the dot product between this face and the plane
    int countSigns = 0;
-   for ( Index i = 0; i < 3; ++i )
-      countSigns += dot( vs[i], m_D->testPlane, 4 ) >= 0;
+   for (Index i = 0; i < 3; ++i)
+      countSigns += dot(vs[i], m_D->testPlane, 4) >= 0;
 
    if (countSigns != 3 && countSigns != 0)
    {
@@ -104,12 +104,12 @@ void AWT::SimpleMesh::FacesIntersectPlane::checkObject( const int in_Index )
       il.i = in_Index;
 
       int psFound = 0;
-      for ( Index i = 0; i < 3 && psFound < 2; ++i )
+      for (Index i = 0; i < 3 && psFound < 2; ++i)
       {
-         double den = dot( vs[i]-vs[(i+1)%3], m_D->testPlane, 4 );
+         double den = dot(vs[i]-vs[(i+1)%3], m_D->testPlane, 4);
          if (den != 0)
          {
-            double alpha = dot( vs[i], m_D->testPlane, 4 ) / den;
+            double alpha = dot(vs[i], m_D->testPlane, 4) / den;
 
             if (alpha >= 0 && alpha <= 1)
                il.p[psFound++] = vs[i] + alpha * (vs[(i+1)%3]-vs[i]);
@@ -124,28 +124,28 @@ void AWT::SimpleMesh::FacesIntersectPlane::checkObject( const int in_Index )
    }
 }
 
-bool AWT::SimpleMesh::FacesIntersectPlane::shouldCheck( AWT::OEKDTree::OEKDTreeBranch<double,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<double>& bounds ) const
+bool AWT::SimpleMesh::FacesIntersectPlane::shouldCheck(AWT::OEKDTree::OEKDTreeBranch<double,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<double>& bounds) const
 {
    return bounds.lower == 0;
 }
 
-void AWT::SimpleMesh::FacesIntersectPlane::setTestPlane( const Point in_Plane  )
+void AWT::SimpleMesh::FacesIntersectPlane::setTestPlane(const Point in_Plane )
 {
    m_D->testPlane = in_Plane;
 }
 
-Point AWT::SimpleMesh::FacesIntersectPlane::getTestPlane( ) const
+Point AWT::SimpleMesh::FacesIntersectPlane::getTestPlane() const
 {
    return m_D->testPlane;
 }
 
-void AWT::SimpleMesh::FacesIntersectPlane::reset( )
+void AWT::SimpleMesh::FacesIntersectPlane::reset()
 {
    SearchAgent::reset();
    m_D->foundPoints.clear();
 }
 
-std::vector<IndexLine>& AWT::SimpleMesh::FacesIntersectPlane::getFaces( )
+std::vector<IndexLine>& AWT::SimpleMesh::FacesIntersectPlane::getFaces()
 {
    return m_D->foundPoints;
 }

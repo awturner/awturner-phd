@@ -34,10 +34,10 @@ namespace AWT
    class CuttingFunction : public ManagedObject
    {
    public:
-      typedef ManagedAutoPointer<CuttingFunction<T>> P;
+      typedef ManagedAutoPointer<CuttingFunction<T> > P;
 
    public:
-      virtual bool accept( T* vtx ) = 0;
+      virtual bool accept(T* vtx) = 0;
    };
 }
 

@@ -34,20 +34,20 @@ namespace AWT
    class PlanarCut : public CuttingFunction<T>
    {
    public:
-      typedef ManagedAutoPointer<PlanarCut<T>> P;
+      typedef ManagedAutoPointer<PlanarCut<T> > P;
 
    protected:
-      PlanarCut( );
-      virtual ~PlanarCut( );
+      PlanarCut();
+      virtual ~PlanarCut();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
-      virtual void setPlane( const T* in_Plane );
-      virtual void getPlane( T* out_Plane ) const;
+      virtual void setPlane(const T* in_Plane);
+      virtual void getPlane(T* out_Plane) const;
 
-      virtual bool accept( T* vtx );
+      virtual bool accept(T* vtx);
 
    protected:
       struct D;

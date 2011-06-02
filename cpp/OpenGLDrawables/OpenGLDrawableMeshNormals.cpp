@@ -36,79 +36,79 @@
 template <class T>
 struct AWT::OpenGLDrawableMeshNormals<T>::D
 {
-   void drawFaceNormals( AWT::DrawContext::P context )
+   void drawFaceNormals(AWT::DrawContext::P context)
    {
-      if ( *m_Mesh == 0 || *m_Mesh->getVertexNormals( ) == 0 )
+      if (*m_Mesh == 0 || *m_Mesh->getVertexNormals() == 0)
          return;
 
       T centroid[3];
       T nml[3];
 
-      glDisable( GL_LIGHTING );
-      glEnable( GL_COLOR_MATERIAL );
+      glDisable(GL_LIGHTING);
+      glEnable(GL_COLOR_MATERIAL);
 
       MeshIndex vs[3];
       T vtx[3];
 
-      glBegin( GL_LINES );
-      //for ( MeshIndex f = 0; f < m_Mesh->getNumberOfFaces( ); ++f )
-      MESH_EACHFACE( m_Mesh, f )
+      glBegin(GL_LINES);
+      //for (MeshIndex f = 0; f < m_Mesh->getNumberOfFaces(); ++f)
+      MESH_EACHFACE(m_Mesh, f)
       {
-         for ( MeshIndex d = 0; d < 3; ++d )
+         for (MeshIndex d = 0; d < 3; ++d)
             centroid[d] = 0;
 
-         m_Mesh->getFaceIndices( f, vs );
+         m_Mesh->getFaceIndices(f, vs);
    
-         for ( MeshIndex d = 0; d < 3; ++d )
+         for (MeshIndex d = 0; d < 3; ++d)
          {
-            m_Mesh->getVertex( vs[d], vtx );
+            m_Mesh->getVertex(vs[d], vtx);
 
             centroid[0] += vtx[0];
             centroid[1] += vtx[1];
             centroid[2] += vtx[2];
          }
 
-         for ( MeshIndex d = 0; d < 3; ++d )
+         for (MeshIndex d = 0; d < 3; ++d)
             centroid[d] /= 3;
 
-         m_Mesh->getFaceNormals( )->getPoint( f, nml );
+         m_Mesh->getFaceNormals()->getPoint(f, nml);
          
-         for ( MeshIndex d = 0; d < 3; ++d )
+         for (MeshIndex d = 0; d < 3; ++d)
             nml[d] = m_Scale*nml[d] + centroid[d];
 
-         glVertex3Tv( centroid );
-         glVertex3Tv( nml );
+         glVertex3Tv(centroid);
+         glVertex3Tv(nml);
       }
-      glEnd( );
+      glEnd();
    }
 
-   void drawVertexNormals( AWT::DrawContext::P context )
+   void drawVertexNormals(AWT::DrawContext::P context)
    {
-      if ( *m_Mesh == 0 || *m_Mesh->getVertexNormals( ) == 0 )
+      if (*m_Mesh == 0 || *m_Mesh->getVertexNormals() == 0)
          return;
 
       T centroid[3];
       T nml[3];
 
-      glDisable( GL_LIGHTING );
-      glEnable( GL_COLOR_MATERIAL );
+      glDisable(GL_LIGHTING);
+      glEnable(GL_COLOR_MATERIAL);
 
-      glColor3f( 0.f, 1.f, 0.f );
+      glColor3f(0.f, 1.f, 0.f);
 
-      glBegin( GL_LINES );
-      //for ( MeshIndex f = 0; f < m_Mesh->getNumberOfVertices( ); ++f )
-      MESH_EACHVERTEX( m_Mesh, f )
+      glBegin(GL_LINES);
+      //for (MeshIndex f = 0; f < m_Mesh->getNumberOfVertices(); ++f)
+      MESH_EACHVERTEX(m_Mesh, f)
       {
-         m_Mesh->getVertex( f, centroid );
-         m_Mesh->getVertexNormals( )->getPoint( f, nml );
+         m_Mesh->getVertex(f, centroid);
+         m_Mesh->getVertexNormals()->getPoint(f, nml);
 
-         for ( MeshIndex d = 0; d < 3; ++d )
+         for (MeshIndex d = 0; d < 3; ++d)
             nml[d] = m_Scale*nml[d] + centroid[d];
 
-         glVertex3Tv( centroid );
-         glVertex3Tv( nml );
+         glVertex3Tv(centroid);
+         glVertex3Tv(nml);
       }
-      glEnd( );
+      glEnd();
    }
 
    typename Mesh<T>::P m_Mesh;
@@ -119,130 +119,130 @@ struct AWT::OpenGLDrawableMeshNormals<T>::D
 };
 
 template <class T>
-AWT::OpenGLDrawableMeshNormals<T>::OpenGLDrawableMeshNormals( typename AWT::Mesh<T>::P mesh )
+AWT::OpenGLDrawableMeshNormals<T>::OpenGLDrawableMeshNormals(typename AWT::Mesh<T>::P mesh)
 {
    m_D = new D;
 
    m_D->m_DrawType = AWT::NORMALS_VERTEX;
    m_D->m_Scale    = 1;
 
-   setMesh( mesh );
+   setMesh(mesh);
 }
 
 template <class T>
-AWT::OpenGLDrawableMeshNormals<T>::~OpenGLDrawableMeshNormals( )
+AWT::OpenGLDrawableMeshNormals<T>::~OpenGLDrawableMeshNormals()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::OpenGLDrawableMeshNormals<T>::P AWT::OpenGLDrawableMeshNormals<T>::getInstance( typename AWT::Mesh<T>::P mesh )
+typename AWT::OpenGLDrawableMeshNormals<T>::P AWT::OpenGLDrawableMeshNormals<T>::getInstance(typename AWT::Mesh<T>::P mesh)
 {
-   AUTOGETINSTANCE( AWT::OpenGLDrawableMeshNormals<T>, ( mesh ) );
+   AUTOGETINSTANCE(AWT::OpenGLDrawableMeshNormals<T>, (mesh));
 }
 
 template <class T>
-AWT::ModifiedTime AWT::OpenGLDrawableMeshNormals<T>::getChildModifiedTime( )
+AWT::ModifiedTime AWT::OpenGLDrawableMeshNormals<T>::getChildModifiedTime()
 {
-   return getTimeObjectModified( );
+   return getTimeObjectModified();
 }
 
 template <class T>
-GETNAMEMACRO( AWT::OpenGLDrawableMeshNormals<T> );
+GETNAMEMACRO(AWT::OpenGLDrawableMeshNormals<T>);
 
 template <class T>
-typename AWT::Mesh<T>::P AWT::OpenGLDrawableMeshNormals<T>::getMesh( )
+typename AWT::Mesh<T>::P AWT::OpenGLDrawableMeshNormals<T>::getMesh()
 {
    return m_D->m_Mesh;
 }
 
 template <class T>
-void AWT::OpenGLDrawableMeshNormals<T>::setMesh( typename AWT::Mesh<T>::P mesh )
+void AWT::OpenGLDrawableMeshNormals<T>::setMesh(typename AWT::Mesh<T>::P mesh)
 {
    m_D->m_Mesh = mesh;
-   setTimeObject( mesh );
-   modified( );
+   setTimeObject(mesh);
+   modified();
 }
 
 template <class T>
-AWT::DrawNormalsType AWT::OpenGLDrawableMeshNormals<T>::getDrawNormalsType( ) const
+AWT::DrawNormalsType AWT::OpenGLDrawableMeshNormals<T>::getDrawNormalsType() const
 {
    return m_D->m_DrawType;
 }
 
 template <class T>
-void AWT::OpenGLDrawableMeshNormals<T>::setDrawNormalsType( const AWT::DrawNormalsType da )
+void AWT::OpenGLDrawableMeshNormals<T>::setDrawNormalsType(const AWT::DrawNormalsType da)
 {
    m_D->m_DrawType = da;
-   modified( );
+   modified();
 }
 
 template <class T>
-T AWT::OpenGLDrawableMeshNormals<T>::getScale( ) const
+T AWT::OpenGLDrawableMeshNormals<T>::getScale() const
 {
    return m_D->m_Scale;
 }
 
 template <class T>
-void AWT::OpenGLDrawableMeshNormals<T>::setScale( const T scale )
+void AWT::OpenGLDrawableMeshNormals<T>::setScale(const T scale)
 {
    m_D->m_Scale = scale;
-   modified( );
+   modified();
 }
 
 template <class T>
-void AWT::OpenGLDrawableMeshNormals<T>::buildList( AWT::DrawContext::P context )
+void AWT::OpenGLDrawableMeshNormals<T>::buildList(AWT::DrawContext::P context)
 {
-   switch ( m_D->m_DrawType )
+   switch (m_D->m_DrawType)
    {
    case AWT::NORMALS_FACE:
-      m_D->drawFaceNormals( context );
+      m_D->drawFaceNormals(context);
       break;
    case AWT::NORMALS_VERTEX:
-      m_D->drawVertexNormals( context );
+      m_D->drawVertexNormals(context);
       break;
    }
 }
 
 template <class T>
-void AWT::OpenGLDrawableMeshNormals<T>::updateBounds( )
+void AWT::OpenGLDrawableMeshNormals<T>::updateBounds()
 {
    T centroid[3];
 
-   for ( int ax = 0; ax < 3; ++ax )
+   for (int ax = 0; ax < 3; ++ax)
    {
-      m_D->m_Bounds[2*ax+0] =  std::numeric_limits<double>::infinity( );
-      m_D->m_Bounds[2*ax+1] = -std::numeric_limits<double>::infinity( );
+      m_D->m_Bounds[2*ax+0] =  std::numeric_limits<double>::infinity();
+      m_D->m_Bounds[2*ax+1] = -std::numeric_limits<double>::infinity();
    }
 
-   //for ( MeshIndex f = 0; f < m_D->m_Mesh->getNumberOfVertices( ); ++f )
-   MESH_EACHVERTEX( m_D->m_Mesh, v )
+   //for (MeshIndex f = 0; f < m_D->m_Mesh->getNumberOfVertices(); ++f)
+   MESH_EACHVERTEX(m_D->m_Mesh, v)
    {
-      m_D->m_Mesh->getVertex( v, centroid );
+      m_D->m_Mesh->getVertex(v, centroid);
 
-      for ( int ax = 0; ax < 3; ++ax )
+      for (int ax = 0; ax < 3; ++ax)
       {
-         m_D->m_Bounds[2*ax+0] = std::min<double>( m_D->m_Bounds[2*ax+0], centroid[ax] );
-         m_D->m_Bounds[2*ax+1] = std::min<double>( m_D->m_Bounds[2*ax+1], centroid[ax] );
+         m_D->m_Bounds[2*ax+0] = std::min<double>(m_D->m_Bounds[2*ax+0], centroid[ax]);
+         m_D->m_Bounds[2*ax+1] = std::min<double>(m_D->m_Bounds[2*ax+1], centroid[ax]);
       }
    }
    
 }
 
 template <class T>
-double AWT::OpenGLDrawableMeshNormals<T>::getBoundImpl( unsigned int i )
+double AWT::OpenGLDrawableMeshNormals<T>::getBoundImpl(unsigned int i)
 {
    return m_D->m_Bounds[i];
 }
 
 template <class T>
-AWT::DrawMaterial::P AWT::OpenGLDrawableMeshNormals<T>::getMaterial( )
+AWT::DrawMaterial::P AWT::OpenGLDrawableMeshNormals<T>::getMaterial()
 {
    return m_D->m_Material;
 }
 
 template <class T>
-void AWT::OpenGLDrawableMeshNormals<T>::setMaterial( AWT::DrawMaterial::P mat )
+void AWT::OpenGLDrawableMeshNormals<T>::setMaterial(AWT::DrawMaterial::P mat)
 {
    m_D->m_Material = mat;
 }

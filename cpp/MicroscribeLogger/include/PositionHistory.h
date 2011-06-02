@@ -34,20 +34,20 @@ class PositionHistory : public QObject
    Q_OBJECT;
 
 public:
-   PositionHistory( );
-   virtual ~PositionHistory( );
+   PositionHistory();
+   virtual ~PositionHistory();
 
-   unsigned int getPointCount( ) const;
+   unsigned int getPointCount() const;
 
-   void getPoint( const unsigned int i, double& time, double pos[3], double joints[6] ) const;
-   void addPoint( const double time, const double pos[3], const double joints[6] );
+   void getPoint(const unsigned int i, double& time, double pos[3], double joints[6]) const;
+   void addPoint(const double time, const double pos[3], const double joints[6]);
 
-   void getBounds( double bounds[6] ) const;
+   void getBounds(double bounds[6]) const;
 
-   void clear( );
+   void clear();
 
 signals:
-   void pointAdded( const double time, const double x, const double y, const double z );
+   void pointAdded(const double time, const double x, const double y, const double z);
 
 protected:
    struct timedouble3

@@ -43,17 +43,17 @@ namespace AWT
          typedef ManagedAutoPointer<Search> P;
 
       protected:
-         Search( Mesh::P mesh, const bool useFaces );
-         virtual ~Search( );
+         Search(Mesh::P mesh, const bool useFaces);
+         virtual ~Search();
 
       public:
-         static P getInstance( Mesh::P mesh, const bool useFaces );
-         virtual std::string getClassName( ) const;
+         static P getInstance(Mesh::P mesh, const bool useFaces);
+         virtual std::string getClassName() const;
 
-         Mesh::P getMesh( );
+         Mesh::P getMesh();
 
-         virtual void search( SearchAgent::P agent );
-         virtual PointIndexWeights search( const Point testPoint, const Point testNormal, SearchFilter::P filter );
+         virtual void search(SearchAgent::P agent);
+         virtual PointIndexWeights search(const Point testPoint, const Point testNormal, SearchFilter::P filter);
 
       protected:
          struct D;

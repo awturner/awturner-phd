@@ -44,25 +44,25 @@ namespace AWT
       typedef ManagedAutoPointer<DrawableControlPoints> P;
 
    protected:
-      DrawableControlPoints( typename ControlPointSet<T>::P cps );
+      DrawableControlPoints(typename ControlPointSet<T>::P cps);
 
-      ~DrawableControlPoints( );
+      ~DrawableControlPoints();
 
    public:
-      static P getInstance( typename ControlPointSet<T>::P cps );
+      static P getInstance(typename ControlPointSet<T>::P cps);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual void getBounds( double* out_Bounds );
+      virtual void getBounds(double* out_Bounds);
 
-      virtual void drawImpl( DrawContext::P context );
+      virtual void drawImpl(DrawContext::P context);
 
-      virtual void setDrawThreshold( const T in_Val );
+      virtual void setDrawThreshold(const T in_Val);
 
-      virtual T getDrawThreshold( ) const;
+      virtual T getDrawThreshold() const;
 
-      virtual DrawMaterial::P getMaterial( );
-      virtual void setMaterial( DrawMaterial::P mat );
+      virtual DrawMaterial::P getMaterial();
+      virtual void setMaterial(DrawMaterial::P mat);
 
    protected:
       struct D;

@@ -25,13 +25,13 @@
 */
 #include "include/QtSegEditForm.h"
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   QApplication app( argc, argv );
+   QApplication app(argc, argv);
 
-   QtSegEditForm* form = new QtSegEditForm( );
+   QtSegEditForm* form = new QtSegEditForm();
 
-   form->showMaximized( );
+   form->showMaximized();
 
-   return app.exec( );
+   return app.exec();
 }

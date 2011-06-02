@@ -38,14 +38,14 @@ namespace AWT
       typedef ManagedAutoPointer<MoveCameraMouseBehaviour> P;
 
    protected:
-      MoveCameraMouseBehaviour( );
-      virtual ~MoveCameraMouseBehaviour( );
+      MoveCameraMouseBehaviour();
+      virtual ~MoveCameraMouseBehaviour();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
-      virtual bool mouseMoved( OpenGLWidget* widget, int x, int y, int button, int keys );
+      virtual bool mouseMoved(OpenGLWidget* widget, int x, int y, int button, int keys);
 
    protected:
       struct D;

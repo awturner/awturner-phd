@@ -40,16 +40,16 @@ namespace AWT
       typedef ManagedAutoPointer<EdgeBuilder> P;
 
    protected:
-      EdgeBuilder( );
-      virtual ~EdgeBuilder( );
+      EdgeBuilder();
+      virtual ~EdgeBuilder();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
-      Edge* createEdge( const MeshIndex v );
+      Edge* createEdge(const MeshIndex v);
 
-      void destroy( Edge* edge );
+      void destroy(Edge* edge);
 
    protected:
       struct D;

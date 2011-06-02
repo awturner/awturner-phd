@@ -51,31 +51,31 @@ public:
    vtkGetMacro(ProgressStep, int);
    
 protected:
-   vtkWhitakerSmoothBinary( );
-   ~vtkWhitakerSmoothBinary( );
+   vtkWhitakerSmoothBinary();
+   ~vtkWhitakerSmoothBinary();
 
 protected:
-   virtual void SimpleExecute( vtkImageData* threshData, vtkImageData* phi );
+   virtual void SimpleExecute(vtkImageData* threshData, vtkImageData* phi);
 
    template <class IT>
-   void vtkWhitakerSmoothBinaryExecute( vtkImageData* threshData, vtkImageData* phi, IT* forceInput );
+   void vtkWhitakerSmoothBinaryExecute(vtkImageData* threshData, vtkImageData* phi, IT* forceInput);
 
-   static void extrapolateValues( float* io_values, int in_x, int in_y, int in_z, int in_w, int in_h, int in_d );
-   static inline void calculateXYZ( const int nn, const int area, const int w, int &x, int &y, int &z );
-
-   template <class IT>
-   void initializeOutputImage( vtkImageData* phi, vtkImageData* thresh, int npoints, IT* );
+   static void extrapolateValues(float* io_values, int in_x, int in_y, int in_z, int in_w, int in_h, int in_d);
+   static inline void calculateXYZ(const int nn, const int area, const int w, int &x, int &y, int &z);
 
    template <class IT>
-   LinkedListNode<int>* findBoundary( vtkImageData* threshData, int* dims, IT* );
+   void initializeOutputImage(vtkImageData* phi, vtkImageData* thresh, int npoints, IT*);
 
    template <class IT>
-   LinkedListNode<int>* findActiveSet( vtkImageData* threshData, int* dims, IT* );
+   LinkedListNode<int>* findBoundary(vtkImageData* threshData, int* dims, IT*);
 
-   LinkedListNode<int>* markActiveSetImage( int nn, int c, int maxc, int step, 
-      unsigned char* ptr, unsigned char val, LinkedListNode<int>* expandList );
+   template <class IT>
+   LinkedListNode<int>* findActiveSet(vtkImageData* threshData, int* dims, IT*);
 
-   float calculateTimeStep( float* in_spacing );
+   LinkedListNode<int>* markActiveSetImage(int nn, int c, int maxc, int step, 
+      unsigned char* ptr, unsigned char val, LinkedListNode<int>* expandList);
+
+   float calculateTimeStep(float* in_spacing);
    
    double StoppingThreshold;
    int    MaxIterations;

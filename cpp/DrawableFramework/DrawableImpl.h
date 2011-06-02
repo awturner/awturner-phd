@@ -40,27 +40,27 @@ namespace AWT
       typedef ManagedAutoPointer<DrawableImpl> P;
 
    protected:
-      DrawableImpl( );
+      DrawableImpl();
 
-      virtual ~DrawableImpl( );
+      virtual ~DrawableImpl();
 
    public:
-      void draw( DrawContext::P context, const bool transparentPass );
+      void draw(DrawContext::P context, const bool transparentPass);
 
-      virtual bool isVisible( ) const;
+      virtual bool isVisible() const;
 
-      virtual void setVisible( const bool vis );
+      virtual void setVisible(const bool vis);
 
-      virtual DrawMaterial::P getMaterial( ) = 0;
+      virtual DrawMaterial::P getMaterial() = 0;
 
-      virtual void setMaterial( DrawMaterial::P material ) = 0;
+      virtual void setMaterial(DrawMaterial::P material) = 0;
 
-      virtual void setParent( DrawableAssembly* p );
+      virtual void setParent(DrawableAssembly* p);
 
-      virtual DrawableAssembly* getParent( );
+      virtual DrawableAssembly* getParent();
 
    protected:
-      virtual void drawImpl( DrawContext::P context ) = 0;
+      virtual void drawImpl(DrawContext::P context) = 0;
 
       struct D;
       D* m_D;

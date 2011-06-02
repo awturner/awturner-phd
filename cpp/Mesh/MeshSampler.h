@@ -37,14 +37,14 @@ namespace AWT
    class MeshSampler : public virtual ManagedObject
    {
    public:
-      typedef ManagedAutoPointer<MeshSampler<T>> P;
+      typedef ManagedAutoPointer<MeshSampler<T> > P;
 
    public:
-      virtual SamplePoints::P sampleMesh( typename Mesh<T>::P mesh ) = 0;
+      virtual SamplePoints::P sampleMesh(typename Mesh<T>::P mesh) = 0;
 
-      virtual unsigned int getMaximumNumberOfSamples( ) const = 0;
+      virtual unsigned int getMaximumNumberOfSamples() const = 0;
 
-      virtual void setMaximumNumberOfSamples( const unsigned int s ) = 0;
+      virtual void setMaximumNumberOfSamples(const unsigned int s) = 0;
    };
 }
 

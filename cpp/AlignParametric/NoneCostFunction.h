@@ -38,14 +38,14 @@ namespace AWT
          typedef ManagedAutoPointer<NoneCostFunction> P;
 
       protected:
-         NoneCostFunction( );
-         virtual ~NoneCostFunction( );
+         NoneCostFunction();
+         virtual ~NoneCostFunction();
 
       public:
-         static P getInstance( );
-         virtual std::string getClassName( ) const;
+         static P getInstance();
+         virtual std::string getClassName() const;
 
-         virtual T calculate( const VectorType& eigenvalues, VectorType& E_gradients );
+         virtual T calculate(const VectorType& eigenvalues, VectorType& E_gradients);
       };
    }
 }

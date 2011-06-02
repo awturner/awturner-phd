@@ -38,17 +38,17 @@ namespace AWT
          typedef ManagedAutoPointer<DeterminantOfCovariance> P;
 
       protected:
-         DeterminantOfCovariance( );
-         virtual ~DeterminantOfCovariance( );
+         DeterminantOfCovariance();
+         virtual ~DeterminantOfCovariance();
 
       public:
-         static P getInstance( );
-         virtual std::string getClassName( ) const;
+         static P getInstance();
+         virtual std::string getClassName() const;
 
-         virtual T getEpsilon( ) const;
-         virtual void setEpsilon( const double v );
+         virtual T getEpsilon() const;
+         virtual void setEpsilon(const double v);
 
-         virtual T calculate( const VectorType& eigenvalues, VectorType& E_gradients );
+         virtual T calculate(const VectorType& eigenvalues, VectorType& E_gradients);
 
       protected:
          struct D;

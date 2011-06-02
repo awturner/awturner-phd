@@ -36,23 +36,23 @@ namespace AWT
       typedef ManagedAutoPointer<OpenGLDrawAxis> P;
 
    protected:
-      OpenGLDrawAxis( double scale );
-      virtual ~OpenGLDrawAxis( );
+      OpenGLDrawAxis(double scale);
+      virtual ~OpenGLDrawAxis();
 
    public:
-      static P getInstance( double scale = 1 );
-      virtual std::string getClassName( ) const;
+      static P getInstance(double scale = 1);
+      virtual std::string getClassName() const;
 
-      virtual void draw( DrawContext::P context, const bool transparentPass );
+      virtual void draw(DrawContext::P context, const bool transparentPass);
 
-      virtual void setVisible( const bool v );
+      virtual void setVisible(const bool v);
 
-      virtual bool isVisible( ) const;
+      virtual bool isVisible() const;
 
-      virtual void getBounds( double* out_Bounds );
+      virtual void getBounds(double* out_Bounds);
 
-      virtual void setParent( DrawableAssembly* p );
-      virtual DrawableAssembly* getParent( );
+      virtual void setParent(DrawableAssembly* p);
+      virtual DrawableAssembly* getParent();
 
    protected:
       struct D;

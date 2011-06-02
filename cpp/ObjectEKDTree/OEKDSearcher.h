@@ -47,13 +47,13 @@ namespace AWT
          typedef ManagedAutoPointer< OEKDSearcher<T,K> > P;
 
       public:
-         virtual void searchTree( typename OEKDTree<T,K>* in_Tree ) = 0;
+         virtual void searchTree(typename OEKDTree<T,K>* in_Tree) = 0;
 
-         virtual void setData( typename OEKDTreeData<T,K>::P in_Data ) = 0;
+         virtual void setData(typename OEKDTreeData<T,K>::P in_Data) = 0;
 
-         int  getNumberOfChecks( ) const    { return m_NumberOfChecks; }
-         int  getNumberOfBoxChecks( ) const { return m_NumberOfBoxChecks; }
-         virtual void reset( ) { m_NumberOfChecks = m_NumberOfBoxChecks = 0; }
+         int  getNumberOfChecks() const    { return m_NumberOfChecks; }
+         int  getNumberOfBoxChecks() const { return m_NumberOfBoxChecks; }
+         virtual void reset() { m_NumberOfChecks = m_NumberOfBoxChecks = 0; }
 
       protected:
          void objectChecked() const { ++m_NumberOfChecks; }
@@ -65,9 +65,9 @@ namespace AWT
       };
 
       template <class InputType, class ResultType>
-      typename ResultType::P checkType( typename InputType::P in )
+      typename ResultType::P checkType(typename InputType::P in)
       {
-         ResultType* casted = dynamic_cast<ResultType*>( in.getData() );
+         ResultType* casted = dynamic_cast<ResultType*>(in.getData());
          if (casted == 0)
             throw "Invalid input";
 

@@ -39,30 +39,30 @@ namespace AWT
    {
    public:
       typedef ManagedAutoPointer< VerticesNearestVerticesSearch<T> > P;
-      static P getInstance( );
+      static P getInstance();
 
    protected:
-      VerticesNearestVerticesSearch( const T in_MaxDistance = 1 );
-      virtual ~VerticesNearestVerticesSearch( );
+      VerticesNearestVerticesSearch(const T in_MaxDistance = 1);
+      virtual ~VerticesNearestVerticesSearch();
 
    public:
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual void calculateBoxDistanceBounds2( typename OEKDTree::OEKDTreeBranch<T,3>* in_Branch, AWT::OEKDTree::SqDistBounds<T>& in_Bounds ) const;
-      virtual bool shouldCheck( typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<T>& in_Bounds ) const;
+      virtual void calculateBoxDistanceBounds2(typename OEKDTree::OEKDTreeBranch<T,3>* in_Branch, AWT::OEKDTree::SqDistBounds<T>& in_Bounds) const;
+      virtual bool shouldCheck(typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<T>& in_Bounds) const;
 
-      virtual void checkObject( const int in_Index );
+      virtual void checkObject(const int in_Index);
 
-      virtual void setTestPoint( const T* in_TestPoint  );
-      virtual void getTestPoint( T* out_TestPoint ) const;
+      virtual void setTestPoint(const T* in_TestPoint );
+      virtual void getTestPoint(T* out_TestPoint) const;
 
-      virtual void setRadius( const T in_Radius );
-      virtual T    getRadius( ) const;
+      virtual void setRadius(const T in_Radius);
+      virtual T    getRadius() const;
 
-      virtual MeshIndex getNumberOfPointsFound( ) const;
-      virtual MeshIndex getPointFoundIndex( MeshIndex idx ) const;
+      virtual MeshIndex getNumberOfPointsFound() const;
+      virtual MeshIndex getPointFoundIndex(MeshIndex idx) const;
 
-      virtual void reset( );
+      virtual void reset();
 
    protected:
       std::vector<int> m_NearestPoints;
@@ -76,44 +76,44 @@ namespace AWT
 }
 
 template <class T>
-GETNAMEMACRO( AWT::VerticesNearestVerticesSearch<T> );
+GETNAMEMACRO(AWT::VerticesNearestVerticesSearch<T>);
 
 template <class T>
-typename AWT::VerticesNearestVerticesSearch<T>::P AWT::VerticesNearestVerticesSearch<T>::getInstance( )
+typename AWT::VerticesNearestVerticesSearch<T>::P AWT::VerticesNearestVerticesSearch<T>::getInstance()
 {
-   AUTOGETINSTANCE( AWT::VerticesNearestVerticesSearch<T>, ( ) );
+   AUTOGETINSTANCE(AWT::VerticesNearestVerticesSearch<T>, ());
 }
 
 template <class T>
-AWT::VerticesNearestVerticesSearch<T>::VerticesNearestVerticesSearch( const T in_MaxDistance )
+AWT::VerticesNearestVerticesSearch<T>::VerticesNearestVerticesSearch(const T in_MaxDistance)
 {
    m_InitMaxDistance2 = in_MaxDistance*in_MaxDistance;
 
-   reset( );
+   reset();
 }
 
 template <class T>
-AWT::VerticesNearestVerticesSearch<T>::~VerticesNearestVerticesSearch( )
+AWT::VerticesNearestVerticesSearch<T>::~VerticesNearestVerticesSearch()
 {
 
 }
 
 template <class T>
-void AWT::VerticesNearestVerticesSearch<T>::calculateBoxDistanceBounds2( typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, AWT::OEKDTree::SqDistBounds<T>& in_bounds ) const
+void AWT::VerticesNearestVerticesSearch<T>::calculateBoxDistanceBounds2(typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, AWT::OEKDTree::SqDistBounds<T>& in_bounds) const
 {
    boxChecked();
    T ret = 0;
    T tmp;
 
-   for ( int i = 0; i < 3; i++ )
+   for (int i = 0; i < 3; i++)
    {
-      tmp = std::min( std::max( m_TestPoint[i], in_Branch->getMinimumBound( i ) ), in_Branch->getMaximumBound( i ) );
+      tmp = std::min(std::max(m_TestPoint[i], in_Branch->getMinimumBound(i)), in_Branch->getMaximumBound(i));
 
       tmp -= m_TestPoint[i];
 
       ret += tmp*tmp;
 
-      if ( ret > m_MaxDistance2 )
+      if (ret > m_MaxDistance2)
          break;
    }
 
@@ -122,13 +122,13 @@ void AWT::VerticesNearestVerticesSearch<T>::calculateBoxDistanceBounds2( typenam
 }
 
 template <class T>
-bool AWT::VerticesNearestVerticesSearch<T>::shouldCheck( typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<T>& in_Bounds ) const
+bool AWT::VerticesNearestVerticesSearch<T>::shouldCheck(typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<T>& in_Bounds) const
 {
    return in_Bounds.lower < m_MaxDistance2;
 }
 
 template <class T>
-void AWT::VerticesNearestVerticesSearch<T>::checkObject( const int in_Index )
+void AWT::VerticesNearestVerticesSearch<T>::checkObject(const int in_Index)
 {
    objectChecked();
 
@@ -136,64 +136,64 @@ void AWT::VerticesNearestVerticesSearch<T>::checkObject( const int in_Index )
    T tmp;
 
    T pnt[3];
-   m_Data->getPosition( in_Index, pnt );
+   m_Data->getPosition(in_Index, pnt);
 
-   for ( int i = 0; i < 3; ++i )
+   for (int i = 0; i < 3; ++i)
    {
       tmp = pnt[i] - m_TestPoint[i];
       dist2 += tmp*tmp;
 
-      if ( dist2 >= m_MaxDistance2 )
+      if (dist2 >= m_MaxDistance2)
          return;
    }
 
-   m_NearestPoints.push_back( in_Index );
+   m_NearestPoints.push_back(in_Index);
 }
 
 template <class T>
-void AWT::VerticesNearestVerticesSearch<T>::setTestPoint( const T* in_TestPoint  )
+void AWT::VerticesNearestVerticesSearch<T>::setTestPoint(const T* in_TestPoint )
 {
-   for ( int i = 0; i < 3; i++ )
+   for (int i = 0; i < 3; i++)
       m_TestPoint[i] = in_TestPoint[i];
 }
 
 template <class T>
-void AWT::VerticesNearestVerticesSearch<T>::getTestPoint( T* out_TestPoint ) const
+void AWT::VerticesNearestVerticesSearch<T>::getTestPoint(T* out_TestPoint) const
 {
-   for ( int i = 0; i < 3; i++ )
+   for (int i = 0; i < 3; i++)
       out_TestPoint[i] = m_TestPoint[i];
 }
 
 template <class T>
-AWT::MeshIndex AWT::VerticesNearestVerticesSearch<T>::getNumberOfPointsFound( ) const
+AWT::MeshIndex AWT::VerticesNearestVerticesSearch<T>::getNumberOfPointsFound() const
 {
-   return static_cast<MeshIndex>( m_NearestPoints.size( ) );
+   return static_cast<MeshIndex>(m_NearestPoints.size());
 }
 
 template <class T>
-AWT::MeshIndex AWT::VerticesNearestVerticesSearch<T>::getPointFoundIndex( AWT::MeshIndex idx ) const
+AWT::MeshIndex AWT::VerticesNearestVerticesSearch<T>::getPointFoundIndex(AWT::MeshIndex idx) const
 {
    return m_NearestPoints[idx];
 }
 
 template <class T>
-void AWT::VerticesNearestVerticesSearch<T>::setRadius( const T in_Radius )
+void AWT::VerticesNearestVerticesSearch<T>::setRadius(const T in_Radius)
 {
    m_MaxDistance2 = m_InitMaxDistance2 = in_Radius*in_Radius;
 }
 
 template <class T>
-T    AWT::VerticesNearestVerticesSearch<T>::getRadius( ) const
+T    AWT::VerticesNearestVerticesSearch<T>::getRadius() const
 {
-   return sqrt( m_MaxDistance2 );
+   return sqrt(m_MaxDistance2);
 }
 
 template <class T>
-void AWT::VerticesNearestVerticesSearch<T>::reset( )
+void AWT::VerticesNearestVerticesSearch<T>::reset()
 {
    VerticesSearch<T>::reset();
 
-   m_NearestPoints.clear( );
+   m_NearestPoints.clear();
    m_MaxDistance2 = m_InitMaxDistance2;
 }
 

@@ -35,9 +35,9 @@ namespace AWT
    class ControlPointSearcherCallback : public virtual ManagedObject
    {
    public:
-      typedef ManagedAutoPointer<ControlPointSearcherCallback<T>> P;
+      typedef ManagedAutoPointer<ControlPointSearcherCallback<T> > P;
 
-      virtual void controlPointFound( const MeshIndex index ) = 0;
+      virtual void controlPointFound(const MeshIndex index) = 0;
    };
 }
 

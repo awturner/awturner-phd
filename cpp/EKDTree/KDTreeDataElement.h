@@ -34,39 +34,39 @@
 //      class KDTreeDataElement
 //      {
 //      public:
-//         virtual const unsigned char GetDimensionality( ) { return K; }
+//         virtual const unsigned char GetDimensionality() { return K; }
 //
 //         /*! Return the sort value on the given axis
 //          * @param in_Axis Axis to return value from
 //          */
-//         virtual T GetValue( const int in_Axis ) const = 0;
+//         virtual T GetValue(const int in_Axis) const = 0;
 //
 //         /*! Return the minimum value of the bounding
 //          * box on the specified axis
 //          * @param in_Axis Axis to return value from
 //          */
-//         virtual T GetMinBound( const int in_Axis ) const= 0;
+//         virtual T GetMinBound(const int in_Axis) const= 0;
 //
 //         /*! Return the maximum value of the bounding
 //          * box on the specified axis
 //          * @param in_Axis Axis to return value from
 //          */
-//         virtual T GetMaxBound( const int in_Axis ) const = 0;
+//         virtual T GetMaxBound(const int in_Axis) const = 0;
 //
 //         /*! Make sure that the data element is up-to-date
 //          */
-//         virtual void update( ) = 0;
+//         virtual void update() = 0;
 //
 //         static int QueryCount;
 //
 //      protected:
 //         /*
-//         static T clamp( T val, T min, T max )
+//         static T clamp(T val, T min, T max)
 //         {
-//            if ( val < min )
+//            if (val < min)
 //               return min;
 //
-//            if ( val > max )
+//            if (val > max)
 //               return max;
 //
 //            return val;

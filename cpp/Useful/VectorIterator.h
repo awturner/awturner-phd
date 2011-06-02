@@ -36,35 +36,35 @@ namespace AWT
    class VectorIterator : public Container::Iterator<T>
    {
    protected:
-      VectorIterator( const std::vector<T>& vec )
+      VectorIterator(const std::vector<T>& vec)
       {
-         this->iter    = vec.begin( );
-         this->iterEnd = vec.end( );
+         this->iter    = vec.begin();
+         this->iterEnd = vec.end();
       }
 
-      virtual ~VectorIterator( )
+      virtual ~VectorIterator()
       {
       }
 
    public:
-      static VectorIterator<T>* getInstance( const std::vector<T>& vec )
+      static VectorIterator<T>* getInstance(const std::vector<T>& vec)
       {
-         return new VectorIterator<T>( vec );
+         return new VectorIterator<T>(vec);
       }
 
-      virtual std::string getClassName( ) const
+      virtual std::string getClassName() const
       {
          return "AWT::VectorIterator<T>";
       }
 
-      virtual bool hasNext( )
+      virtual bool hasNext()
       {
          return iter != iterEnd;
       }
 
-      virtual T next( )
+      virtual T next()
       {
-         if ( !hasNext( ) )
+         if (!hasNext())
             AWTEXCEPTIONTHROW("No such element");
 
          return *iter++;

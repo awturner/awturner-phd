@@ -33,13 +33,13 @@ class QSplitterEx : public QSplitter
    Q_OBJECT;
 
 public:
-   QSplitterEx( QWidget* parent = 0 );
+   QSplitterEx(QWidget* parent = 0);
 
 signals:
-   void widthsChanged( QSplitterEx* self );
+   void widthsChanged(QSplitterEx* self);
 
 protected slots:
-   void handleSplitterMoved( );
+   void handleSplitterMoved();
 };
 
 #endif // __QSPLITTEREX_H__

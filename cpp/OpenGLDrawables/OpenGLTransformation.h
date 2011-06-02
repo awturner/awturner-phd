@@ -37,34 +37,34 @@ namespace AWT
       typedef ManagedAutoPointer<OpenGLTransformation> P;
 
    protected:
-      OpenGLTransformation( Drawable::P d, typename Pose<T>::P pose = 0 );
+      OpenGLTransformation(Drawable::P d, typename Pose<T>::P pose = 0);
 
-      virtual ~OpenGLTransformation( );
+      virtual ~OpenGLTransformation();
 
    public:
-      static P getInstance( Drawable::P d, typename Pose<T>::P pose = 0 );
+      static P getInstance(Drawable::P d, typename Pose<T>::P pose = 0);
 
-      virtual void draw( DrawContext::P context, const bool transparentPass );
+      virtual void draw(DrawContext::P context, const bool transparentPass);
 
-      virtual void setVisible( const bool v );
+      virtual void setVisible(const bool v);
 
-      virtual bool isVisible( ) const;
+      virtual bool isVisible() const;
 
-      virtual void getBounds( double* out_Bounds );
+      virtual void getBounds(double* out_Bounds);
 
-      virtual void setDrawable( Drawable::P d );
+      virtual void setDrawable(Drawable::P d);
 
-      virtual Drawable::P getDrawable( );
+      virtual Drawable::P getDrawable();
 
-      virtual void setPose( typename Pose<T>::P pose );
+      virtual void setPose(typename Pose<T>::P pose);
 
-      virtual typename Pose<T>::P getPose( );
+      virtual typename Pose<T>::P getPose();
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual void setParent( DrawableAssembly* p );
+      virtual void setParent(DrawableAssembly* p);
 
-      virtual DrawableAssembly* getParent( );
+      virtual DrawableAssembly* getParent();
 
    protected:
       struct D;

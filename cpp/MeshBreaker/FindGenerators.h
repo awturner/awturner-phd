@@ -46,34 +46,34 @@ namespace AWT
       };
 
    protected:
-      FindGenerators( );
-      FindGenerators( typename Mesh<T>::P mesh, const TraversalOrder ord );
-      virtual ~FindGenerators( );
+      FindGenerators();
+      FindGenerators(typename Mesh<T>::P mesh, const TraversalOrder ord);
+      virtual ~FindGenerators();
 
    public:
-      static P getInstance( typename Mesh<T>::P mesh, const TraversalOrder ord );
-      virtual std::string getClassName( ) const;
+      static P getInstance(typename Mesh<T>::P mesh, const TraversalOrder ord);
+      virtual std::string getClassName() const;
 
-      MeshIndex getNumberOfGeneratorPairs( ) const;
-      void getGeneratorPair( const MeshIndex p, Tuples<MeshIndex>::P& contA, Tuples<MeshIndex>::P& contB );
-      void getGeneratorPair( const MeshIndex p, std::vector< HalfEdge* >& contA, std::vector< HalfEdge* >& contB );
+      MeshIndex getNumberOfGeneratorPairs() const;
+      void getGeneratorPair(const MeshIndex p, Tuples<MeshIndex>::P& contA, Tuples<MeshIndex>::P& contB);
+      void getGeneratorPair(const MeshIndex p, std::vector< HalfEdge* >& contA, std::vector< HalfEdge* >& contB);
 
-      const std::vector<HalfEdge*>& getGenerator( const unsigned int pair, const unsigned int i );
+      const std::vector<HalfEdge*>& getGenerator(const unsigned int pair, const unsigned int i);
 
-      static TraversalOrder getTraversalOrder( const char* wstr );
+      static TraversalOrder getTraversalOrder(const char* wstr);
 
-      TraversalOrder getTraversalOrder( ) const;
-      void setTraversalOrder( const TraversalOrder ord );
+      TraversalOrder getTraversalOrder() const;
+      void setTraversalOrder(const TraversalOrder ord);
 
-      void flipGenerator( const MeshIndex p, const MeshIndex i );
+      void flipGenerator(const MeshIndex p, const MeshIndex i);
 
-      typename Mesh<T>::P getMesh( );
+      typename Mesh<T>::P getMesh();
 
-      bool isFaceVisited( const MeshIndex f ) const;
+      bool isFaceVisited(const MeshIndex f) const;
 
-      MeshIndex getLastMergePoint( ) const;
+      MeshIndex getLastMergePoint() const;
 
-      HalfEdgeMesh::P getHalfEdgeMesh( );
+      HalfEdgeMesh::P getHalfEdgeMesh();
 
    protected:
       struct D;

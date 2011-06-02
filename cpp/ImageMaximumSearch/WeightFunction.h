@@ -34,15 +34,15 @@ namespace AWT
    class WeightFunction
    {
    public:
-      virtual T calculate( T lambda ) = 0;
-      virtual void finishedWith( )
+      virtual T calculate(T lambda) = 0;
+      virtual void finishedWith()
       {
-         if ( --usageCount == 0 )
+         if (--usageCount == 0)
             delete this;
       }
 
    protected:
-      WeightFunction( ) { usageCount = 0; }
+      WeightFunction() { usageCount = 0; }
 
       int usageCount;
    };
@@ -51,25 +51,25 @@ namespace AWT
    class SingletonWeightFunction : public WeightFunction<T>
    {
    public:
-      virtual void finishedWith( )
+      virtual void finishedWith()
       {
          --usageCount;
       }
    protected:
-      SingletonWeightFunction( ) {}
-      virtual ~SingletonWeightFunction( ) {}
+      SingletonWeightFunction() {}
+      virtual ~SingletonWeightFunction() {}
    };
 
    template <class T>
    class UniformWeightFunction : public SingletonWeightFunction<T>
    {
    public:
-      virtual T calculate( T lambda ) { return 1; }
+      virtual T calculate(T lambda) { return 1; }
 
-      static UniformWeightFunction* getInstance( )
+      static UniformWeightFunction* getInstance()
       {
-         if ( instance == 0 )
-            instance = new UniformWeightFunction( );
+         if (instance == 0)
+            instance = new UniformWeightFunction();
 
          return instance;
       }
@@ -85,12 +85,12 @@ namespace AWT
    class ForwardOnlyWeightFunction : public SingletonWeightFunction<T>
    {
    public:
-      virtual T calculate( T lambda ) { return ( lambda >= 0 ) ? 1 : 0; }
+      virtual T calculate(T lambda) { return (lambda >= 0) ? 1 : 0; }
 
-      static ForwardOnlyWeightFunction* getInstance( )
+      static ForwardOnlyWeightFunction* getInstance()
       {
-         if ( instance == 0 )
-            instance = new ForwardOnlyWeightFunction( );
+         if (instance == 0)
+            instance = new ForwardOnlyWeightFunction();
 
          return instance;
       }
@@ -106,9 +106,9 @@ namespace AWT
    class NormalWeightFunction : public WeightFunction<T>
    {
    public:
-      NormalWeightFunction( const T sigma ) : sigma2( sigma*sigma ) {}
+      NormalWeightFunction(const T sigma) : sigma2(sigma*sigma) {}
 
-      virtual T calculate( T lambda ) { return exp( -lambda*lambda/sigma2 ); }
+      virtual T calculate(T lambda) { return exp(-lambda*lambda/sigma2); }
 
    protected:
       const T sigma2;
@@ -118,13 +118,13 @@ namespace AWT
    class AnisotropicNormalWeightFunction : public WeightFunction<T>
    {
    public:
-      AnisotropicNormalWeightFunction( const T sigmaF, const T sigmaB ) : sigmaF2( sigmaF*sigmaF ), sigmaB2( sigmaB*sigmaB ) {}
+      AnisotropicNormalWeightFunction(const T sigmaF, const T sigmaB) : sigmaF2(sigmaF*sigmaF), sigmaB2(sigmaB*sigmaB) {}
 
-      virtual T calculate( T lambda ) {
-         if ( lambda > 0 )
-            return exp( -lambda*lambda/sigmaF2 );
+      virtual T calculate(T lambda) {
+         if (lambda > 0)
+            return exp(-lambda*lambda/sigmaF2);
          else
-            return exp( -lambda*lambda/sigmaB2 );
+            return exp(-lambda*lambda/sigmaB2);
       }
 
    protected:
@@ -136,18 +136,18 @@ namespace AWT
    class AnisotropicTriangleWeightFunction : public WeightFunction<T>
    {
    public:
-      AnisotropicTriangleWeightFunction( const T _sigmaF, const T _sigmaB ) : sigmaF( _sigmaF ), sigmaB( _sigmaB ) {}
+      AnisotropicTriangleWeightFunction(const T _sigmaF, const T _sigmaB) : sigmaF(_sigmaF), sigmaB(_sigmaB) {}
 
-      virtual T calculate( T lambda ) {
+      virtual T calculate(T lambda) {
          T ret;
 
-         if ( lambda > 0 )
-            if ( lambda > sigmaF )
+         if (lambda > 0)
+            if (lambda > sigmaF)
                return 0;
             else
                return 1 - lambda / sigmaF;
          else
-            if ( -lambda > sigmaB )
+            if (-lambda > sigmaB)
                return 0;
             else
                return 1 + lambda / sigmaB;

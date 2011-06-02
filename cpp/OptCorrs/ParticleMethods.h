@@ -34,11 +34,11 @@ namespace AWT
    {
       namespace Particles
       {
-         void remoteMethod( initialize );
-         void remoteMethod( addMesh );
-         void remoteMethod( configureRefinement );
+         void remoteMethod(initialize);
+         void remoteMethod(addMesh);
+         void remoteMethod(configureRefinement);
 
-         void addMethods( RemoteMethods& methods );
+         void addMethods(RemoteMethods& methods);
       }
    }
 }

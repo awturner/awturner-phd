@@ -45,104 +45,104 @@ struct AWT::ControlPointSearcher<T>::D
 };
 
 template <class T>
-AWT::ControlPointSearcher<T>::ControlPointSearcher( )
+AWT::ControlPointSearcher<T>::ControlPointSearcher()
 {
    m_D = new D;
 }
 
 template <class T>
-AWT::ControlPointSearcher<T>::~ControlPointSearcher( )
+AWT::ControlPointSearcher<T>::~ControlPointSearcher()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::ControlPointSearcher<T>::P AWT::ControlPointSearcher<T>::getInstance( )
+typename AWT::ControlPointSearcher<T>::P AWT::ControlPointSearcher<T>::getInstance()
 {
-   AUTOGETINSTANCE( ControlPointSearcher<T>, ( ) );
+   AUTOGETINSTANCE(ControlPointSearcher<T>, ());
 }
 
 template <class T>
-GETNAMEMACRO( AWT::ControlPointSearcher<T> );
+GETNAMEMACRO(AWT::ControlPointSearcher<T>);
 
 template <class T>
-void AWT::ControlPointSearcher<T>::setCallback( typename ControlPointSearcherCallback<T>::P callback )
+void AWT::ControlPointSearcher<T>::setCallback(typename ControlPointSearcherCallback<T>::P callback)
 {
    m_D->m_Callback = callback;
 }
 
 template <class T>
-void AWT::ControlPointSearcher<T>::calculateBoxDistanceBounds2( typename OEKDTree::OEKDTreeBranch<T,3>* in_Branch, OEKDTree::SqDistBounds<T>& bounds  ) const
+void AWT::ControlPointSearcher<T>::calculateBoxDistanceBounds2(typename OEKDTree::OEKDTreeBranch<T,3>* in_Branch, OEKDTree::SqDistBounds<T>& bounds ) const
 {
    boxChecked();
 
    int ax;
-   for ( ax = 0; ax < 3; ++ax )
+   for (ax = 0; ax < 3; ++ax)
    {
-      if ( in_Branch->getMinimumBound( ax ) > m_D->m_TestPoint[ax] )
+      if (in_Branch->getMinimumBound(ax) > m_D->m_TestPoint[ax])
          break;
 
-      if ( in_Branch->getMaximumBound( ax ) < m_D->m_TestPoint[ax] )
+      if (in_Branch->getMaximumBound(ax) < m_D->m_TestPoint[ax])
          break;
    }
 
-   bounds.lower = ( ax == 3 ) ? 0 : std::numeric_limits<T>::infinity( );
-   bounds.upper = std::numeric_limits<T>::infinity( );
+   bounds.lower = (ax == 3) ? 0 : std::numeric_limits<T>::infinity();
+   bounds.upper = std::numeric_limits<T>::infinity();
 }
 
 template <class T>
-void AWT::ControlPointSearcher<T>::checkObject( const int in_Index )
+void AWT::ControlPointSearcher<T>::checkObject(const int in_Index)
 {
    objectChecked();
    
-   for ( int ax = 0; ax < 3; ++ax )
+   for (int ax = 0; ax < 3; ++ax)
    {
       // Possible equality because influence is zero on the boundary
 
-      if ( m_D->data->getMinimumBound( in_Index, ax ) >= m_D->m_TestPoint[ax] )
+      if (m_D->data->getMinimumBound(in_Index, ax) >= m_D->m_TestPoint[ax])
          return;
 
-      if ( m_D->data->getMaximumBound( in_Index, ax ) <= m_D->m_TestPoint[ax] )
+      if (m_D->data->getMaximumBound(in_Index, ax) <= m_D->m_TestPoint[ax])
          return;
    }
    // We now know that the test point is inside the control point's domain of influence...
 
-   if ( *m_D->m_Callback != 0 )
-      m_D->m_Callback->controlPointFound( in_Index );
+   if (*m_D->m_Callback != 0)
+      m_D->m_Callback->controlPointFound(in_Index);
 }
 
 template <class T>
-bool AWT::ControlPointSearcher<T>::shouldCheck( AWT::OEKDTree::OEKDTreeBranch<T,3> *branch, const AWT::OEKDTree::SqDistBounds<T> &bounds) const
+bool AWT::ControlPointSearcher<T>::shouldCheck(AWT::OEKDTree::OEKDTreeBranch<T,3> *branch, const AWT::OEKDTree::SqDistBounds<T> &bounds) const
 {
    return bounds.lower == 0;
 }
 
 template <class T>
-void AWT::ControlPointSearcher<T>::setTestPoint( const MeshIndex in_Index, const T* in_TestPoint  )
+void AWT::ControlPointSearcher<T>::setTestPoint(const MeshIndex in_Index, const T* in_TestPoint )
 {
-   for ( int i = 0; i < 3; i++ )
+   for (int i = 0; i < 3; i++)
       m_D->m_TestPoint[i] = in_TestPoint[i];
 
    m_D->m_TestPointIndex = in_Index;
 }
 
 template <class T>
-void AWT::ControlPointSearcher<T>::getTestPoint( T* out_TestPoint ) const
+void AWT::ControlPointSearcher<T>::getTestPoint(T* out_TestPoint) const
 {
-   for ( int i = 0; i < 3; i++ )
+   for (int i = 0; i < 3; i++)
       out_TestPoint[i] = m_D->m_TestPoint[i];
 }
 
 template <class T>
-typename AWT::ControlPointSetTreeData<T>::P AWT::ControlPointSearcher<T>::getData( )
+typename AWT::ControlPointSetTreeData<T>::P AWT::ControlPointSearcher<T>::getData()
 {
    return m_D->data;
 }
 
 template <class T>
-void AWT::ControlPointSearcher<T>::setData( typename AWT::OEKDTree::OEKDTreeData<T,3>::P data )
+void AWT::ControlPointSearcher<T>::setData(typename AWT::OEKDTree::OEKDTreeData<T,3>::P data)
 {
-   m_D->data = checkType<AWT::OEKDTree::OEKDTreeData<T,3>,ControlPointSetTreeData<T>>( data );
+   m_D->data = checkType<AWT::OEKDTree::OEKDTreeData<T,3>,ControlPointSetTreeData<T> >(data);
    modified();
 }
 

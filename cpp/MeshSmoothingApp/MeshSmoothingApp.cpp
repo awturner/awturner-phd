@@ -39,21 +39,21 @@ using namespace AWT;
 
 typedef double T;
 
-T calculateMeanEdgeLength( Mesh<T>::P mesh )
+T calculateMeanEdgeLength(Mesh<T>::P mesh)
 {
    T pntA[3], pntB[3], pntC[3];
    T delta[3];
    T tmp;
    T lenSum = 0;
    MeshIndex lenCnt = 0;
-   //for ( MeshIndex f = 0; f < mesh->getNumberOfFaces( ); ++f )
-   MESH_EACHFACE( mesh, f )
+   //for (MeshIndex f = 0; f < mesh->getNumberOfFaces(); ++f)
+   MESH_EACHFACE(mesh, f)
    {
-      mesh->getFace( f, pntA, pntB, pntC );
+      mesh->getFace(f, pntA, pntB, pntC);
 
       delta[0] = delta[1] = delta[2] = 0;
 
-      for ( int i = 0; i < 3; ++i )
+      for (int i = 0; i < 3; ++i)
       {
          tmp = pntB[i] - pntA[i];
          delta[0] += tmp*tmp;
@@ -65,36 +65,36 @@ T calculateMeanEdgeLength( Mesh<T>::P mesh )
          delta[2] += tmp*tmp;
       }
       
-      for ( int i = 0; i < 3; ++i )
+      for (int i = 0; i < 3; ++i)
       {
-         lenSum += sqrt( delta[i] );
+         lenSum += sqrt(delta[i]);
          ++lenCnt;
       }
    }
 
-   return ( lenSum / lenCnt );
+   return (lenSum / lenCnt);
 }
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   if ( argc < 5 )
+   if (argc < 5)
    {
       std::cerr << "Must provide source and target filename, spatial and influence sigmas";
-      DEBUGLINEANDEXIT( 1 );
+      DEBUGLINEANDEXIT(1);
    }
 
-   double spatialSigma   = atof( argv[3] );
-   double influenceSigma = atof( argv[4] );
+   double spatialSigma   = atof(argv[3]);
+   double influenceSigma = atof(argv[4]);
 
-   Mesh<double>::P mesh = VTKMeshLoader<T>::load( argv[1] );
+   Mesh<double>::P mesh = VTKMeshLoader<T>::load(argv[1]);
 
-   AreaAveragedNormalCalculator<T>::getInstance( )->calculateNormalsAndSet( mesh );
+   AreaAveragedNormalCalculator<T>::getInstance()->calculateNormalsAndSet(mesh);
 
-   T meanEdgeLength = calculateMeanEdgeLength( mesh );
+   T meanEdgeLength = calculateMeanEdgeLength(mesh);
 
-   PRINTVBL( spatialSigma * meanEdgeLength );
-   PRINTVBL( influenceSigma * meanEdgeLength );
-   Mesh<double>::P smoothedMesh = MeshSmoothing<double>::smooth( mesh, spatialSigma * meanEdgeLength, influenceSigma  * meanEdgeLength );
+   PRINTVBL(spatialSigma * meanEdgeLength);
+   PRINTVBL(influenceSigma * meanEdgeLength);
+   Mesh<double>::P smoothedMesh = MeshSmoothing<double>::smooth(mesh, spatialSigma * meanEdgeLength, influenceSigma  * meanEdgeLength);
 
-   VTKMeshWriter<double>::write( smoothedMesh, argv[2] );
+   VTKMeshWriter<double>::write(smoothedMesh, argv[2]);
 }

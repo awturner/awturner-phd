@@ -37,31 +37,31 @@ namespace AWT
    class DeformationAccumulator : public ControlPointSearcherCallback<T>
    {
    public:
-      typedef ManagedAutoPointer<DeformationAccumulator<T>> P;
+      typedef ManagedAutoPointer<DeformationAccumulator<T> > P;
 
    protected:
-      DeformationAccumulator( typename ControlPointSet<T>::P cps );
+      DeformationAccumulator(typename ControlPointSet<T>::P cps);
 
-      virtual ~DeformationAccumulator( );
+      virtual ~DeformationAccumulator();
 
    public:
-      static P getInstance( typename ControlPointSet<T>::P cps );
+      static P getInstance(typename ControlPointSet<T>::P cps);
 
-      virtual void reset( );
+      virtual void reset();
 
-      virtual void controlPointFound( const MeshIndex controlIndex );
+      virtual void controlPointFound(const MeshIndex controlIndex);
 
-      void getDeformedPoint( T* out_Point ) const;
+      void getDeformedPoint(T* out_Point) const;
 
-      void getDeformation( T* out_Point ) const;
+      void getDeformation(T* out_Point) const;
 
-      void getTestPoint( T* out_Point ) const;
+      void getTestPoint(T* out_Point) const;
 
-      void setTestPoint( const T* in_Point );
+      void setTestPoint(const T* in_Point);
 
-      unsigned int getNumberOfControlPoints( ) const;
+      unsigned int getNumberOfControlPoints() const;
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
    protected:
       struct D;

@@ -31,8 +31,8 @@ namespace AWT
    class ColourConversions
    {
    public:
-      static void rgbToHsv( const double* rgb, double* hsv );
-      static void hsvToRgb( const double* hsv, double* rgb );
+      static void rgbToHsv(const double* rgb, double* hsv);
+      static void hsvToRgb(const double* hsv, double* rgb);
    };
 }
 

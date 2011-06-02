@@ -39,30 +39,30 @@
 using namespace AWT;
 typedef double T;
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   if ( argc < 8 )
+   if (argc < 8)
    {
       std::cerr << "Must provide at least input, 2 output filenames and plane normal";
-      exit( 1 );
+      exit(1);
    }
 
-   Mesh<T>::P mesh = VTKMeshLoader<T>::load( argv[1], false );
-   PlanarCut<T>::P plane = PlanarCut<T>::getInstance( );
-   MeshSlicer<T>::P slicer = MeshSlicer<T>::getInstance( );
+   Mesh<T>::P mesh = VTKMeshLoader<T>::load(argv[1], false);
+   PlanarCut<T>::P plane = PlanarCut<T>::getInstance();
+   MeshSlicer<T>::P slicer = MeshSlicer<T>::getInstance();
 
    T planeNormal[4];
-   for ( int i = 0; i < 4; ++i )
-      planeNormal[i] = atof( argv[i+4] );
+   for (int i = 0; i < 4; ++i)
+      planeNormal[i] = atof(argv[i+4]);
 
-   PRINTVEC( planeNormal, 4 );
+   PRINTVEC(planeNormal, 4);
 
-   plane->setPlane( planeNormal );
+   plane->setPlane(planeNormal);
 
-   slicer->setCuttingFunction( plane );
+   slicer->setCuttingFunction(plane);
 
-   MeshSlicedPair<T>::P sliced = slicer->sliceMesh( mesh );
+   MeshSlicedPair<T>::P sliced = slicer->sliceMesh(mesh);
 
-   VTKMeshWriter<T>::write( sliced->getIncluded( ), argv[2] );
-   VTKMeshWriter<T>::write( sliced->getExcluded( ), argv[3] );
+   VTKMeshWriter<T>::write(sliced->getIncluded(), argv[2]);
+   VTKMeshWriter<T>::write(sliced->getExcluded(), argv[3]);
 }

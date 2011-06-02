@@ -42,23 +42,23 @@ namespace AWT
       typedef ManagedAutoPointer< ControlPointSetTreeData<T> > P;
 
    protected:
-      ControlPointSetTreeData( std::vector<typename ControlPoint<T>::P>* vec );
-      virtual ~ControlPointSetTreeData( );
+      ControlPointSetTreeData(std::vector<typename ControlPoint<T>::P>* vec);
+      virtual ~ControlPointSetTreeData();
 
    public:
-      static P getInstance( std::vector<typename ControlPoint<T>::P>* vec );
+      static P getInstance(std::vector<typename ControlPoint<T>::P>* vec);
 
-      virtual OEKDTree::ObjectIndex getNumberOfObjects( ) const;
+      virtual OEKDTree::ObjectIndex getNumberOfObjects() const;
 
-      virtual T getValue( OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis ) const;
+      virtual T getValue(OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis) const;
 
-      virtual T getCoordinate( OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis ) const;
-      virtual void getPosition( const OEKDTree::ObjectIndex objectIndex, T* pos ) const;
+      virtual T getCoordinate(OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis) const;
+      virtual void getPosition(const OEKDTree::ObjectIndex objectIndex, T* pos) const;
 
-      virtual T getMinimumBound( OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis ) const;
-      virtual T getMaximumBound( OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis ) const;
+      virtual T getMinimumBound(OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis) const;
+      virtual T getMaximumBound(OEKDTree::ObjectIndex objectIndex, OEKDTree::AxisIndex axis) const;
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
    protected:
       struct D;
       D* m_D;

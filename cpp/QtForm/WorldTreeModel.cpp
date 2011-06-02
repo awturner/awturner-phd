@@ -31,13 +31,13 @@ using namespace AWT;
 
 struct AWT::WorldTreeModel::D
 {
-   unsigned int getChildRow( Drawable* d )
+   unsigned int getChildRow(Drawable* d)
    {
-      DrawableAssembly* parent = d->getParent( );
+      DrawableAssembly* parent = d->getParent();
 
       unsigned int row = 0;
-      for ( row = 0; row < parent->getNumberOfChildren( ); ++row )
-         if ( *parent->getChild( row ) == d )
+      for (row = 0; row < parent->getNumberOfChildren(); ++row)
+         if (*parent->getChild(row) == d)
             break;
 
       return row;
@@ -71,14 +71,14 @@ QModelIndex AWT::WorldTreeModel::index(int row, int column, const QModelIndex &p
    else
       parentItem = static_cast<Drawable*>(parent.internalPointer());
 
-   DrawableAssembly* assm = dynamic_cast<DrawableAssembly*>( parentItem );
+   DrawableAssembly* assm = dynamic_cast<DrawableAssembly*>(parentItem);
 
    // If we don't have an assembly, or the row requested is too large,
    // return the dummy model index
-   if ( assm == 0 || static_cast<unsigned int>( row ) >= assm->getNumberOfChildren( ) )
-      return QModelIndex( );
+   if (assm == 0 || static_cast<unsigned int>(row) >= assm->getNumberOfChildren())
+      return QModelIndex();
 
-   return createIndex( row, column, *assm->getChild( row ) );
+   return createIndex(row, column, *assm->getChild(row));
 }
 
 
@@ -94,9 +94,9 @@ QModelIndex AWT::WorldTreeModel::parent(const QModelIndex &index) const
    if (parentItem == m_D->m_RootItem)
       return QModelIndex();
 
-   unsigned int row = m_D->getChildRow( parentItem );
-   if ( row < parentItem->getParent( )->getNumberOfChildren( ) )
-         return createIndex( row, 0, parentItem );
+   unsigned int row = m_D->getChildRow(parentItem);
+   if (row < parentItem->getParent()->getNumberOfChildren())
+         return createIndex(row, 0, parentItem);
 
    return QModelIndex();
 }
@@ -113,10 +113,10 @@ int AWT::WorldTreeModel::rowCount(const QModelIndex &parent) const
    else
       parentItem = static_cast<Drawable*>(parent.internalPointer());
 
-   DrawableAssembly* assm = dynamic_cast<DrawableAssembly*>( parentItem );
+   DrawableAssembly* assm = dynamic_cast<DrawableAssembly*>(parentItem);
 
-   if ( assm != 0 )
-      return assm->getNumberOfChildren( );
+   if (assm != 0)
+      return assm->getNumberOfChildren();
 
    return 0;
 }
@@ -132,23 +132,23 @@ QVariant AWT::WorldTreeModel::data(const QModelIndex &index, int role) const
       return QVariant();
 
    // Work out the index of the drawable
-   Drawable*         item      = static_cast<Drawable*>( index.internalPointer( ) );
-   DrawableAssembly* parentItem = item->getParent( );
-   unsigned int row = m_D->getChildRow( item );
+   Drawable*         item      = static_cast<Drawable*>(index.internalPointer());
+   DrawableAssembly* parentItem = item->getParent();
+   unsigned int row = m_D->getChildRow(item);
 
-   if ( row < parentItem->getNumberOfChildren( ) )
+   if (row < parentItem->getNumberOfChildren())
    {
-      if ( role == Qt::CheckStateRole && index.column( ) == 1 )
+      if (role == Qt::CheckStateRole && index.column() == 1)
       {
-         return item->isVisible( ) ? Qt::Checked : Qt::Unchecked;
+         return item->isVisible() ? Qt::Checked : Qt::Unchecked;
       }
-      else if ( role == Qt::DisplayRole && index.column( ) == 0 )
+      else if (role == Qt::DisplayRole && index.column() == 0)
       {
-         return tr( parentItem->getChildName( row ).c_str( ) );
+         return tr(parentItem->getChildName(row).c_str());
       }
    }
 
-   return QVariant( );
+   return QVariant();
 }
 
 QVariant AWT::WorldTreeModel::headerData(int section, Qt::Orientation orientation,
@@ -156,12 +156,12 @@ QVariant AWT::WorldTreeModel::headerData(int section, Qt::Orientation orientatio
 {
    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
    {
-      switch ( section )
+      switch (section)
       {
       case 0:
-         return tr( "Name" );
+         return tr("Name");
       case 1:
-         return tr( "Visible" );
+         return tr("Visible");
       }
    }
 
@@ -175,7 +175,7 @@ Qt::ItemFlags AWT::WorldTreeModel::flags(const QModelIndex &index) const
 
    Qt::ItemFlags ret = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
-   if ( index.column() == 1 )
+   if (index.column() == 1)
       ret |= Qt::ItemIsUserCheckable;
 
    return ret;
@@ -183,14 +183,14 @@ Qt::ItemFlags AWT::WorldTreeModel::flags(const QModelIndex &index) const
 
 bool AWT::WorldTreeModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-   if ( index.isValid( ) )
+   if (index.isValid())
    {
-      if ( index.column( ) == 1 && role == Qt::CheckStateRole )
+      if (index.column() == 1 && role == Qt::CheckStateRole)
       {
-         Drawable* d = static_cast<Drawable*>( index.internalPointer( ) );
-         d->setVisible( value.toBool( ) );
+         Drawable* d = static_cast<Drawable*>(index.internalPointer());
+         d->setVisible(value.toBool());
 
-         emit dataChanged( index, index );
+         emit dataChanged(index, index);
          return true;
       }
    }

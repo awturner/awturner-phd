@@ -34,23 +34,23 @@ namespace AWT
    class OpenGLColourMapper : public ColourMapper<T>
    {
    public:
-      typedef ManagedAutoPointer<OpenGLColourMapper<T>> P;
+      typedef ManagedAutoPointer<OpenGLColourMapper<T> > P;
 
    protected:
-      OpenGLColourMapper( );
-      virtual ~OpenGLColourMapper( );
+      OpenGLColourMapper();
+      virtual ~OpenGLColourMapper();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
-      virtual bool isOpaque( ) const;
+      virtual bool isOpaque() const;
 
-      virtual void prepare( );
+      virtual void prepare();
 
-      virtual void unprepare( );
+      virtual void unprepare();
 
-      virtual void tweak( const TweakType tw, const MeshIndex v );
+      virtual void tweak(const TweakType tw, const MeshIndex v);
 
    protected:
       struct D;

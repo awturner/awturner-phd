@@ -27,21 +27,21 @@
 
 std::vector<int> AWT::ColouredConsole::colStack;
 
-AWT::ColouredConsole::ColouredConsole( const int fg, const int bg )
+AWT::ColouredConsole::ColouredConsole(const int fg, const int bg)
 {
    hConsole = GetStdHandle(STD_ERROR_HANDLE);
 
-   if ( colStack.empty() )
-      colStack.push_back( COL_WHITE );
+   if (colStack.empty())
+      colStack.push_back(COL_WHITE);
 
    int col = bg << 4 | fg;
-   SetConsoleTextAttribute( hConsole, col );
+   SetConsoleTextAttribute(hConsole, col);
 
-   colStack.push_back( col );
+   colStack.push_back(col);
 }
 
-AWT::ColouredConsole::~ColouredConsole( )
+AWT::ColouredConsole::~ColouredConsole()
 {
    colStack.pop_back();
-   SetConsoleTextAttribute( hConsole, colStack.back() );
+   SetConsoleTextAttribute(hConsole, colStack.back());
 }

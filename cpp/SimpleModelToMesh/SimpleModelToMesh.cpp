@@ -31,33 +31,33 @@
 
 using namespace AWT::SimpleMesh;
 
-void readVector( int& i, char** argv, Vector& params )
+void readVector(int& i, char** argv, Vector& params)
 {
-   for ( Index m = 0; m < params.size(); ++m )
+   for (Index m = 0; m < params.size(); ++m)
    {
       const char* modeweightStr = argv[++i];
 
-      if ( strcmp( modeweightStr, "-" ) == 0 )
+      if (strcmp(modeweightStr, "-") == 0)
          break;
 
-      params[m] = atof( modeweightStr );
+      params[m] = atof(modeweightStr);
    }
 
-   PRINTVBL( params );
+   PRINTVBL(params);
 }
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
    int i = 0;
 
-   ShapeModel::P model = MeshIO::loadModel( std::ifstream( argv[++i] ) );
+   ShapeModel::P model = MeshIO::loadModel(std::ifstream(argv[++i]));
 
-   Vector vec( model->getNumberOfModes() );
-   vec.fill( 0 );
+   Vector vec(model->getNumberOfModes());
+   vec.fill(0);
    vec[0] = 1;
-   readVector( i, argv, vec );
+   readVector(i, argv, vec);
 
-   Mesh::P mesh = model->getMesh( vec );
+   Mesh::P mesh = model->getMesh(vec);
 
-   MeshIO::saveMesh( std::ofstream( argv[++i] ), mesh );
+   MeshIO::saveMesh(std::ofstream(argv[++i]), mesh);
 }

@@ -39,28 +39,28 @@ namespace AWT
    class OpenGLDrawableAABB : public OpenGLDrawDisplayList
    {
    public:
-      typedef ManagedAutoPointer<OpenGLDrawableAABB<T>> P;
+      typedef ManagedAutoPointer<OpenGLDrawableAABB<T> > P;
 
    protected:
-      OpenGLDrawableAABB( typename AxisAlignedBoundingBox<T,3>::P box );
-      virtual ~OpenGLDrawableAABB( );
+      OpenGLDrawableAABB(typename AxisAlignedBoundingBox<T,3>::P box);
+      virtual ~OpenGLDrawableAABB();
 
    public:
-      static P getInstance( typename AxisAlignedBoundingBox<T,3>::P box );
-      virtual std::string getClassName( ) const;
+      static P getInstance(typename AxisAlignedBoundingBox<T,3>::P box);
+      virtual std::string getClassName() const;
 
-      AxisAlignedBoundingBox<T,3>* getBox( );
+      AxisAlignedBoundingBox<T,3>* getBox();
 
-      ModifiedTime getChildModifiedTime( );
+      ModifiedTime getChildModifiedTime();
 
-      void buildList( AWT::DrawContext::P context );
+      void buildList(AWT::DrawContext::P context);
 
-      void updateBounds( );
+      void updateBounds();
 
       double getBoundImpl(unsigned int bound);
 
-      virtual DrawMaterial::P getMaterial( );
-      virtual void setMaterial( DrawMaterial::P mat );
+      virtual DrawMaterial::P getMaterial();
+      virtual void setMaterial(DrawMaterial::P mat);
 
    protected:
       struct D;

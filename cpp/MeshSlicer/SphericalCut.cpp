@@ -32,7 +32,7 @@ struct AWT::SphericalCut<T>::D
 };
 
 template <class T>
-AWT::SphericalCut<T>::SphericalCut( )
+AWT::SphericalCut<T>::SphericalCut()
 {
    m_D = new D;
 
@@ -43,53 +43,53 @@ AWT::SphericalCut<T>::SphericalCut( )
 }
 
 template <class T>
-AWT::SphericalCut<T>::~SphericalCut( )
+AWT::SphericalCut<T>::~SphericalCut()
 {
    delete m_D;
 }
 
 template <class T>
-typename AWT::SphericalCut<T>::P AWT::SphericalCut<T>::getInstance( )
+typename AWT::SphericalCut<T>::P AWT::SphericalCut<T>::getInstance()
 {
-   AUTOGETINSTANCE( AWT::SphericalCut<T>, ( ) );
+   AUTOGETINSTANCE(AWT::SphericalCut<T>, ());
 }
 
 template <class T>
-GETNAMEMACRO( AWT::SphericalCut<T> );
+GETNAMEMACRO(AWT::SphericalCut<T>);
 
 template <class T>
-void AWT::SphericalCut<T>::getCentre( T* out_Centre ) const
+void AWT::SphericalCut<T>::getCentre(T* out_Centre) const
 {
-   for ( int i = 0; i < 3; ++i )
+   for (int i = 0; i < 3; ++i)
       out_Centre[i] = m_D->m_Sphere[i];
 }
 
 template <class T>
-void AWT::SphericalCut<T>::setCentre( const T* in_Centre )
+void AWT::SphericalCut<T>::setCentre(const T* in_Centre)
 {
-   for ( int i = 0; i < 3; ++i )
+   for (int i = 0; i < 3; ++i)
       m_D->m_Sphere[i] = in_Centre[i];
 }
 
 template <class T>
-T AWT::SphericalCut<T>::getRadius( ) const
+T AWT::SphericalCut<T>::getRadius() const
 {
    return m_D->m_Sphere[3];
 }
 
 template <class T>
-void AWT::SphericalCut<T>::setRadius( const T in_Radius )
+void AWT::SphericalCut<T>::setRadius(const T in_Radius)
 {
    m_D->m_Sphere[3] = in_Radius;
 }
 
 template <class T>
-bool AWT::SphericalCut<T>::accept( T* vtx )
+bool AWT::SphericalCut<T>::accept(T* vtx)
 {
    T tmp = m_D->m_Sphere[3];
    T disc = tmp*tmp;
 
-   for ( int i = 0; i < 3; ++i )
+   for (int i = 0; i < 3; ++i)
    {
       tmp = m_D->m_Sphere[i] - vtx[i];
       disc -= tmp*tmp;

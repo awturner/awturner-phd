@@ -37,24 +37,24 @@ class MicroscribeLoggerForm : public QMainWindow, public Ui::MicroscribeLoggerFo
    Q_OBJECT;
 
 public:
-   MicroscribeLoggerForm( QWidget* in_Parent = 0, Qt::WFlags in_Fl = 0 );
-   virtual ~MicroscribeLoggerForm( );
+   MicroscribeLoggerForm(QWidget* in_Parent = 0, Qt::WFlags in_Fl = 0);
+   virtual ~MicroscribeLoggerForm();
 
-   void setMicroscribeArm( MicroscribeArm* arm );
-   MicroscribeArm* microscribeArm( );
+   void setMicroscribeArm(MicroscribeArm* arm);
+   MicroscribeArm* microscribeArm();
 
 protected slots:
-   void readArmState( );
+   void readArmState();
 
-   void updatePosition( const double time, const double x, const double y, const double z );
+   void updatePosition(const double time, const double x, const double y, const double z);
 
-   void btnCalibratePressed( );
-   void btnSetOriginPressed( );
-   void btnSetPlusXPressed( );
-   void btnSetPlusYPressed( );
+   void btnCalibratePressed();
+   void btnSetOriginPressed();
+   void btnSetPlusXPressed();
+   void btnSetPlusYPressed();
 
-   void btnStartExperimentPressed( );
-   void btnStopExperimentPressed( );
+   void btnStartExperimentPressed();
+   void btnStopExperimentPressed();
 
 protected:
    QTimer*          m_ArmTimer;

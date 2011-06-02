@@ -29,7 +29,7 @@
 #include "DrawableFramework/DrawableQuiver.h"
 #include "OpenGLDrawDisplayList.h"
 
-#pragma warning( disable: 4250 )
+#pragma warning(disable: 4250)
 
 namespace AWT
 {
@@ -40,38 +40,38 @@ namespace AWT
       typedef ManagedAutoPointer<OpenGLDrawableQuiver> P;
 
    protected:
-      OpenGLDrawableQuiver( typename Tuples<T>::P points, typename Tuples<T>::P points2 );
-      virtual ~OpenGLDrawableQuiver( );
+      OpenGLDrawableQuiver(typename Tuples<T>::P points, typename Tuples<T>::P points2);
+      virtual ~OpenGLDrawableQuiver();
 
    public:
-      static P getInstance( typename Tuples<T>::P points, typename Tuples<T>::P points2 );
-      virtual std::string getClassName( ) const;
+      static P getInstance(typename Tuples<T>::P points, typename Tuples<T>::P points2);
+      virtual std::string getClassName() const;
 
-      virtual typename Tuples<T>::P getData( );
-      virtual void setData( typename Tuples<T>::P points );
+      virtual typename Tuples<T>::P getData();
+      virtual void setData(typename Tuples<T>::P points);
 
-      virtual typename Tuples<T>::P getData2( );
-      virtual void setData2( typename Tuples<T>::P points );
+      virtual typename Tuples<T>::P getData2();
+      virtual void setData2(typename Tuples<T>::P points);
 
-      virtual bool isRelative( ) const;
-      virtual void setRelative( const bool v );
+      virtual bool isRelative() const;
+      virtual void setRelative(const bool v);
 
-      virtual float getPointSize( );
-      virtual void setPointSize( const float s );
+      virtual float getPointSize();
+      virtual void setPointSize(const float s);
 
-      virtual float getLineWidth( );
-      virtual void setLineWidth( const float s );
+      virtual float getLineWidth();
+      virtual void setLineWidth(const float s);
 
-      virtual DrawMaterial::P getMaterial( );
-      virtual void setMaterial( DrawMaterial::P mat );
+      virtual DrawMaterial::P getMaterial();
+      virtual void setMaterial(DrawMaterial::P mat);
 
-      virtual ModifiedTime getChildModifiedTime( );
+      virtual ModifiedTime getChildModifiedTime();
 
-      virtual void buildList( DrawContext::P context );
+      virtual void buildList(DrawContext::P context);
 
-      virtual void updateBounds( );
+      virtual void updateBounds();
 
-      virtual double getBoundImpl( unsigned int bound );
+      virtual double getBoundImpl(unsigned int bound);
 
    protected:
       struct D;

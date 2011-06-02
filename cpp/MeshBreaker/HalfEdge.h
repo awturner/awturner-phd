@@ -38,31 +38,31 @@ namespace AWT
       friend class HalfEdgeMesh;
 
    protected:
-      HalfEdge( );
-      virtual ~HalfEdge( );
+      HalfEdge();
+      virtual ~HalfEdge();
 
    public:
-      HalfEdge* getPair( ) const;
-      void setPair( HalfEdge* p );
+      HalfEdge* getPair() const;
+      void setPair(HalfEdge* p);
 
-      HalfEdge* getPrevious( );
+      HalfEdge* getPrevious();
 
-      HalfEdge* getNext( ) const;
-      void setNext( HalfEdge* e );
+      HalfEdge* getNext() const;
+      void setNext(HalfEdge* e);
 
-      HalfEdgeVertex* getVertex( ) const;
-      void setVertex( HalfEdgeVertex* v );
+      HalfEdgeVertex* getVertex() const;
+      void setVertex(HalfEdgeVertex* v);
 
-      bool hasFace( ) const;
+      bool hasFace() const;
 
-      MeshIndex getFace( ) const;
-      void setFace( const MeshIndex f );
+      MeshIndex getFace() const;
+      void setFace(const MeshIndex f);
 
-      bool isCrossable( ) const;
-      void setCrossable( const bool c );
+      bool isCrossable() const;
+      void setCrossable(const bool c);
 
-      MeshIndex getLabel( ) const;
-      void setLabel( const MeshIndex v );
+      MeshIndex getLabel() const;
+      void setLabel(const MeshIndex v);
 
    protected:
       struct D;
@@ -72,7 +72,7 @@ namespace AWT
 
    extern bool halfEdgeVerbose;
    extern bool halfEdgePrintComment;
-   std::ostream& operator<<( std::ostream& os, const HalfEdge& e );
+   std::ostream& operator<<(std::ostream& os, const HalfEdge& e);
 }
 
 #endif // __HALFEDGE_H__

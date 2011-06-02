@@ -40,20 +40,20 @@ using namespace AWT::AlignParametric;
 
 int main(int argc, char** argv)
 {
-   MeshType::P plane = MeshImpl<T>::getInstance( 0, 0 );
-   AWT::MeshGenerator<T>::generateTorus( plane, 2, 1, 8, 8 );
+   MeshType::P plane = MeshImpl<T>::getInstance(0, 0);
+   AWT::MeshGenerator<T>::generateTorus(plane, 2, 1, 8, 8);
 
    /*
    T vtx[3];
-   MESH_EACHVERTEX( plane, v )
+   MESH_EACHVERTEX(plane, v)
    {
-      plane->getVertex( v, vtx );
+      plane->getVertex(v, vtx);
 
       for (MeshIndex i = 0; i < 3; ++i)
          vtx[i] = (vtx[i]-0.5) * 100;
       //vtx[2] = 0;
 
-      plane->setVertex( v, vtx );
+      plane->setVertex(v, vtx);
    }
    */
 
@@ -77,8 +77,8 @@ int main(int argc, char** argv)
    const ValueRange<T> sigmaRange = { 0.05, 1000 };
 
    CatesParticleSurface::P cps = CatesParticleSurface::getInstance(plane, samples, 2500, sigmaRange);
-   cps->initialize( );
-   cps->getRegularizer( )->setDistanceType( CatesRegularizer::DT_EUCLIDEAN );
+   cps->initialize();
+   cps->getRegularizer()->setDistanceType(CatesRegularizer::DT_EUCLIDEAN);
 
    Transformation trans; trans.set_identity();
    MatrixType reg;
@@ -86,10 +86,10 @@ int main(int argc, char** argv)
    while (true)
    {
       // Copy the samples into the matrix, in order that figures can be checked in MATLAB
-      cps->getSamples( samps );
+      cps->getSamples(samps);
       //PRINTVBLMATLAB(samps);
 
-      PRINTVBL( cps->regularizationCost() );
+      PRINTVBL(cps->regularizationCost());
       cps->regularizationGradient(reg, trans);
 
       MatrixType controls;
@@ -100,12 +100,12 @@ int main(int argc, char** argv)
       const double timestep = sig*sig / 2;
 
       {
-         vnl_matlab_filewrite fw( "catesdebug.mat" );
-         fw.write( controls, "curr" );
-         fw.write( controls + timestep*reg, "upd" );
+         vnl_matlab_filewrite fw("catesdebug.mat");
+         fw.write(controls, "curr");
+         fw.write(controls + timestep*reg, "upd");
       }
 
       PAUSE;
-      cps->setParameters( controls + timestep*reg );
+      cps->setParameters(controls + timestep*reg);
    }
 }

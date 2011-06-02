@@ -28,43 +28,43 @@
 using namespace AWT;
 using namespace AWT::AlignParametric;
 
-AWT::AlignParametric::CatesOptimizer::CatesOptimizer( MeshIndex N, ValueRange<T> _sigmaRange )
-: ParticleOptimizer( N ), sigmaRange( _sigmaRange ), distanceType( CatesRegularizer::DT_EUCLIDEAN )
+AWT::AlignParametric::CatesOptimizer::CatesOptimizer(MeshIndex N, ValueRange<T> _sigmaRange)
+: ParticleOptimizer(N), sigmaRange(_sigmaRange), distanceType(CatesRegularizer::DT_EUCLIDEAN)
 {
-   DEBUGMACRO( sigmaRange.lower << "\t" << sigmaRange.upper );
+   DEBUGMACRO(sigmaRange.lower << "\t" << sigmaRange.upper);
 }
 
-AWT::AlignParametric::CatesOptimizer::~CatesOptimizer( )
+AWT::AlignParametric::CatesOptimizer::~CatesOptimizer()
 {
 }
 
-AWT::AlignParametric::CatesOptimizer::P AWT::AlignParametric::CatesOptimizer::getInstance( MeshIndex N, ValueRange<T> _sigmaRange )
+AWT::AlignParametric::CatesOptimizer::P AWT::AlignParametric::CatesOptimizer::getInstance(MeshIndex N, ValueRange<T> _sigmaRange)
 {
-   AUTOGETINSTANCE( AWT::AlignParametric::CatesOptimizer, ( N, _sigmaRange ) );
+   AUTOGETINSTANCE(AWT::AlignParametric::CatesOptimizer, (N, _sigmaRange));
 }
 
-GETNAMEMACRO( AWT::AlignParametric::CatesOptimizer );
+GETNAMEMACRO(AWT::AlignParametric::CatesOptimizer);
 
-void AWT::AlignParametric::CatesOptimizer::setSigmaRange( ValueRange<T> range )
+void AWT::AlignParametric::CatesOptimizer::setSigmaRange(ValueRange<T> range)
 {
-   if ( range.lower != sigmaRange.lower || range.upper != sigmaRange.upper )
+   if (range.lower != sigmaRange.lower || range.upper != sigmaRange.upper)
    {
       sigmaRange = range;
       modified();
    }
 }
 
-ValueRange<T> AWT::AlignParametric::CatesOptimizer::getSigmaRange( ) const
+ValueRange<T> AWT::AlignParametric::CatesOptimizer::getSigmaRange() const
 {
    return sigmaRange;
 }
 
-ParticleSurface::P AWT::AlignParametric::CatesOptimizer::addMesh( MeshType::P mesh, TuplesType::P particles )
+ParticleSurface::P AWT::AlignParametric::CatesOptimizer::addMesh(MeshType::P mesh, TuplesType::P particles)
 {
-   checkNumberOfPoints( particles );
+   checkNumberOfPoints(particles);
    
-   CatesParticleSurface::P surf = CatesParticleSurface::getInstance( mesh, particles, getNumberOfParticlesPerSurface(), sigmaRange );
-   this->_add( surf );
+   CatesParticleSurface::P surf = CatesParticleSurface::getInstance(mesh, particles, getNumberOfParticlesPerSurface(), sigmaRange);
+   this->_add(surf);
 
    surf->getRegularizer()->setDistanceType(distanceType);
 

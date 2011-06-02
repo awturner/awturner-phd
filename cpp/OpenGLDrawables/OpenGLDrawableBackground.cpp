@@ -40,111 +40,111 @@ struct AWT::OpenGLDrawableBackground::D
    double m_Bounds[6];
 };
 
-AWT::OpenGLDrawableBackground::OpenGLDrawableBackground( )
+AWT::OpenGLDrawableBackground::OpenGLDrawableBackground()
 {
    m_D = new D;
 
-   for ( int i = 0; i < 3; ++i )
+   for (int i = 0; i < 3; ++i)
    {
       m_D->m_BottomCol[i] = m_D->m_TopCol[i] = 0;
    }
 }
 
-AWT::OpenGLDrawableBackground::~OpenGLDrawableBackground( )
+AWT::OpenGLDrawableBackground::~OpenGLDrawableBackground()
 {
    delete m_D;
 }
 
-AWT::OpenGLDrawableBackground::P AWT::OpenGLDrawableBackground::getInstance( )
+AWT::OpenGLDrawableBackground::P AWT::OpenGLDrawableBackground::getInstance()
 {
-   AUTOGETINSTANCE( AWT::OpenGLDrawableBackground, ( ) );
+   AUTOGETINSTANCE(AWT::OpenGLDrawableBackground, ());
 }
 
-GETNAMEMACRO( AWT::OpenGLDrawableBackground );
+GETNAMEMACRO(AWT::OpenGLDrawableBackground);
 
-void AWT::OpenGLDrawableBackground::buildList( AWT::DrawContext::P context )
+void AWT::OpenGLDrawableBackground::buildList(AWT::DrawContext::P context)
 {
-   glDisable( GL_DEPTH_TEST );
+   glDisable(GL_DEPTH_TEST);
 
-   glMatrixMode( GL_PROJECTION );
-   glPushMatrix( );
-   glLoadIdentity( );
+   glMatrixMode(GL_PROJECTION);
+   glPushMatrix();
+   glLoadIdentity();
 
-   glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-   glMatrixMode( GL_MODELVIEW );
-   glPushMatrix( );
-   glLoadIdentity( );
+   glMatrixMode(GL_MODELVIEW);
+   glPushMatrix();
+   glLoadIdentity();
 
-   glDisable( GL_LIGHTING );
-   glEnable( GL_COLOR_MATERIAL );
+   glDisable(GL_LIGHTING);
+   glEnable(GL_COLOR_MATERIAL);
 
-   glBegin( GL_TRIANGLE_STRIP );
+   glBegin(GL_TRIANGLE_STRIP);
 
-   glColor3fv( m_D->m_BottomCol );
-   glVertex3f( -1.f, -1.f, 0.f );
+   glColor3fv(m_D->m_BottomCol);
+   glVertex3f(-1.f, -1.f, 0.f);
 
-   glColor3fv( m_D->m_TopCol );
-   glVertex3f( -1.f,  1.f, 0.f );
+   glColor3fv(m_D->m_TopCol);
+   glVertex3f(-1.f,  1.f, 0.f);
 
-   glColor3fv( m_D->m_BottomCol );
-   glVertex3f(  1.f, -1.f, 0.f );
+   glColor3fv(m_D->m_BottomCol);
+   glVertex3f( 1.f, -1.f, 0.f);
 
-   glColor3fv( m_D->m_TopCol );
-   glVertex3f(  1.f,  1.f, 0.f );
+   glColor3fv(m_D->m_TopCol);
+   glVertex3f( 1.f,  1.f, 0.f);
 
-   glEnd( );
+   glEnd();
 
-   glMatrixMode( GL_PROJECTION );
-   glPopMatrix( );
+   glMatrixMode(GL_PROJECTION);
+   glPopMatrix();
 
-   glMatrixMode( GL_MODELVIEW );
-   glPopMatrix( );
+   glMatrixMode(GL_MODELVIEW);
+   glPopMatrix();
 
-   glEnable( GL_DEPTH_TEST );
+   glEnable(GL_DEPTH_TEST);
 }
 
-AWT::ModifiedTime AWT::OpenGLDrawableBackground::getChildModifiedTime( )
+AWT::ModifiedTime AWT::OpenGLDrawableBackground::getChildModifiedTime()
 {
-   return getTimeObjectModified( );
+   return getTimeObjectModified();
 }
 
-void AWT::OpenGLDrawableBackground::updateBounds( )
+void AWT::OpenGLDrawableBackground::updateBounds()
 {
-   for ( int ax = 0; ax < 3; ++ax )
+   for (int ax = 0; ax < 3; ++ax)
    {
-      m_D->m_Bounds[2*ax+0] = std::numeric_limits<double>::quiet_NaN( );
-      m_D->m_Bounds[2*ax+1] = std::numeric_limits<double>::quiet_NaN( );
+      m_D->m_Bounds[2*ax+0] = std::numeric_limits<double>::quiet_NaN();
+      m_D->m_Bounds[2*ax+1] = std::numeric_limits<double>::quiet_NaN();
    }
 }
 
-double AWT::OpenGLDrawableBackground::getBoundImpl( unsigned int bound )
+double AWT::OpenGLDrawableBackground::getBoundImpl(unsigned int bound)
 {
-   return std::numeric_limits<double>::quiet_NaN( );
+   return std::numeric_limits<double>::quiet_NaN();
 }
 
-void AWT::OpenGLDrawableBackground::getTopColor( float* col ) const
+void AWT::OpenGLDrawableBackground::getTopColor(float* col) const
 {
    col[0] = m_D->m_TopCol[0];
    col[1] = m_D->m_TopCol[1];
    col[2] = m_D->m_TopCol[2];
 }
 
-void AWT::OpenGLDrawableBackground::setTopColor( const float* col )
+void AWT::OpenGLDrawableBackground::setTopColor(const float* col)
 {
    m_D->m_TopCol[0] = col[0];
    m_D->m_TopCol[1] = col[1];
    m_D->m_TopCol[2] = col[2];
 }
 
-void AWT::OpenGLDrawableBackground::getBottomColor( float* col ) const
+void AWT::OpenGLDrawableBackground::getBottomColor(float* col) const
 {
    col[0] = m_D->m_BottomCol[0];
    col[1] = m_D->m_BottomCol[1];
    col[2] = m_D->m_BottomCol[2];
 }
 
-void AWT::OpenGLDrawableBackground::setBottomColor( const float* col )
+void AWT::OpenGLDrawableBackground::setBottomColor(const float* col)
 {
    m_D->m_BottomCol[0] = col[0];
    m_D->m_BottomCol[1] = col[1];
@@ -156,7 +156,7 @@ void AWT::OpenGLDrawableBackground::setMaterial(AWT::DrawMaterial::P mat)
    m_D->m_Material = mat;
 }
 
-AWT::DrawMaterial::P AWT::OpenGLDrawableBackground::getMaterial( )
+AWT::DrawMaterial::P AWT::OpenGLDrawableBackground::getMaterial()
 {
    return m_D->m_Material;
 }

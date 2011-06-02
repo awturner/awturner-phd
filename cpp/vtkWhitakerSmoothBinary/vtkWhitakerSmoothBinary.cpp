@@ -39,9 +39,9 @@
 vtkCxxRevisionMacro(vtkWhitakerSmoothBinary, "$Revision: 95 $");
 vtkStandardNewMacro(vtkWhitakerSmoothBinary);
 
-inline void vtkWhitakerSmoothBinary::calculateXYZ( const int nn, const int area, 
+inline void vtkWhitakerSmoothBinary::calculateXYZ(const int nn, const int area, 
                                                    const int w, int &x, int &y, 
-                                                   int &z )
+                                                   int &z)
 {
    z = nn / area;
    y = nn % area;
@@ -49,90 +49,90 @@ inline void vtkWhitakerSmoothBinary::calculateXYZ( const int nn, const int area,
    y /= w;
 }
 
-vtkWhitakerSmoothBinary::vtkWhitakerSmoothBinary( )
+vtkWhitakerSmoothBinary::vtkWhitakerSmoothBinary()
 {
-   this->SetMaxIterations( 50 );
-   this->SetStoppingThreshold( 1e-3 );
-   this->SetBandWidth( 5 );
-   this->SetProgressStep( 1 );
+   this->SetMaxIterations(50);
+   this->SetStoppingThreshold(1e-3);
+   this->SetBandWidth(5);
+   this->SetProgressStep(1);
 }
 
-vtkWhitakerSmoothBinary::~vtkWhitakerSmoothBinary( )
+vtkWhitakerSmoothBinary::~vtkWhitakerSmoothBinary()
 {
 }
 
-void vtkWhitakerSmoothBinary::extrapolateValues( float* io_values, int in_x, int in_y, int in_z, int in_w, int in_h, int in_d )
+void vtkWhitakerSmoothBinary::extrapolateValues(float* io_values, int in_x, int in_y, int in_z, int in_w, int in_h, int in_d)
 {
    int vi, vii;
 
    // Extrapolate in the x-direction if necessary
-   if ( in_w == 1 )
+   if (in_w == 1)
    {
       // This is a degenerate case.  Copy the middle column to outer columns
-      for ( vi = 1; vi < 27; vi += 3 )
+      for (vi = 1; vi < 27; vi += 3)
          io_values[vi-1] = io_values[vi+1] = io_values[vi];
    }
    else
    {
-      if ( in_x == 0 )
+      if (in_x == 0)
       {
-         for ( vi = 1; vi < 27; vi += 3 )
+         for (vi = 1; vi < 27; vi += 3)
             io_values[vi-1] = 2*io_values[vi] - io_values[vi+1];
       }
-      else if ( in_x == in_w-1 )
+      else if (in_x == in_w-1)
       {
-         for ( vi = 1; vi < 27; vi += 3 )
+         for (vi = 1; vi < 27; vi += 3)
             io_values[vi+1] = 2*io_values[vi] - io_values[vi-1];
       }
    }
 
    // Extrapolate in the y-direction if necessary
-   if ( in_h == 1 )
+   if (in_h == 1)
    {
       // This is a degenerate case.  Copy the middle column to outer columns
-      for ( vii = 0; (vi = 3+vii+6*(vii/3)) < 27; vii++ )
+      for (vii = 0; (vi = 3+vii+6*(vii/3)) < 27; vii++)
          io_values[vi-3] = io_values[vi+3] = io_values[vi];
 
    }
    else
    {
-      if ( in_y == 0 )
+      if (in_y == 0)
       {
-         for ( vii = 0; (vi = 3+vii+6*(vii/3)) < 27; vii++ )
+         for (vii = 0; (vi = 3+vii+6*(vii/3)) < 27; vii++)
             io_values[vi-3] = 2*io_values[vi] - io_values[vi+3];
       }
-      else if ( in_y == in_h-1 )
+      else if (in_y == in_h-1)
       {
-         for ( vii = 0; (vi = 3+vii+6*(vii/3)) < 27; vii++ )
+         for (vii = 0; (vi = 3+vii+6*(vii/3)) < 27; vii++)
             io_values[vi+3] = 2*io_values[vi] - io_values[vi-3];
       }
    }
    
    // Extrapolate in the z-direction if necessary
-   if ( in_d == 1 )
+   if (in_d == 1)
    {
       // This is a degenerate case.  Copy the middle column to outer columns
-      for ( vi = 9; vi < 18; vi++ )
+      for (vi = 9; vi < 18; vi++)
          io_values[vi-9] = io_values[vi+9] = io_values[vi];
    }
    else
    {
-      if ( in_z == 0 )
+      if (in_z == 0)
       {
-         for ( vi = 9; vi < 18; vi++ )
+         for (vi = 9; vi < 18; vi++)
             io_values[vi-9] = 2*io_values[vi] - io_values[vi+9];
       }
-      else if ( in_z == in_d-1 )
+      else if (in_z == in_d-1)
       {
-         for ( vi = 9; vi < 18; vi++ )
+         for (vi = 9; vi < 18; vi++)
             io_values[vi+9] = 2*io_values[vi] - io_values[vi-9];
       }
    }
 }
 
-float vtkWhitakerSmoothBinary::calculateTimeStep( float* in_spacing )
+float vtkWhitakerSmoothBinary::calculateTimeStep(float* in_spacing)
 {
-   float min_spacing = AWT::MaxMin<float>::minimum( in_spacing, 3 );
+   float min_spacing = AWT::MaxMin<float>::minimum(in_spacing, 3);
 
    return min_spacing * min_spacing / 6.f;
 }
@@ -142,17 +142,17 @@ LinkedListNode<int>* vtkWhitakerSmoothBinary::markActiveSetImage(int nn, int c,
                                                      int step, unsigned char *ptr, 
                                                      unsigned char val,
                                                      LinkedListNode<int>* expandList
-                                                     )
+                                                    )
 {
-   if ( c > 0 && ptr[nn-step] < val )
+   if (c > 0 && ptr[nn-step] < val)
    {
-      expandList = expandList->push( nn - step );
+      expandList = expandList->push(nn - step);
       ptr[nn-step] = val;
    }
 
-   if ( c < (maxc-1) && ptr[nn+step] < val )
+   if (c < (maxc-1) && ptr[nn+step] < val)
    {
-      expandList = expandList->push( nn + step );
+      expandList = expandList->push(nn + step);
       ptr[nn+step] = val;
    }
 
@@ -160,20 +160,20 @@ LinkedListNode<int>* vtkWhitakerSmoothBinary::markActiveSetImage(int nn, int c,
 }
 
 template <class IT>
-LinkedListNode<int>* vtkWhitakerSmoothBinary::findActiveSet( vtkImageData* threshData, 
+LinkedListNode<int>* vtkWhitakerSmoothBinary::findActiveSet(vtkImageData* threshData, 
                                                              int* dims,
-                                                             IT* forceType )
+                                                             IT* forceType)
 {
-   vtkDebugMacro( << "Finding narrow band of active points" );
+   vtkDebugMacro(<< "Finding narrow band of active points");
 
    int nn, x, y, z, area, npoints;
    int xstep, ystep, zstep;
 
-   vtkImageData* activeSet = vtkImageData::New( );
-   activeSet->SetScalarTypeToUnsignedChar( );
+   vtkImageData* activeSet = vtkImageData::New();
+   activeSet->SetScalarTypeToUnsignedChar();
 
    // This is dull preamble to get the size of the image dataset
-   activeSet->SetExtent( 1, dims[0], 1, dims[1], 1, dims[2] );
+   activeSet->SetExtent(1, dims[0], 1, dims[1], 1, dims[2]);
    
    area    = dims[0] * dims[1];
    npoints = area * dims[2];
@@ -188,52 +188,52 @@ LinkedListNode<int>* vtkWhitakerSmoothBinary::findActiveSet( vtkImageData* thres
    
    // Firstly, make sure that the active set image is zeroed
    //std::cerr << "Zeroing image" << std::endl;
-   activePtr = reinterpret_cast<unsigned char*>( activeSet->GetScalarPointer( ) );
-   for ( nn = 0; nn < npoints; nn++, activePtr++ )
+   activePtr = reinterpret_cast<unsigned char*>(activeSet->GetScalarPointer());
+   for (nn = 0; nn < npoints; nn++, activePtr++)
       *activePtr = 0;
    activePtr = 0;
 
    // Now find the boundary list
-   LinkedListNode<int>* expandList = findBoundary( threshData, dims, forceType );
+   LinkedListNode<int>* expandList = findBoundary(threshData, dims, forceType);
    
    // Next, go through the boundary list and mark all b vertices with markValue
    //std::cerr << "Marking seeds" << std::endl;
 
-   unsigned char markValue = static_cast<unsigned char>( BandWidth );
-   activePtr = reinterpret_cast<unsigned char*>( activeSet->GetScalarPointer( ) );
+   unsigned char markValue = static_cast<unsigned char>(BandWidth);
+   activePtr = reinterpret_cast<unsigned char*>(activeSet->GetScalarPointer());
 
    LinkedListNode<int>* bNode      = expandList;
-   while ( bNode != 0 )
+   while (bNode != 0)
    {
       nn = bNode->data;
       bNode = bNode->next;
       
-      if ( activePtr[nn] != markValue )
+      if (activePtr[nn] != markValue)
          activePtr[nn] = markValue;
    }
 
    /*
    int idx;
    int steps[] = { 1, dims[0], dims[0]*dims[1] };
-   IT* threshPtr = reinterpret_cast<IT*>( threshData->GetScalarPointer( ) );
+   IT* threshPtr = reinterpret_cast<IT*>(threshData->GetScalarPointer());
 
-   for ( int r = 0; r < 3; ++r )
+   for (int r = 0; r < 3; ++r)
    {
-      int xmin = ( r == 0 ) ? 1 : 0;
-      int ymin = ( r == 1 ) ? 1 : 0;
-      int zmin = ( r == 2 ) ? 1 : 0;
+      int xmin = (r == 0) ? 1 : 0;
+      int ymin = (r == 1) ? 1 : 0;
+      int zmin = (r == 2) ? 1 : 0;
 
-      int xmax = dims[0] - ( r == 0 ) ? 1 : 0;
-      int ymax = dims[1] - ( r == 1 ) ? 1 : 0;
-      int zmax = dims[2] - ( r == 2 ) ? 1 : 0;
+      int xmax = dims[0] - (r == 0) ? 1 : 0;
+      int ymax = dims[1] - (r == 1) ? 1 : 0;
+      int zmax = dims[2] - (r == 2) ? 1 : 0;
 
-      for ( int z = zmin; z < zmax; ++z )
-         for ( int y = ymin; y < ymax; ++y )
-            for ( int x = xmin; x < xmax; ++x )
+      for (int z = zmin; z < zmax; ++z)
+         for (int y = ymin; y < ymax; ++y)
+            for (int x = xmin; x < xmax; ++x)
             {
-               idx = x + dims[0]*( y + dims[1]*z );
+               idx = x + dims[0]*(y + dims[1]*z);
 
-               if ( threshPtr[ idx-steps[r] ] == threshPtr[ idx+steps[r] ] && threshPtr[idx] != threshPtr[ idx-steps[r] ] )
+               if (threshPtr[ idx-steps[r] ] == threshPtr[ idx+steps[r] ] && threshPtr[idx] != threshPtr[ idx-steps[r] ])
                   activePtr[idx] = BandWidth + 1;
             }
    }
@@ -247,26 +247,26 @@ LinkedListNode<int>* vtkWhitakerSmoothBinary::findActiveSet( vtkImageData* thres
    unsigned char val;
 
    //std::cerr << "Expanding boundary..." << std::endl;
-   while ( expandList != 0 )
+   while (expandList != 0)
    {
       nn = expandList->data;
 
-      expandList = expandList->pop( );
+      expandList = expandList->pop();
 
       val = activePtr[nn] - 1;
       
-      if ( val > 0 )
+      if (val > 0)
       {
-         updateList = updateList->push( nn );
+         updateList = updateList->push(nn);
        
-         calculateXYZ( nn, area, dims[0], x, y, z );
-         expandList = markActiveSetImage( nn, z, dims[2], zstep, activePtr, val, expandList );
-         expandList = markActiveSetImage( nn, y, dims[1], ystep, activePtr, val, expandList );
-         expandList = markActiveSetImage( nn, x, dims[0], xstep, activePtr, val, expandList );
+         calculateXYZ(nn, area, dims[0], x, y, z);
+         expandList = markActiveSetImage(nn, z, dims[2], zstep, activePtr, val, expandList);
+         expandList = markActiveSetImage(nn, y, dims[1], ystep, activePtr, val, expandList);
+         expandList = markActiveSetImage(nn, x, dims[0], xstep, activePtr, val, expandList);
       }
    }
    activePtr = 0;
-   activeSet->Delete( );
+   activeSet->Delete();
 
    delete expandList;
 
@@ -274,16 +274,16 @@ LinkedListNode<int>* vtkWhitakerSmoothBinary::findActiveSet( vtkImageData* thres
 }
 
 template <class IT>
-LinkedListNode<int>* vtkWhitakerSmoothBinary::findBoundary( vtkImageData* threshData, 
+LinkedListNode<int>* vtkWhitakerSmoothBinary::findBoundary(vtkImageData* threshData, 
                                                            int* dims,
-                                                           IT* )
+                                                           IT*)
 {
    // Works out the magnitude of the gradient of the binary image...
    // this should only be non-zero 1 pixel either side of the boundary.
 
-   IT* pData = reinterpret_cast<IT*>( threshData->GetScalarPointer( ) );
+   IT* pData = reinterpret_cast<IT*>(threshData->GetScalarPointer());
 
-   LinkedListNode<int>* expandList = new LinkedListNode<int>( 0 );
+   LinkedListNode<int>* expandList = new LinkedListNode<int>(0);
 
    int x, y, z, idx;
    std::cerr << "Looking for the boundary..." << std::endl;
@@ -291,20 +291,20 @@ LinkedListNode<int>* vtkWhitakerSmoothBinary::findBoundary( vtkImageData* thresh
    // This method never checks pixel (0,0,0) for boundary, but should check
    // all others, hence the slight hack of adding (0) to the expandList at
    // creation
-   for ( z = 1; z < dims[2]; ++z )
+   for (z = 1; z < dims[2]; ++z)
    {
-      for ( y = 1; y < dims[1]; ++y )
+      for (y = 1; y < dims[1]; ++y)
       {
-         for ( x = 1; x < dims[0]; ++x )
+         for (x = 1; x < dims[0]; ++x)
          {
             idx = z*dims[0]*dims[1] + y*dims[0] + x;
 
-            if ( pData[idx] != pData[idx-1] )
-               expandList = expandList->push( idx );
-            else if ( pData[idx] != pData[idx-dims[0]] )
-               expandList = expandList->push( idx );
-            else if ( pData[idx] != pData[idx-dims[0]*dims[1]] )
-               expandList = expandList->push( idx );
+            if (pData[idx] != pData[idx-1])
+               expandList = expandList->push(idx);
+            else if (pData[idx] != pData[idx-dims[0]])
+               expandList = expandList->push(idx);
+            else if (pData[idx] != pData[idx-dims[0]*dims[1]])
+               expandList = expandList->push(idx);
          }
       }
    }
@@ -312,34 +312,34 @@ LinkedListNode<int>* vtkWhitakerSmoothBinary::findBoundary( vtkImageData* thresh
 }
 
 template <class IT>
-void vtkWhitakerSmoothBinary::initializeOutputImage( vtkImageData* phi, 
+void vtkWhitakerSmoothBinary::initializeOutputImage(vtkImageData* phi, 
                                                      vtkImageData* threshData, 
                                                      int npoints,
-                                                     IT* )
+                                                     IT*)
 {
    // This is the pointer into the output image
-   float* phiPtr    = reinterpret_cast<float*>( phi->GetScalarPointer( ) );
+   float* phiPtr    = reinterpret_cast<float*>(phi->GetScalarPointer());
 
    // This is the pointer into the input (i.e. threshold) image
-   IT* threshPtr = reinterpret_cast<IT*>( threshData->GetScalarPointer( ) );
+   IT* threshPtr = reinterpret_cast<IT*>(threshData->GetScalarPointer());
 
    // This is the first value in the threshold image
    const IT firstThreshValue = *threshPtr;
 
-   for ( int nn = 0; nn < npoints; nn++, threshPtr++, phiPtr++ )
+   for (int nn = 0; nn < npoints; nn++, threshPtr++, phiPtr++)
    {
-      *phiPtr = ( *threshPtr == firstThreshValue ) ? -1.f : 1.f;
+      *phiPtr = (*threshPtr == firstThreshValue) ? -1.f : 1.f;
    }
 }
 
-void vtkWhitakerSmoothBinary::SimpleExecute( vtkImageData* input, vtkImageData* output )
+void vtkWhitakerSmoothBinary::SimpleExecute(vtkImageData* input, vtkImageData* output)
 {
    void* inPtr = input->GetScalarPointer();
 
-   switch( input->GetScalarType( ) )
+   switch(input->GetScalarType())
    {
       vtkTemplateMacro(
-         vtkWhitakerSmoothBinaryExecute( input, output,
+         vtkWhitakerSmoothBinaryExecute(input, output,
                                              (VTK_TT *)(inPtr)));
    default:
       vtkGenericWarningMacro("Execute: Unknown input ScalarType");
@@ -348,31 +348,31 @@ void vtkWhitakerSmoothBinary::SimpleExecute( vtkImageData* input, vtkImageData* 
 }
 
 template <class IT>
-void vtkWhitakerSmoothBinary::vtkWhitakerSmoothBinaryExecute( vtkImageData* threshData, 
-         vtkImageData* phi, IT* forceInput )
+void vtkWhitakerSmoothBinary::vtkWhitakerSmoothBinaryExecute(vtkImageData* threshData, 
+         vtkImageData* phi, IT* forceInput)
 {
-   int abortExecute = this->GetAbortExecute( );
+   int abortExecute = this->GetAbortExecute();
 
    double _spacing[3];
-   threshData->GetSpacing( _spacing );
+   threshData->GetSpacing(_spacing);
    float spacing[3];
 
-   spacing[0] = static_cast<float>( _spacing[0] );
-   spacing[1] = static_cast<float>( _spacing[1] );
-   spacing[2] = static_cast<float>( _spacing[2] );
+   spacing[0] = static_cast<float>(_spacing[0]);
+   spacing[1] = static_cast<float>(_spacing[1]);
+   spacing[2] = static_cast<float>(_spacing[2]);
 
-   int* extents = threshData->GetExtent( );
+   int* extents = threshData->GetExtent();
    const int w = 1 + extents[1] - extents[0];
    const int h = 1 + extents[3] - extents[2];
    const int d = 1 + extents[5] - extents[4];
 
    int dims[3] = { w, h, d };
 
-   phi->Initialize( );
-   phi->SetScalarTypeToFloat( );
-   phi->SetSpacing( _spacing );
-   phi->SetExtent( extents );
-   phi->SetOrigin( threshData->GetOrigin( ) );
+   phi->Initialize();
+   phi->SetScalarTypeToFloat();
+   phi->SetSpacing(_spacing);
+   phi->SetExtent(extents);
+   phi->SetOrigin(threshData->GetOrigin());
 
    // This is the area of each z-slice
    const int area = w * h;
@@ -395,13 +395,13 @@ void vtkWhitakerSmoothBinary::vtkWhitakerSmoothBinaryExecute( vtkImageData* thre
 
    // Doing things from here onwards...
 
-   initializeOutputImage( phi, threshData, npoints, forceInput );
+   initializeOutputImage(phi, threshData, npoints, forceInput);
 
-   LinkedListNode<int>* updateList = findActiveSet( threshData, dims, forceInput );
+   LinkedListNode<int>* updateList = findActiveSet(threshData, dims, forceInput);
 
    unsigned int idx;
 
-   int updateCnt = updateList->size( );
+   int updateCnt = updateList->size();
 
    updatePhi = new float[ updateCnt ];
 
@@ -411,7 +411,7 @@ void vtkWhitakerSmoothBinary::vtkWhitakerSmoothBinaryExecute( vtkImageData* thre
 
    LinkedListNode<int>* linkedListPtr;
    
-   float dt = calculateTimeStep( spacing );
+   float dt = calculateTimeStep(spacing);
    float delta;
    float rmsChange;
    float clampValue;
@@ -424,12 +424,12 @@ void vtkWhitakerSmoothBinary::vtkWhitakerSmoothBinaryExecute( vtkImageData* thre
 
    //std::cerr << "npoints = " << npoints << std::endl;
 
-   vtkDebugMacro( << "Performing the smoothing over " << updateCnt << " points." );
+   vtkDebugMacro(<< "Performing the smoothing over " << updateCnt << " points.");
    //std::cerr << "Doing the level set magic over " << (updateCnt) << " points..." << std::endl;
-   phiPtr = reinterpret_cast<float*>( phi->GetScalarPointer( ) );
-   for ( int iteration = 0; !abortExecute && iteration < MaxIterations; )
+   phiPtr = reinterpret_cast<float*>(phi->GetScalarPointer());
+   for (int iteration = 0; !abortExecute && iteration < MaxIterations;)
    {
-      if ( ++iteration%ProgressStep == 0 )
+      if (++iteration%ProgressStep == 0)
       {
          vtkDebugMacro(<<"Iteration #" << iteration);
          this->UpdateProgress ((double)iteration/MaxIterations);
@@ -441,38 +441,38 @@ void vtkWhitakerSmoothBinary::vtkWhitakerSmoothBinaryExecute( vtkImageData* thre
       // First calculate all of the updates
       
       linkedListPtr = updateList;
-      for ( idx = 0; linkedListPtr != 0; idx++ )
+      for (idx = 0; linkedListPtr != 0; idx++)
       {
          nn = linkedListPtr->data;
          linkedListPtr = linkedListPtr->next;
       
-         calculateXYZ( nn, area, w, x, y, z );
+         calculateXYZ(nn, area, w, x, y, z);
 
-		   for ( vi = 0; vi < 27; vi++ )
+		   for (vi = 0; vi < 27; vi++)
          {
-            vii = nn + zstep*( vi/9 - 1 ) + ystep*( (vi/3) % 3 - 1 ) 
-               + xstep*( vi % 3 - 1 );
+            vii = nn + zstep*(vi/9 - 1) + ystep*((vi/3) % 3 - 1) 
+               + xstep*(vi % 3 - 1);
 
-            if ( vii >= 0 && vii < w*h*d )
-               values[vi] = *( phiPtr + vii );
+            if (vii >= 0 && vii < w*h*d)
+               values[vi] = *(phiPtr + vii);
          }
 
          // Instead of numerous boundary cases, want to do calculate away invalid
          // values by assuming piecewise linearity
 
-         extrapolateValues( values, x, y, z, w, h, d );
+         extrapolateValues(values, x, y, z, w, h, d);
 
          // So now, the gradient calculation is much more straightforward.
 
-         HH = AWT::LevelSets<float>::meanCurvatureTimesGradientMagnitude( values, spacing );
+         HH = AWT::LevelSets<float>::meanCurvatureTimesGradientMagnitude(values, spacing);
          updatePhi[idx] = values[13];
 
-         if ( HH != 0.f )
+         if (HH != 0.f)
          {
             delta = dt * HH;
             
             // Check out to see if the current value is >= or < zero
-            wasPositive = ( updatePhi[idx] >= 0 );
+            wasPositive = (updatePhi[idx] >= 0);
 
             // and update the update array
             updatePhi[idx] += delta;
@@ -482,7 +482,7 @@ void vtkWhitakerSmoothBinary::vtkWhitakerSmoothBinaryExecute( vtkImageData* thre
             // side of zero guarantees that the surface doesn't move by
             // more than 1 voxel.
 
-            if ( (updatePhi[idx] >= 0 ) ^ wasPositive )
+            if ((updatePhi[idx] >= 0) ^ wasPositive)
             {
                clampValue = wasPositive ? 1e-6 : -1e-6;
                delta = values[13] - clampValue;
@@ -497,33 +497,33 @@ void vtkWhitakerSmoothBinary::vtkWhitakerSmoothBinaryExecute( vtkImageData* thre
 
       // Then go back to phi and update all the values from the array
       linkedListPtr = updateList;
-      for ( idx = 0; linkedListPtr != 0; idx++ )
+      for (idx = 0; linkedListPtr != 0; idx++)
       {
          nn = linkedListPtr->data;
          linkedListPtr = linkedListPtr->next;
       
-         *( phiPtr + nn ) = updatePhi[idx];
+         *(phiPtr + nn) = updatePhi[idx];
       }
 
-      rmsChange = sqrtf( rmsChange / fNumberOfPoints );
+      rmsChange = sqrtf(rmsChange / fNumberOfPoints);
       //std::cerr << "RMS Change = " << rmsChange << std::endl;
 
-      if ( rmsChange < StoppingThreshold )
+      if (rmsChange < StoppingThreshold)
          break;
    }
 
-   this->UpdateProgress( 1.0 );
-   vtkDebugMacro( << "Smoothing completed" );
+   this->UpdateProgress(1.0);
+   vtkDebugMacro(<< "Smoothing completed");
    //std::cerr << "Done." << std::endl;
    phiPtr = 0;
 
-   while ( updateList != 0 )
-      updateList = updateList->pop( );
+   while (updateList != 0)
+      updateList = updateList->pop();
 
    delete values;
    delete updatePhi;
 
    //std::cerr << "returning" << std::endl;
 
-   phi->Squeeze( );
+   phi->Squeeze();
 }

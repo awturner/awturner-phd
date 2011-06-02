@@ -36,27 +36,27 @@ namespace AWT
       typedef ManagedAutoPointer<OpenGLDrawDisplayList> P;
 
    protected:
-      OpenGLDrawDisplayList( );
+      OpenGLDrawDisplayList();
 
-      virtual ~OpenGLDrawDisplayList( );
+      virtual ~OpenGLDrawDisplayList();
 
    public:
-      virtual void getBounds( double* out_Bounds );
+      virtual void getBounds(double* out_Bounds);
 
    protected:
-      virtual ModifiedTime getChildModifiedTime( ) = 0;
+      virtual ModifiedTime getChildModifiedTime() = 0;
 
-      virtual void beforeCallList( DrawContext::P context );
+      virtual void beforeCallList(DrawContext::P context);
 
-      virtual void afterCallList( DrawContext::P context );
+      virtual void afterCallList(DrawContext::P context);
 
-      virtual void drawImpl( DrawContext::P context );
+      virtual void drawImpl(DrawContext::P context);
 
-      virtual void buildList( DrawContext::P context ) = 0;
+      virtual void buildList(DrawContext::P context) = 0;
          
-      virtual void updateBounds( ) = 0;
+      virtual void updateBounds() = 0;
 
-      virtual double getBoundImpl( unsigned int bound ) = 0;
+      virtual double getBoundImpl(unsigned int bound) = 0;
 
       struct D;
 

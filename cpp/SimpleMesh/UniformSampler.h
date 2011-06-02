@@ -40,28 +40,28 @@ namespace AWT
          typedef ManagedAutoPointer<UniformSampler> P;
 
       protected:
-         UniformSampler( Mesh::P mesh );
-         virtual ~UniformSampler( );
+         UniformSampler(Mesh::P mesh);
+         virtual ~UniformSampler();
 
-         virtual void calculateCumAreas( );
+         virtual void calculateCumAreas();
 
       public:
-         static P getInstance( Mesh::P mesh );
-         virtual std::string getClassName( ) const;
+         static P getInstance(Mesh::P mesh);
+         virtual std::string getClassName() const;
       };
 
       class UniformSamplerFactory : public SamplerFactory
       {
       protected:
-         UniformSamplerFactory( );
-         virtual ~UniformSamplerFactory( );
+         UniformSamplerFactory();
+         virtual ~UniformSamplerFactory();
 
       public:
          typedef ManagedAutoPointer<UniformSamplerFactory> P;
-         static P getInstance( );
-         std::string getClassName( ) const;
+         static P getInstance();
+         std::string getClassName() const;
 
-         virtual Sampler::P createInstance( Mesh::P mesh );
+         virtual Sampler::P createInstance(Mesh::P mesh);
       };
    }
 }

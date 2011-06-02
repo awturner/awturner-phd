@@ -29,24 +29,24 @@
 
 using namespace AWT;
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   for ( int i = 1; i < argc; ++i )
+   for (int i = 1; i < argc; ++i)
    {
-      Mesh<double>::P mesh = VTKMeshLoader<double>::load( argv[i], false );
+      Mesh<double>::P mesh = VTKMeshLoader<double>::load(argv[i], false);
 
       char buffer[256];
-      sprintf_s( buffer, "%s.smesh", argv[i] );
+      sprintf_s(buffer, "%s.smesh", argv[i]);
 
-      std::ofstream os( buffer );
+      std::ofstream os(buffer);
 
       // Write the vertices
       os << "v" "\t" << mesh->getNumberOfVertices() << std::endl;
 
       double vtx[3];
-      MESH_EACHVERTEX( mesh, v )
+      MESH_EACHVERTEX(mesh, v)
       {
-         mesh->getVertex( v, vtx );
+         mesh->getVertex(v, vtx);
 
          os << vtx[0] << "\t" << vtx[1] << "\t" << "\t" << vtx[2] << "\n";
       }
@@ -55,9 +55,9 @@ int main( int argc, char** argv )
       os << "f" "\t" << mesh->getNumberOfFaces() << std::endl;
 
       MeshIndex fac[3];
-      MESH_EACHFACE( mesh, f )
+      MESH_EACHFACE(mesh, f)
       {
-         mesh->getFaceIndices( f, fac);
+         mesh->getFaceIndices(f, fac);
 
          os << fac[0] << "\t" << fac[1] << "\t" << "\t" << fac[2] << "\n";
       }
@@ -69,7 +69,7 @@ int main( int argc, char** argv )
          os << "t" "\t" << tex->getNumberOfPoints() << "\n";
 
          double vtx[3];
-         MESH_EACHVERTEX( mesh, v )
+         MESH_EACHVERTEX(mesh, v)
          {
             tex->getPoint(v,vtx);
 
@@ -78,8 +78,8 @@ int main( int argc, char** argv )
       }
 
       os << "e" << std::endl;
-      os.close( );
+      os.close();
 
-      DEBUGMACRO( "Written " << argv[i] << " to " << buffer );
+      DEBUGMACRO("Written " << argv[i] << " to " << buffer);
    }
 }

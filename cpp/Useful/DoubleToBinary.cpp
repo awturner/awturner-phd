@@ -27,7 +27,7 @@
 
 #include <bitset>
 
-std::ostream& AWT::doubleToBinary( std::ostream& os, double dbl )
+std::ostream& AWT::doubleToBinary(std::ostream& os, double dbl)
 {
    unsigned long* ulp = reinterpret_cast<unsigned long*>(&dbl);
    std::bitset<64> bits1(*ulp);

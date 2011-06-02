@@ -31,9 +31,9 @@
 
 using namespace AWT::SimpleMesh;
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   Mesh::P mesh = MeshIO::loadMesh( std::ifstream( argv[1] ) );
+   Mesh::P mesh = MeshIO::loadMesh(std::ifstream(argv[1]));
 
    std::cout << "nv " << mesh->nv << std::endl;
    std::cout << "nf " << mesh->nf << std::endl;

@@ -49,26 +49,26 @@ namespace AWT
       typedef ManagedAutoPointer<DrawDeformableMeshFitting> P;
 
    protected:
-      DrawDeformableMeshFitting( typename DeformableMeshFitting<T>::P dmf, typename DrawableFactory<T>::P fact );
-      virtual ~DrawDeformableMeshFitting( );
+      DrawDeformableMeshFitting(typename DeformableMeshFitting<T>::P dmf, typename DrawableFactory<T>::P fact);
+      virtual ~DrawDeformableMeshFitting();
 
    public:
-      static  P getInstance( typename DeformableMeshFitting<T>::P dmf, typename DrawableFactory<T>::P fact );
+      static  P getInstance(typename DeformableMeshFitting<T>::P dmf, typename DrawableFactory<T>::P fact);
 
-      void draw( DrawContext::P context, const bool transparentPass );
+      void draw(DrawContext::P context, const bool transparentPass);
 
-      void setVisible( const bool v );
+      void setVisible(const bool v);
 
-      bool isVisible( ) const;
+      bool isVisible() const;
 
-      void getBounds( double* out_Bounds );
+      void getBounds(double* out_Bounds);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
 
-      virtual void correspondencesFound( typename DeformableMeshFitting<T>::P dmf );
+      virtual void correspondencesFound(typename DeformableMeshFitting<T>::P dmf);
 
-      virtual void setParent( DrawableAssembly* assm );
-      virtual DrawableAssembly* getParent( );
+      virtual void setParent(DrawableAssembly* assm);
+      virtual DrawableAssembly* getParent();
 
    protected:
       struct D;

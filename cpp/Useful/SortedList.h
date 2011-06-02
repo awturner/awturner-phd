@@ -37,11 +37,11 @@ namespace AWT
       class SortedList : public Iterable<T>
       {
       public:
-         virtual const bool isEmpty( )     = 0;
-         virtual const int size( )         = 0;
+         virtual const bool isEmpty()     = 0;
+         virtual const int size()         = 0;
 
-         virtual void push( const T data ) = 0;
-         virtual T    pop( )               = 0;
+         virtual void push(const T data) = 0;
+         virtual T    pop()               = 0;
       };
    }
 }

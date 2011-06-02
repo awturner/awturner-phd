@@ -42,14 +42,14 @@ namespace AWT
          typedef ManagedAutoPointer<CoulombicOptimizer> P;
 
       protected:
-         CoulombicOptimizer( MeshIndex N );
-         virtual ~CoulombicOptimizer( );
+         CoulombicOptimizer(MeshIndex N);
+         virtual ~CoulombicOptimizer();
 
       public:
-         static P getInstance( MeshIndex N );
-         virtual std::string getClassName( ) const;
+         static P getInstance(MeshIndex N);
+         virtual std::string getClassName() const;
 
-         virtual ParticleSurface::P addMesh( MeshType::P mesh, TuplesType::P particles );
+         virtual ParticleSurface::P addMesh(MeshType::P mesh, TuplesType::P particles);
       };
    }
 }

@@ -36,11 +36,11 @@ namespace AWT
       typedef ManagedAutoPointer<DrawColour> P;
 
    public:
-      virtual void setColour( const float* rgba ) = 0;
-      virtual void getColour( float* out_Rgba ) const = 0;
+      virtual void setColour(const float* rgba) = 0;
+      virtual void getColour(float* out_Rgba) const = 0;
 
-      virtual bool isLighting( ) const = 0;
-      virtual void setLighting( const bool v ) = 0;
+      virtual bool isLighting() const = 0;
+      virtual void setLighting(const bool v) = 0;
    };
 }
 

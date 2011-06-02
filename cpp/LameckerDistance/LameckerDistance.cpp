@@ -32,16 +32,16 @@ using namespace AWT;
 
 typedef double T;
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   Mesh<T>::P meshA = VTKMeshLoader<T>::load( argv[1] );
-   Mesh<T>::P meshB = VTKMeshLoader<T>::load( argv[2] );
+   Mesh<T>::P meshA = VTKMeshLoader<T>::load(argv[1]);
+   Mesh<T>::P meshB = VTKMeshLoader<T>::load(argv[2]);
 
-   const T thresh = atof( argv[3] );
-   const unsigned int subdivs = atoi( argv[4] );
-   const unsigned int incorr  = atoi( argv[5] );
+   const T thresh = atof(argv[3]);
+   const unsigned int subdivs = atoi(argv[4]);
+   const unsigned int incorr  = atoi(argv[5]);
 
-   MeshSimilarity<T>::P meshSim = MeshSimilarity<T>::getInstance( meshA, meshB, thresh, subdivs, incorr != 0 );
+   MeshSimilarity<T>::P meshSim = MeshSimilarity<T>::getInstance(meshA, meshB, thresh, subdivs, incorr != 0);
 
    std::cout << "similarity = {" << std::endl;
 
@@ -61,13 +61,13 @@ int main( int argc, char** argv )
    std::cout << "}" << std::endl;
    
    /*
-   for ( unsigned int subdivs = 0; subdivs < 15; ++subdivs )
+   for (unsigned int subdivs = 0; subdivs < 15; ++subdivs)
    {
       ProfilingTimer timer;
-      DEBUGMACRO( subdivs );
+      DEBUGMACRO(subdivs);
 
       timer.start();
-      MeshSimilarity<T>::P meshSim = MeshSimilarity<T>::getInstance( meshA, meshB, thresh, subdivs, incorr != 0 );
+      MeshSimilarity<T>::P meshSim = MeshSimilarity<T>::getInstance(meshA, meshB, thresh, subdivs, incorr != 0);
       timer.stop();
 
       std::cout << subdivs << "\t" << meshSim->getMeanDistance() << "\t" << meshSim->getRmsDistance() << "\t" << meshSim->getMaximumDistance() << "\t" << meshSim->getAreaOfDeviation() << "\t" << meshSim->getAreaOfDeviationThreshold() << "\t" << timer.getDurationInSecs() << std::endl;

@@ -34,15 +34,15 @@ namespace AWT
    class CleanedVtkPolyData
    {
    public:
-      CleanedVtkPolyData( vtkPolyData* in_Poly );
-      CleanedVtkPolyData( vtkPolyDataAlgorithm* in_PolyAlgo );
+      CleanedVtkPolyData(vtkPolyData* in_Poly);
+      CleanedVtkPolyData(vtkPolyDataAlgorithm* in_PolyAlgo);
 
-      ~CleanedVtkPolyData( );
+      ~CleanedVtkPolyData();
 
-      vtkPolyData* getCleanedPolyData( );
+      vtkPolyData* getCleanedPolyData();
 
    protected:
-      void init( vtkPolyData* in_Poly );
+      void init(vtkPolyData* in_Poly);
 
       vtkPolyData* m_CleanedData;
    };

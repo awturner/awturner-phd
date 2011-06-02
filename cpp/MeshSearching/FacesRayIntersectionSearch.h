@@ -49,37 +49,37 @@ namespace AWT
       friend class OEKDTree::OEKDTreeBranch;
 
    public:
-      typedef ManagedAutoPointer<FacesRayIntersectionSearch<T>> P;
+      typedef ManagedAutoPointer<FacesRayIntersectionSearch<T> > P;
 
-      static P getInstance( );
+      static P getInstance();
 
    protected:
-      FacesRayIntersectionSearch( const T in_MaxDistance = std::numeric_limits<T>::infinity( ) );
-      virtual ~FacesRayIntersectionSearch( );
+      FacesRayIntersectionSearch(const T in_MaxDistance = std::numeric_limits<T>::infinity());
+      virtual ~FacesRayIntersectionSearch();
 
    public:
-      virtual void calculateBoxDistanceBounds2( typename OEKDTree::OEKDTreeBranch<T,3>* in_Branch, AWT::OEKDTree::SqDistBounds<T>& in_Bounds ) const;
-      virtual bool shouldCheck( typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<T>& in_Bounds ) const;
+      virtual void calculateBoxDistanceBounds2(typename OEKDTree::OEKDTreeBranch<T,3>* in_Branch, AWT::OEKDTree::SqDistBounds<T>& in_Bounds) const;
+      virtual bool shouldCheck(typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<T>& in_Bounds) const;
 
-      virtual void checkObject( const int in_Index );
+      virtual void checkObject(const int in_Index);
 
-      virtual void setTestPoint( const T* in_TestPoint  );
-      virtual void getTestPoint( T* out_TestPoint ) const;
+      virtual void setTestPoint(const T* in_TestPoint );
+      virtual void getTestPoint(T* out_TestPoint) const;
 
-      virtual void setTestNormal( const T* in_TestNormal );
-      virtual void getTestNormal( T* out_TestNormal ) const;
+      virtual void setTestNormal(const T* in_TestNormal);
+      virtual void getTestNormal(T* out_TestNormal) const;
 
-      virtual int  getNearestPoint( T* out_NearestPoint = 0 ) const;
+      virtual int  getNearestPoint(T* out_NearestPoint = 0) const;
 
-      virtual void reset( );
+      virtual void reset();
 
-      virtual bool isAllowedBackwards( ) const;
-      virtual void setAllowedBackwards( const bool v );
+      virtual bool isAllowedBackwards() const;
+      virtual void setAllowedBackwards(const bool v);
 
-      virtual bool isEnforceNormalCompatibility( ) const;
-      virtual void setEnforceNormalCompatibility( const bool v );
+      virtual bool isEnforceNormalCompatibility() const;
+      virtual void setEnforceNormalCompatibility(const bool v);
 
-      virtual std::string getClassName( ) const;
+      virtual std::string getClassName() const;
    protected:
 
       int m_NearestIndex;
@@ -101,16 +101,16 @@ namespace AWT
 #include "Useful/ArrayVectorFunctions.h"
 
 template <class T>
-GETNAMEMACRO( AWT::FacesRayIntersectionSearch<T> );
+GETNAMEMACRO(AWT::FacesRayIntersectionSearch<T>);
 
 template <class T>
-typename AWT::FacesRayIntersectionSearch<T>::P AWT::FacesRayIntersectionSearch<T>::getInstance( )
+typename AWT::FacesRayIntersectionSearch<T>::P AWT::FacesRayIntersectionSearch<T>::getInstance()
 {
-   AUTOGETINSTANCE( AWT::FacesRayIntersectionSearch<T>, ( ) );
+   AUTOGETINSTANCE(AWT::FacesRayIntersectionSearch<T>, ());
 }
 
 template <class T>
-AWT::FacesRayIntersectionSearch<T>::FacesRayIntersectionSearch( const T in_MaxDistance )
+AWT::FacesRayIntersectionSearch<T>::FacesRayIntersectionSearch(const T in_MaxDistance)
 {
    m_InitMaxDistance2 = in_MaxDistance*in_MaxDistance;
 
@@ -119,16 +119,16 @@ AWT::FacesRayIntersectionSearch<T>::FacesRayIntersectionSearch( const T in_MaxDi
 
    m_Tolerance = 1e-2;
 
-   reset( );
+   reset();
 }
 
 template <class T>
-AWT::FacesRayIntersectionSearch<T>::~FacesRayIntersectionSearch( )
+AWT::FacesRayIntersectionSearch<T>::~FacesRayIntersectionSearch()
 {
 }
 
 template <class T>
-void AWT::FacesRayIntersectionSearch<T>::calculateBoxDistanceBounds2( typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, AWT::OEKDTree::SqDistBounds<T>& in_bounds ) const
+void AWT::FacesRayIntersectionSearch<T>::calculateBoxDistanceBounds2(typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, AWT::OEKDTree::SqDistBounds<T>& in_bounds) const
 {
    boxChecked();
 
@@ -145,34 +145,34 @@ void AWT::FacesRayIntersectionSearch<T>::calculateBoxDistanceBounds2( typename A
 
    bool inside = true;
 
-   for ( ax = 0; ax < 3; ax++ )
+   for (ax = 0; ax < 3; ax++)
    {
-      bounds[2*ax+0] = in_Branch->getMinimumBound( ax );
-      bounds[2*ax+1] = in_Branch->getMaximumBound( ax );
+      bounds[2*ax+0] = in_Branch->getMinimumBound(ax);
+      bounds[2*ax+1] = in_Branch->getMaximumBound(ax);
 
-      if ( m_TestPoint[ax] < bounds[2*ax+0] || m_TestPoint[ax] > bounds[2*ax+1] )
+      if (m_TestPoint[ax] < bounds[2*ax+0] || m_TestPoint[ax] > bounds[2*ax+1])
          inside = false;
    }
 
-   if ( inside )
+   if (inside)
    {
       in_bounds.lower = 0;
       in_bounds.upper = std::numeric_limits<T>::max();
       return;
    }
 
-   for ( ax = 0; ax < 3 && intersectionsFound < 2; ax++ )
+   for (ax = 0; ax < 3 && intersectionsFound < 2; ax++)
    {
-      if ( m_TestNormal[ax] == 0 )
+      if (m_TestNormal[ax] == 0)
          continue;
 
-      for ( i = 0; i < 2 && intersectionsFound < 2; i++ )
+      for (i = 0; i < 2 && intersectionsFound < 2; i++)
       {
-         lambda = ( bounds[2*ax+i] - m_TestPoint[ax] ) / m_TestNormal[ax];
+         lambda = (bounds[2*ax+i] - m_TestPoint[ax]) / m_TestNormal[ax];
 
          bestDistances[intersectionsFound] = lambda*lambda;
 
-         for ( j = 0; j < 3; j++ )
+         for (j = 0; j < 3; j++)
          {
             // Project the point onto the plane
             projected = lambda * m_TestNormal[j];
@@ -181,35 +181,35 @@ void AWT::FacesRayIntersectionSearch<T>::calculateBoxDistanceBounds2( typename A
 
             // Fast break on distance
 
-            if ( bestDistances[intersectionsFound] > m_MaxDistance2 )
+            if (bestDistances[intersectionsFound] > m_MaxDistance2)
                break;
 
             // Don't want to check on the axis in question in case of round off errors
-            if ( j != ax )
+            if (j != ax)
             {
                projected += m_TestPoint[j];
 
-               if ( projected < bounds[2*j+0] || projected > bounds[2*j+1] )
+               if (projected < bounds[2*j+0] || projected > bounds[2*j+1])
                   break;
             }
          }
 
          // Unless J==K, we broke out of the last loop, so the point isn't in the bounds
-         if ( j == 3 )
+         if (j == 3)
          {
             ++intersectionsFound;
 
             // There can only be two intersections of a line with the hypercuboid
-            if ( intersectionsFound == 2 )
+            if (intersectionsFound == 2)
             {
-               if ( bestDistances[1] < bestDistances[0] )
+               if (bestDistances[1] < bestDistances[0])
                   bestDistances[0] = bestDistances[1];
             }
          }
       }
    }
 
-   if ( intersectionsFound > 0 )
+   if (intersectionsFound > 0)
       in_bounds.lower = bestDistances[0];
    else
       in_bounds.lower = std::numeric_limits<T>::max();
@@ -218,13 +218,13 @@ void AWT::FacesRayIntersectionSearch<T>::calculateBoxDistanceBounds2( typename A
 }
 
 template <class T>
-bool AWT::FacesRayIntersectionSearch<T>::shouldCheck( typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<T>& in_Bounds ) const
+bool AWT::FacesRayIntersectionSearch<T>::shouldCheck(typename AWT::OEKDTree::OEKDTreeBranch<T,3>* in_Branch, const AWT::OEKDTree::SqDistBounds<T>& in_Bounds) const
 {
    return in_Bounds.lower < m_MaxDistance2;
 }
 
 template <class T>
-void AWT::FacesRayIntersectionSearch<T>::checkObject( const int in_Index )
+void AWT::FacesRayIntersectionSearch<T>::checkObject(const int in_Index)
 {
    objectChecked();
 
@@ -232,21 +232,21 @@ void AWT::FacesRayIntersectionSearch<T>::checkObject( const int in_Index )
    T point1[3];
    T point2[3];
 
-   m_Data->getVertex( in_Index, 0, offset );
-   m_Data->getVertex( in_Index, 1, point1 );
-   m_Data->getVertex( in_Index, 2, point2 );
+   m_Data->getVertex(in_Index, 0, offset);
+   m_Data->getVertex(in_Index, 1, point1);
+   m_Data->getVertex(in_Index, 2, point2);
 
    T ws[2];
-   TriangleProjection<T>::projectOntoTriangle( offset, point1, point2, m_TestPoint, ws );
+   TriangleProjection<T>::projectOntoTriangle(offset, point1, point2, m_TestPoint, ws);
    
-   if ( ws[0] < -m_Tolerance || ws[1] < -m_Tolerance || ws[0]+ws[1] > 1+m_Tolerance )
+   if (ws[0] < -m_Tolerance || ws[1] < -m_Tolerance || ws[0]+ws[1] > 1+m_Tolerance)
       return;
 
    T intPoint[3];
-   TriangleProjection<T>::projectFromTriangle( offset, point1, point2, ws, intPoint );
+   TriangleProjection<T>::projectFromTriangle(offset, point1, point2, ws, intPoint);
 
-   const T norm2 = deltaNormSquared( intPoint, m_TestPoint, 3 );
-   if ( norm2 < m_MaxDistance2 )
+   const T norm2 = deltaNormSquared(intPoint, m_TestPoint, 3);
+   if (norm2 < m_MaxDistance2)
    {
       m_NearestPoint[0] = intPoint[0];
       m_NearestPoint[1] = intPoint[1];
@@ -258,39 +258,39 @@ void AWT::FacesRayIntersectionSearch<T>::checkObject( const int in_Index )
 }
 
 template <class T>
-void AWT::FacesRayIntersectionSearch<T>::setTestPoint( const T* in_TestPoint  )
+void AWT::FacesRayIntersectionSearch<T>::setTestPoint(const T* in_TestPoint )
 {
-   for ( int i = 0; i < 3; i++ )
+   for (int i = 0; i < 3; i++)
       m_TestPoint[i] = in_TestPoint[i];
 }
 
 template <class T>
-void AWT::FacesRayIntersectionSearch<T>::getTestPoint( T* out_TestPoint ) const
+void AWT::FacesRayIntersectionSearch<T>::getTestPoint(T* out_TestPoint) const
 {
-   for ( int i = 0; i < 3; i++ )
+   for (int i = 0; i < 3; i++)
       out_TestPoint[i] = m_TestPoint[i];
 }
 
 template <class T>
-void AWT::FacesRayIntersectionSearch<T>::setTestNormal( const T* in_TestNormal  )
+void AWT::FacesRayIntersectionSearch<T>::setTestNormal(const T* in_TestNormal )
 {
-   for ( int i = 0; i < 3; i++ )
+   for (int i = 0; i < 3; i++)
       m_TestNormal[i] = in_TestNormal[i];
 }
 
 template <class T>
-void AWT::FacesRayIntersectionSearch<T>::getTestNormal( T* out_TestNormal ) const
+void AWT::FacesRayIntersectionSearch<T>::getTestNormal(T* out_TestNormal) const
 {
-   for ( int i = 0; i < 3; i++ )
+   for (int i = 0; i < 3; i++)
       out_TestNormal[i] = m_TestNormal[i];
 }
 
 template <class T>
-int  AWT::FacesRayIntersectionSearch<T>::getNearestPoint( T* out_NearestPoint = 0 ) const
+int  AWT::FacesRayIntersectionSearch<T>::getNearestPoint(T* out_NearestPoint = 0) const
 {
-   if ( m_NearestIndex != -1 && out_NearestPoint != 0 )
+   if (m_NearestIndex != -1 && out_NearestPoint != 0)
    {
-      for ( int i = 0; i < 3; i++ )
+      for (int i = 0; i < 3; i++)
          out_NearestPoint[i] = m_NearestPoint[i];
    }
 
@@ -298,7 +298,7 @@ int  AWT::FacesRayIntersectionSearch<T>::getNearestPoint( T* out_NearestPoint = 
 }
 
 template <class T>
-void AWT::FacesRayIntersectionSearch<T>::reset( )
+void AWT::FacesRayIntersectionSearch<T>::reset()
 {
    FacesSearch<T>::reset();
 
@@ -307,25 +307,25 @@ void AWT::FacesRayIntersectionSearch<T>::reset( )
 }
 
 template <class T>
-bool AWT::FacesRayIntersectionSearch<T>::isAllowedBackwards( ) const
+bool AWT::FacesRayIntersectionSearch<T>::isAllowedBackwards() const
 {
    return m_AllowedBackwards;
 }
 
 template <class T>
-void AWT::FacesRayIntersectionSearch<T>::setAllowedBackwards( const bool v )
+void AWT::FacesRayIntersectionSearch<T>::setAllowedBackwards(const bool v)
 {
    m_AllowedBackwards = v;
 }
 
 template <class T>
-bool AWT::FacesRayIntersectionSearch<T>::isEnforceNormalCompatibility( ) const
+bool AWT::FacesRayIntersectionSearch<T>::isEnforceNormalCompatibility() const
 {
    return m_EnforceNormalCompatibility;
 }
 
 template <class T>
-void AWT::FacesRayIntersectionSearch<T>::setEnforceNormalCompatibility( const bool v )
+void AWT::FacesRayIntersectionSearch<T>::setEnforceNormalCompatibility(const bool v)
 {
    m_EnforceNormalCompatibility = v;
 }

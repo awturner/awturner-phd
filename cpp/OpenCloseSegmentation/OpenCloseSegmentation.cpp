@@ -32,64 +32,64 @@
 #include <iostream>
 #include <fstream>
 
-void usage( )
+void usage()
 {
    std::cerr << "OpenCloseSegmentation <RLE file> <label> <0-for-open,1-for-close> <Output RLE file>" << std::endl;
 }
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-   if ( argc < 5 )
+   if (argc < 5)
    {
-      usage( );
-      DEBUGLINEANDEXIT( 1 );
+      usage();
+      DEBUGLINEANDEXIT(1);
    }
 
-   std::ifstream is( argv[1], std::ifstream::binary );
+   std::ifstream is(argv[1], std::ifstream::binary);
 
    std::cerr << "Opening " << argv[1] << "..." << std::endl;
-   CImg<unsigned char> im = AWT::runLengthDecode<unsigned char>( is );
+   CImg<unsigned char> im = AWT::runLengthDecode<unsigned char>(is);
    std::cerr << "Done." << std::endl;
 
    std::cerr << "Dimensions: " << im.dimx() << " x " << im.dimy() << " x " << im.dimz() << " x " << im.dimv() << std::endl;
 
-   unsigned char label = static_cast<unsigned char>( atoi( argv[2] ) );
+   unsigned char label = static_cast<unsigned char>(atoi(argv[2]));
 
-   cimg_forXYZ( im, x, y, z )
+   cimg_forXYZ(im, x, y, z)
       im(x,y,z) = (im(x,y,z)==label)?1:0;
    
-   CImg<unsigned char> sel( 3, 3, 3 );
-   sel.fill( 1 );
+   CImg<unsigned char> sel(3, 3, 3);
+   sel.fill(1);
 
-   int repeats = atoi( argv[3] );
+   int repeats = atoi(argv[3]);
 
-   if ( repeats == 0 )
+   if (repeats == 0)
    {
       std::cerr << "  Dilating..." << std::endl;
-      im.dilate( sel );
+      im.dilate(sel);
       std::cerr << "  Eroding..." << std::endl;
-      im.erode( sel );
+      im.erode(sel);
 
       std::cerr << "  Eroding..." << std::endl;
-      im.erode( sel );
+      im.erode(sel);
       std::cerr << "  Dilating..." << std::endl;
-      im.dilate( sel );
+      im.dilate(sel);
    }
    else
    {
       std::cerr << "  Eroding..." << std::endl;
-      im.erode( sel );
+      im.erode(sel);
       std::cerr << "  Dilating..." << std::endl;
-      im.dilate( sel );
+      im.dilate(sel);
 
       std::cerr << "  Dilating..." << std::endl;
-      im.dilate( sel );
+      im.dilate(sel);
       std::cerr << "  Eroding..." << std::endl;
-      im.erode( sel );
+      im.erode(sel);
 
    }
    
-   std::ofstream os( argv[4], std::ifstream::binary );
-   AWT::runLengthEncode<unsigned char>( im, os );
-   os.close( );
+   std::ofstream os(argv[4], std::ifstream::binary);
+   AWT::runLengthEncode<unsigned char>(im, os);
+   os.close();
 }

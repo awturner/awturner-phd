@@ -38,9 +38,9 @@ namespace AWT
       typedef ManagedAutoPointer<DrawableLight> P;
 
    public:
-      virtual Light::P getLight( ) = 0;
+      virtual Light::P getLight() = 0;
 
-      virtual void setLight( Light::P light ) = 0;
+      virtual void setLight(Light::P light) = 0;
    };
 }
 

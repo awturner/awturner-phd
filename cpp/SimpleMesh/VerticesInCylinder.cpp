@@ -62,11 +62,11 @@ struct AWT::SimpleMesh::VerticesInCylinder::D
 
       while (true)
       {
-         for ( Index ax = 0; ax < 3; ++ax )
+         for (Index ax = 0; ax < 3; ++ax)
             p2(ax) = Noise<double>::randu(-1,0);
          p2(3) = 0;
 
-         cross( p2.data_block(), axis.data_block(), p1.data_block() );
+         cross(p2.data_block(), axis.data_block(), p1.data_block());
          p1(3) = 0;
 
          if (p1.squared_magnitude() != 0)
@@ -76,7 +76,7 @@ struct AWT::SimpleMesh::VerticesInCylinder::D
       p1.normalize();
 
       // Pick the third vector
-      cross( axis.data_block(), p1.data_block(), p2.data_block() );
+      cross(axis.data_block(), p1.data_block(), p2.data_block());
       p2(3) = 0;
 
       p2.normalize();
@@ -101,10 +101,10 @@ struct AWT::SimpleMesh::VerticesInCylinder::D
 
       convex.clear();
 
-      for ( Index i = 0; i < 8; ++i )
+      for (Index i = 0; i < 8; ++i)
       {
-         for ( Index ax = 0; ax < 3; ++ax )
-            vs( ax, i ) = 2*( (i & (1 << ax) ) ? 1 : 0 ) - 1;
+         for (Index ax = 0; ax < 3; ++ax)
+            vs(ax, i) = 2*((i & (1 << ax)) ? 1 : 0) - 1;
 
          vs(3,i) = 1;
       }
@@ -113,12 +113,12 @@ struct AWT::SimpleMesh::VerticesInCylinder::D
       vs = trans * vs;
       vs.set_row(2,0.0);
 
-      //PRINTVBLMATLAB( vs );
+      //PRINTVBLMATLAB(vs);
 
       // Now, use gift-wrapping to determine the convex set
       Index first = 0;
-      for ( Index i = 1; i < 8; ++i )
-         if ( vs(0,i) < vs(0,first) )
+      for (Index i = 1; i < 8; ++i)
+         if (vs(0,i) < vs(0,first))
             first = i;
 
       //PRINTVBL(first);
@@ -130,14 +130,14 @@ struct AWT::SimpleMesh::VerticesInCylinder::D
          Index currConvex = convex.back();
 
          Index leftMost = (currConvex == 0) ? 1 : 0;
-         for ( Index j = 0; j < 8; ++j )
+         for (Index j = 0; j < 8; ++j)
          {
             if (j != currConvex)
             {
                Point d1 = vs.get_column(leftMost) - vs.get_column(currConvex);
                Point d2 = vs.get_column(j)        - vs.get_column(currConvex);
 
-               if ( (d1(0)*d2(1) - d1(1)*d2(0)) < 0 )
+               if ((d1(0)*d2(1) - d1(1)*d2(0)) < 0)
                   leftMost = j;
             }
          }
@@ -153,13 +153,13 @@ struct AWT::SimpleMesh::VerticesInCylinder::D
    }
 };
 
-AWT::SimpleMesh::VerticesInCylinder::VerticesInCylinder( )
+AWT::SimpleMesh::VerticesInCylinder::VerticesInCylinder()
 {
    m_D = new D;
 
    // cylinder pointing in the Z direction
-   m_D->centre.fill( 0 ); m_D->centre(3) = 1;
-   m_D->axis.fill( 0 );   m_D->axis(0) = 1;
+   m_D->centre.fill(0); m_D->centre(3) = 1;
+   m_D->axis.fill(0);   m_D->axis(0) = 1;
 
    m_D->calculateTransformation();
    //m_D->findConvexVertices();
@@ -170,22 +170,22 @@ AWT::SimpleMesh::VerticesInCylinder::VerticesInCylinder( )
    m_D->Rmin2 = 0;
    m_D->Rmax2 = std::numeric_limits<double>::max();
 
-   reset( );
+   reset();
 }
 
-AWT::SimpleMesh::VerticesInCylinder::~VerticesInCylinder( )
+AWT::SimpleMesh::VerticesInCylinder::~VerticesInCylinder()
 {
    delete m_D;
 }
 
-AWT::SimpleMesh::VerticesInCylinder::P AWT::SimpleMesh::VerticesInCylinder::getInstance( )
+AWT::SimpleMesh::VerticesInCylinder::P AWT::SimpleMesh::VerticesInCylinder::getInstance()
 {
-   AUTOGETINSTANCE( AWT::SimpleMesh::VerticesInCylinder, ( ) );
+   AUTOGETINSTANCE(AWT::SimpleMesh::VerticesInCylinder, ());
 }
 
-GETNAMEMACRO( AWT::SimpleMesh::VerticesInCylinder );
+GETNAMEMACRO(AWT::SimpleMesh::VerticesInCylinder);
 
-void AWT::SimpleMesh::VerticesInCylinder::calculateBoxDistanceBounds2( OEKDTreeBranch<double,3>* in_Branch, SqDistBounds<double>& bounds ) const
+void AWT::SimpleMesh::VerticesInCylinder::calculateBoxDistanceBounds2(OEKDTreeBranch<double,3>* in_Branch, SqDistBounds<double>& bounds) const
 {
    boxChecked();
 
@@ -199,15 +199,15 @@ void AWT::SimpleMesh::VerticesInCylinder::calculateBoxDistanceBounds2( OEKDTreeB
    Points vs(4,8);
 
    /*
-   DEBUGMACRO( "Bounds" );
-   for ( Index ax = 0; ax < 3; ++ax )
-      DEBUGMACRO( ax << "\t" << in_Branch->getMinimumBound(ax) << "\t" << in_Branch->getMaximumBound(ax) );
+   DEBUGMACRO("Bounds");
+   for (Index ax = 0; ax < 3; ++ax)
+      DEBUGMACRO(ax << "\t" << in_Branch->getMinimumBound(ax) << "\t" << in_Branch->getMaximumBound(ax));
    */
 
-   for ( Index i = 0; i < 8; ++i )
+   for (Index i = 0; i < 8; ++i)
    {
-      for ( Index ax = 0; ax < 3; ++ax )
-         Vs( ax, i ) = (i & (1 << ax) ) ? in_Branch->getMaximumBound(ax) : in_Branch->getMinimumBound(ax);
+      for (Index ax = 0; ax < 3; ++ax)
+         Vs(ax, i) = (i & (1 << ax)) ? in_Branch->getMaximumBound(ax) : in_Branch->getMinimumBound(ax);
 
       Vs(3,i) = 1;
    }
@@ -220,7 +220,7 @@ void AWT::SimpleMesh::VerticesInCylinder::calculateBoxDistanceBounds2( OEKDTreeB
    // Check the z values
    double minZ =  FAR_FAR_AWAY;
    double maxZ = -FAR_FAR_AWAY;
-   for ( Index i = 0; i < 8; ++i )
+   for (Index i = 0; i < 8; ++i)
    {
       minZ = std::min(minZ, vs(2,i));
       maxZ = std::max(maxZ, vs(2,i));
@@ -230,7 +230,7 @@ void AWT::SimpleMesh::VerticesInCylinder::calculateBoxDistanceBounds2( OEKDTreeB
 
    if (maxZ < m_D->Zmin || minZ > m_D->Zmax)
    {
-      //DEBUGMACRO( "Z ranges do not intersect" );
+      //DEBUGMACRO("Z ranges do not intersect");
       // The box doesn't intersect the ends, so don't check it
       bounds.upper = bounds.lower = FAR_FAR_AWAY;
    }
@@ -243,7 +243,7 @@ void AWT::SimpleMesh::VerticesInCylinder::calculateBoxDistanceBounds2( OEKDTreeB
       Point crossP;
 
       const Index nconvex = m_D->convex.size();
-      for ( Index i = 0; i < nconvex; ++i )
+      for (Index i = 0; i < nconvex; ++i)
       {
          const Point x0 = vs.get_column(m_D->convex[i]);
          const Point xx = -x0;
@@ -271,13 +271,13 @@ void AWT::SimpleMesh::VerticesInCylinder::calculateBoxDistanceBounds2( OEKDTreeB
          side &= (xx(0)*bb(1) - xx(1)*bb(0)) < 0;
       }
 
-      if ( dFurthest < m_D->Rmin2 )
+      if (dFurthest < m_D->Rmin2)
       {
-         //DEBUGMACRO( "Furthert vertex is inside the inner cylinder" );
+         //DEBUGMACRO("Furthert vertex is inside the inner cylinder");
          // If the farthest vertex is inside the inner cylinder, it doesn't intersect the range
          bounds.upper = bounds.lower = FAR_FAR_AWAY;
       }
-      else if (dClosest < m_D->Rmax2 )
+      else if (dClosest < m_D->Rmax2)
       {
          // If the closest vertex is inside the outer radius, accept it
          // Note that this will accept some unnecessary boxes
@@ -292,7 +292,7 @@ void AWT::SimpleMesh::VerticesInCylinder::calculateBoxDistanceBounds2( OEKDTreeB
 
       if (side)
       {
-         //DEBUGMACRO( "Centre is inside convex hull" );
+         //DEBUGMACRO("Centre is inside convex hull");
          pClosest.fill(0);
          pClosest(3) = 1;
 
@@ -303,31 +303,31 @@ void AWT::SimpleMesh::VerticesInCylinder::calculateBoxDistanceBounds2( OEKDTreeB
 
    /*
    {
-      vnl_matlab_filewrite fw( "vic.mat" );
+      vnl_matlab_filewrite fw("vic.mat");
 
       vnl_vector<double> cvs(m_D->convex.size());
-      for ( Index i = 0; i < m_D->convex.size(); ++i )
+      for (Index i = 0; i < m_D->convex.size(); ++i)
          cvs(i) = 1 + m_D->convex[i];
 
-      fw.write( vs, "vs" );
-      fw.write( Vs, "Vs" );
-      fw.write( pClosest, "Pc" );
-      fw.write( m_D->trans, "T" );
-      fw.write( sqrt(m_D->Rmax2), "R" );
-      fw.write( sqrt(m_D->Rmin2), "r" );
-      fw.write( cvs, "convex" );
-      fw.write( m_D->Zmin, "Zmin" );
-      fw.write( m_D->Zmax, "Zmax" );
+      fw.write(vs, "vs");
+      fw.write(Vs, "Vs");
+      fw.write(pClosest, "Pc");
+      fw.write(m_D->trans, "T");
+      fw.write(sqrt(m_D->Rmax2), "R");
+      fw.write(sqrt(m_D->Rmin2), "r");
+      fw.write(cvs, "convex");
+      fw.write(m_D->Zmin, "Zmin");
+      fw.write(m_D->Zmax, "Zmax");
 
-      fw.write( bounds.lower, "Bl" );
-      fw.write( bounds.lower, "Bu" );
+      fw.write(bounds.lower, "Bl");
+      fw.write(bounds.lower, "Bu");
    }
-   PRINTVBL( bounds.lower );
+   PRINTVBL(bounds.lower);
    PAUSE;
    */
 }
 
-void AWT::SimpleMesh::VerticesInCylinder::checkObject( const int in_Index )
+void AWT::SimpleMesh::VerticesInCylinder::checkObject(const int in_Index)
 {
    objectChecked();
 
@@ -339,73 +339,73 @@ void AWT::SimpleMesh::VerticesInCylinder::checkObject( const int in_Index )
       // Good start - it's between the end planes
       
       const double r2 = p(0)*p(0) + p(1)*p(1);
-      if ( r2 >= m_D->Rmin2 && r2 <= m_D->Rmax2 )
+      if (r2 >= m_D->Rmin2 && r2 <= m_D->Rmax2)
       {
          // Even better - it's inside the cylinder
-         m_D->foundPoints.push_back( in_Index );
+         m_D->foundPoints.push_back(in_Index);
       }
    }
 }
 
-bool AWT::SimpleMesh::VerticesInCylinder::shouldCheck( AWT::OEKDTree::OEKDTreeBranch<double,3>* in_Branch, const SqDistBounds<double>& bounds ) const
+bool AWT::SimpleMesh::VerticesInCylinder::shouldCheck(AWT::OEKDTree::OEKDTreeBranch<double,3>* in_Branch, const SqDistBounds<double>& bounds) const
 {
    return bounds.lower == 0;;
 }
 
-void AWT::SimpleMesh::VerticesInCylinder::setCentre( const Point centre  )
+void AWT::SimpleMesh::VerticesInCylinder::setCentre(const Point centre )
 {
    m_D->centre = centre;
    m_D->calculateTransformation();
 }
 
-Point AWT::SimpleMesh::VerticesInCylinder::getCentre( ) const
+Point AWT::SimpleMesh::VerticesInCylinder::getCentre() const
 {
    return m_D->centre;
 }
 
-void AWT::SimpleMesh::VerticesInCylinder::setAxis( const Point axis  )
+void AWT::SimpleMesh::VerticesInCylinder::setAxis(const Point axis )
 {
    m_D->axis = axis;
    m_D->calculateTransformation();
    m_D->findConvexVertices();
 }
 
-Point AWT::SimpleMesh::VerticesInCylinder::getAxis( ) const
+Point AWT::SimpleMesh::VerticesInCylinder::getAxis() const
 {
    return m_D->axis;
 }
 
-void AWT::SimpleMesh::VerticesInCylinder::setRadius( const double Rmax, const double Rmin )
+void AWT::SimpleMesh::VerticesInCylinder::setRadius(const double Rmax, const double Rmin)
 {
    m_D->Rmax2 = Rmax * Rmax;
    m_D->Rmin2 = Rmin * Rmin;
 }
 
-void AWT::SimpleMesh::VerticesInCylinder::getRadius( double& Rmax, double& Rmin ) const
+void AWT::SimpleMesh::VerticesInCylinder::getRadius(double& Rmax, double& Rmin) const
 {
    Rmax = sqrt(m_D->Rmax2);
    Rmin = sqrt(m_D->Rmin2);
 }
 
-void AWT::SimpleMesh::VerticesInCylinder::setEnds( const double Zmax, const double Zmin )
+void AWT::SimpleMesh::VerticesInCylinder::setEnds(const double Zmax, const double Zmin)
 {
    m_D->Zmax = Zmax;
    m_D->Zmin = Zmin;
 }
 
-void AWT::SimpleMesh::VerticesInCylinder::getEnds( double& Zmax, double& Zmin ) const
+void AWT::SimpleMesh::VerticesInCylinder::getEnds(double& Zmax, double& Zmin) const
 {
    Zmax = m_D->Zmax;
    Zmin = m_D->Zmin;
 }
 
-void AWT::SimpleMesh::VerticesInCylinder::reset( )
+void AWT::SimpleMesh::VerticesInCylinder::reset()
 {
    SearchAgent::reset();
    m_D->foundPoints.clear();
 }
 
-std::vector<Index>& AWT::SimpleMesh::VerticesInCylinder::getVertices( )
+std::vector<Index>& AWT::SimpleMesh::VerticesInCylinder::getVertices()
 {
    return m_D->foundPoints;
 }

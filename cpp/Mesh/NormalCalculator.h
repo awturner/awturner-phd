@@ -37,12 +37,12 @@ namespace AWT
    class NormalCalculator : public ManagedObject
    {
    public:
-      typedef ManagedAutoPointer<NormalCalculator<T>> P;
+      typedef ManagedAutoPointer<NormalCalculator<T> > P;
 
    public:
-      virtual void calculateNormals( typename Mesh<T>::P mesh, typename Tuples<T>::P vtxNormals, typename Tuples<T>::P meshNormals ) = 0;
+      virtual void calculateNormals(typename Mesh<T>::P mesh, typename Tuples<T>::P vtxNormals, typename Tuples<T>::P meshNormals) = 0;
 
-      virtual void calculateNormalsAndSet( typename Mesh<T>::P mesh, typename Tuples<T>::P vtxNormals = Tuples<T>::P( ), typename Tuples<T>::P faceNormals = Tuples<T>::P( ) );
+      virtual void calculateNormalsAndSet(typename Mesh<T>::P mesh, typename Tuples<T>::P vtxNormals = Tuples<T>::P(), typename Tuples<T>::P faceNormals = Tuples<T>::P());
    };
 }
 

@@ -37,17 +37,17 @@ class DrawPositionWidget : public QWidget
    Q_OBJECT;
 
 public:
-   DrawPositionWidget( QWidget* in_Parent = 0, Qt::WFlags in_Fl = 0 );
-   virtual ~DrawPositionWidget( );
+   DrawPositionWidget(QWidget* in_Parent = 0, Qt::WFlags in_Fl = 0);
+   virtual ~DrawPositionWidget();
 
-   void setPositionHistory( PositionHistory* ph );
-   PositionHistory* getPositionHistory( );
+   void setPositionHistory(PositionHistory* ph);
+   PositionHistory* getPositionHistory();
 
 public slots:
-   virtual void sometimesRepaint( );
+   virtual void sometimesRepaint();
 
 protected:
-   virtual void paintEvent( QPaintEvent* ev );
+   virtual void paintEvent(QPaintEvent* ev);
 
    PositionHistory* m_History;
 };

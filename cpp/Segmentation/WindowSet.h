@@ -36,21 +36,21 @@ namespace AWT
    class WindowSet
    {
    public:
-      void add( CImgDisplay* display );
+      void add(CImgDisplay* display);
 
-      bool isShown( ) const;
+      bool isShown() const;
 
-      void show( );
-      void hide( );
+      void show();
+      void hide();
    protected:
       std::vector<CImgDisplay*> m_Displays;
    };
 }
 
-bool AWT::WindowSet::isShown( ) const
+bool AWT::WindowSet::isShown() const
 {
-   for ( unsigned int i = 0; i < m_Displays.size( ); ++i )
-      if ( !m_Displays[i]->is_closed )
+   for (unsigned int i = 0; i < m_Displays.size(); ++i)
+      if (!m_Displays[i]->is_closed)
          return true;
 
    return false;
@@ -58,24 +58,24 @@ bool AWT::WindowSet::isShown( ) const
 
 void AWT::WindowSet::add(cimg_library::CImgDisplay *display)
 {
-   m_Displays.push_back( display );
+   m_Displays.push_back(display);
 }
 
-void AWT::WindowSet::show( )
+void AWT::WindowSet::show()
 {
-   for ( unsigned int i = 0; i < m_Displays.size( ); ++i )
+   for (unsigned int i = 0; i < m_Displays.size(); ++i)
    {
-      if ( m_Displays[i]->is_closed )
-         m_Displays[i]->show( );
+      if (m_Displays[i]->is_closed)
+         m_Displays[i]->show();
    }
 }
 
-void AWT::WindowSet::hide( )
+void AWT::WindowSet::hide()
 {
-   for ( unsigned int i = 0; i < m_Displays.size( ); ++i )
+   for (unsigned int i = 0; i < m_Displays.size(); ++i)
    {
-      if ( ! m_Displays[i]->is_closed )
-         m_Displays[i]->close( );
+      if (! m_Displays[i]->is_closed)
+         m_Displays[i]->close();
    }
 }
 

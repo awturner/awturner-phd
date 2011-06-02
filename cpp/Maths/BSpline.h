@@ -32,12 +32,12 @@ namespace AWT
    class BSpline
    {
    public:
-      static T evaluate( T u );
+      static T evaluate(T u);
 
-      BSpline( const int npoints );
-      ~BSpline( );
+      BSpline(const int npoints);
+      ~BSpline();
 
-      T getValue( T u ) const;
+      T getValue(T u) const;
 
    protected:
       T* m_Points;

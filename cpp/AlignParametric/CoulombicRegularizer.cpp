@@ -46,59 +46,59 @@ struct AWT::AlignParametric::CoulombicRegularizer::D
    T energy;
 };
 
-AWT::AlignParametric::CoulombicRegularizer::CoulombicRegularizer( CoulombicParticleSurface* surf )
+AWT::AlignParametric::CoulombicRegularizer::CoulombicRegularizer(CoulombicParticleSurface* surf)
 {
    m_D = new D;
    m_D->surf = surf;
 
-   m_D->particles = surf->getSamples( );
-   m_D->particlesMesh = MeshImpl<T>::getInstance( 0, 0 );
-   m_D->particlesMesh->setVertices( m_D->particles );
+   m_D->particles = surf->getSamples();
+   m_D->particlesMesh = MeshImpl<T>::getInstance(0, 0);
+   m_D->particlesMesh->setVertices(m_D->particles);
 
-   m_D->updates.set_size( 3, m_D->particlesMesh->getNumberOfVertices() );
-   m_D->updates.fill( 0 );
+   m_D->updates.set_size(3, m_D->particlesMesh->getNumberOfVertices());
+   m_D->updates.fill(0);
    m_D->energy = 0;
 }
 
-AWT::AlignParametric::CoulombicRegularizer::~CoulombicRegularizer( )
+AWT::AlignParametric::CoulombicRegularizer::~CoulombicRegularizer()
 {
    delete m_D;
 }
 
-AWT::AlignParametric::CoulombicRegularizer::P AWT::AlignParametric::CoulombicRegularizer::getInstance( CoulombicParticleSurface* surf )
+AWT::AlignParametric::CoulombicRegularizer::P AWT::AlignParametric::CoulombicRegularizer::getInstance(CoulombicParticleSurface* surf)
 {
-   AUTOGETINSTANCE( AWT::AlignParametric::CoulombicRegularizer, ( surf ) );
+   AUTOGETINSTANCE(AWT::AlignParametric::CoulombicRegularizer, (surf));
 }
 
-GETNAMEMACRO( AWT::AlignParametric::CoulombicRegularizer );
+GETNAMEMACRO(AWT::AlignParametric::CoulombicRegularizer);
 
-T AWT::AlignParametric::CoulombicRegularizer::getMinDistance( const Idx p )
+T AWT::AlignParametric::CoulombicRegularizer::getMinDistance(const Idx p)
 {
    return 10000;
 }
 
-T AWT::AlignParametric::CoulombicRegularizer::getCutoffDistance( ) const
+T AWT::AlignParametric::CoulombicRegularizer::getCutoffDistance() const
 {
    return m_D->m_Cutoff;
 }
 
-void AWT::AlignParametric::CoulombicRegularizer::setCutoffDistance( const T v )
+void AWT::AlignParametric::CoulombicRegularizer::setCutoffDistance(const T v)
 {
-   if ( v != m_D->m_Cutoff )
+   if (v != m_D->m_Cutoff)
    {
       m_D->m_Cutoff = v;
       modified();
    }
 }
 
-T AWT::AlignParametric::CoulombicRegularizer::getThreshold( ) const
+T AWT::AlignParametric::CoulombicRegularizer::getThreshold() const
 {
    return m_D->m_Threshold;
 }
 
-void AWT::AlignParametric::CoulombicRegularizer::setThreshold( const T v )
+void AWT::AlignParametric::CoulombicRegularizer::setThreshold(const T v)
 {
-   if ( v != m_D->m_Threshold )
+   if (v != m_D->m_Threshold)
    {
       m_D->m_Threshold = v;
       modified();
@@ -106,45 +106,45 @@ void AWT::AlignParametric::CoulombicRegularizer::setThreshold( const T v )
 }
 
 // Calculate the force which tries to push these particles apart
-void AWT::AlignParametric::CoulombicRegularizer::calculateUpdate( MatrixType& reg )
+void AWT::AlignParametric::CoulombicRegularizer::calculateUpdate(MatrixType& reg)
 {
-   reg.update( m_D->updates );
+   reg.update(m_D->updates);
 }
 
-T AWT::AlignParametric::CoulombicRegularizer::calculateCost( const bool debug )
+T AWT::AlignParametric::CoulombicRegularizer::calculateCost(const bool debug)
 {
    // This is a searcher - set it up how we want it.
-   CoulombicInfluenceAccumulator<T>::P influence = CoulombicInfluenceAccumulator<T>::getInstance( );
-   influence->setThreshold( 0.3 );
-   influence->setCutoff( m_D->m_Cutoff );
+   CoulombicInfluenceAccumulator<T>::P influence = CoulombicInfluenceAccumulator<T>::getInstance();
+   influence->setThreshold(0.3);
+   influence->setCutoff(m_D->m_Cutoff);
 
    // Rebuild the Kd tree of the particle mesh so that we can search the particles
-   m_D->particlesMesh->prepareToSearchVertices( true );
+   m_D->particlesMesh->prepareToSearchVertices(true);
 
    const MeshIndex N = m_D->particlesMesh->getNumberOfVertices();
    
-   MatrixType updates( N, 3 );
+   MatrixType updates(N, 3);
 
    T vtx[3];
    T upd[3];
    T energy = 0;
 
-   MESH_EACHVERTEX( m_D->particlesMesh, v )
+   MESH_EACHVERTEX(m_D->particlesMesh, v)
    {
-      m_D->particlesMesh->getVertex( v, vtx );
+      m_D->particlesMesh->getVertex(v, vtx);
 
       influence->reset();
-      influence->initialize( v, vtx );
+      influence->initialize(v, vtx);
 
       // Search the mesh, influence does its magic and calculates things
-      m_D->particlesMesh->searchVertices( influence );
+      m_D->particlesMesh->searchVertices(influence);
 
       // Now extract the update and the energy for this particle
-      influence->getUpdate( upd );
-      for ( MeshIndex ax = 0; ax < 3; ++ax )
+      influence->getUpdate(upd);
+      for (MeshIndex ax = 0; ax < 3; ++ax)
          updates(v,ax) = upd[ax];
 
-      energy += influence->getEnergy( );
+      energy += influence->getEnergy();
    }
 
    m_D->updates = updates;
@@ -153,7 +153,7 @@ T AWT::AlignParametric::CoulombicRegularizer::calculateCost( const bool debug )
    return m_D->energy;
 }
 
-void AWT::AlignParametric::CoulombicRegularizer::associateSampleToFace( const MeshIndex i, const MeshIndex f )
+void AWT::AlignParametric::CoulombicRegularizer::associateSampleToFace(const MeshIndex i, const MeshIndex f)
 {
    // This doesn't need to do anything, the Euclidean regularizer doesn't use particle faces at all.
 }

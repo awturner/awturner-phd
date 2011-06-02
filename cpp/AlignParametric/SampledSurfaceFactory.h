@@ -40,7 +40,7 @@ namespace AWT
       public:
          typedef ManagedAutoPointer<SampledSurfaceFactory> P;
 
-         virtual SampledSurface::P create( MeshType::P mesh, MeshType::P sampleMesh ) = 0;
+         virtual SampledSurface::P create(MeshType::P mesh, MeshType::P sampleMesh) = 0;
       };
 
    }

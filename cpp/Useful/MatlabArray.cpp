@@ -33,93 +33,93 @@ struct AWT::MatlabArray::D
    char name[256];
 };
 
-AWT::MatlabArray::MatlabArray( MatlabEngine* eng, const char* name )
+AWT::MatlabArray::MatlabArray(MatlabEngine* eng, const char* name)
 {
    m_D = new D;
 
-   strcpy_s( m_D->name, name );
+   strcpy_s(m_D->name, name);
 
-   m_D->array = engGetVariable( eng->getEngine(), name );
+   m_D->array = engGetVariable(eng->getEngine(), name);
 }
 
-AWT::MatlabArray::MatlabArray( const vnl_matrix<double>& mat )
+AWT::MatlabArray::MatlabArray(const vnl_matrix<double>& mat)
 {
    m_D = new D;
 
-   m_D->array = mxCreateDoubleMatrix( mat.cols(), mat.rows(), mxREAL );
+   m_D->array = mxCreateDoubleMatrix(mat.cols(), mat.rows(), mxREAL);
 
    // Copy this matrix into the data
-   double *ptr = (double*)mxGetData( m_D->array );
-   mat.copy_out( ptr );
+   double *ptr = (double*)mxGetData(m_D->array);
+   mat.copy_out(ptr);
 }
 
-AWT::MatlabArray::~MatlabArray( )
+AWT::MatlabArray::~MatlabArray()
 {
-   mxDestroyArray( m_D->array );
+   mxDestroyArray(m_D->array);
 
    delete m_D;
 }
 
-AWT::MatlabArray::P AWT::MatlabArray::getInstance( MatlabEngine* eng, const char* name )
+AWT::MatlabArray::P AWT::MatlabArray::getInstance(MatlabEngine* eng, const char* name)
 {
-   AUTOGETINSTANCE( AWT::MatlabArray, ( eng, name ) );
+   AUTOGETINSTANCE(AWT::MatlabArray, (eng, name));
 }
 
-AWT::MatlabArray::P AWT::MatlabArray::getInstance( const vnl_matrix<double>& mat )
+AWT::MatlabArray::P AWT::MatlabArray::getInstance(const vnl_matrix<double>& mat)
 {
-   AUTOGETINSTANCE( AWT::MatlabArray, ( mat ) );
+   AUTOGETINSTANCE(AWT::MatlabArray, (mat));
 }
 
-GETNAMEMACRO( AWT::MatlabArray );
+GETNAMEMACRO(AWT::MatlabArray);
 
-const char* AWT::MatlabArray::getVariableName( )
+const char* AWT::MatlabArray::getVariableName()
 {
    return m_D->name;
 }
 
-const char* AWT::MatlabArray::getTypeName( )
+const char* AWT::MatlabArray::getTypeName()
 {
-   return mxGetClassName( m_D->array );
+   return mxGetClassName(m_D->array);
 }
 
 template <typename T>
-T* AWT::MatlabArray::getData( )
+T* AWT::MatlabArray::getData()
 {
-   return static_cast<T*>( mxGetData( m_D->array ) );
+   return static_cast<T*>(mxGetData(m_D->array));
 }
 
-mxArray* AWT::MatlabArray::getArray( )
+mxArray* AWT::MatlabArray::getArray()
 {
    return m_D->array;
 }
 
-const unsigned int AWT::MatlabArray::getNumberOfDimensions( )
+const unsigned int AWT::MatlabArray::getNumberOfDimensions()
 {
-   return mxGetNumberOfDimensions( m_D->array );
+   return mxGetNumberOfDimensions(m_D->array);
 }
 
-void AWT::MatlabArray::getDimensions( unsigned int* dims )
+void AWT::MatlabArray::getDimensions(unsigned int* dims)
 {
-   const mwSize* mdims = mxGetDimensions( m_D->array );
+   const mwSize* mdims = mxGetDimensions(m_D->array);
 
-   for ( unsigned int i = 0, imax = getNumberOfDimensions(); i < imax; ++i )
+   for (unsigned int i = 0, imax = getNumberOfDimensions(); i < imax; ++i)
    {
       dims[i] = mdims[i];
    }
 }
 
-void AWT::MatlabArray::getMatrix( vnl_matrix<double>& matrix )
+void AWT::MatlabArray::getMatrix(vnl_matrix<double>& matrix)
 {
    const unsigned int ndims = getNumberOfDimensions();
 
    unsigned int* dims = new unsigned int[ndims];
-   getDimensions( dims );
+   getDimensions(dims);
 
-   PRINTVEC( dims, ndims );
+   PRINTVEC(dims, ndims);
 
    // TRANSPOSED!!
-   matrix.set_size( dims[1], dims[0] );
-   matrix.set( static_cast<double*>( mxGetData( m_D->array ) ) );
+   matrix.set_size(dims[1], dims[0]);
+   matrix.set(static_cast<double*>(mxGetData(m_D->array)));
 
    delete [] dims;
 }

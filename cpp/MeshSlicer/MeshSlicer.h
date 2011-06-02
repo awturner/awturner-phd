@@ -44,20 +44,20 @@ namespace AWT
    class MeshSlicer : public ManagedObject
    {
    public:
-      typedef ManagedAutoPointer<MeshSlicer<T>> P;
+      typedef ManagedAutoPointer<MeshSlicer<T> > P;
 
    protected:
-      MeshSlicer( );
-      virtual ~MeshSlicer( );
+      MeshSlicer();
+      virtual ~MeshSlicer();
 
    public:
-      static P getInstance( );
-      virtual std::string getClassName( ) const;
+      static P getInstance();
+      virtual std::string getClassName() const;
 
-      virtual void setCuttingFunction( typename CuttingFunction<T>::P cutF );
-      virtual typename CuttingFunction<T>::P getCuttingFunction( );
+      virtual void setCuttingFunction(typename CuttingFunction<T>::P cutF);
+      virtual typename CuttingFunction<T>::P getCuttingFunction();
 
-      virtual typename MeshSlicedPair<T>::P sliceMesh( typename Mesh<T>::P mesh );
+      virtual typename MeshSlicedPair<T>::P sliceMesh(typename Mesh<T>::P mesh);
 
    protected:
       struct D;

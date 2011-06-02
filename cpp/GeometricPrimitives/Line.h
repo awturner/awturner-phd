@@ -39,21 +39,21 @@ namespace AWT
          friend class GeometryQueries<T>;
 
       public:
-         static Line* getInstance( Point<T>* in_a, Point<T>* in_b, const bool in_bounded );
+         static Line* getInstance(Point<T>* in_a, Point<T>* in_b, const bool in_bounded);
 
-         const Point<T>* getPoint1( ) const;
-         void            getPoint1( Point<T>* out_p ) const;
+         const Point<T>* getPoint1() const;
+         void            getPoint1(Point<T>* out_p) const;
 
-         const Point<T>* getPoint2( ) const;
-         void            getPoint2( Point<T>* out_p ) const;
+         const Point<T>* getPoint2() const;
+         void            getPoint2(Point<T>* out_p) const;
 
-         bool isBounded( ) const;
+         bool isBounded() const;
 
          virtual ModifiedTime getModifiedTime() const;
 
       protected:
-         Line( Point<T>* in_origin, Point<T>* in_direction, const bool in_bounded );
-         virtual ~Line( );
+         Line(Point<T>* in_origin, Point<T>* in_direction, const bool in_bounded);
+         virtual ~Line();
 
          Point<T>* points[2];
          
@@ -67,14 +67,14 @@ namespace AWT
    namespace GeometricPrimitives
    {
       template <class T>
-      Line<T>* Line<T>::getInstance( Point<T>* in_origin, Point<T>* in_direction, const bool in_bounded )
+      Line<T>* Line<T>::getInstance(Point<T>* in_origin, Point<T>* in_direction, const bool in_bounded)
       {
-         return new Line<T>( in_origin, in_direction, in_bounded );
+         return new Line<T>(in_origin, in_direction, in_bounded);
       }
 
       template <class T>
-      Line<T>::Line( Point<T>* in_a, Point<T>* in_b, const bool in_bounded )
-         : bounded( in_bounded )
+      Line<T>::Line(Point<T>* in_a, Point<T>* in_b, const bool in_bounded)
+         : bounded(in_bounded)
       {
          // Make sure that these don't get deleted
          in_a->registerUse();
@@ -93,12 +93,12 @@ namespace AWT
       }
 
       template <class T>
-      ModifiedTime Line<T>::getModifiedTime( ) const
+      ModifiedTime Line<T>::getModifiedTime() const
       {
          ModifiedTime ret = this->mtime;
 
-         ret = std::max<ModifiedTime>( ret, points[0]->getModifiedTime() );
-         ret = std::max<ModifiedTime>( ret, points[1]->getModifiedTime() );
+         ret = std::max<ModifiedTime>(ret, points[0]->getModifiedTime());
+         ret = std::max<ModifiedTime>(ret, points[1]->getModifiedTime());
 
          return ret;
       }
@@ -116,7 +116,7 @@ namespace AWT
       }
 
       template <class T>
-      void Line<T>::getPoint1( Point<T>* out_p ) const
+      void Line<T>::getPoint1(Point<T>* out_p) const
       {
          out_p = points[0];
       }
@@ -128,7 +128,7 @@ namespace AWT
       }
 
       template <class T>
-      void Line<T>::getPoint2( Point<T>* out_p ) const
+      void Line<T>::getPoint2(Point<T>* out_p) const
       {
          out_p = points[1];
       }

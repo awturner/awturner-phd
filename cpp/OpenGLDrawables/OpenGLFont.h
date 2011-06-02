@@ -41,7 +41,7 @@ namespace AWT
       typedef ManagedAutoPointer<OpenGLFont> P;
 
    public:
-      virtual void select( ) = 0;
+      virtual void select() = 0;
    };
 
    class QtGLFont : public OpenGLFont
@@ -50,23 +50,23 @@ namespace AWT
       typedef ManagedAutoPointer<QtGLFont> P;
 
    protected:
-      QtGLFont( QFont& font )
+      QtGLFont(QFont& font)
       {
-         m_Font = new QFont( font );
+         m_Font = new QFont(font);
       }
 
-      virtual ~QtGLFont( )
+      virtual ~QtGLFont()
       {
          delete m_Font;
       }
 
    public:
-      static P getInstance( QFont& font )
+      static P getInstance(QFont& font)
       {
-         AUTOGETINSTANCE( AWT::QtGLFont, ( font ) );
+         AUTOGETINSTANCE(AWT::QtGLFont, (font));
       }
 
-      virtual void select( )
+      virtual void select()
       {
          
       }

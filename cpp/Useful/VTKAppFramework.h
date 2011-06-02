@@ -40,22 +40,22 @@ namespace AWT
    {
    public:
 
-      VTKAppFramework( );
-      ~VTKAppFramework( );
+      VTKAppFramework();
+      ~VTKAppFramework();
 
-      vtkRenderer*               getRenderer( );
-      vtkRenderWindow*           getRenderWindow( );
-      vtkRenderWindowInteractor* getRenderWindowInteractor( );
+      vtkRenderer*               getRenderer();
+      vtkRenderWindow*           getRenderWindow();
+      vtkRenderWindowInteractor* getRenderWindowInteractor();
 
-      vtkActor*                  addPolyData( vtkPolyData* );
-      vtkActor*                  addPolyData( vtkPolyDataAlgorithm* );
-      vtkActor*                  addPolyData( vtkPolyDataReader* );
+      vtkActor*                  addPolyData(vtkPolyData*);
+      vtkActor*                  addPolyData(vtkPolyDataAlgorithm*);
+      vtkActor*                  addPolyData(vtkPolyDataReader*);
 
-      void setWindowSize( int w, int h );
+      void setWindowSize(int w, int h);
 
-      virtual void initialize( ) {}
+      virtual void initialize() {}
 
-      void start( );
+      void start();
 
    protected:
       vtkRenderer*               m_Renderer;

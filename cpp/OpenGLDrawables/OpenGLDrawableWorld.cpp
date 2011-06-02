@@ -265,13 +265,13 @@ void AWT::OpenGLDrawableWorld::doLighting()
       m_D->m_Light->getPosition(position);
 
       glEnable(GL_LIGHTING);
-	   glEnable(GL_LIGHT0);
-	   
-	   // Assign created components to GL_LIGHT0
-	   glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-	   glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-	   glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-	   glLightfv(GL_LIGHT0, GL_POSITION, position);
+       glEnable(GL_LIGHT0);
+       
+       // Assign created components to GL_LIGHT0
+       glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+       glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+       glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+       glLightfv(GL_LIGHT0, GL_POSITION, position);
 
       const GLfloat doTwoSide = 1;
 

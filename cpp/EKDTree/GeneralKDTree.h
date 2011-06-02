@@ -249,7 +249,7 @@
 //   */
 //   KDTreeBranch<T,K>* recursivelyPartition(int in_Low, int in_High, int in_Dim, T* out_Bounds);
 //
-//	/*!
+//    /*!
 //   * Does the meat of partitioning the array into [ {<= median} median {>= median} ]
 //   *
 //   * @param in_Low First index in the array to check
@@ -373,17 +373,17 @@
 //   int bestIndex    = -1;
 //   T testDistance;
 //   
-//	for (int i = in_Low; i <= in_High; i++)
-//	{
-//		testDistance = distanceSquaredBetweenPoints(p, m_Points[ m_Indexes[i] ]);
-//		if (testDistance < out_BestDistance)
-//		{
-//			out_BestDistance = testDistance;
-//			bestIndex        = m_Indexes[i];
-//		}
-//	}
-//	
-//	return bestIndex;
+//    for (int i = in_Low; i <= in_High; i++)
+//    {
+//        testDistance = distanceSquaredBetweenPoints(p, m_Points[ m_Indexes[i] ]);
+//        if (testDistance < out_BestDistance)
+//        {
+//            out_BestDistance = testDistance;
+//            bestIndex        = m_Indexes[i];
+//        }
+//    }
+//    
+//    return bestIndex;
 //}
 //
 //template <class T, unsigned char K>
@@ -418,14 +418,14 @@
 //{
 //   ++QueryCount;
 //   // Calculate Euclidean norm
-//	T ret = 0;
-//	T tmp;
+//    T ret = 0;
+//    T tmp;
 //   
-//	for (int i = 0; i < K; i++)
-//	{
+//    for (int i = 0; i < K; i++)
+//    {
 //      tmp  = ps[i] - qs[i];
-//		ret += tmp * tmp;
-//	}
+//        ret += tmp * tmp;
+//    }
 //   // but don't square root it (x^2 is monotonic in x)
 //
 //   mfs << "scatter2x([";
@@ -440,7 +440,7 @@
 //      
 //   
 //   
-//	return ret;
+//    return ret;
 //}
 //
 //template <class T, unsigned char K>
@@ -449,13 +449,13 @@
 //{
 //   double distanceSquared;
 //
-//	if (high - low < m_MinSize)
-//	{
-//		// If the partition m_Indexes small, it's more efficient to do exhaustive search!
+//    if (high - low < m_MinSize)
+//    {
+//        // If the partition m_Indexes small, it's more efficient to do exhaustive search!
 //      FindNearestPointsExhaustive(in_TestPoint, in_RadiusSquared, low, high, io_Points);
-//	}
-//	else
-//	{
+//    }
+//    else
+//    {
 //      int dimm = (dim+1) % K;
 //      
 //      INITPARTITIONS(low, high);
@@ -468,35 +468,35 @@
 //      }
 //
 //      // This is the minimum distance from the test point to the discriminator hyperplane
-//		T orthoDistance = m_Points[m_Indexes[low]][dim] - in_TestPoint[dim]; 
-//		
-//		int chstart, chend;
-//		
+//        T orthoDistance = m_Points[m_Indexes[low]][dim] - in_TestPoint[dim]; 
+//        
+//        int chstart, chend;
+//        
 //      // Depending on which side of the boundary the test point lies, we want to test the leq or geq
 //      // sub-tree first
-//		if (orthoDistance > 0)
-//		{
-//			chstart = lstart;
-//			chend   = lend;
-//		}
-//		else
-//		{
-//			chstart = rstart;
-//			chend   = rend;
-//		}
-//		
+//        if (orthoDistance > 0)
+//        {
+//            chstart = lstart;
+//            chend   = lend;
+//        }
+//        else
+//        {
+//            chstart = rstart;
+//            chend   = rend;
+//        }
+//        
 //      FindNearestPoints(in_TestPoint, in_RadiusSquared, chstart, chend, dimm, io_Points);
-//		
+//        
 //      // If the boundary is further away than the radius of the sphere, there's no point in checking the
 //      // other sub-tree
-//		if (orthoDistance*orthoDistance < in_RadiusSquared)
-//		{
-//			chstart = lstart + rstart - chstart;
-//			chend   = lend   + rend   - chend;
-//		
+//        if (orthoDistance*orthoDistance < in_RadiusSquared)
+//        {
+//            chstart = lstart + rstart - chstart;
+//            chend   = lend   + rend   - chend;
+//        
 //         FindNearestPoints(in_TestPoint, in_RadiusSquared, chstart, chend, dimm, io_Points);
-//		}
-//	}
+//        }
+//    }
 //}
 //
 //#include <cmath>
@@ -504,14 +504,14 @@
 //template <class T, unsigned char K>
 //const int GeneralKDTree<T,K>::FindNearestPoint(T* p, const int low, const int high, int dim, T& minD, T* bounds)
 //{
-//	if (high - low < m_MinSize)
-//	{
+//    if (high - low < m_MinSize)
+//    {
 //      return FindNearestPointExhaustive(p, low, high, minD);
-//	}
-//	else
-//	{
+//    }
+//    else
+//    {
 //      int dimm = (dim+1) % K;
-//		int tmpIdx;
+//        int tmpIdx;
 //
 //      INITPARTITIONS(low,high);
 //
@@ -549,17 +549,17 @@
 //      T orthoDistance = m_Points[m_Indexes[imedian]][dim] - p[dim];
 //
 //      int chstart, chend;
-//		
+//        
 //      // Depending on which side of the boundary the test point lies, we want to test the leq or geq
 //      // sub-tree first
-//		if (orthoDistance > 0)
-//		{
-//			chstart = lstart; chend   = lend;
-//		}
-//		else
-//		{
-//			chstart = rstart; chend   = rend;
-//		}
+//        if (orthoDistance > 0)
+//        {
+//            chstart = lstart; chend   = lend;
+//        }
+//        else
+//        {
+//            chstart = rstart; chend   = rend;
+//        }
 //
 //      T testDistance;
 //      int bestIndex = -1;
@@ -608,8 +608,8 @@
 //         }
 //      }
 //
-//		return bestIndex;
-//	}
+//        return bestIndex;
+//    }
 //}
 //
 //int NSTYLES = 8;
@@ -729,7 +729,7 @@
 //      this->m_Indexes[i] = i;
 //
 //   //mfs << "BuildTree()" << std::endl;
-//	KDTreeBranch<T,K>* branches = recursivelyPartition(0, m_NPoints-1, 0, m_Bounds);
+//    KDTreeBranch<T,K>* branches = recursivelyPartition(0, m_NPoints-1, 0, m_Bounds);
 //
 //   std::cerr << "General Tree: Bounds = " << std::endl;
 //   for (int i = 0; i < K; i++)
@@ -746,7 +746,7 @@
 //   T data;
 //
 //   if (high - low < m_MinSize)
-//	{
+//    {
 //      int ax;
 //      for (int i = low; i <= high; i++)
 //      {
@@ -759,7 +759,7 @@
 //      }
 //
 //      return new KDTreeBranch<T,K>(this, low, high, dim, 0, 0, 0);
-//	}
+//    }
 //
 //   // Do the partitioning of the current array
 //   partitionArray(low, high, dim);
@@ -767,13 +767,13 @@
 //   INITPARTITIONS(low,high);
 //
 //   // And now make the recursive calls to do the leq and geq subtrees
-//	int dimm = (dim+1) % K;
+//    int dimm = (dim+1) % K;
 //
 //   T* boundsL = new T[2*K];
 //   T* boundsR = new T[2*K];
 //
-//	KDTreeBranch<T,K>* left  = recursivelyPartition(lstart, lend, dimm, boundsL);
-//	KDTreeBranch<T,K>* right = recursivelyPartition(rstart, rend, dimm, boundsR);
+//    KDTreeBranch<T,K>* left  = recursivelyPartition(lstart, lend, dimm, boundsL);
+//    KDTreeBranch<T,K>* right = recursivelyPartition(rstart, rend, dimm, boundsR);
 //
 //   for (int ax = 0; ax < K; ++ax)
 //   {
@@ -809,61 +809,61 @@
 //   register int tmp;
 //#define swapElements(a,b) { tmp = m_Indexes[a];m_Indexes[a] = m_Indexes[b]; m_Indexes[b] = tmp; }
 //
-//	int median;
-//	int middle, ll, hh;
+//    int median;
+//    int middle, ll, hh;
 //
-//	median = (in_Low + in_High) / 2;
+//    median = (in_Low + in_High) / 2;
 //
-//	while (true) {
-//		if (in_High <= in_Low) /* One element only */
-//			return;
+//    while (true) {
+//        if (in_High <= in_Low) /* One element only */
+//            return;
 //
-//		if (in_High == in_Low + 1) { /* Two elements only */
-//			if (m_Points[m_Indexes[in_Low]][in_Dim] > m_Points[m_Indexes[in_High]][in_Dim])
-//				swapElements(in_Low, in_High);
+//        if (in_High == in_Low + 1) { /* Two elements only */
+//            if (m_Points[m_Indexes[in_Low]][in_Dim] > m_Points[m_Indexes[in_High]][in_Dim])
+//                swapElements(in_Low, in_High);
 //
-//			return;
-//		}
+//            return;
+//        }
 //
-//		/*
-//		 * Find median of in_Low, middle and in_High items; swap into position in_Low
-//		 */
-//		middle = (in_Low + in_High) / 2;
-//		if (m_Points[m_Indexes[middle]][in_Dim] > m_Points[m_Indexes[in_High]][in_Dim])
-//			swapElements(middle, in_High);
-//		if (m_Points[m_Indexes[in_Low]][in_Dim] > m_Points[m_Indexes[in_High]][in_Dim])
-//			swapElements(in_Low, in_High);
-//		if (m_Points[m_Indexes[middle]][in_Dim] > m_Points[m_Indexes[in_Low]][in_Dim])
-//			swapElements(middle, in_Low);
+//        /*
+//         * Find median of in_Low, middle and in_High items; swap into position in_Low
+//         */
+//        middle = (in_Low + in_High) / 2;
+//        if (m_Points[m_Indexes[middle]][in_Dim] > m_Points[m_Indexes[in_High]][in_Dim])
+//            swapElements(middle, in_High);
+//        if (m_Points[m_Indexes[in_Low]][in_Dim] > m_Points[m_Indexes[in_High]][in_Dim])
+//            swapElements(in_Low, in_High);
+//        if (m_Points[m_Indexes[middle]][in_Dim] > m_Points[m_Indexes[in_Low]][in_Dim])
+//            swapElements(middle, in_Low);
 //
-//		/* Swap in_Low item (now in position middle) into position (in_Low+1) */
-//		swapElements(middle, in_Low + 1);
+//        /* Swap in_Low item (now in position middle) into position (in_Low+1) */
+//        swapElements(middle, in_Low + 1);
 //
-//		/*
-//		 * Nibble from each end towards middle, swapping items when stuck
-//		 */
-//		ll = in_Low + 1;
-//		hh = in_High;
-//		while (true) {
-//			while (m_Points[m_Indexes[in_Low]][in_Dim] > m_Points[m_Indexes[  ++ll]][in_Dim]);
-//			while (m_Points[m_Indexes[  --hh]][in_Dim] > m_Points[m_Indexes[in_Low]][in_Dim]);
-//			
-//			if (hh < ll)
-//				break;
+//        /*
+//         * Nibble from each end towards middle, swapping items when stuck
+//         */
+//        ll = in_Low + 1;
+//        hh = in_High;
+//        while (true) {
+//            while (m_Points[m_Indexes[in_Low]][in_Dim] > m_Points[m_Indexes[  ++ll]][in_Dim]);
+//            while (m_Points[m_Indexes[  --hh]][in_Dim] > m_Points[m_Indexes[in_Low]][in_Dim]);
+//            
+//            if (hh < ll)
+//                break;
 //
-//			swapElements(ll, hh);
-//		}
+//            swapElements(ll, hh);
+//        }
 //
-//		/* Swap middle item (in position in_Low) back into correct position */
-//		swapElements(in_Low, hh);
+//        /* Swap middle item (in position in_Low) back into correct position */
+//        swapElements(in_Low, hh);
 //
-//		/* Re-set active partition */
-//		if (hh <= median)
-//			in_Low = ll;
+//        /* Re-set active partition */
+//        if (hh <= median)
+//            in_Low = ll;
 //
-//		if (hh >= median)
-//			in_High = hh - 1;
-//	}
+//        if (hh >= median)
+//            in_High = hh - 1;
+//    }
 //#undef swapElements
 //}
 //

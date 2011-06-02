@@ -79,7 +79,7 @@ namespace AWT
 #endif
 
          void addMethods(AWT::RemoteMethods& methods);
-	  }
+      }
    }
 }
 

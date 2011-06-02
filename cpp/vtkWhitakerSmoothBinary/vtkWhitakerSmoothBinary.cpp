@@ -448,7 +448,7 @@ void vtkWhitakerSmoothBinary::vtkWhitakerSmoothBinaryExecute(vtkImageData* thres
       
          calculateXYZ(nn, area, w, x, y, z);
 
-		   for (vi = 0; vi < 27; vi++)
+           for (vi = 0; vi < 27; vi++)
          {
             vii = nn + zstep*(vi/9 - 1) + ystep*((vi/3) % 3 - 1) 
                + xstep*(vi % 3 - 1);

@@ -47,15 +47,15 @@ void AWT::WriteToClipboard::copyToClipboard(const std::string& string)
    }
    /* else */
 
-	HGLOBAL clipbuffer;
-	char * buffer;
-	EmptyClipboard();
-	clipbuffer = GlobalAlloc(GMEM_DDESHARE, string.length() + 1);
-	buffer = (char*)GlobalLock(clipbuffer);
-	strcpy(buffer, string.c_str());
-	GlobalUnlock(clipbuffer);
-	SetClipboardData(CF_TEXT,clipbuffer);
-	CloseClipboard();
+    HGLOBAL clipbuffer;
+    char * buffer;
+    EmptyClipboard();
+    clipbuffer = GlobalAlloc(GMEM_DDESHARE, string.length() + 1);
+    buffer = (char*)GlobalLock(clipbuffer);
+    strcpy(buffer, string.c_str());
+    GlobalUnlock(clipbuffer);
+    SetClipboardData(CF_TEXT,clipbuffer);
+    CloseClipboard();
 
    DEBUGMACRO("Data copied to clipboard clipboard");
 }

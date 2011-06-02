@@ -296,7 +296,7 @@ struct AWT::DeformableMeshFittingParser<T>::D
                *(comment_p("//") | comment_p("/*", "*/")) >>
                lexeme_d[ *space_p ] /* Trim trailing whitespace */
                ;
-         }			
+         }            
 
          rule<ScannerT> line, pose, modelParams, moghariFile;
 

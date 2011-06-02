@@ -61,8 +61,8 @@ int main(int argc, char** argv)
    std::vector<vtkActor*> actors;
    std::vector<bool>      actorsOwnColour;
 
-	for (i = 1; i < argc; i++)
-	{
+    for (i = 1; i < argc; i++)
+    {
       if (!strcmp(argv[i], "-nocull"))
       {
          if (lastActor != 0)
@@ -201,7 +201,7 @@ int main(int argc, char** argv)
             reader->Delete();
          }
       }
-	}
+    }
 
    PRINTVBL(actors.size());
    AWT::ColourSequence::P cols = AWT::HueWheelSequence::getInstance(actors.size());

@@ -55,12 +55,12 @@ MicroscribeArm::MicroscribeArm(int _updatesPerSecond)
    this->clocksPerUpdate  = static_cast<clock_t>((CLOCKS_PER_SEC + 0.0) / (updatesPerSecond + 0.0));
 
    int nResult = ArmStart(NULL);
-	if (ARM_SUCCESS != nResult) 
-	{ 
+    if (ARM_SUCCESS != nResult) 
+    { 
       std::cerr << "Unable to Start ArmDll32" << std::endl; 
       canConnect = false;
-		return;
-	}
+        return;
+    }
 
    ArmEnd();
 
@@ -123,37 +123,37 @@ bool MicroscribeArm::connect()
    int nResult;
 
    nResult = ArmStart(NULL);
-	if (ARM_SUCCESS != nResult) 
-	{ 
+    if (ARM_SUCCESS != nResult) 
+    { 
       std::cerr << "Unable to Start ArmDll32" << std::endl; 
       canConnect = false;
-		return false;
-	}
+        return false;
+    }
 
    nResult = ArmSetErrorHandlerFunction(NO_HCI_HANDLER, NULL);
-	nResult = ArmSetErrorHandlerFunction(BAD_PORT_HANDLER, NULL);
-	nResult = ArmSetErrorHandlerFunction(CANT_OPEN_HANDLER, NULL);
-	nResult = ArmSetErrorHandlerFunction(CANT_BEGIN_HANDLER, NULL);
+    nResult = ArmSetErrorHandlerFunction(BAD_PORT_HANDLER, NULL);
+    nResult = ArmSetErrorHandlerFunction(CANT_OPEN_HANDLER, NULL);
+    nResult = ArmSetErrorHandlerFunction(CANT_BEGIN_HANDLER, NULL);
 
    nResult = ArmConnect(0,0); 
-	if (ARM_SUCCESS != nResult) 
-	{ 
+    if (ARM_SUCCESS != nResult) 
+    { 
       std::cerr << "Unable to Connect ArmDll32" << std::endl; 
-		disconnectAll();
+        disconnectAll();
       canConnect = false;
-		return false;
-	}
+        return false;
+    }
 
    nResult = ArmSetUpdateEx(ARM_FULL, updatesPerSecond); 
-	if (ARM_SUCCESS != nResult) 
-	{ 
+    if (ARM_SUCCESS != nResult) 
+    { 
       std::cerr << "Unable to set Update type for ArmDll32" << std::endl; 
-		ArmDisconnect();
+        ArmDisconnect();
 
-		disconnectAll();
-		
+        disconnectAll();
+        
       return false;
-	}
+    }
 
    ArmSetLengthUnits(ARM_MM);
    ArmSetAngleUnits(ARM_DEGREES);
@@ -181,7 +181,7 @@ bool MicroscribeArm::disconnect()
       std::cerr << "Last one out, switch off..." << std::endl;
       ArmDisconnect();
 
-	   disconnectAll();
+       disconnectAll();
    }
 
    return true;
@@ -212,7 +212,7 @@ void MicroscribeArm::doUpdateIfNeeded()
       {
          //std::cerr << "Connection lost!" << std::endl;
          this->disconnect();
-	   }
+       }
    
       lastUpdate = clock();
       //std::cerr << "Successfully updated";

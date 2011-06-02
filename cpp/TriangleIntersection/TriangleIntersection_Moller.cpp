@@ -45,8 +45,8 @@
  * 
  * This version computes the line of intersection as well (if they are not coplanar):
  * int tri_tri_intersect_with_isectline(T V0[3],T V1[3],T V2[3], 
- *				        T U0[3],T U1[3],T U2[3],int *coplanar,
- *				        T isectpt1[3],T isectpt2[3]);
+ *                        T U0[3],T U1[3],T U2[3],int *coplanar,
+ *                        T isectpt1[3],T isectpt2[3]);
  * coplanar returns whether the tris are coplanar
  * isectpt1, isectpt2 are the endpoints of the line of intersection
  */
@@ -494,7 +494,7 @@ int AWT::MollerTriangleIntersection<T>::NoDivTriTriIsect(T V0[3],T V1[3],T V2[3]
 
 template <class T>
 inline void AWT::MollerTriangleIntersection<T>::isect2(T VTX0[3],T VTX1[3],T VTX2[3],T VV0,T VV1,T VV2,
-	    T D0,T D1,T D2,T *isect0,T *isect1,T isectpoint0[3],T isectpoint1[3]) 
+        T D0,T D1,T D2,T *isect0,T *isect1,T isectpoint0[3],T isectpoint1[3]) 
 {
   T tmp=D0/(D0-D1);          
   T diff[3];
@@ -514,8 +514,8 @@ inline void AWT::MollerTriangleIntersection<T>::isect2(T VTX0[3],T VTX1[3],T VTX
 #define ISECT2(VTX0,VTX1,VTX2,VV0,VV1,VV2,D0,D1,D2,isect0,isect1,isectpoint0,isectpoint1) \
               tmp=D0/(D0-D1);                    \
               isect0=VV0+(VV1-VV0)*tmp;          \
-	      SUB(diff,VTX1,VTX0);               \
-	      MULT(diff,diff,tmp);               \
+          SUB(diff,VTX1,VTX0);               \
+          MULT(diff,diff,tmp);               \
               ADD(isectpoint0,diff,VTX0);        \ 
               tmp=D0/(D0-D2);                    
 /*              isect1=VV0+(VV2-VV0)*tmp;          \ */
@@ -526,9 +526,9 @@ inline void AWT::MollerTriangleIntersection<T>::isect2(T VTX0[3],T VTX1[3],T VTX
 
 template <class T>
 inline int AWT::MollerTriangleIntersection<T>::compute_intervals_isectline(T VERT0[3],T VERT1[3],T VERT2[3],
-				       T VV0,T VV1,T VV2,T D0,T D1,T D2,
-				       T D0D1,T D0D2,T *isect0,T *isect1,
-				       T isectpoint0[3],T isectpoint1[3])
+                       T VV0,T VV1,T VV2,T D0,T D1,T D2,
+                       T D0D1,T D0D2,T *isect0,T *isect1,
+                       T isectpoint0[3],T isectpoint1[3])
 {
   if(D0D1>0.0f)                                        
   {                                                    
@@ -598,8 +598,8 @@ inline int AWT::MollerTriangleIntersection<T>::compute_intervals_isectline(T VER
 
 template <class T>
 int AWT::MollerTriangleIntersection<T>::tri_tri_intersect_with_isectline(T V0[3],T V1[3],T V2[3],
-				     T U0[3],T U1[3],T U2[3],int *coplanar,
-				     T isectpt1[3],T isectpt2[3])
+                     T U0[3],T U1[3],T U2[3],int *coplanar,
+                     T isectpt1[3],T isectpt2[3])
 {
   T E1[3],E2[3];
   T N1[3],N2[3],d1,d2;
@@ -685,13 +685,13 @@ int AWT::MollerTriangleIntersection<T>::tri_tri_intersect_with_isectline(T V0[3]
 
   /* compute interval for triangle 1 */
   *coplanar=compute_intervals_isectline(V0,V1,V2,vp0,vp1,vp2,dv0,dv1,dv2,
-				       dv0dv1,dv0dv2,&isect1[0],&isect1[1],isectpointA1,isectpointA2);
+                       dv0dv1,dv0dv2,&isect1[0],&isect1[1],isectpointA1,isectpointA2);
   if(*coplanar) return coplanar_tri_tri(N1,V0,V1,V2,U0,U1,U2);     
 
 
   /* compute interval for triangle 2 */
   compute_intervals_isectline(U0,U1,U2,up0,up1,up2,du0,du1,du2,
-			      du0du1,du0du2,&isect2[0],&isect2[1],isectpointB1,isectpointB2);
+                  du0du1,du0du2,&isect2[0],&isect2[1],isectpointB1,isectpointB2);
 
   SORT2(isect1[0],isect1[1],smallest1);
   SORT2(isect2[0],isect2[1],smallest2);

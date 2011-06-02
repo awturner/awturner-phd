@@ -1,0 +1,160 @@
+#include "OpenGLTransformation.h"
+
+#include "Maths/Constants.h"
+
+#include "Mesh/Pose.h"
+
+#include "OpenGLHeaders.h"
+#include <limits>
+
+
+template <class T>
+struct AWT::OpenGLTransformation<T>::D
+{
+   void refreshMatrix( )
+   {
+      typename Pose<T>::PoseMatrix mat = m_Pose->getMatrix( );
+
+      for ( unsigned int c = 0; c < 4; ++c )
+         for ( unsigned int r = 0; r < 4; ++r )
+            m_Matrix[ 4*c + r ] = mat( r, c );
+
+      PRINTVBL( m_Pose->getMatrix( ) );
+      PRINTVEC( m_Matrix, 16 );
+   }
+
+   Drawable::P m_Drawable;
+   bool      m_Visible;
+
+   typename Pose<T>::P m_Pose;
+   T         m_Matrix[16];
+
+   DrawableAssembly* m_Parent;
+};
+
+template <class T>
+AWT::OpenGLTransformation<T>::OpenGLTransformation( Drawable::P d, typename Pose<T>::P pose )
+{
+   m_D = new D;
+   m_D->m_Parent = 0;
+
+   m_D->m_Visible  = true;
+
+   setDrawable( d );
+
+   setPose( pose );
+}
+
+template <class T>
+AWT::OpenGLTransformation<T>::~OpenGLTransformation( )
+{
+   delete m_D;
+}
+
+template <class T>
+std::string AWT::OpenGLTransformation<T>::getClassName( ) const
+{
+   return "AWT::OpenGLTransformation";
+}
+
+template <class T>
+typename AWT::OpenGLTransformation<T>::P AWT::OpenGLTransformation<T>::getInstance( Drawable::P d, typename Pose<T>::P pose )
+{
+   AUTOGETINSTANCE( OpenGLTransformation<T>, ( d, pose ) );
+}
+
+template <class T>
+void AWT::OpenGLTransformation<T>::draw( AWT::DrawContext::P context, const bool transparentPass )
+{
+   if ( *m_D->m_Drawable == 0 )
+      return;
+
+   if ( m_D->m_Pose->getModifiedTime( ) > getModifiedTime( ) )
+   {
+      m_D->refreshMatrix( );
+      modified( );
+   }
+
+   glPushMatrix( );
+
+   glMultMatrixT( m_D->m_Matrix );
+
+   m_D->m_Drawable->draw( context, transparentPass );
+
+   glPopMatrix( );
+}
+
+template <class T>
+void AWT::OpenGLTransformation<T>::setVisible( const bool v )
+{
+   if ( v != m_D->m_Visible )
+   {
+      m_D->m_Visible = v;
+      modified( );
+   }
+}
+
+template <class T>
+bool AWT::OpenGLTransformation<T>::isVisible( ) const
+{
+   return m_D->m_Visible;
+}
+
+template <class T>
+void AWT::OpenGLTransformation<T>::getBounds( double* out_Bounds )
+{
+   if ( *m_D->m_Drawable == 0 )
+   {
+      for ( int i = 0; i < 6; ++i )
+         out_Bounds[i] = std::numeric_limits<double>::quiet_NaN( );
+   }
+   else
+   {
+      m_D->m_Drawable->getBounds( out_Bounds );
+   }
+}
+
+template <class T>
+void AWT::OpenGLTransformation<T>::setDrawable( AWT::Drawable::P d )
+{
+   if ( *d != *m_D->m_Drawable )
+   {
+      m_D->m_Drawable = d;
+      modified( );
+   }
+}
+
+template <class T>
+AWT::Drawable::P AWT::OpenGLTransformation<T>::getDrawable( )
+{
+   return m_D->m_Drawable;
+}
+
+template <class T>
+void AWT::OpenGLTransformation<T>::setPose( typename Pose<T>::P pose )
+{
+   m_D->m_Pose = pose;
+   modified( );
+}
+
+template <class T>
+typename AWT::Pose<T>::P AWT::OpenGLTransformation<T>::getPose( )
+{
+   return m_D->m_Pose;
+}
+
+template <class T>
+void AWT::OpenGLTransformation<T>::setParent( AWT::DrawableAssembly* p )
+{
+   m_D->m_Parent = p;
+   modified( );
+}
+
+template <class T>
+AWT::DrawableAssembly* AWT::OpenGLTransformation<T>::getParent( )
+{
+   return m_D->m_Parent;
+}
+
+template class AWT::OpenGLTransformation<double>;
+template class AWT::OpenGLTransformation<float>;

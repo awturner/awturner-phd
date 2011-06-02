@@ -1,0 +1,174 @@
+#include "include/WorldTreeModel.h"
+
+#include <QStringList>
+
+using namespace AWT;
+
+struct AWT::WorldTreeModel::D
+{
+   unsigned int getChildRow( Drawable* d )
+   {
+      DrawableAssembly* parent = d->getParent( );
+
+      unsigned int row = 0;
+      for ( row = 0; row < parent->getNumberOfChildren( ); ++row )
+         if ( *parent->getChild( row ) == d )
+            break;
+
+      return row;
+   }
+   DrawableAssembly* m_RootItem;
+};
+
+AWT::WorldTreeModel::WorldTreeModel(AWT::DrawableAssembly* assm, QObject *parent) : QAbstractItemModel(parent)
+{
+   m_D = new D;
+   m_D->m_RootItem = assm;
+}
+
+AWT::WorldTreeModel::~WorldTreeModel()
+{
+   delete m_D;
+}
+
+QModelIndex AWT::WorldTreeModel::index(int row, int column, const QModelIndex &parent) const
+{
+   if (!hasIndex(row, column, parent))
+   {
+      DEBUGLINE;
+      return QModelIndex();
+   }
+
+   Drawable* parentItem;
+
+   if (!parent.isValid())
+      parentItem = m_D->m_RootItem;
+   else
+      parentItem = static_cast<Drawable*>(parent.internalPointer());
+
+   DrawableAssembly* assm = dynamic_cast<DrawableAssembly*>( parentItem );
+
+   // If we don't have an assembly, or the row requested is too large,
+   // return the dummy model index
+   if ( assm == 0 || static_cast<unsigned int>( row ) >= assm->getNumberOfChildren( ) )
+      return QModelIndex( );
+
+   return createIndex( row, column, *assm->getChild( row ) );
+}
+
+
+QModelIndex AWT::WorldTreeModel::parent(const QModelIndex &index) const
+{
+   if (!index.isValid())
+      return QModelIndex();
+
+   Drawable* childItem  = static_cast<Drawable*>(index.internalPointer());
+   Drawable* parentItem = childItem->getParent();
+
+   // There is no grandparent in this case
+   if (parentItem == m_D->m_RootItem)
+      return QModelIndex();
+
+   unsigned int row = m_D->getChildRow( parentItem );
+   if ( row < parentItem->getParent( )->getNumberOfChildren( ) )
+         return createIndex( row, 0, parentItem );
+
+   return QModelIndex();
+}
+
+int AWT::WorldTreeModel::rowCount(const QModelIndex &parent) const
+{
+   if (parent.column() > 0)
+      return 0;
+
+   Drawable* parentItem;
+
+   if (!parent.isValid())
+      parentItem = m_D->m_RootItem;
+   else
+      parentItem = static_cast<Drawable*>(parent.internalPointer());
+
+   DrawableAssembly* assm = dynamic_cast<DrawableAssembly*>( parentItem );
+
+   if ( assm != 0 )
+      return assm->getNumberOfChildren( );
+
+   return 0;
+}
+
+int AWT::WorldTreeModel::columnCount(const QModelIndex &/*parent*/) const
+{
+   return 2;
+}
+
+QVariant AWT::WorldTreeModel::data(const QModelIndex &index, int role) const
+{
+   if (!index.isValid())
+      return QVariant();
+
+   // Work out the index of the drawable
+   Drawable*         item      = static_cast<Drawable*>( index.internalPointer( ) );
+   DrawableAssembly* parentItem = item->getParent( );
+   unsigned int row = m_D->getChildRow( item );
+
+   if ( row < parentItem->getNumberOfChildren( ) )
+   {
+      if ( role == Qt::CheckStateRole && index.column( ) == 1 )
+      {
+         return item->isVisible( ) ? Qt::Checked : Qt::Unchecked;
+      }
+      else if ( role == Qt::DisplayRole && index.column( ) == 0 )
+      {
+         return tr( parentItem->getChildName( row ).c_str( ) );
+      }
+   }
+
+   return QVariant( );
+}
+
+QVariant AWT::WorldTreeModel::headerData(int section, Qt::Orientation orientation,
+                                    int role) const
+{
+   if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+   {
+      switch ( section )
+      {
+      case 0:
+         return tr( "Name" );
+      case 1:
+         return tr( "Visible" );
+      }
+   }
+
+   return QVariant();
+}
+
+Qt::ItemFlags AWT::WorldTreeModel::flags(const QModelIndex &index) const
+{
+   if (!index.isValid())
+      return 0;
+
+   Qt::ItemFlags ret = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+
+   if ( index.column() == 1 )
+      ret |= Qt::ItemIsUserCheckable;
+
+   return ret;
+}
+
+bool AWT::WorldTreeModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+   if ( index.isValid( ) )
+   {
+      if ( index.column( ) == 1 && role == Qt::CheckStateRole )
+      {
+         Drawable* d = static_cast<Drawable*>( index.internalPointer( ) );
+         d->setVisible( value.toBool( ) );
+
+         emit dataChanged( index, index );
+         return true;
+      }
+   }
+   return false;
+}
+
